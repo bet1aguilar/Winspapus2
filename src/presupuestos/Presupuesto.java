@@ -1853,7 +1853,7 @@ private void formInternalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
         for (i = 0; i < registros; i++) {
             if (i == 0) {
                 builder = new StringBuilder();
-                builder.append("Partidas Seleccionadas :").append("\n");
+                builder.append("Partidas Seleccionadas:").append("\n");
             }
             for (j = 0; j < columnas; j++) {
 
