@@ -34,6 +34,7 @@ public class matrizequipos extends javax.swing.JDialog {
     private String coditabu="", codiequipo="";
     int fila=0, x, y, row=-1;
     Principal obj;
+    String palabra="";
     Connection conex;
     /** Creates new form matrizequipos */
     public matrizequipos(java.awt.Frame parent, boolean modal, Connection conex, Principal obj) {
@@ -137,6 +138,11 @@ private void cambiarcabecera() {
 
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/winspapus/imagenes/ver.png"))); // NOI18N
         jButton3.setEnabled(false);
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
         jPanel8.setLayout(jPanel8Layout);
@@ -242,10 +248,6 @@ private void cambiarcabecera() {
                 .addContainerGap()
                 .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 354, Short.MAX_VALUE)
                 .addGap(449, 449, 449))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(534, Short.MAX_VALUE))
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
@@ -263,6 +265,10 @@ private void cambiarcabecera() {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton5)
                 .addGap(38, 38, 38))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(534, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -272,8 +278,8 @@ private void cambiarcabecera() {
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 129, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 142, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -362,6 +368,17 @@ private void cambiarcabecera() {
         dispose();
     }//GEN-LAST:event_jButton5ActionPerformed
 
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        palabra = jTextField2.getText().toString();
+        try {
+            buscarequipo();
+        } catch (SQLException ex) {
+            Logger.getLogger(matrizequipos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+   
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton3ActionPerformed
+
     
     private void cambiacabecera() {
          JTableHeader th = jTable2.getTableHeader();
@@ -390,7 +407,8 @@ private void cambiarcabecera() {
             }
         };
         Statement st = (Statement) conex.createStatement();
-        String sql="SELECT id, descri, precio, deprecia FROM metabs WHERE mtabus_id='"+coditabu+"' AND status=1";
+        String sql="SELECT id, descri, precio, deprecia FROM metabs WHERE mtabus_id='"+coditabu+"' AND "
+                + "(id LIKE '%"+palabra+"%' OR descri LIKE '%"+palabra+"%') AND status=1";
         ResultSet rst = st.executeQuery(sql);
         jTable2.setModel(metabs);
         

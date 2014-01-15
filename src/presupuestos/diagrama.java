@@ -100,8 +100,8 @@ public final class diagrama extends javax.swing.JDialog {
         this.totalpres = total;
         this.date = new Date();
         prin=parent;
-       // jComboBox2.setVisible(false);
-       // jLabel20.setVisible(false);
+       jComboBox2.setVisible(false);
+      jLabel20.setVisible(false);
         this.pres = pres;
         this.conex = conex;
         jTextField11.setText(String.valueOf(total));
@@ -1605,7 +1605,7 @@ public void mouseClicked(java.awt.event.MouseEvent e)
            
              TaskSeriesCollection taskseriescollection = null;
             String sqls = "SELECT rango, fechaini, fechafin, numegrup FROM mppres WHERE cron=1 AND "
-                    + "(mpre_id='"+pres+"' OR (SELECT id FROM mpres WHERE mpres_id='"+pres+"')) ORDER BY fechaini";
+                    + "(mpre_id='"+pres+"' OR mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+pres+"')) ORDER BY fechaini";
         try {
             Statement str = (Statement) conex.createStatement();
             rsts = str.executeQuery(sqls);
@@ -2552,7 +2552,7 @@ public void mouseClicked(java.awt.event.MouseEvent e)
         int rango = 0;
         String numegrup = jSpinner1.getValue().toString();
         String consulta = "Select rango FROM mppres WHERE numegrup="+numegrup+" AND "
-                + "(mpre_id='"+pres+"' OR (SELECT id FROM mpres WHERE mpres_id='"+pres+"'))";
+                + "(mpre_id='"+pres+"' OR mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+pres+"'))";
         try {
             Statement str = (Statement) conex.createStatement();
             ResultSet rstr = str.executeQuery(consulta);
@@ -2568,7 +2568,7 @@ public void mouseClicked(java.awt.event.MouseEvent e)
         rangos=1;
         
         String selected = "Select numero FROM mppres WHERE numegrup="+numegrup+" AND "
-                + " (mpre_id='"+pres+"' OR (SELECT id FROM mpres WHERE mpres_id='"+pres+"'))";
+                + " (mpre_id='"+pres+"' OR mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+pres+"'))";
         String numero=null;
         try {
             Statement st = (Statement) conex.createStatement();

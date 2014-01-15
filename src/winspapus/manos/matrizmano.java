@@ -29,7 +29,7 @@ import winspapus.Principal;
  * @author Betmart
  */
 public class matrizmano extends javax.swing.JDialog {
-    
+    String palabra="";
     Connection conex;
     int fila=0, x, y, row;
     String mtabu, codimano;
@@ -169,6 +169,11 @@ private void cambiarcabecera() {
 
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/winspapus/imagenes/ver.png"))); // NOI18N
         jButton3.setEnabled(false);
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
         jPanel8.setLayout(jPanel8Layout);
@@ -303,6 +308,7 @@ private void cambiarcabecera() {
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
       jButton1.setEnabled(true);
       jButton2.setEnabled(true);
+      jButton3.setEnabled(true);
        jButton4.setEnabled(true);
       fila = jTable1.rowAtPoint(evt.getPoint());
       mtabu = jTable1.getValueAt(fila, 0).toString();
@@ -362,6 +368,13 @@ private void cambiarcabecera() {
             Logger.getLogger(matrizmano.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        palabra = jTextField2.getText().toString();
+        
+        
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton3ActionPerformed
     
      private void cambiacabecera() {
          JTableHeader th = jTable2.getTableHeader();
@@ -397,7 +410,8 @@ private void cambiarcabecera() {
         } catch (SQLException ex) {
             Logger.getLogger(matrizmano.class.getName()).log(Level.SEVERE, null, ex);
         }
-        String sql="SELECT id, descri, bono, salario, subsid FROM mmotabs WHERE mtabus_id='"+mtabu+"' AND status=1";
+        String sql="SELECT id, descri, bono, salario, subsid FROM mmotabs WHERE mtabus_id='"+mtabu+"' "
+                + "AND (id LIKE '%"+palabra+"%' OR descri LIKE '%"+palabra+"%') AND status=1";
         ResultSet rst = st.executeQuery(sql);
         jTable2.setModel(mmtabs);
         

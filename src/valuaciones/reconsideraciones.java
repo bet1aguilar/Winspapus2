@@ -203,6 +203,7 @@ public class reconsideraciones extends javax.swing.JDialog {
 
         jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/winspapus/imagenes/barracasco.png"))); // NOI18N
         jButton4.setToolTipText("Ver matriz de Costos de la reconsideración");
+        jButton4.setEnabled(false);
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton4ActionPerformed(evt);
@@ -491,7 +492,7 @@ public class reconsideraciones extends javax.swing.JDialog {
                 .addContainerGap())
         );
 
-        jTable1.setFont(new java.awt.Font("Tahoma", 0, 10));
+        jTable1.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jTable1MouseClicked(evt);
@@ -1047,7 +1048,7 @@ public class reconsideraciones extends javax.swing.JDialog {
         jTextField2.setText(numegrup);
         jButton6.setEnabled(false);        
         jButton7.setEnabled(true);
-        
+        jButton4.setEnabled(true);
         buscapartida();
         
         jTextField7.setText(jTable1.getValueAt(filapart, 3).toString());
@@ -1143,6 +1144,8 @@ public class reconsideraciones extends javax.swing.JDialog {
     }//GEN-LAST:event_jSpinner1StateChanged
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+ver();        
+        
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton4ActionPerformed
      private void ver() {
