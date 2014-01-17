@@ -1,0 +1,20 @@
+1 Reconsideraciones de Precios:
+* Verificar APU
+* Calcular precio unitario que va a sumarse al total del presupuesto
+* Variar por tabulador los costos de:
+	- Materiales
+	- Equipos
+	- Mano de Obra.
+Esto se haría por reconsideración.
+* Variar linealmente los montos de:
+	- Materiales
+	- Equipos
+	- Mano de Obra
+Esto se haría por reconsideración.
+
+2 Capitulos del Presupuesto
+3 Recalcular Tabuladores
+4 Recalcular Presupuestos
+5 Mostrar Matriz de Materiales, equipo y mano de obra del Presupuesto
+6 Manejar Usuarios
+7 Manejar Inicio de Sesión
