@@ -71,29 +71,26 @@ public class apu extends javax.swing.JDialog {
         this.prin = p;
         this.rendimiento= Float.valueOf(rendimi);
         cargartabus();
-            buscapres();
-            
-      
-        
+        buscapres();
         buscamat();
         buscaequip();
         buscamano();
         calculapartida();
         jTable1.setShowHorizontalLines(true);
-    jTable1.setShowVerticalLines(false);
-    jTable1.getTableHeader().setSize(new Dimension(25,40));
-    jTable1.getTableHeader().setPreferredSize(new Dimension(30,40));
-    jTable1.setRowHeight(20);
-    jTable2.setShowHorizontalLines(true);
-    jTable2.setShowVerticalLines(false);
-    jTable2.getTableHeader().setSize(new Dimension(25,40));
-    jTable2.getTableHeader().setPreferredSize(new Dimension(30,40));
-    jTable2.setRowHeight(20);
-    jTable3.setShowHorizontalLines(true);
-    jTable3.setShowVerticalLines(false);
-    jTable3.getTableHeader().setSize(new Dimension(25,40));
-    jTable3.getTableHeader().setPreferredSize(new Dimension(30,40));
-    jTable3.setRowHeight(20);
+        jTable1.setShowVerticalLines(false);
+        jTable1.getTableHeader().setSize(new Dimension(25,40));
+        jTable1.getTableHeader().setPreferredSize(new Dimension(30,40));
+        jTable1.setRowHeight(20);
+        jTable2.setShowHorizontalLines(true);
+        jTable2.setShowVerticalLines(false);
+        jTable2.getTableHeader().setSize(new Dimension(25,40));
+        jTable2.getTableHeader().setPreferredSize(new Dimension(30,40));
+        jTable2.setRowHeight(20);
+        jTable3.setShowHorizontalLines(true);
+        jTable3.setShowVerticalLines(false);
+        jTable3.getTableHeader().setSize(new Dimension(25,40));
+        jTable3.getTableHeader().setPreferredSize(new Dimension(30,40));
+        jTable3.setRowHeight(20);
         // Close the dialog when Esc is pressed
         String cancelName = "cancel";
         InputMap inputMap = getRootPane().getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
@@ -131,7 +128,6 @@ public class apu extends javax.swing.JDialog {
             Logger.getLogger(materiales.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
     public final void buscapres(){
         String sql = "SELECT porgam, porcfi, porimp, poripa, porpre, poruti FROM mpres WHERE id='"+pres+"'";
         try {
@@ -151,7 +147,6 @@ public class apu extends javax.swing.JDialog {
             Logger.getLogger(apu.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
     public final void buscamat(){
         float valor=0;
         contmat =0;

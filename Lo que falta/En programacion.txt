@@ -1,3 +1,10 @@
+Borrar Presupuestos:
+	-Borrar materiales, equipo, mano de obra
+	-Borrar presupuesto de partidas no previstas
+	-Borrar Partidas y detalles de partidas
+	-Borrar Valuación y Detalle de Valuación
+	-Borrar Presupuesto de Aumento y Disminución
+	-Borrar Capitulos y subcapitulos del presupuesto
 1 Reconsideraciones de Precios:
 * Verificar APU
 * Calcular precio unitario que va a sumarse al total del presupuesto

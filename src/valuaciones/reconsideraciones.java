@@ -585,7 +585,8 @@ public class reconsideraciones extends javax.swing.JDialog {
     }//GEN-LAST:event_jTextField9FocusGained
     public final void buscacuadro(){
         
-         if(!"".equals(jSpinner1.getValue())) {
+         if(!"".equals(jSpinner1.getValue())) 
+         {
             nrocuadro = Integer.parseInt(jSpinner1.getValue().toString());
         }
         jTextField2.setText("");
@@ -1144,11 +1145,10 @@ public class reconsideraciones extends javax.swing.JDialog {
     }//GEN-LAST:event_jSpinner1StateChanged
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-ver();        
-        
-        // TODO add your handling code here:
+    ver();
     }//GEN-LAST:event_jButton4ActionPerformed
-     private void ver() {
+     private void ver() 
+     {
          String parti=jTable1.getValueAt(filapart, 1).toString();
          codnuevopres= mpres+" VP-"+nrocuadro;
       Partida part = new Partida(prin, true, conex,codnuevopres, prin, 1, 0, codicove, parti, pres,"0");
@@ -1159,6 +1159,7 @@ ver();
         part.setVisible(true);
         buscacuadro();
     }
+     
     private void doClose(int retStatus) {
         returnStatus = retStatus;
         setVisible(false);
