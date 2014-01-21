@@ -18,6 +18,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.NumberFormat;
 import java.util.StringTokenizer;
 import java.util.Vector;
 import java.util.logging.Level;
@@ -45,6 +46,7 @@ public class Presupuesto extends javax.swing.JInternalFrame {
     int inicio=0;
     String [] partidas;
     int insertar=0;
+     double subtotal1 = 0,  subtotal=0,impuesto=0, total=0;
     int contsel=0;
     String  codicove="";
     private Connection conex;
@@ -1511,10 +1513,12 @@ public class Presupuesto extends javax.swing.JInternalFrame {
     }
     
     public void cargartotal(){
-        float subtotal1 = 0,  subtotal=0,impuesto=0, total;
+       
         
         //Solo se suman los totales de las partidas originales
-        String cargasinredondeo = "SELECT IF(precasu=0,SUM(cantidad*precasu),SUM(cantidad*precunit)) FROM `winspapu`.`mppres` WHERE  tipo='Org' AND (mpre_id='"+id+"' OR mpre_id IN (SELECT id from mpres where mpres_id='"+id+"'))";
+        String cargasinredondeo = "SELECT IF(precasu=0,SUM(cantidad*precunit),SUM(cantidad*precasu)) "
+                + "FROM `winspapu`.`mppres` WHERE  tipo='Org' AND (mpre_id='"+id+"' OR mpre_id IN "
+                + "(SELECT id from mpres where mpres_id='"+id+"'))";
         
         try {
             Statement st1 = (Statement) conex.createStatement();
@@ -1528,6 +1532,7 @@ public class Presupuesto extends javax.swing.JInternalFrame {
             }
            
             impuesto = Float.valueOf(jTextField10.getText().toString());
+            
             subtotal = subtotal1;
             impuesto = subtotal*(impuesto/100);
             total = (float)(Math.rint(((subtotal+impuesto)+0.000001)*100)/100);
@@ -1535,9 +1540,12 @@ public class Presupuesto extends javax.swing.JInternalFrame {
             
             subtotal = (float)Math.rint(((subtotal+0.000001)*100))/100;
             impuesto = (float) Math.rint(((impuesto+0.000001)*100))/100;
-            jTextField11.setText(String.valueOf(subtotal));
-            jTextField12.setText(String.valueOf(impuesto));
-            jTextField13.setText(String.valueOf(total)); 
+            NumberFormat formatoNumero = NumberFormat.getNumberInstance();
+            formatoNumero.setMaximumFractionDigits(2);
+            formatoNumero.setMinimumFractionDigits(2);
+            jTextField11.setText(String.valueOf(formatoNumero.format(subtotal)));
+            jTextField12.setText(String.valueOf(formatoNumero.format(impuesto)));
+            jTextField13.setText(String.valueOf(formatoNumero.format(total))); 
          } catch (SQLException ex) {
             Logger.getLogger(Presupuesto.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -1700,6 +1708,7 @@ private void formInternalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
         jButton11.setEnabled(true);
         int redondear=0;
        int idband = 0;
+       String tipo="";
         adicional = 0;
         numpartida = jTable2.getValueAt(filapartida, 1).toString();
         idpartida = jTable2.getValueAt(filapartida, 2).toString();
@@ -1724,6 +1733,7 @@ private void formInternalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
                 unidad = resultado.getObject("unidad").toString();
                 cantidad = resultado.getObject("cantidad").toString();
                 redondear = resultado.getInt("redondeo");
+                tipo = resultado.getString("tipo");
                 if(resultado.getObject("precunit")!=null) {
                     precuni = resultado.getObject("precunit").toString();
                 }else{
@@ -1740,7 +1750,7 @@ private void formInternalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
           
             String auxid;
             auxid=id;
-            if(!mpre.equals(id)){
+            if(!mpre.equals(id) && tipo.equals("NP")){
                 adicional = 1;                
                 
             }
@@ -1814,9 +1824,18 @@ private void formInternalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
             jTextArea2.setText(descri);
             jTextField17.setText(unidad);
             
-            jTextField18.setText(cantidad);
-            jTextField19.setText(precuni);
-            jTextField20.setText(String.valueOf( Math.rint((Float.valueOf(precuni)*Float.valueOf(cantidad)+0.0000001)*100)/100));
+           
+            
+            double total = Math.rint((Float.valueOf(precuni)*Float.valueOf(cantidad)+0.0000001)*100)/100;
+             NumberFormat formatoNumero = NumberFormat.getNumberInstance();
+            formatoNumero.setMaximumFractionDigits(2);
+            formatoNumero.setMinimumFractionDigits(2);
+            double cant = Math.rint(Float.valueOf(cantidad)*100)/100;
+            double precio = Math.rint(Float.valueOf(precuni)*100)/100;
+             jTextField18.setText(formatoNumero.format(cant));
+            jTextField19.setText(formatoNumero.format(precio));
+            jTextField20.setText(String.valueOf(formatoNumero.format(total)));
+           
             jButton14.setEnabled(true);
         } catch (SQLException ex) {
             Logger.getLogger(Presupuesto.class.getName()).log(Level.SEVERE, null, ex);
@@ -1829,9 +1848,9 @@ private void formInternalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
          jButton29.setEnabled(true);
          jButton26.setEnabled(true);
          jButton10.setEnabled(true);
-         jButton30.setEnabled(true);
-      // jTextArea2.setEditable(false);
+         jButton30.setEnabled(true);      
          cargapartida();
+         cargartotal();
          if(evt.getClickCount()==2){
             ver();
             }      
@@ -2510,7 +2529,11 @@ public void agrega(){
         cantidad = Float.valueOf(jTextField18.getText().toString());
         precio = Float.valueOf(jTextField19.getText().toString());
         total = cantidad * precio;
-        jTextField20.setText(String.valueOf(total));
+         NumberFormat formatoNumero = NumberFormat.getNumberInstance();
+            formatoNumero.setMaximumFractionDigits(2);
+            formatoNumero.setMinimumFractionDigits(2);
+            jTextField20.setText(String.valueOf(formatoNumero.format(total)));
+       
 
     }//GEN-LAST:event_jTextField18FocusLost
 
@@ -2714,8 +2737,8 @@ public void agrega(){
         return jTextField13.getText();
     }
     private void jButton16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton16ActionPerformed
-        float total = Float.valueOf(jTextField13.getText().toString());
-        aumentosdismi aumento = new aumentosdismi(prin, closable, id, conex,total);
+        float total1 = (float) total;
+        aumentosdismi aumento = new aumentosdismi(prin, closable, id, conex,total1);
         int xi = (this.getWidth()/2)-1200/2;
         int yi = (this.getHeight()/2)-650/2;
         aumento.setBounds(xi, yi, 1200, 650);

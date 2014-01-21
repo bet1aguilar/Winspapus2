@@ -33,6 +33,7 @@ public final class valuacion extends javax.swing.JDialog {
     public static final int RET_CANCEL = 0;
     float estavalu, impu, acum, impuesto;
     int filapart = 0;
+    int lapso=0;
     public static final int RET_OK = 1;
     Connection conex;
     String pres;

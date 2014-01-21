@@ -1623,7 +1623,7 @@ public void buscarpartida1(String part){
          valuacion val = new valuacion(p, true, conex, pres);
         int xv = (p.getWidth()/2)-375;
         int yv = (p.getHeight()/2)-275;
-        val.setBounds(xv, yv, 800, 600);
+        val.setBounds(xv, yv, 830, 600);
         val.setVisible(true);
     }//GEN-LAST:event_jButton4ActionPerformed
 

@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -223,12 +224,18 @@ public class Partida extends javax.swing.JDialog {
                 if(!mbdat.equals("")&&mbdat!=null){
                     jComboBox1.setSelectedIndex(Integer.parseInt(mbdat)-1);
                 }
-                jTextField12.setText(rsts.getObject(7).toString());
-                jTextField15.setText(rsts.getObject(8).toString());
+                double precunit = rsts.getDouble(7);
+                double precasu = rsts.getDouble(8);
+                NumberFormat formatoNumero = NumberFormat.getNumberInstance();
+            formatoNumero.setMaximumFractionDigits(2);
+            formatoNumero.setMinimumFractionDigits(2);
+            jTextField12.setText(String.valueOf(formatoNumero.format(precunit)));
+               
+                jTextField15.setText(String.valueOf(formatoNumero.format(precasu)));
                 redondeo = Integer.parseInt(rsts.getObject(9).toString());
                 if(redondeo==0){
                     jCheckBox1.setSelected(false);
-                    precio = Float.valueOf(jTextField12.getText());
+                    precio =(float) precunit;
                 } else{
                     jCheckBox1.setSelected(true);
                      precio = Float.valueOf(jTextField15.getText());
@@ -236,12 +243,14 @@ public class Partida extends javax.swing.JDialog {
                 jSpinner1.setValue(numpartida);
                
                 jTextField13.setText(rsts.getObject(12).toString());
-                jTextField7.setText(rsts.getObject(13).toString());
+                
                 jTextField10.setText(rsts.getObject(14).toString());
-                float cantidad = Float.valueOf(jTextField7.getText ());
+                float cantidad = Float.valueOf(rsts.getObject(13).toString());
+                jTextField7.setText(String.valueOf(formatoNumero.format(cantidad)));
                 precio = precio * cantidad;
                 precio = (float) Math.rint((precio*100))/100;
-                jTextField8.setText(String.valueOf(precio));
+                
+                jTextField8.setText(String.valueOf(formatoNumero.format(precio)));
             }
         } catch (SQLException ex) {
             Logger.getLogger(Partida.class.getName()).log(Level.SEVERE, null, ex);
@@ -379,8 +388,11 @@ public final void buscagrupo() throws SQLException{
         }
         jTextField12.setText(String.valueOf(total));
         float tota=precunit*Float.valueOf(jTextField7.getText());
-       
-        jTextField8.setText(String.valueOf(tota));
+        NumberFormat formatoNumero = NumberFormat.getNumberInstance();
+            formatoNumero.setMaximumFractionDigits(2);
+            formatoNumero.setMinimumFractionDigits(2);
+            jTextField8.setText(String.valueOf(formatoNumero.format(tota)));
+  
     }
     /** @return the return status of this dialog - one of RET_OK or RET_CANCEL */
     public int getReturnStatus() {
@@ -904,9 +916,9 @@ public final void buscagrupo() throws SQLException{
                             .addComponent(jTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel19))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel16)
-                            .addComponent(jTextField12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jTextField12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel16))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jTextField15, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1174,7 +1186,11 @@ if (evt.getKeyCode() == KeyEvent.VK_TAB) {
         }
         float cantidad = Float.valueOf(jTextField7.getText().toString()), total1;
         total1 = precunit*cantidad;
-        jTextField8.setText(String.valueOf(total1));
+        NumberFormat formatoNumero = NumberFormat.getNumberInstance();
+            formatoNumero.setMaximumFractionDigits(2);
+            formatoNumero.setMinimumFractionDigits(2);
+            jTextField8.setText(String.valueOf(formatoNumero.format(total1)));
+      
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField7FocusLost
 
