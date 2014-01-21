@@ -134,6 +134,7 @@ public final class valuacion extends javax.swing.JDialog {
             
     public void cargapresupuesto() throws SQLException {
         jTextField1.setText(pres);
+       
         String sql = "SELECT nombre From mpres WHERE id='" + pres + "'";
         Statement st = (Statement) conex.createStatement();
         ResultSet rst = st.executeQuery(sql);
@@ -155,7 +156,7 @@ public final class valuacion extends javax.swing.JDialog {
         SimpleDateFormat formatoDelTexto = new SimpleDateFormat("yyyy-MM-dd");
         Date ini = null, fin = null;
         String tipos = null;
-        String con = "SELECT desde, hasta, tipo FROM mvalus where id=" + mvalu + " AND mpre_id='" + pres+"'";
+        String con = "SELECT desde, hasta, tipo,lapso FROM mvalus where id=" + mvalu + " AND mpre_id='" + pres+"'";
         Statement ste = conex.createStatement();
         ResultSet rste = ste.executeQuery(con);
         while (rste.next()) {
@@ -169,6 +170,7 @@ public final class valuacion extends javax.swing.JDialog {
                 if (rste.getObject(3) != null) {
                     tipos = rste.getObject(3).toString();
                 }
+                lapso=rste.getInt("lapso");
 
             } catch (ParseException ex) {
                 Logger.getLogger(valuacion.class.getName()).log(Level.SEVERE, null, ex);
@@ -177,6 +179,12 @@ public final class valuacion extends javax.swing.JDialog {
         jDateChooser1.setDate(ini);
         jDateChooser2.setDate(fin);
         jComboBox1.setSelectedItem(tipos);
+        if(lapso==1){
+            jRadioButton1.setSelected(true);
+        }else
+        {
+            jRadioButton2.setSelected(false);
+        }
         buscapartida();
     }
 
@@ -1072,12 +1080,13 @@ public final class valuacion extends javax.swing.JDialog {
         fechaini = formatofecha.format(jDateChooser1.getDate());
         fechafin = formatofecha.format(jDateChooser2.getDate());
 
-
+//************************************DEBO VER SI ESTA GUARDADA LA VALUACION Y SINO GUARDARLA
         String tipos = jComboBox1.getSelectedItem().toString();
         String consulta = "UPDATE mvalus SET desde = '" + fechaini + "', hasta ='" + fechafin + "', tipo = '" + tipos + "' WHERE id='" + mvalu + "' AND mpre_id='" + pres+"'";
         try {
             Statement st = conex.createStatement();
             st.execute(consulta);
+            
             JOptionPane.showMessageDialog(null, "Se ha guardado la valuación");
         } catch (SQLException ex) {
             Logger.getLogger(valuacion.class.getName()).log(Level.SEVERE, null, ex);
@@ -1218,6 +1227,7 @@ public void inserta(){
             Logger.getLogger(valuacion.class.getName()).log(Level.SEVERE, null, ex);
         }
         int cuentas = 0;
+        
         String cuenta = "SELECT count(*) FROM mvalus WHERE id=" + jSpinner1.getValue().toString() + " "
                 + "AND mpre_id='" + pres + "'";
         try {
@@ -1252,8 +1262,16 @@ public void inserta(){
 
                     }
                 }
+                
+                if(jRadioButton1.isSelected()){
+                    lapso=1;
+                }
+                else
+                {
+                    lapso=2;
+                }
                 String insertmvalu = "INSERT INTO mvalus VALUES(" + jSpinner1.getValue() + ","
-                        + "'" + fecdesde + "', '" + fechasta + "', 1, '" + pres + "','" + tipo + "' )";
+                        + "'" + fecdesde + "', '" + fechasta + "', 1, '" + pres + "','" + tipo + "',"+lapso+" )";
                 Statement inserta = conex.createStatement();
                 inserta.execute(insertmvalu);
             }
