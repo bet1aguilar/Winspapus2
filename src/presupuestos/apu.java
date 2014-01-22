@@ -18,6 +18,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.NumberFormat;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -1587,14 +1588,14 @@ public class apu extends javax.swing.JDialog {
     }//GEN-LAST:event_okButtonActionPerformed
     
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
-        part.settotal(jTextField23.getText());
+        part.settotal(String.valueOf(contototal));
         
         doClose(RET_CANCEL);
     }//GEN-LAST:event_cancelButtonActionPerformed
 
     /** Closes the dialog */
     private void closeDialog(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_closeDialog
-        part.settotal(jTextField23.getText());
+        part.settotal(String.valueOf(contototal));
         doClose(RET_CANCEL);
     }//GEN-LAST:event_closeDialog
 
@@ -1969,9 +1970,14 @@ insertare=1;
         System.out.println("contotal impu fin "+contototal);
         auxcontotal = (float) (Math.rint((contototal+0.000001)*100)/100);
         redondeado = (float) Math.rint(contototal+0.000001);
-        jTextField1.setText(String.valueOf(auxcontotal));
-        jTextField7.setText(String.valueOf(auxcontotal));
-        jTextField23.setText(String.valueOf(auxcontotal));
+        NumberFormat formatoNumero = NumberFormat.getNumberInstance();
+            formatoNumero.setMaximumFractionDigits(2);
+            formatoNumero.setMinimumFractionDigits(2);
+            jTextField1.setText(String.valueOf(formatoNumero.format(auxcontotal)));
+            jTextField7.setText(String.valueOf(formatoNumero.format(auxcontotal)));
+            jTextField23.setText(String.valueOf(formatoNumero.format(auxcontotal)));
+        
+        contototal = auxcontotal;
         String consulta = "UPDATE mppres SET precunit="+contototal+", precasu="+redondeado+" WHERE id='"+partida+"' AND mpre_id='"+pres+"'";
         System.out.println(consulta);
         try {
@@ -2397,7 +2403,7 @@ validafloat(evt, jTextField21.getText().toString());        // TODO add your han
     }//GEN-LAST:event_jTextField21KeyTyped
 
 private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_okButtonMouseClicked
-        part.settotal(jTextField23.getText());
+        part.settotal(String.valueOf(contototal));
         
         
         doClose(RET_OK);// TODO add your handling code here:

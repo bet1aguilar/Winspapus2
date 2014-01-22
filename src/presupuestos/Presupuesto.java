@@ -2996,8 +2996,8 @@ jTextArea2.setEditable(true);
     }//GEN-LAST:event_jButton13ActionPerformed
 
     private void jButton18ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton18ActionPerformed
-       float total = Float.valueOf(jTextField13.getText().toString());
-        diagrama cron = new diagrama(prin, true,conex,id,total);
+       float total1 = Float.valueOf(contototal);
+        diagrama cron = new diagrama(prin, true,conex,id,total1);
         int xi = (this.getWidth()/2)-1150/2;
         int yi = (this.getHeight()/2)-720/2;
         cron.setBounds(xi, yi,1200, 720);
@@ -3442,9 +3442,9 @@ private void jTextField18FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST
         }
         
         Partida part = new Partida(prin, true, conex, id, prin,1, contar, idpartida, numpartida, this, jTextField13.getText().toString());
-        x = (prin.getWidth()/2)-390;
+        x = (prin.getWidth()/2)-400;
         y = (prin.getHeight()/2)-300;
-        part.setBounds(x, y, 770, 520);
+        part.setBounds(x, y, 800, 520);
         part.setVisible(true);
         cargartotal();
         try {

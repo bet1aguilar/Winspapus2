@@ -2990,17 +2990,17 @@ public class Principal extends javax.swing.JFrame {
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
         matrizmateriales mat= new matrizmateriales(this, false, conexion, obj);
-        x=(this.getWidth()/2)-450;
-            y=(this.getHeight()/2-250);
-            mat.setBounds(x, y, 900,500);            
+       x=(this.getWidth()/2)-500;
+            y=(this.getHeight()/2-360);
+            mat.setBounds(x, y,1000,720);            
            mat.setVisible(true);
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
         matrizequipos equip = new matrizequipos(this, false,conexion, obj);
-        x=(this.getWidth()/2)-450;
-            y=(this.getHeight()/2-250);
-           equip.setBounds(x, y, 900,500);            
+       x=(this.getWidth()/2)-500;
+            y=(this.getHeight()/2-360);
+           equip.setBounds(x, y,1000,720);             
            equip.setVisible(true);
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
@@ -3011,9 +3011,9 @@ public class Principal extends javax.swing.JFrame {
 
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
         matrizmano mano = new matrizmano(this, false,conexion, obj);
-        x=(this.getWidth()/2)-450;
-            y=(this.getHeight()/2-250);
-           mano.setBounds(x, y, 900,500);            
+        x=(this.getWidth()/2)-500;
+            y=(this.getHeight()/2-360);
+            mano.setBounds(x, y,1000,720);             
            mano.setVisible(true);
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
@@ -3050,9 +3050,9 @@ private void jTable4PropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FI
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         matrizmateriales mat= new matrizmateriales(this, false, conexion, obj);
-        x=(this.getWidth()/2)-450;
-            y=(this.getHeight()/2-250);
-            mat.setBounds(x, y, 900,500);            
+        x=(this.getWidth()/2)-500;
+            y=(this.getHeight()/2-360);
+            mat.setBounds(x, y,1000,720);            
            mat.setVisible(true);
           
         
@@ -3125,17 +3125,17 @@ private void jTable4PropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FI
 
     private void jButton25ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton25ActionPerformed
         matrizequipos equip = new matrizequipos(this, false,conexion, obj);
-        x=(this.getWidth()/2)-450;
-            y=(this.getHeight()/2-250);
-           equip.setBounds(x, y, 900,500);            
+       x=(this.getWidth()/2)-500;
+            y=(this.getHeight()/2-360);
+           equip.setBounds(x, y,1000,720);          
            equip.setVisible(true);
     }//GEN-LAST:event_jButton25ActionPerformed
 
     private void jButton29ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton29ActionPerformed
          matrizmano mano = new matrizmano(this, false,conexion, obj);
-        x=(this.getWidth()/2)-450;
-            y=(this.getHeight()/2-250);
-           mano.setBounds(x, y, 900,500);            
+      x=(this.getWidth()/2)-500;
+            y=(this.getHeight()/2-360);
+            mano.setBounds(x, y,1000,720);        
            mano.setVisible(true);
     }//GEN-LAST:event_jButton29ActionPerformed
 
