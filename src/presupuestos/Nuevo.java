@@ -640,7 +640,7 @@ public class Nuevo extends javax.swing.JDialog {
 
         jLabel6.setText("Fecha inicio:");
 
-        jComboBox2.setNextFocusableComponent(jButton2);
+        jComboBox2.setNextFocusableComponent(jTextField4);
 
         jTextArea1.setColumns(20);
         jTextArea1.setLineWrap(true);
@@ -659,7 +659,7 @@ public class Nuevo extends javax.swing.JDialog {
 
         jLabel9.setText("Contratista:");
 
-        jComboBox1.setNextFocusableComponent(jButton1);
+        jComboBox1.setNextFocusableComponent(jComboBox1);
 
         jLabel3.setText("Nombre Abreviado:");
 
@@ -710,18 +710,13 @@ public class Nuevo extends javax.swing.JDialog {
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jLabel5))
-                            .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jLabel4))
-                            .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jLabel2)))
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel2))
                         .addGap(19, 19, 19)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel4Layout.createSequentialGroup()
@@ -737,7 +732,6 @@ public class Nuevo extends javax.swing.JDialog {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel22))
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addContainerGap()
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel4Layout.createSequentialGroup()
                                 .addComponent(jLabel8)
