@@ -174,8 +174,8 @@ public class Principal extends javax.swing.JFrame {
                 sql="insert into mpresadm values ('"+fecha1+"','"+dd+"','"+tm+"','1111-2222-3333-4444','1')";
                 System.out.println(sql);
                 esc.execute(sql); 
-                conexremota = (Connection) DriverManager.getConnection("jdbc:mysql://dominiospapu/spapu", "root", "04160481070MSag");
-                Statement st = (Statement) conexremota.createStatement();
+//                conexremota = (Connection) DriverManager.getConnection("jdbc:mysql://dominiospapu/spapu", "root", "04160481070MSag");
+         //       Statement st = (Statement) conexremota.createStatement();
                 
             }
             else{
