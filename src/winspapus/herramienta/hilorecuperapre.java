@@ -296,11 +296,11 @@ public class hilorecuperapre extends Thread{
                  SimpleDateFormat formatofecha=new SimpleDateFormat("yyyy-MM-dd");
                  fecha1=formatofecha.format(rst10.getDate("desde"));    
                  fecha2=formatofecha.format(rst10.getDate("hasta"));                                      
-                 sql= "INSERT INTO mvalus (id,desde,hasta,status,mpre_id,tipo) "
+                 sql= "INSERT INTO mvalus (id,desde,hasta,status,mpre_id,tipo,lapso) "
                        +"VALUES ('"+rst10.getString("numero")+"',"
                                               + "'"+fecha1+"',"
                                               + "'"+fecha2+"','1',"
-                                              + "'"+mpres+"','Parcial')" ;                                 
+                                              + "'"+mpres+"','Parcial',1)" ;                                 
                  esc10.execute(sql); 
 
             }
