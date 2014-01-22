@@ -40,10 +40,10 @@ public class RecuperarPre extends javax.swing.JDialog {
     public static final int RET_CANCEL = 0;
     /** A return status code - returned if OK button has been pressed */
     public static final int RET_OK = 1;
-    private File fichero;
+    private File fichero,filespapu;
     private Connection conexion;
     Principal prin;
-    private java.sql.Connection conn;
+    private java.sql.Connection conn,conn2;
     int termina=0;
     
     /** Creates new form RecuperarPre */
@@ -94,6 +94,9 @@ public class RecuperarPre extends javax.swing.JDialog {
         jButton1 = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         jProgressBar1 = new javax.swing.JProgressBar();
+        jLabel4 = new javax.swing.JLabel();
+        jTextField2 = new javax.swing.JTextField();
+        jButton2 = new javax.swing.JButton();
 
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
@@ -122,7 +125,7 @@ public class RecuperarPre extends javax.swing.JDialog {
 
         jPanel3.setBackground(new java.awt.Color(97, 126, 171));
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11));
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Recuperar Presupuesto");
@@ -154,28 +157,42 @@ public class RecuperarPre extends javax.swing.JDialog {
 
         jProgressBar1.setIndeterminate(true);
 
+        jLabel4.setText("Seleccionar Spapu.mdb:");
+
+        jButton2.setText("Examinar");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(31, 31, 31)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(62, 62, 62)
-                        .addComponent(jLabel2)
-                        .addGap(18, 18, 18)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton1))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(31, 31, 31)
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(43, 43, 43)
                         .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(cancelButton)))
+                        .addComponent(cancelButton))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel4)
+                        .addGap(18, 18, 18)
+                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton2))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addGap(18, 18, 18)
+                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton1)))
                 .addGap(135, 135, 135))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -186,26 +203,29 @@ public class RecuperarPre extends javax.swing.JDialog {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(57, Short.MAX_VALUE)
+                .addContainerGap(87, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2)
                     .addComponent(jButton1))
-                .addGap(40, 40, 40)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton2)
+                    .addComponent(jLabel4))
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(okButton)
-                                .addComponent(cancelButton))
-                            .addGap(23, 23, 23))))
-                .addGap(23, 23, 23))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(okButton)
+                            .addComponent(cancelButton))))
+                .addGap(26, 26, 26))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(153, Short.MAX_VALUE)))
+                    .addContainerGap(182, Short.MAX_VALUE)))
         );
 
         getRootPane().setDefaultButton(okButton);
@@ -246,12 +266,13 @@ private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
                     conn = DriverManager.getConnection(myDB, "Administrador", "L15N04B22G147277RHWS");
                     
                 } catch (SQLException ex) {
-                    Logger.getLogger(RecuperarTab.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(RecuperarPre.class.getName()).log(Level.SEVERE, null, ex);
+                    
                 }
             }
             // TODO add your handling code here:
             catch (ClassNotFoundException ex) {
-                Logger.getLogger(RecuperarTab.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(RecuperarPre.class.getName()).log(Level.SEVERE, null, ex);
             }
             
         }
@@ -263,9 +284,37 @@ private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
 private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_okButtonMouseClicked
        jProgressBar1.setVisible(true); 
        jLabel3.setVisible(true);
-       hilorecuperapre hilo=new hilorecuperapre(conexion, conn,this,prin);
+       hilorecuperapre hilo=new hilorecuperapre(conexion, conn,conn2,this,prin);
        hilo.start();// TODO add your handling code here:
 }//GEN-LAST:event_okButtonMouseClicked
+
+private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+ JFileChooser fileChooser = new JFileChooser();
+       FileNameExtensionFilter filter = new FileNameExtensionFilter("MDB","mdb");
+        fileChooser.setFileFilter(filter);
+        int seleccion = fileChooser.showOpenDialog(jTextField1);
+        if (seleccion == JFileChooser.APPROVE_OPTION)
+        {
+            try {
+                filespapu = fileChooser.getSelectedFile();
+                jTextField2.setText(filespapu.getPath().toString());
+                Class.forName("sun.jdbc.odbc.JdbcOdbcDriver");
+                String myDB ="jdbc:odbc:Driver={Microsoft Access Driver (*.mdb)};DBQ="+filespapu;
+                System.out.println(myDB);
+                try {
+                    conn2 = DriverManager.getConnection(myDB, "Administrador", "L15N04B22G147277RHWS");
+                    
+                } catch (SQLException ex) {
+                    Logger.getLogger(RecuperarPre.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            // TODO add your handling code here:
+            catch (ClassNotFoundException ex) {
+                Logger.getLogger(RecuperarPre.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+        }// TODO add your handling code here:
+}//GEN-LAST:event_jButton2ActionPerformed
     
     public void doClose(int retStatus) {
         returnStatus = retStatus;
@@ -280,12 +329,15 @@ private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:ev
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cancelButton;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JProgressBar jProgressBar1;
     private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField2;
     private javax.swing.JButton okButton;
     // End of variables declaration//GEN-END:variables
     private int returnStatus = RET_CANCEL;

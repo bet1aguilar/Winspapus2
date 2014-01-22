@@ -21,13 +21,14 @@ import winspapus.Principal;
  */
 public class hilorecuperapre extends Thread{
     private Connection conexion;
-    private java.sql.Connection conn;
+    private java.sql.Connection conn,conn2;
     RecuperarPre recup;
     Principal prin;
  public static final int RET_OK = 1;
-    hilorecuperapre(java.sql.Connection conexion, java.sql.Connection conn, RecuperarPre recup, Principal prin) {
+    hilorecuperapre(java.sql.Connection conexion, java.sql.Connection conn,java.sql.Connection conn2, RecuperarPre recup, Principal prin) {
         this.conexion=(Connection) conexion;
         this.conn= conn;
+        this.conn2= conn2;
         this.recup=recup;
         this.prin=prin;
     }
@@ -103,6 +104,45 @@ public class hilorecuperapre extends Thread{
                                                          + "'"+rst0.getString("IDContratista")+"',"                                                         
                                                          + "1)";
              esc0.execute(sql);
+             //GUARDAR CONTRATISTA
+            Statement car00= (Statement) conn2.createStatement();
+            Statement esc00 = (Statement) conexion.createStatement();
+            sql = "Select * from contratistas";
+            ResultSet rst00 = car00.executeQuery(sql); 
+            rst00.next();
+            sql= "INSERT INTO mconts (id,nombre,direcc,telefo,fax,email,ingres,cedres,civres,ingins,repleg,cedrep,cedins,civins,encabe,rif,nit,status) VALUES "
+                                                         + "('"+rst00.getString("IDContratista")+"',"
+                                                         + "'"+rst00.getString("Nombre")+"',"
+                                                         + "'"+rst00.getString("Direccion")+"',"
+                                                         + "'"+rst00.getString("Telefono")+"',"                                                         
+                                                         + "'"+rst00.getString("Fax")+"',"
+                                                         + "'"+rst00.getString("EMail")+"',"
+                                                         + "'"+rst00.getString("Ingeniero")+"',"
+                                                         + "'"+rst00.getString("CIReside")+"',"                                                         
+                                                         + "'"+rst00.getString("CIVReside")+"',"                                                         
+                                                         + "'"+rst00.getString("Inspector")+"',"                                                                      
+                                                         + "'"+rst00.getString("Representante")+"',"                    
+                                                         + "'"+rst00.getString("CIRepre")+"',"                                                         
+                                                         + "'"+rst00.getString("CIInspe")+"',"                    
+                                                         + "'"+rst00.getString("CIVInspe")+"',"                                                                        
+                                                         + "'"+rst00.getString("Encabe")+"',"                                                         
+                                                         + "'"+rst00.getString("RIF")+"',"                                                                        
+                                                         + "'"+rst00.getString("NIT")+"',"                                                         
+                                                         + "'1')";
+             esc00.execute(sql);
+             //GUARDAR PROPIETARIO
+            Statement car01= (Statement) conn2.createStatement();
+            Statement esc01 = (Statement) conexion.createStatement();
+            sql = "Select * from propietarios";
+            ResultSet rst01 = car01.executeQuery(sql); 
+            rst01.next();
+            sql= "INSERT INTO mprops (id,nombre,telefo,pagina,status) VALUES "
+                                                         + "('"+rst01.getString("IDPropietario")+"',"
+                                                         + "'"+rst01.getString("Nombre")+"',"
+                                                         + "'"+rst01.getString("Telefono")+"',"
+                                                         + "'"+rst01.getString("URL")+"',"                                                                                                                  
+                                                         + "'1')";
+             esc01.execute(sql);
              // PARTIDAS
             String grupo,descri,tipop,status;
             Statement car_0= (Statement) conn.createStatement();

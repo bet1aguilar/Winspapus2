@@ -3392,9 +3392,9 @@ private void jMenuItem43ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
     
     RecuperarPre recup=new RecuperarPre(this, true,conexion, this);
     int xi=(this.getWidth()/2)-600/2;
-    int yi=(this.getHeight()/2)-200/2;
+    int yi=(this.getHeight()/2)-250/2;
     
-    recup.setBounds(xi, yi, 600, 200);
+    recup.setBounds(xi, yi, 600, 250);
     recup.setVisible(true);// TODO add your handling code here:
 }//GEN-LAST:event_jMenuItem43ActionPerformed
 
