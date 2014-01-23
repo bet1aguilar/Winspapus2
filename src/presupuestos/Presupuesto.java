@@ -45,6 +45,7 @@ public class Presupuesto extends javax.swing.JInternalFrame {
     String numero="";
     int inicio=0;
     String [] partidas;
+    String auxid="";
     int insertar=0;
      double subtotal1 = 0,  subtotal=0,impuesto=0, total=0;
     int contsel=0;
@@ -1748,14 +1749,15 @@ private void formInternalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
             
             }
           
-            String auxid;
+            
             auxid=id;
             if(!mpre.equals(id) && tipo.equals("NP")){
-                adicional = 1;                
+                adicional = 1;     
+                id=mpre;
                 
             }
            
-            id=auxid;
+            
             String mtabus = "SELECT padyga, pcosfin, pimpue, pprest, putild FROM mtabus WHERE id='"+tabu+"'";
         String mparts = "SELECT numegrup FROM mptabs WHERE codicove='"+codicove+"' AND mtabus_id='"+tabu+"'";
         ResultSet resultabus = tabus.executeQuery(mtabus);
@@ -1826,7 +1828,7 @@ private void formInternalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
             
            
             
-            double total = Math.rint((Float.valueOf(precuni)*Float.valueOf(cantidad)+0.0000001)*100)/100;
+            double total2 = Math.rint((Float.valueOf(precuni)*Float.valueOf(cantidad)+0.0000001)*100)/100;
              NumberFormat formatoNumero = NumberFormat.getNumberInstance();
             formatoNumero.setMaximumFractionDigits(2);
             formatoNumero.setMinimumFractionDigits(2);
@@ -1834,7 +1836,7 @@ private void formInternalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
             double precio = Math.rint(Float.valueOf(precuni)*100)/100;
              jTextField18.setText(formatoNumero.format(cant));
             jTextField19.setText(formatoNumero.format(precio));
-            jTextField20.setText(String.valueOf(formatoNumero.format(total)));
+            jTextField20.setText(String.valueOf(formatoNumero.format(total2)));
            
             jButton14.setEnabled(true);
         } catch (SQLException ex) {
@@ -2347,7 +2349,7 @@ public void agrega(){
         //Insertar Nueva Partida.
         int edita=0;
         String auxid, conte = null;
-        String tab, codicoves, num, numpre, descri, unidad, cantidad, precio, total, tipo;
+        String tab, codicoves, num, numpre, descri, unidad, cantidad, precio, total1, tipo;
         nuevo=0;
         nuevonumegrup=0;
         String select, insertare;
@@ -2408,7 +2410,7 @@ public void agrega(){
         unidad = jTextField17.getText().toString();
         cantidad = jTextField18.getText().toString();
         precio = jTextField19.getText().toString();
-        total = jTextField20.getText().toString();
+        total1 = jTextField20.getText().toString();
 
         if(entra==1){
             entra=0;
@@ -3458,7 +3460,8 @@ private void jTextField18FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST
         Boolean enc;
         String busqueda = jTextField1.getText().toString();
         jTextField1.setText("");
-        DefaultTableModel mat = new DefaultTableModel() {@Override
+        DefaultTableModel mat = new DefaultTableModel() {
+        @Override
         public boolean isCellEditable (int fila, int columna) {
           if(columna==0) {
                 return true;

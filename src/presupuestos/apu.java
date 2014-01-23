@@ -170,7 +170,7 @@ public class apu extends javax.swing.JDialog {
  };
         String sql = "SELECT mm.id, mm.descri, mm.precio, dm.cantidad, mm.unidad, "
                 + "mm.desperdi, ((mm.precio+(mm.precio*(mm.desperdi/100)))*dm.cantidad) as total FROM "
-                + "mmpres as mm, dmpres as dm WHERE dm.mpre_id='"+pres+"' AND dm.mppre_id='"+partida+"'"
+                + "mmpres as mm, dmpres as dm WHERE dm.mpre_id='"+pres+"' AND dm.numepart='"+numero+"'"
                 + " AND dm.mmpre_id=mm.id AND dm.mpre_id=mm.mpre_id GROUP BY mm.id";
         jTable1.setModel(mmtabs);
         try {
@@ -274,7 +274,7 @@ public class apu extends javax.swing.JDialog {
            String consulta="SELECT mm.id, mm.descri, mm.precio, dm.cantidad, "
                     + "mm.deprecia, (mm.deprecia*dm.cantidad*mm.precio) as total "
                     + "FROM mepres as mm, deppres as dm WHERE dm.mpre_id='"+pres+"' AND"
-                    + " dm.mppre_id='"+partida+"' AND dm.mepre_id=mm.id AND dm.mpre_id=mm.mpre_id GROUP BY mm.id";
+                    + " dm.numero='"+numero+"' AND dm.mepre_id=mm.id AND dm.mpre_id=mm.mpre_id GROUP BY mm.id";
             ResultSet rs1 = s1.executeQuery(consulta);
             
             ResultSetMetaData rsMd = (ResultSetMetaData) rs1.getMetaData();
@@ -373,7 +373,7 @@ public class apu extends javax.swing.JDialog {
             Statement s1 = (Statement) conex.createStatement();
            String sql= "SELECT mm.id, mm.descri, dm.cantidad, mm.bono, mm.subsid, mm.salario,"
                     + " (dm.cantidad*mm.salario) as total FROM mmopres as mm, dmoppres as dm"
-                    + " WHERE dm.mpre_id='"+pres+"' AND dm.mppre_id='"+partida+"' "
+                    + " WHERE dm.mpre_id='"+pres+"' AND dm.numero='"+numero+"' "
                     + " AND dm.mmopre_id=mm.id AND dm.mpre_id=mm.mpre_id "
                     + "GROUP BY mm.id";
             ResultSet rs1 = s1.executeQuery(sql);
@@ -1978,7 +1978,7 @@ insertare=1;
             jTextField23.setText(String.valueOf(formatoNumero.format(auxcontotal)));
         
         contototal = auxcontotal;
-        String consulta = "UPDATE mppres SET precunit="+contototal+", precasu="+redondeado+" WHERE id='"+partida+"' AND mpre_id='"+pres+"'";
+        String consulta = "UPDATE mppres SET precunit="+contototal+", precasu="+redondeado+" WHERE numero='"+numero+"' AND (mpre_id='"+pres+"' OR mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+pres+"'))";
         System.out.println(consulta);
         try {
             Statement stmt = (Statement) conex.createStatement();
