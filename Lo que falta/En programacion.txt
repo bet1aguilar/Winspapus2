@@ -7,7 +7,13 @@ Borrar Presupuestos:
 	-Borrar Capitulos y subcapitulos del presupuesto	x
 
 Escribir montos en formato moneda  	x
-1 Reconsideraciones de Precios:
+Revisar el borrar presupuesto, no borra presupuesto
+Verificar APU al guardar Partida (Al crear nuevo presupuesto vaciar a 0 los campos de totales del presupuesto)
+Revisar Calcular Presupuesto
+Revisar Rangos del Cronograma
+Revisar Tab Pres
+
+1 Reconsideraciones de Precios:		
 * Verificar APU		
 * Calcular precio unitario que va a sumarse al total del presupuesto
 * Variar por tabulador los costos de:
