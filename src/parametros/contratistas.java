@@ -365,7 +365,7 @@ public class contratistas extends javax.swing.JDialog {
         });
 
         okButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/winspapus/imagenes/nuevo.png"))); // NOI18N
-        okButton1.setToolTipText("Guardar");
+        okButton1.setToolTipText("Nuevo");
         okButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 okButton1ActionPerformed(evt);
@@ -730,13 +730,14 @@ private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:ev
                     + "'"+jTextField1.getText().toString()+"',"
                     + "'"+jTextField15.getText().toString()+"',"
                     + "'"+jTextArea2.getText().toString()+"',"
+                     + "'"+jTextField2.getText().toString()+"',"
                     + "'"+jTextField3.getText().toString()+"',"
                     + "'"+jTextField4.getText().toString()+"',"
                     + "'"+jTextField5.getText().toString()+"',"
                     + "'"+jTextField6.getText().toString()+"',"
                     + "'"+jTextField8.getText()+"',"
                     + "'"+civres+"', '"+ingins+"', '"+cedins+"', '"+civins+"',"
-                    + "'"+repleg+"', '"+cedrep+"', '"+encabe+"'"
+                    + "'"+repleg+"', '"+cedrep+"', '"+encabe+"',"
                     + "'1',?)";
             System.out.println(sql);
             PreparedStatement ps = null;

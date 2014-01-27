@@ -288,8 +288,6 @@ public class Principal extends javax.swing.JFrame {
         jLabel19 = new javax.swing.JLabel();
         jLabel23 = new javax.swing.JLabel();
         jLabel27 = new javax.swing.JLabel();
-        jLabel30 = new javax.swing.JLabel();
-        jLabel32 = new javax.swing.JLabel();
         jPanel17 = new javax.swing.JPanel();
         jLabel25 = new javax.swing.JLabel();
         jLabel24 = new javax.swing.JLabel();
@@ -851,12 +849,6 @@ public class Principal extends javax.swing.JFrame {
 
         jLabel27.setFont(new java.awt.Font("Tahoma", 0, 10));
 
-        jLabel30.setFont(new java.awt.Font("Tahoma", 1, 10));
-        jLabel30.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel30.setText("Precio Asumido:");
-
-        jLabel32.setFont(new java.awt.Font("Tahoma", 0, 10));
-
         javax.swing.GroupLayout jPanel16Layout = new javax.swing.GroupLayout(jPanel16);
         jPanel16.setLayout(jPanel16Layout);
         jPanel16Layout.setHorizontalGroup(
@@ -864,14 +856,12 @@ public class Principal extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel16Layout.createSequentialGroup()
                 .addGap(43, 43, 43)
                 .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel30)
                     .addComponent(jLabel26)
                     .addComponent(jLabel14)
                     .addComponent(jLabel18)
                     .addComponent(jLabel22))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel32, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel27, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel15, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel19, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -897,11 +887,7 @@ public class Principal extends javax.swing.JFrame {
                 .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel27, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel26))
-                .addGap(0, 0, 0)
-                .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel32, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel30))
-                .addContainerGap(12, Short.MAX_VALUE))
+                .addContainerGap(25, Short.MAX_VALUE))
         );
 
         jPanel17.setBackground(new java.awt.Color(217, 224, 231));
@@ -1401,7 +1387,7 @@ public class Principal extends javax.swing.JFrame {
             .addGroup(jPanel12Layout.createSequentialGroup()
                 .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel7)
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 126, Short.MAX_VALUE))
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -2044,7 +2030,6 @@ public class Principal extends javax.swing.JFrame {
        jButton5.setEnabled(true);
        jButton6.setEnabled(true);
        jLabel33.setText("");
-       jLabel32.setText("");
        int filas = jTable1.rowAtPoint(evt.getPoint());
        activatab(filas);
        
@@ -2344,7 +2329,6 @@ public class Principal extends javax.swing.JFrame {
            descri = jTable2.getValueAt(row,1).toString();
            num = jTable2.getValueAt(row,2).toString();
            num2 = jTable2.getValueAt(row,3).toString();
-           jLabel32.setText(jTable2.getValueAt(row, 4).toString());
            jLabel33.setText(jTable2.getValueAt(row, 5).toString());
           
            jTextArea1.setText(descri); 
@@ -2422,10 +2406,10 @@ public class Principal extends javax.swing.JFrame {
           jLabel33.setText(formatoNumero.format(auxcontotal));
           if(noredondeo==0){
               contotal=0;
-          jLabel32.setText("0.00");
+         
           letras=nume.Convertir(String.valueOf(auxcontotal), true);
           }else{
-              jLabel32.setText(String.valueOf(contotal));
+              
               letras=nume.Convertir(String.valueOf(contotal), true);
           }
           
@@ -2565,7 +2549,8 @@ public class Principal extends javax.swing.JFrame {
         try {
             Statement s = (Statement) conexion.createStatement();
             //ResultSet rs = s.executeQuery("SELECT id,descri, DATE_FORMAT(vigencia, '%d/%m/%Y'), padyga, pprest, putild, pcosfin, pimpue FROM Mtabus WHERE id LIKE '%"+busqueda+"%' || descri LIKE '%"+busqueda+"%'");
-            ResultSet rs = s.executeQuery("SELECT codicove, descri, numero, numegrup, precasu, precunit, mbdat_id FROM Mptabs m WHERE status=1 AND m.mtabus_id = '"+cadena+"' AND (codicove LIKE '%"+busqueda+"%' || descri LIKE '%"+busqueda+"%' || numegrup LIKE '%"+busqueda+"%') ORDER BY numegrup");
+            ResultSet rs = s.executeQuery("SELECT codicove, descri, numero, numegrup, unidad, IF(precunit=0,precasu, precunit) as precunit, mbdat_id"
+                    + " FROM Mptabs m WHERE status=1 AND m.mtabus_id = '"+cadena+"' AND (codicove LIKE '%"+busqueda+"%' || descri LIKE '%"+busqueda+"%' || numegrup LIKE '%"+busqueda+"%') ORDER BY numegrup");
             ResultSetMetaData rsMd = (ResultSetMetaData) rs.getMetaData();
             int cantidadColumnas = rsMd.getColumnCount();
              for (int i = 1; i <= cantidadColumnas; i++) {
@@ -2600,7 +2585,8 @@ public class Principal extends javax.swing.JFrame {
                cambiacabecera2();
            if(row!=-1&&llamaabusca==0){
                 jTable2.setRowSelectionInterval(row,row);
-               jLabel32.setText(formatoNumero.format(Double.parseDouble(jTable2.getValueAt(row, 4).toString())));
+                
+               
             try {
                 buscapartida();
             } catch (SQLException ex) {
@@ -3149,9 +3135,10 @@ private void jTable4PropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FI
              jDesktopPane1.add(presupuesto);
              entro=1;
              presupuesto.setVisible(true);
-             tabpresupuesto  pres = new tabpresupuesto(this, true, presupuesto, conexion, cadena);
-             x=(this.getWidth()/2)-350;
+              x=(this.getWidth()/2)-350;
              y=(this.getHeight()/2-250);
+             tabpresupuesto  pres = new tabpresupuesto(this, true, presupuesto, conexion, cadena,x,y);
+            
              pres.setBounds(x, y, 700,500);            
              pres.setVisible(true);
              
@@ -3264,7 +3251,9 @@ private void jTable4PropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FI
              jDesktopPane1.add(presupuesto);
              entro=1;
              presupuesto.setVisible(true);
-             tabpresupuesto  pres = new tabpresupuesto(this, true, presupuesto, conexion, cadena);
+             x=(this.getWidth()/2)-350;
+             y=(this.getHeight()/2-250);
+             tabpresupuesto  pres = new tabpresupuesto(this, true, presupuesto, conexion, cadena,x,y);
              x=(this.getWidth()/2)-350;
              y=(this.getHeight()/2-250);
              pres.setBounds(x, y, 700,500);            
@@ -3309,9 +3298,10 @@ private void jTable4PropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FI
     }//GEN-LAST:event_jButton27ActionPerformed
 
     private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
-       tabpresupuesto  pres = new tabpresupuesto(this, true, presupuesto, conexion, cadena);
-             x=(this.getWidth()/2)-350;
+       x=(this.getWidth()/2)-350;
              y=(this.getHeight()/2-250);
+        tabpresupuesto  pres = new tabpresupuesto(this, true, presupuesto, conexion, cadena,x,y);
+             
              pres.setBounds(x, y, 700,500);            
              pres.setVisible(true);
     }//GEN-LAST:event_jMenuItem10ActionPerformed
@@ -3560,9 +3550,7 @@ recalcula();        // TODO add your handling code here:
     private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel30;
     private javax.swing.JLabel jLabel31;
-    private javax.swing.JLabel jLabel32;
     private javax.swing.JLabel jLabel33;
     private javax.swing.JLabel jLabel34;
     private javax.swing.JLabel jLabel35;
@@ -3731,7 +3719,7 @@ recalcula();        // TODO add your handling code here:
        tc.setPreferredWidth(50);
        tc = tcm.getColumn(1); 
         tc.setHeaderValue("Descripción");
-        tc.setPreferredWidth(500);
+        tc.setPreferredWidth(300);
         tc = tcm.getColumn(2); 
         tc.setHeaderValue("Númeroq");
         tc.setPreferredWidth(2);
@@ -3739,7 +3727,7 @@ recalcula();        // TODO add your handling code here:
         tc.setHeaderValue("Número");
         tc.setPreferredWidth(2);
         tc = tcm.getColumn(4); 
-        tc.setHeaderValue("Precio Asumido");
+        tc.setHeaderValue("Unidad");
         tc.setPreferredWidth(20);
         tc = tcm.getColumn(5); 
         tc.setHeaderValue("Precio Unitario");
@@ -3847,7 +3835,8 @@ recalcula();        // TODO add your handling code here:
             jTable2.setModel(mptabs);
         try {
             Statement s = (Statement) conexion.createStatement();
-            ResultSet rs = s.executeQuery("SELECT codicove, descri, numero, numegrup, precasu, precunit, mbdat_id FROM Mptabs m WHERE m.mtabus_id = '"+cadena+"' AND status=1 ORDER BY numegrup");
+            ResultSet rs = s.executeQuery("SELECT codicove, descri, numero, numegrup, unidad,IF(precunit=0,precasu, precunit) as precunit, "
+                    + "mbdat_id FROM Mptabs m WHERE m.mtabus_id = '"+cadena+"' AND status=1 ORDER BY numegrup");
             
             ResultSetMetaData rsMd = (ResultSetMetaData) rs.getMetaData();
             int cantidadColumnas = rsMd.getColumnCount();
@@ -3894,7 +3883,6 @@ recalcula();        // TODO add your handling code here:
        cambiacabecera2();
              if(row!=-1){
                 jTable2.setRowSelectionInterval(row,row);
-               jLabel32.setText(formatoNumero.format(Double.parseDouble(jTable2.getValueAt(row, 4).toString())));
             try {
                 buscapartida();
             } catch (SQLException ex) {

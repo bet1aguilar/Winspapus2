@@ -552,12 +552,12 @@ public class Nuevo extends javax.swing.JDialog {
                             .addComponent(jLabel12)
                             .addComponent(jLabel14))
                         .addGap(26, 26, 26)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jTextField4, javax.swing.GroupLayout.DEFAULT_SIZE, 102, Short.MAX_VALUE)
+                            .addComponent(jTextField6, javax.swing.GroupLayout.DEFAULT_SIZE, 102, Short.MAX_VALUE)
                             .addComponent(jCheckBox1)
-                            .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
+                            .addComponent(jTextField9))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel18, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel15, javax.swing.GroupLayout.Alignment.LEADING)
@@ -659,7 +659,7 @@ public class Nuevo extends javax.swing.JDialog {
 
         jLabel9.setText("Contratista:");
 
-        jComboBox1.setNextFocusableComponent(jComboBox1);
+        jComboBox1.setNextFocusableComponent(jComboBox2);
 
         jLabel3.setText("Nombre Abreviado:");
 

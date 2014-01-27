@@ -62,7 +62,7 @@ public class Presupuesto extends javax.swing.JInternalFrame {
     int adicional=0;
     public float presta=0, admin=0, finan=0, impart=0, util=0, impgen=0;
      String id, nombre, partidanueva, tabu;
-    private Principal prin;
+    Principal prin;
     int entrarafocus15=1;
     String rendimi, mbdat, nuevonum, numpartida, precasu, precunit, redondeo;
     int pos;
@@ -163,7 +163,7 @@ public class Presupuesto extends javax.swing.JInternalFrame {
     }
     public final void cargapresupuesto() throws SQLException{
         Statement st = (Statement) conex.createStatement();
-        ResultSet rs = st.executeQuery("SELECT codicove, descri, numero, numegrup, precasu, precunit, "
+        ResultSet rs = st.executeQuery("SELECT codicove, descri, numero, numegrup, unidad, IF(precunit=0, precasu, precunit) as precunit, "
                 + "mbdat_id FROM Mptabs m WHERE m.mtabus_id = '"+tabu+"' AND status=1 ORDER BY numegrup");
         ResultSetMetaData rsMd = (ResultSetMetaData) rs.getMetaData();
         //System.out.println("siii entra en presupuesto");
@@ -241,7 +241,7 @@ public class Presupuesto extends javax.swing.JInternalFrame {
         tc.setHeaderValue("Número");
         tc.setPreferredWidth(20);
         tc = tcm.getColumn(5); 
-        tc.setHeaderValue("Precio Asumido");
+        tc.setHeaderValue("Unidad");
         tc.setPreferredWidth(20);
         tc = tcm.getColumn(6); 
         tc.setHeaderValue("Precio Unitario");
@@ -476,6 +476,11 @@ public class Presupuesto extends javax.swing.JInternalFrame {
         jButton23.setFocusable(false);
         jButton23.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jButton23.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButton23.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton23ActionPerformed(evt);
+            }
+        });
         jToolBar1.add(jButton23);
 
         jButton25.setIcon(new javax.swing.ImageIcon(getClass().getResource("/winspapus/imagenes/recalcula1.fw.png"))); // NOI18N
@@ -510,7 +515,7 @@ public class Presupuesto extends javax.swing.JInternalFrame {
         jPanel8Layout.setHorizontalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel8Layout.createSequentialGroup()
-                .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 519, Short.MAX_VALUE)
+                .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 518, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel8Layout.setVerticalGroup(
@@ -687,12 +692,12 @@ public class Presupuesto extends javax.swing.JInternalFrame {
                                         .addComponent(jLabel20)))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jTextField15, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
-                                    .addComponent(jTextField16, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)))
+                                    .addComponent(jTextField15, javax.swing.GroupLayout.DEFAULT_SIZE, 149, Short.MAX_VALUE)
+                                    .addComponent(jTextField16, javax.swing.GroupLayout.DEFAULT_SIZE, 149, Short.MAX_VALUE)))
                             .addGroup(jPanel14Layout.createSequentialGroup()
                                 .addComponent(jLabel21)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jTextField17, javax.swing.GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE)
+                                .addComponent(jTextField17, javax.swing.GroupLayout.DEFAULT_SIZE, 74, Short.MAX_VALUE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jLabel22)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -707,7 +712,7 @@ public class Presupuesto extends javax.swing.JInternalFrame {
                                 .addComponent(jTextField20, javax.swing.GroupLayout.DEFAULT_SIZE, 74, Short.MAX_VALUE)))))
                 .addGap(10, 10, 10))
             .addGroup(jPanel14Layout.createSequentialGroup()
-                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 501, Short.MAX_VALUE)
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 500, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel14Layout.setVerticalGroup(
@@ -870,14 +875,16 @@ public class Presupuesto extends javax.swing.JInternalFrame {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(93, Short.MAX_VALUE)
+                .addContainerGap(92, Short.MAX_VALUE)
                 .addComponent(jPanel13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 511, Short.MAX_VALUE)
-                    .addComponent(jPanel14, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPanel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 510, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -886,9 +893,9 @@ public class Presupuesto extends javax.swing.JInternalFrame {
                 .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 324, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(1, 1, 1)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 307, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel13, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -1003,7 +1010,7 @@ public class Presupuesto extends javax.swing.JInternalFrame {
                 .addGap(0, 0, 0))
         );
 
-        jTable1.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        jTable1.setFont(new java.awt.Font("Tahoma", 0, 10));
         jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jTable1MouseClicked(evt);
@@ -1413,7 +1420,7 @@ public class Presupuesto extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 223, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 206, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -1447,7 +1454,7 @@ public class Presupuesto extends javax.swing.JInternalFrame {
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 563, Short.MAX_VALUE)
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 546, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -1457,8 +1464,8 @@ public class Presupuesto extends javax.swing.JInternalFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 1100, Short.MAX_VALUE)
-            .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, 1100, Short.MAX_VALUE)
+            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 1084, Short.MAX_VALUE)
+            .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, 1084, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -3007,9 +3014,10 @@ jTextArea2.setEditable(true);
     }//GEN-LAST:event_jButton18ActionPerformed
 
     private void jButton19ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton19ActionPerformed
-           tabpresupuesto  pres = new tabpresupuesto(prin, true,this, conex, tabu);
-             x=(this.getWidth()/2)-350;
+        x=(this.getWidth()/2)-350;
              y=(this.getHeight()/2-250);
+        tabpresupuesto  pres = new tabpresupuesto(prin, true,this, conex, tabu,x,y);
+             
              pres.setBounds(x, y, 700,500);            
              pres.setVisible(true);        // TODO add your handling code here:
     }//GEN-LAST:event_jButton19ActionPerformed
@@ -3079,7 +3087,7 @@ jTextArea2.setEditable(true);
             catch (SQLException ex) {
                 Logger.getLogger(Presupuesto.class.getName()).log(Level.SEVERE, null, ex);
             }
-}
+    }
     
     }
 private void jButton20ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton20ActionPerformed
@@ -3093,9 +3101,10 @@ private void jButton20ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
     jTable2.setModel(mptabs);
     vaciacampos();
     vaciacampospres();
-    tabpresupuesto tab = new tabpresupuesto(prin, true, this, conex, tabu);
-                 x = (prin.getWidth()/2)-350;
-                y = (prin.getHeight()/2)-250;
+    x = (prin.getWidth()/2)-350;
+    y = (prin.getHeight()/2)-250;
+    tabpresupuesto tab = new tabpresupuesto(prin, true, this, conex, tabu,x,y);
+                 
                 tab.setBounds(x, y, 700, 500);
                 tab.setVisible(true);
     // TODO add your handling code here:
@@ -3400,6 +3409,61 @@ private void jTextField18FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST
             }
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton30ActionPerformed
+
+    private void jButton23ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton23ActionPerformed
+
+        int op = JOptionPane.showConfirmDialog(this, "¿Desea Eliminar las partidas este Presupuesto?", "Borrar Partidas", JOptionPane.YES_NO_OPTION);
+    if(op==JOptionPane.YES_OPTION){
+            try {
+                
+                String borrarpartidas = "DELETE FROM mppres WHERE mpre_id='"+id+"' OR mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+id+"')";
+                String borrarmats = "DELETE FROM deppres WHERE mpre_id='"+id+"' OR mpre_id IN (SELECT id FROM mpres WHERE  mpres_id='"+id+"')";
+                String borrarequips = "DELETE FROM dmpres WHERE mpre_id='"+id+"' OR mpre_id IN (SELECT id FROM mpres WHERE  mpres_id='"+id+"')";
+                String borrarmano = "DELETE FROM deppres WHERE mpre_id='"+id+"' OR mpre_id IN (SELECT id FROM mpres WHERE  mpres_id='"+id+"')";
+                String borrarmates = "DELETE FROM mmpres WHERE mpre_id='"+id+"' OR mpre_id IN (SELECT id FROM mpres WHERE  mpres_id='"+id+"')";
+                String borrarequipos = "DELETE FROM mepres WHERE mpre_id='"+id+"' OR mpre_id IN (SELECT id FROM mpres WHERE  mpres_id='"+id+"')";
+                String borrarmanos = "DELETE FROM mmopres WHERE mpre_id='"+id+"' OR mpre_id IN (SELECT id FROM mpres WHERE  mpres_id='"+id+"')";
+                String detvalus = "DELETE FROM dvalus WHERE mpre_id='"+id+"' OR mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+id+"')";
+                String mvalus = "DELETE FROM mvalus WHERE mpre_id='"+id+"' OR mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+id+"')";
+                String admppres = "DELETE FROM admppres WHERE mpre_id='"+id+"' OR mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+id+"')";
+                String pays = "DELETE FROM pays WHERE mpre_id='"+id+"' OR mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+id+"')";
+                String cmpres = "DELETE FROM cmpres WHERE mpre_id='"+id+"' OR mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+id+"')";
+                
+               
+                String borrarNP =  "DELETE FROM mpres WHERE mpres_id='"+id+"'";
+                Statement stpres = (Statement) conex.createStatement();
+                Statement stppres = (Statement) conex.createStatement();
+                Statement stmats= (Statement) conex.createStatement();
+                Statement stequipo = (Statement) conex.createStatement();
+                Statement stmano = (Statement) conex.createStatement();
+                Statement stpresNP = (Statement) conex.createStatement();
+                
+                
+                stppres.execute(borrarpartidas);
+                stppres.execute(borrarmats);
+                stppres.execute(borrarequips);
+                stppres.execute(borrarmano);
+                stppres.execute(borrarmates);
+                stppres.execute(borrarequipos);
+                stppres.execute(borrarmanos);
+                stppres.execute(detvalus);
+                stppres.execute(mvalus);
+                stppres.execute(admppres);
+                stppres.execute(pays);
+                stpres.execute(cmpres);
+                stpresNP.execute(borrarNP);
+                JOptionPane.showMessageDialog(this, "Las partidas del presupuesto han sido borradas");
+                buscapartida();
+                cargartotal();
+               }
+            // TODO add your handling code here:
+            catch (SQLException ex) {
+                Logger.getLogger(Presupuesto.class.getName()).log(Level.SEVERE, null, ex);
+            }
+    }
+        
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton23ActionPerformed
     public void vaciacampospres(){
         jTextField5.setText("");
         jTextField6.setText("");

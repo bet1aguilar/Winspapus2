@@ -24,6 +24,7 @@ import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
+import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
@@ -44,15 +45,17 @@ public class tabpresupuesto extends javax.swing.JDialog {
     private Connection conex;
     int fila=0;
     String mtabu;
+    int x,y;
     private Presupuesto obj;
     /** Creates new form tabpresupuesto */
-    public tabpresupuesto(java.awt.Frame parent, boolean modal, Presupuesto obj, Connection conex, String mtabu) {
+    public tabpresupuesto(java.awt.Frame parent, boolean modal, Presupuesto obj, Connection conex, String mtabu,int x, int y) {
         super(parent, modal);
         this.obj = obj;
         this.conex = conex;
         initComponents();
         this.mtabu = mtabu;
-        
+        this.x = x;
+        this.y = y;
         try {
             this.buscarpres();
         } catch (SQLException ex) {
@@ -253,6 +256,7 @@ public class tabpresupuesto extends javax.swing.JDialog {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
 
         setTitle("Lista de Obras y Precios Referenciales");
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -263,6 +267,7 @@ public class tabpresupuesto extends javax.swing.JDialog {
 
         okButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/winspapus/imagenes/selecc.fw.png"))); // NOI18N
         okButton.setToolTipText("Aceptar");
+        okButton.setEnabled(false);
         okButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 okButtonMouseClicked(evt);
@@ -291,9 +296,7 @@ public class tabpresupuesto extends javax.swing.JDialog {
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 23, Short.MAX_VALUE))
+            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 34, Short.MAX_VALUE)
         );
 
         jTable1.setAutoCreateRowSorter(true);
@@ -306,7 +309,7 @@ public class tabpresupuesto extends javax.swing.JDialog {
         });
         jScrollPane1.setViewportView(jTable1);
 
-        jTable2.setFont(new java.awt.Font("Tahoma", 0, 10));
+        jTable2.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         jTable2.setToolTipText("Seleccione Un proyecto de Obra");
         jTable2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -321,9 +324,18 @@ public class tabpresupuesto extends javax.swing.JDialog {
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/winspapus/imagenes/borra.png"))); // NOI18N
         jButton1.setToolTipText("Borrar Presupuesto Seleccionado");
+        jButton1.setEnabled(false);
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
+            }
+        });
+
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/winspapus/imagenes/anade.fw.png"))); // NOI18N
+        jButton2.setToolTipText("Nuevo Presupuesto");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
             }
         });
 
@@ -337,14 +349,15 @@ public class tabpresupuesto extends javax.swing.JDialog {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3)
                     .addComponent(jLabel2)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 650, Short.MAX_VALUE)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(20, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 660, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 660, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(2, 2, 2)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -358,11 +371,12 @@ public class tabpresupuesto extends javax.swing.JDialog {
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(20, 20, 20)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(okButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(22, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE)
+                    .addComponent(okButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE)
+                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(36, 36, 36))
         );
 
         getRootPane().setDefaultButton(okButton);
@@ -375,7 +389,7 @@ public class tabpresupuesto extends javax.swing.JDialog {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -390,6 +404,8 @@ public class tabpresupuesto extends javax.swing.JDialog {
         fila = jTable2.rowAtPoint(evt.getPoint());
         presu = jTable2.getValueAt(fila, 0).toString();
         descri = jTable2.getValueAt(fila,1).toString();
+        jButton1.setEnabled(true);
+        okButton.setEnabled(true);
     }//GEN-LAST:event_jTable2MouseClicked
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
@@ -408,7 +424,8 @@ private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         } catch (SQLException ex) {
             Logger.getLogger(tabpresupuesto.class.getName()).log(Level.SEVERE, null, ex);
         }   
-    
+    jButton1.setEnabled(false);
+    okButton.setEnabled(false);
     // TODO add your handling code here:
 }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -420,6 +437,18 @@ private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:ev
     private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_okButtonActionPerformed
+
+    
+    
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+           
+        Nuevo s = new Nuevo(obj.prin, true, obj, conex);
+        s.setBounds(x,y, 900, 550);
+        s.setVisible(true);
+        obj.vaciacampos();
+        doClose(RET_OK);
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton2ActionPerformed
     
     
     public void selecciona(){
@@ -437,6 +466,14 @@ private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:ev
         }
         int cuenta = jTable2.getRowCount();
         int contar = jTable1.getRowCount();
+        if(cont==0){
+            JOptionPane.showMessageDialog(null, "Debe Agregar un presupuesto.");
+            Nuevo s = new Nuevo(obj.prin, true, obj, conex);
+                s.setBounds(x, y, 900, 550);
+                s.setVisible(true);
+                obj.vaciacampos();
+                doClose(RET_OK);
+        }
         if(cuenta>0&&contar>0){
         if(tab.equals("")){
             tab=jTable1.getValueAt(0, 0).toString();
@@ -444,6 +481,12 @@ private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:ev
         if(presu.equals("")){
             if(cont>0){
             presu = jTable2.getValueAt(0, 0).toString();
+            }else{
+                Nuevo s = new Nuevo(obj.prin, true, obj, conex);
+                s.setBounds(x, y, 900, 550);
+                s.setVisible(true);
+                obj.vaciacampos();
+                doClose(RET_OK);
             }
         }
         if(descri.equals("")){
@@ -479,6 +522,7 @@ private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:ev
  
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
