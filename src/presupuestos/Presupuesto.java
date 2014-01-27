@@ -1834,8 +1834,8 @@ private void formInternalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
             formatoNumero.setMinimumFractionDigits(2);
             double cant = Math.rint(Float.valueOf(cantidad)*100)/100;
             double precio = Math.rint(Float.valueOf(precuni)*100)/100;
-             jTextField18.setText(formatoNumero.format(cant));
-            jTextField19.setText(formatoNumero.format(precio));
+             jTextField18.setText(String.valueOf(cant));
+            jTextField19.setText(String.valueOf(precio));
             jTextField20.setText(String.valueOf(formatoNumero.format(total2)));
            
             jButton14.setEnabled(true);
@@ -2526,15 +2526,15 @@ public void agrega(){
         }
         
         float cantidad;
-        float precio, total;
+        float precio, total1;
 
         cantidad = Float.valueOf(jTextField18.getText().toString());
         precio = Float.valueOf(jTextField19.getText().toString());
-        total = cantidad * precio;
+        total1 = cantidad * precio;
          NumberFormat formatoNumero = NumberFormat.getNumberInstance();
             formatoNumero.setMaximumFractionDigits(2);
             formatoNumero.setMinimumFractionDigits(2);
-            jTextField20.setText(String.valueOf(formatoNumero.format(total)));
+            jTextField20.setText(String.valueOf(formatoNumero.format(total1)));
        
 
     }//GEN-LAST:event_jTextField18FocusLost
@@ -3070,6 +3070,7 @@ jTextArea2.setEditable(true);
                 stppres.execute(admppres);
                 stppres.execute(pays);
                 stpres.execute(cmpres);
+                stpres.execute(borrar);
                 stpresNP.execute(borrarNP);
                 JOptionPane.showMessageDialog(this, "El presupuesto ha sido eliminado!!");
                 

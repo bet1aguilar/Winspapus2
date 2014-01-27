@@ -1130,18 +1130,18 @@ public void validafloat( java.awt.event.KeyEvent evt,String valor){
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1ActionPerformed
-float unitario = Float.valueOf(jTextField12.getText().toString());
+float unitario = (float) totalprecunit;
         float redondeado = (float) Math.rint(unitario);
         float cantidad = Float.valueOf(jTextField7.getText().toString());
+        
         if(jCheckBox1.isSelected()){
             jTextField15.setText(String.valueOf(redondeado));
             jTextField8.setText(String.valueOf(cantidad*redondeado));
-        }else {
+        }
+        else {
             jTextField15.setText("0.00");
             jTextField8.setText(String.valueOf(cantidad*unitario));
-        }        
-        
-        // TODO add your handling code here:
+        }
     }//GEN-LAST:event_jCheckBox1ActionPerformed
 
     private void jTextArea1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextArea1KeyPressed

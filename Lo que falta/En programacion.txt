@@ -7,8 +7,9 @@ Borrar Presupuestos:
 	-Borrar Capitulos y subcapitulos del presupuesto	x
 
 Escribir montos en formato moneda  	x
-Revisar el borrar presupuesto, no borra presupuesto
-Verificar APU al guardar Partida (Al crear nuevo presupuesto vaciar a 0 los campos de totales del presupuesto)
+	- Escribirlo formato moneda en valuaciones, aumentos y disminuciones, reconsideraciones y cronograma de actividades
+Revisar el borrar presupuesto, no borra presupuesto 	x
+Verificar APU al guardar Partida x (Al crear nuevo presupuesto vaciar a 0 los campos de totales del presupuesto)		
 Revisar Calcular Presupuesto
 Revisar Rangos del Cronograma
 Revisar Tab Pres
