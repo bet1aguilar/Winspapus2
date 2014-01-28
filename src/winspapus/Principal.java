@@ -62,10 +62,12 @@ public class Principal extends javax.swing.JFrame {
     private Presupuesto presupuesto = null;
     int filamate = 0, filaequipo=0, filamano=0;
     int noredondeo=0;
+    public int haypresupuesto=0;
     String cadena="", descrip="";
     DecimalFormat formatoNumero = new DecimalFormat("#,##0.00");;
      int row=-1, fila;
      String busqueda="";
+     
      private int entro=0;
       String codicove="", descri="",num="" , num2="";
       private consulta aqui;
@@ -128,6 +130,7 @@ public class Principal extends javax.swing.JFrame {
        
        buscatab();
        consultactivo();
+       verificarpres();
        jButton28.setVisible(false);
        jButton14.setEnabled(false);
        jButton15.setEnabled(false);
@@ -140,6 +143,25 @@ public class Principal extends javax.swing.JFrame {
        jButton22.setEnabled(false);
     }
     
+    public final void verificarpres()
+    {
+        int contador=0;
+        String select = "SELECT COUNT(*) FROM mpres WHERE mpres_id IS NULL";
+        try {
+            Statement stselect = (Statement) conexion.createStatement();
+            ResultSet rstselect = stselect.executeQuery(select);
+                    while(rstselect.next()){
+                        contador=rstselect.getInt(1);
+                    }
+                    
+                    if(contador>0){
+                        jMenuItem6.setEnabled(true);
+                        jButton26.setEnabled(true);
+                    }
+        } catch (SQLException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     private void conectar(){
          try {
             DriverManager.registerDriver(new com.mysql.jdbc.Driver());
@@ -632,7 +654,7 @@ public class Principal extends javax.swing.JFrame {
         );
 
         jTable1.setAutoCreateRowSorter(true);
-        jTable1.setFont(new java.awt.Font("Tahoma", 0, 9)); // NOI18N
+        jTable1.setFont(new java.awt.Font("Tahoma", 0, 9));
         jTable1.setEditingColumn(0);
         jTable1.setEditingRow(0);
         jTable1.setName("mtabustable"); // NOI18N
@@ -667,8 +689,8 @@ public class Principal extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 72, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
@@ -809,7 +831,7 @@ public class Principal extends javax.swing.JFrame {
         );
 
         jTable2.setAutoCreateRowSorter(true);
-        jTable2.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        jTable2.setFont(new java.awt.Font("Tahoma", 0, 10));
         jTable2.setEditingColumn(0);
         jTable2.setEditingRow(0);
         jTable2.setName("mtabustable"); // NOI18N
@@ -996,7 +1018,7 @@ public class Principal extends javax.swing.JFrame {
         jPanel29Layout.setVerticalGroup(
             jPanel29Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel29Layout.createSequentialGroup()
-                .addGroup(jPanel29Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel29Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel29Layout.createSequentialGroup()
                         .addGap(25, 25, 25)
                         .addComponent(jLabel5))
@@ -1051,7 +1073,7 @@ public class Principal extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 170, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -1177,7 +1199,7 @@ public class Principal extends javax.swing.JFrame {
                     .addGroup(jPanel13Layout.createSequentialGroup()
                         .addGap(31, 31, 31)
                         .addComponent(jLabel9))
-                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 131, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -1290,7 +1312,7 @@ public class Principal extends javax.swing.JFrame {
                     .addGroup(jPanel14Layout.createSequentialGroup()
                         .addGap(20, 20, 20)
                         .addComponent(jLabel11))
-                    .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 123, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jPanel15, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1387,7 +1409,7 @@ public class Principal extends javax.swing.JFrame {
             .addGroup(jPanel12Layout.createSequentialGroup()
                 .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel7)
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE))
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 126, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -1505,6 +1527,7 @@ public class Principal extends javax.swing.JFrame {
         jButton26.setBackground(new java.awt.Color(245, 244, 244));
         jButton26.setIcon(new javax.swing.ImageIcon(getClass().getResource("/winspapus/imagenes/obra.png"))); // NOI18N
         jButton26.setToolTipText("Abrir Presupuesto de Obra");
+        jButton26.setEnabled(false);
         jButton26.setFocusable(false);
         jButton26.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jButton26.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -1688,6 +1711,7 @@ public class Principal extends javax.swing.JFrame {
 
         jMenuItem6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/winspapus/imagenes/obra.png"))); // NOI18N
         jMenuItem6.setText("Trabajar Presupuesto");
+        jMenuItem6.setEnabled(false);
         jMenuItem6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem6ActionPerformed(evt);
@@ -3201,19 +3225,18 @@ private void jTable4PropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FI
 
     public void entro1(){
         if(entro==0){
-            
-             presupuesto = new Presupuesto(conexion, this);
-             presupuesto.setBounds(0, 0, jDesktopPane1.getWidth(), jDesktopPane1.getHeight());
-             jDesktopPane1.add(presupuesto);
-             entro=1;
-             presupuesto.setVisible(true);
+            presupuesto = new Presupuesto(conexion, this);
+             
              Nuevo  pres = new Nuevo(this, true, presupuesto, conexion);
              x=(this.getWidth()/2)-350;
              y=(this.getHeight()/2-250);
              pres.setBounds(x, y, 900,550);            
              pres.setVisible(true);
-             jMenuItem10.setEnabled(true);
-            
+                
+        if(haypresupuesto==1){
+            jMenuItem10.setEnabled(true);
+            jMenuItem6.setEnabled(true);
+            jButton26.setEnabled(true);
         jMenuItem7.setEnabled(true);
         jMenuItem15.setEnabled(true);
         jMenu15.setEnabled(true);
@@ -3224,11 +3247,18 @@ private void jTable4PropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FI
         jMenuItem18.setEnabled(true);
         jMenuItem37.setEnabled(true);
         try {
+         
+             presupuesto.setBounds(0, 0, jDesktopPane1.getWidth(), jDesktopPane1.getHeight());
+             jDesktopPane1.add(presupuesto);
+             entro=1;
+             presupuesto.setVisible(true);
              presupuesto.setSelected(true);
              presupuesto.setMaximum(true);
          
         } catch (PropertyVetoException ex) {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        haypresupuesto=0;
         }
         }else{
             try {

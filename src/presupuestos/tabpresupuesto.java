@@ -46,6 +46,7 @@ public class tabpresupuesto extends javax.swing.JDialog {
     int fila=0;
     String mtabu;
     int x,y;
+    int muestramensaje=0;
     private Presupuesto obj;
     /** Creates new form tabpresupuesto */
     public tabpresupuesto(java.awt.Frame parent, boolean modal, Presupuesto obj, Connection conex, String mtabu,int x, int y) {
@@ -420,7 +421,11 @@ private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
      try {
             buscarpres();
             cambiarcabecera();
-            presu=jTable1.getValueAt(0, 0).toString();
+            int filas = jTable1.getRowCount();
+            if(filas>0){
+                presu=jTable1.getValueAt(0, 0).toString();
+            }
+            
         } catch (SQLException ex) {
             Logger.getLogger(tabpresupuesto.class.getName()).log(Level.SEVERE, null, ex);
         }   
@@ -466,12 +471,13 @@ private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:ev
         }
         int cuenta = jTable2.getRowCount();
         int contar = jTable1.getRowCount();
-        if(cont==0){
-            JOptionPane.showMessageDialog(null, "Debe Agregar un presupuesto.");
-            Nuevo s = new Nuevo(obj.prin, true, obj, conex);
+        if(cont==0&&muestramensaje==0){
+            muestramensaje=1;
+            JOptionPane.showMessageDialog(null, "Para continuar Debe Agregar un presupuesto.");
+           /* Nuevo s = new Nuevo(obj.prin, true, obj, conex);
                 s.setBounds(x, y, 900, 550);
                 s.setVisible(true);
-                obj.vaciacampos();
+                obj.vaciacampos();*/
                 doClose(RET_OK);
         }
         if(cuenta>0&&contar>0){

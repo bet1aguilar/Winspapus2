@@ -114,9 +114,17 @@ public class aumentosdismi extends javax.swing.JDialog {
         } catch (SQLException ex) {
             Logger.getLogger(aumentosdismi.class.getName()).log(Level.SEVERE, null, ex);
         }
-         SpinnerListModel modelo = new SpinnerListModel(valuaciones);
+        
+        SpinnerListModel modelo;
+        if(i>0){
+            modelo = new SpinnerListModel(valuaciones);
+              jSpinner4.setModel(modelo);
+        }else{
+            jSpinner4.setEnabled(false);
+        }
+         
             
-            jSpinner4.setModel(modelo);
+          
     }
     public final void cargavalores(){
         float aumentos=0, disminucion=0, np=0;

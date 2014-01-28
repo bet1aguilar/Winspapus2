@@ -537,6 +537,7 @@ public class Nuevo extends javax.swing.JDialog {
         jLabel21.setForeground(new java.awt.Color(255, 0, 0));
         jLabel21.setText("* Campo no puede estar vacio");
 
+        jDateChooser3.setDateFormatString("dd-MM-yyyy");
         jDateChooser3.setEnabled(false);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -705,6 +706,10 @@ public class Nuevo extends javax.swing.JDialog {
         jLabel24.setForeground(new java.awt.Color(255, 0, 0));
         jLabel24.setText("*");
 
+        jDateChooser1.setDateFormatString("dd-MM-yyyy");
+
+        jDateChooser2.setDateFormatString("dd-MM-yyyy");
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -819,6 +824,11 @@ public class Nuevo extends javax.swing.JDialog {
         okButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 okButtonMouseClicked(evt);
+            }
+        });
+        okButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                okButtonActionPerformed(evt);
             }
         });
 
@@ -1158,6 +1168,7 @@ private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:ev
                     JOptionPane.showMessageDialog(this, "Se ha modificado el presupuesto");
 
                 }
+                frame.prin.haypresupuesto=1;
             } catch (SQLException ex) {
                 JOptionPane.showMessageDialog(this, "Ha ocurrido un error al insertar un nuevo presupuesto");
                 Logger.getLogger(Nuevo.class.getName()).log(Level.SEVERE, null, ex);
@@ -1183,6 +1194,10 @@ private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:ev
             }
         // TODO add your handling code here:
 }//GEN-LAST:event_okButtonMouseClicked
+
+private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
+// TODO add your handling code here:
+}//GEN-LAST:event_okButtonActionPerformed
     
     private void doClose(int retStatus) {
         returnStatus = retStatus;

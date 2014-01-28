@@ -6,6 +6,7 @@ Borrar Presupuestos:
 	-Borrar Presupuesto de Aumento y Disminución	x
 	-Borrar Capitulos y subcapitulos del presupuesto	x
 
+Al modificar NP en pantalla principal, no guarda Mpres_id, ni un presupuesto nuevo
 
 Acomode Aumentos y Disminuciones 	x
 Escribir montos en formato moneda  	x
