@@ -197,7 +197,7 @@ public class Principal extends javax.swing.JFrame {
           
         try {
             Statement st = (Statement) conexion.createStatement();
-            ResultSet rst = st.executeQuery(sql);
+            ResultSet rst = st.executeQuery(sql); 
             while(rst.next()){
                 id=rst.getString("id");
             }
@@ -3414,7 +3414,7 @@ recalcula();        // TODO add your handling code here:
         aumentosdismi aumento = new aumentosdismi(this, true, presup, conexion,total);
         int xi = (this.getWidth()/2)-1200/2;
         int yi = (this.getHeight()/2)-650/2;
-        aumento.setBounds(xi, yi, 1200, 650);
+        aumento.setBounds(xi, yi, 1200, 700);
         aumento.setVisible(true);
         
         

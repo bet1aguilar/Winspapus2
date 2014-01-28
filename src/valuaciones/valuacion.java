@@ -11,6 +11,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -849,6 +850,7 @@ public final class valuacion extends javax.swing.JDialog {
         };
         jTable1.setModel(metabs);
         jTextField4.setText("0.00");
+        estavalu=0;
         jTextField5.setText("0.00");
         jTextField6.setText("0.00");
         jTextField8.setText("");
@@ -1364,7 +1366,11 @@ public void inserta(){
         cambiarcabecera();
 
         estavalu = (float) Math.rint((estavalu * 100) / 100);
-        jTextField4.setText(String.valueOf(estavalu));
+         NumberFormat formatoNumero = NumberFormat.getNumberInstance();
+            formatoNumero.setMaximumFractionDigits(2);
+            formatoNumero.setMinimumFractionDigits(2);
+            jTextField4.setText(String.valueOf(formatoNumero.format(estavalu)));
+      
 
         buscapres();
     }
@@ -1415,11 +1421,16 @@ public void inserta(){
             Logger.getLogger(valuacion.class.getName()).log(Level.SEVERE, null, ex);
         }
         impuesto = impu;
-        subtotal = Float.valueOf(jTextField4.getText());
+        subtotal = estavalu;
         impu = subtotal * impu / 100;
-        jTextField5.setText(String.valueOf(Math.rint(impu)));
+         NumberFormat formatoNumero = NumberFormat.getNumberInstance();
+            formatoNumero.setMaximumFractionDigits(2);
+            formatoNumero.setMinimumFractionDigits(2);
+            jTextField5.setText(String.valueOf(formatoNumero.format(impu)));
+      
         total = subtotal + impu;
-        jTextField6.setText(String.valueOf(total));
+        
+        jTextField6.setText(String.valueOf(formatoNumero.format(total)));
         buscaacum();
     }
 
@@ -1437,7 +1448,10 @@ public void inserta(){
             }
 
             acum = (float) Math.rint((acum * 100) / 100) * impuesto / 100;
-            jTextField7.setText(String.valueOf(acum));
+            NumberFormat formatoNumero = NumberFormat.getNumberInstance();
+            formatoNumero.setMaximumFractionDigits(2);
+            formatoNumero.setMinimumFractionDigits(2);
+            jTextField7.setText(String.valueOf(formatoNumero.format(acum)));
 
 
         } catch (SQLException ex) {

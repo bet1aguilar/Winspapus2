@@ -6,11 +6,18 @@ Borrar Presupuestos:
 	-Borrar Presupuesto de Aumento y Disminución	x
 	-Borrar Capitulos y subcapitulos del presupuesto	x
 
+
+Acomode Aumentos y Disminuciones 	x
 Escribir montos en formato moneda  	x
-	- Escribirlo formato moneda en valuaciones, aumentos y disminuciones, reconsideraciones y cronograma de actividades
+	- Escribirlo formato moneda en valuaciones	x
+	- Aumentos y disminuciones 	
+	- Reconsideraciones 
+	- Cronograma de actividades
+	- En tabuladores
 Revisar el borrar presupuesto, no borra presupuesto 	x
-Verificar APU al guardar Partida x (Al crear nuevo presupuesto vaciar a 0 los campos de totales del presupuesto)		
-Revisar Calcular Presupuesto
+Verificar codigo repetido para contratista. 	x
+Verificar APU al guardar Partida x (Al crear nuevo presupuesto vaciar a 0 los campos de totales del presupuesto) 	x		
+Revisar Calcular Presupuesto 	
 Revisar Rangos del Cronograma
 Revisar Tab Pres
 

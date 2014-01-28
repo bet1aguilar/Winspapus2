@@ -2750,7 +2750,7 @@ public void agrega(){
         aumentosdismi aumento = new aumentosdismi(prin, closable, id, conex,total1);
         int xi = (this.getWidth()/2)-1200/2;
         int yi = (this.getHeight()/2)-650/2;
-        aumento.setBounds(xi, yi, 1200, 650);
+        aumento.setBounds(xi, yi, 1200, 700);
         aumento.setVisible(true);
     }//GEN-LAST:event_jButton16ActionPerformed
 
