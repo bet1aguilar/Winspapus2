@@ -36,7 +36,6 @@ public class modificaparametro extends Thread{
         this.impart = imppart;
         this.imptotal = imptotal;
     }
-    
     public void calculamano(){
         float valor=0, salario, cantidad, bono, subsid, prestaciones;
        float rendimi=0;
@@ -79,9 +78,7 @@ public class modificaparametro extends Thread{
             
         } catch (SQLException ex) {
             Logger.getLogger(modificaparametro.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        
+        }  
     }
     public void calcularmat(){
         int nofilas = 0;
@@ -167,8 +164,6 @@ public class modificaparametro extends Thread{
         }
         //Columna 1 id, columna 2 cantidad      
     }
-    
-    
     public void calcular(){
         int i=0, encmano=0, encmat=0, encequip=0;
         int posman=0, posequipo=0, posmate=0;

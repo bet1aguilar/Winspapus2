@@ -156,10 +156,16 @@ public class Presupuesto extends javax.swing.JInternalFrame {
                  
                  
                 for (int i = 0; i < cont.getRowCount(); i++) {
-                   
-                   
                     jComboBox1.addItem(cont.getValueAt(i, 0).toString());
                 }
+                String consultaactivo = "SELECT id FROM mtabus WHERE seleccionado=1";
+                Statement selectactivo = (Statement) conex.createStatement();
+                ResultSet rstselect = selectactivo.executeQuery(consultaactivo);
+                String select = "";
+                while(rstselect.next()){
+                    select = rstselect.getString(1);
+                }
+                jComboBox1.setSelectedItem(select);
     }
     public final void cargapresupuesto() throws SQLException{
         Statement st = (Statement) conex.createStatement();
