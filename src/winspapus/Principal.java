@@ -3438,7 +3438,7 @@ recalcula();        // TODO add your handling code here:
     }//GEN-LAST:event_jButton30ActionPerformed
 
     private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
-        float total = Float.valueOf(presupuesto.gettotal());
+        float total = (float) presupuesto.gettotal();
         aumentosdismi aumento = new aumentosdismi(this, true, presup, conexion,total);
         int xi = (this.getWidth()/2)-1200/2;
         int yi = (this.getHeight()/2)-650/2;
@@ -3451,7 +3451,7 @@ recalcula();        // TODO add your handling code here:
     }//GEN-LAST:event_jMenuItem8ActionPerformed
 
     private void jMenuItem14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem14ActionPerformed
-               float total = Float.valueOf(presupuesto.gettotal());
+               float total = (float) presupuesto.gettotal();
         diagrama cron = new diagrama(this, true,conexion,presup,total);
         int xi = (this.getWidth()/2)-1150/2;
         int yi = (this.getHeight()/2)-720/2;

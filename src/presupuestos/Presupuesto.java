@@ -47,7 +47,7 @@ public class Presupuesto extends javax.swing.JInternalFrame {
     String [] partidas;
     String auxid="";
     int insertar=0;
-     double subtotal1 = 0,  subtotal=0,impuesto=0, total=0;
+    public double subtotal1 = 0,  subtotal=0,impuesto=0, total=0;
     int contsel=0;
     String  codicove="";
     private Connection conex;
@@ -270,6 +270,7 @@ public class Presupuesto extends javax.swing.JInternalFrame {
         jButton21 = new javax.swing.JButton();
         jButton23 = new javax.swing.JButton();
         jButton25 = new javax.swing.JButton();
+        jButton31 = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
@@ -496,6 +497,18 @@ public class Presupuesto extends javax.swing.JInternalFrame {
         jButton25.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         jToolBar1.add(jButton25);
 
+        jButton31.setIcon(new javax.swing.ImageIcon(getClass().getResource("/winspapus/imagenes/eliminar.png"))); // NOI18N
+        jButton31.setToolTipText("Cerrar Presupuesto");
+        jButton31.setFocusable(false);
+        jButton31.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton31.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButton31.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton31ActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(jButton31);
+
         jScrollPane3.setBorder(null);
         jScrollPane3.setAutoscrolls(true);
         jScrollPane3.setPreferredSize(new java.awt.Dimension(950, 600));
@@ -521,7 +534,7 @@ public class Presupuesto extends javax.swing.JInternalFrame {
         jPanel8Layout.setHorizontalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel8Layout.createSequentialGroup()
-                .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 513, Short.MAX_VALUE)
+                .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 514, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel8Layout.setVerticalGroup(
@@ -529,7 +542,7 @@ public class Presupuesto extends javax.swing.JInternalFrame {
             .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
         );
 
-        jTable2.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        jTable2.setFont(new java.awt.Font("Tahoma", 0, 10));
         jTable2.setToolTipText("Haga Doble Click sobre Cualquier Partida para ver Detalle");
         jTable2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -698,8 +711,8 @@ public class Presupuesto extends javax.swing.JInternalFrame {
                                         .addComponent(jLabel20)))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jTextField15, javax.swing.GroupLayout.DEFAULT_SIZE, 144, Short.MAX_VALUE)
-                                    .addComponent(jTextField16, javax.swing.GroupLayout.DEFAULT_SIZE, 144, Short.MAX_VALUE)))
+                                    .addComponent(jTextField15, javax.swing.GroupLayout.DEFAULT_SIZE, 145, Short.MAX_VALUE)
+                                    .addComponent(jTextField16, javax.swing.GroupLayout.DEFAULT_SIZE, 145, Short.MAX_VALUE)))
                             .addGroup(jPanel14Layout.createSequentialGroup()
                                 .addComponent(jLabel21)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -715,10 +728,10 @@ public class Presupuesto extends javax.swing.JInternalFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jLabel24)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextField20, javax.swing.GroupLayout.DEFAULT_SIZE, 71, Short.MAX_VALUE)))))
+                                .addComponent(jTextField20, javax.swing.GroupLayout.DEFAULT_SIZE, 72, Short.MAX_VALUE)))))
                 .addGap(10, 10, 10))
             .addGroup(jPanel14Layout.createSequentialGroup()
-                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 495, Short.MAX_VALUE)
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 496, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel14Layout.setVerticalGroup(
@@ -881,7 +894,7 @@ public class Presupuesto extends javax.swing.JInternalFrame {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(87, Short.MAX_VALUE)
+                .addContainerGap(88, Short.MAX_VALUE)
                 .addComponent(jPanel13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
@@ -890,7 +903,7 @@ public class Presupuesto extends javax.swing.JInternalFrame {
                 .addContainerGap())
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 505, Short.MAX_VALUE)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 506, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -922,7 +935,7 @@ public class Presupuesto extends javax.swing.JInternalFrame {
         jPanel7.setLayout(jPanel7Layout);
         jPanel7Layout.setHorizontalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 550, Short.MAX_VALUE)
+            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 551, Short.MAX_VALUE)
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1016,7 +1029,7 @@ public class Presupuesto extends javax.swing.JInternalFrame {
                 .addGap(0, 0, 0))
         );
 
-        jTable1.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        jTable1.setFont(new java.awt.Font("Tahoma", 0, 10));
         jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jTable1MouseClicked(evt);
@@ -1079,7 +1092,7 @@ public class Presupuesto extends javax.swing.JInternalFrame {
                 .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton12, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(165, Short.MAX_VALUE))
+                .addContainerGap(166, Short.MAX_VALUE))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1130,7 +1143,7 @@ public class Presupuesto extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel27, javax.swing.GroupLayout.DEFAULT_SIZE, 42, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, 42, Short.MAX_VALUE)
+                .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel28, javax.swing.GroupLayout.DEFAULT_SIZE, 73, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
@@ -1193,9 +1206,9 @@ public class Presupuesto extends javax.swing.JInternalFrame {
                 .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel11Layout.createSequentialGroup()
                         .addGap(4, 4, 4)
-                        .addComponent(jLabel15, javax.swing.GroupLayout.DEFAULT_SIZE, 48, Short.MAX_VALUE))
-                    .addComponent(jLabel16, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 52, Short.MAX_VALUE)
-                    .addComponent(jLabel17, javax.swing.GroupLayout.DEFAULT_SIZE, 52, Short.MAX_VALUE))
+                        .addComponent(jLabel15, javax.swing.GroupLayout.DEFAULT_SIZE, 49, Short.MAX_VALUE))
+                    .addComponent(jLabel16, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 53, Short.MAX_VALUE)
+                    .addComponent(jLabel17, javax.swing.GroupLayout.DEFAULT_SIZE, 53, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jTextField13, javax.swing.GroupLayout.DEFAULT_SIZE, 139, Short.MAX_VALUE)
@@ -1400,7 +1413,7 @@ public class Presupuesto extends javax.swing.JInternalFrame {
                             .addGroup(jPanel5Layout.createSequentialGroup()
                                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(jPanel6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jPanel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 531, Short.MAX_VALUE))
+                                    .addComponent(jPanel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 532, Short.MAX_VALUE))
                                 .addGap(6, 6, 6)))
                         .addGap(5, 5, 5))
                     .addComponent(jPanel7, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -1411,7 +1424,7 @@ public class Presupuesto extends javax.swing.JInternalFrame {
                 .addGap(0, 0, 0))
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 532, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 533, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel5Layout.setVerticalGroup(
@@ -1455,7 +1468,7 @@ public class Presupuesto extends javax.swing.JInternalFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 1082, Short.MAX_VALUE)
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 1084, Short.MAX_VALUE)
                 .addGap(0, 0, 0))
         );
         jPanel1Layout.setVerticalGroup(
@@ -1471,8 +1484,8 @@ public class Presupuesto extends javax.swing.JInternalFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 1082, Short.MAX_VALUE)
-            .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, 1082, Short.MAX_VALUE)
+            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 1084, Short.MAX_VALUE)
+            .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, 1084, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -2751,8 +2764,8 @@ public void agrega(){
     public String getpres(){
         return id;
     }
-    public String gettotal(){
-        return jTextField13.getText();
+    public double gettotal(){
+        return total;
     }
     private void jButton16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton16ActionPerformed
         float total1 = (float) total;
@@ -3192,7 +3205,7 @@ private void jTextField18FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST
                  }else{
                      actualiza = "UPDATE mppres SET descri='"+descri+"', unidad='"+unidad+"', "
                                  + "nropresupuesto='"+pres+"', tipo ='"+tipos+"', "
-                         + "cantidad="+cantidad+", mpres_id=NULL WHERE numegrup="+numegrup+" AND "
+                         + "cantidad="+cantidad+", mpre_id='"+id+"' WHERE numegrup="+numegrup+" AND "
                                  + "(mpre_id='"+id+"' OR mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+id+"'))";
                  }
                  
@@ -3479,6 +3492,12 @@ private void jTextField18FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST
         
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton23ActionPerformed
+
+    private void jButton31ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton31ActionPerformed
+        this.setVisible(false);
+        
+        
+    }//GEN-LAST:event_jButton31ActionPerformed
     public void vaciacampospres(){
         jTextField5.setText("");
         jTextField6.setText("");
@@ -3908,6 +3927,7 @@ private void jTextField18FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST
     private javax.swing.JButton jButton29;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton30;
+    private javax.swing.JButton jButton31;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
