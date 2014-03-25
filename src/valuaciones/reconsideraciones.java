@@ -877,7 +877,7 @@ public class reconsideraciones extends javax.swing.JDialog {
             if(contare==0){
                 //INSERT
                 
-                String consultainsert = "INSERT INTO mpres "
+                String consultainsert = "INSERT INTO mpres (id, nomabr,nombre,ubicac,fecini,fecfin,feccon,fecinmp,porcgam,)"
                         + "SELECT '"+codnuevopres+"', nomabr, nombre, ubicac, fecini,"
                     + "fecfin, feccon, fecimp, porgam, porcfi, porimp, poripa, "
                     + "porpre, poruti, codpro, codcon, parpre, nrocon, nroctr, fecapr,"

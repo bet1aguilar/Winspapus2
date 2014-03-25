@@ -7,17 +7,22 @@ Borrar Presupuestos:
 	-Borrar Capitulos y subcapitulos del presupuesto	x
 
 Al modificar NP en pantalla principal, no guarda Mpres_id, ni un presupuesto nuevo 	x
-
+Revisar Calcular APU de Partida 	
 Acomode Aumentos y Disminuciones 	x
 Escribir montos en formato moneda  	x
 	- Escribirlo formato moneda en valuaciones	x
-	- Aumentos y disminuciones 	
+	- Aumentos y disminuciones 	x	
 	- Reconsideraciones 
 	- Cronograma de actividades
 	- En tabuladores
 Revisar el borrar presupuesto, no borra presupuesto 	x
 Verificar codigo repetido para contratista. 	x
-Verificar APU al guardar Partida x (Al crear nuevo presupuesto vaciar a 0 los campos de totales del presupuesto) 	x		
+Verificar APU al guardar Partida x 
+Al crear nuevo presupuesto vaciar a 0 los campos de totales del presupuesto 	x
+Copiar Presupuesto
+Merge a dos proyectos
+Buscar proyecto en tabpresupuesto
+Verificar Aumentos y Disminuciones para las valuaciones y las partidas
 Revisar Calcular Presupuesto 	
 Revisar Rangos del Cronograma
 Revisar Tab Pres

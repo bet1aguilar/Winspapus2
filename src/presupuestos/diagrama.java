@@ -2100,7 +2100,9 @@ public void mouseClicked(java.awt.event.MouseEvent e)
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 330, Short.MAX_VALUE)
+            .addGroup(jPanel7Layout.createSequentialGroup()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 352, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jScrollPane1.addMouseWheelListener(new java.awt.event.MouseWheelListener() {
@@ -2114,7 +2116,7 @@ public void mouseClicked(java.awt.event.MouseEvent e)
             }
         });
 
-        jTable1.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        jTable1.setFont(new java.awt.Font("Tahoma", 0, 10));
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
@@ -2176,9 +2178,9 @@ public void mouseClicked(java.awt.event.MouseEvent e)
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, 0, 0, Short.MAX_VALUE)
-                    .addComponent(jPanel7, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 330, Short.MAX_VALUE))
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, 363, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 363, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -2357,9 +2359,7 @@ public void mouseClicked(java.awt.event.MouseEvent e)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 653, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 664, Short.MAX_VALUE)
         );
 
         pack();
@@ -2617,6 +2617,9 @@ public void mouseClicked(java.awt.event.MouseEvent e)
        dias = (fechafin.getTime()-fechaini.getTime())/mil+1;
        System.out.println("costo "+costo+" dias "+dias);
         costolapso = (float) Math.rint(((costo/dias)*100)/100);
+        if(costolapso>costo){
+            costolapso=costo;
+        }
                 
     }
     
@@ -2648,6 +2651,9 @@ public void mouseClicked(java.awt.event.MouseEvent e)
         dias = semana2-semana1;
         System.out.println("costo "+costo+" semanas "+dias);
         costolapso = (float) Math.rint(((costo/dias)*100)/100);
+        if(costolapso>costo){
+            costolapso=costo;
+        }
         System.out.println("semanas: "+dias);
     }
     public void calculames(){
@@ -2659,9 +2665,12 @@ public void mouseClicked(java.awt.event.MouseEvent e)
         cfin.setTime(fechafin);
         mes1 = c.get(Calendar.MONTH);
         mes2 = cfin.get(Calendar.MONTH);
-        dias = mes2-mes1; // Nro. de meses
+        dias = (mes2-mes1)+1; // Nro. de meses
         
-        costolapso = (float) Math.rint(((costo/(dias+1))*100)/100);
+        costolapso = (float) Math.rint(((costo/(dias))*100)/100);
+        if(costolapso>costo){
+            costolapso=costo;
+        }
         System.out.println("semanas: "+dias);
     }
     public void calculaanio(){
@@ -2673,8 +2682,11 @@ public void mouseClicked(java.awt.event.MouseEvent e)
         cfin.setTime(fechafin);
         mes1 = c.get(Calendar.YEAR);
         mes2 = cfin.get(Calendar.YEAR);
-        dias = mes2-mes1; // Nro. de años
+        dias = (mes2-mes1)+1; // Nro. de años
         costolapso = (float) Math.rint(((costo/dias)*100)/100);
+        if(costolapso>costo){
+            costolapso=costo;
+        }
         System.out.println("semanas: "+dias);
     }
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -2754,6 +2766,7 @@ public void mouseClicked(java.awt.event.MouseEvent e)
              calculaanio();
              hacetabla4();
          }
+         System.out.println("costolapso= "+costolapso);
         jTextField6.setText(String.valueOf(costolapso));
         
     }//GEN-LAST:event_jComboBox1ItemStateChanged

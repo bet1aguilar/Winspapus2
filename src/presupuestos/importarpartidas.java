@@ -65,6 +65,7 @@ public class importarpartidas extends javax.swing.JDialog {
        
         seleccionado=pres;
         hacemodelo();
+        
         this.pres=jComboBox1.getSelectedItem().toString();
         // Close the dialog when Esc is pressed
         String cancelName = "cancel";
@@ -94,11 +95,15 @@ public class importarpartidas extends javax.swing.JDialog {
             int i=0;
             while(rst.next()){
                 jComboBox1.addItem(rst.getObject("id"));
-               
+               i++;
             }
             
-            
+            if(i>0)
             jComboBox1.setSelectedIndex(0);
+            else{
+             JOptionPane.showMessageDialog(null, "No hay otros presupuestos para importar");
+             doClose(RET_CANCEL);
+            }
         } catch (SQLException ex) {
             Logger.getLogger(importarpartidas.class.getName()).log(Level.SEVERE, null, ex);
         }
