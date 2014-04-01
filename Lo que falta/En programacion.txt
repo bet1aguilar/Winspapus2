@@ -17,10 +17,12 @@ Escribir montos en formato moneda  	x
 	- En tabuladores
 Revisar el borrar presupuesto, no borra presupuesto 	x
 Verificar codigo repetido para contratista. 	x
-Verificar APU al guardar Partida x 
+Verificar APU al guardar Partida 	x 
 Al crear nuevo presupuesto vaciar a 0 los campos de totales del presupuesto 	x
-Copiar Presupuesto
-Merge a dos proyectos
+Copiar Presupuesto  x
+Merge a dos proyectos  
+Recalcular Listado de Precios Referenciales
+Insertar Partidas nuevas de presupuesto en un tab de prueba
 Buscar proyecto en tabpresupuesto
 Verificar Aumentos y Disminuciones para las valuaciones y las partidas
 Revisar Calcular Presupuesto 	

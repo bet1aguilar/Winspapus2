@@ -89,10 +89,14 @@ public class copiapres extends javax.swing.JDialog {
                     + "WHERE mpre_id='"+pres+"'";
             Statement smmopres = (Statement) conex.createStatement();
             smmopres.execute(mmopres);
-            String pays = "INSERT INTO pays SELECT id, aumento, disminucion, '"+nombre+"' FROM pays WHERE mpre_id='"+pres+"'";
+            String pays = "INSERT INTO pays"
+                    + "(aumento, disminucion, mpre_id)"
+                    + " SELECT aumento, disminucion, '"+nombre+"' FROM pays WHERE mpre_id='"+pres+"'";
             Statement spays = (Statement) conex.createStatement();
             spays.execute(pays);
-            String rcppres = "INSERT INTO rcppres SELECT id, mppres_id, fechaini, fechafin, '"+nombre+"' FROM "
+            String rcppres = "INSERT INTO rcppres "
+                    + "(mppres_id, fechaini, fechafin,mpre_id)"
+                    + "SELECT mppres_id, fechaini, fechafin, '"+nombre+"' FROM "
                     + "rcppres WHERE mpre_id='"+pres+"'";
             Statement srcppres = (Statement) conex.createStatement();
             srcppres.execute(rcppres);
@@ -104,6 +108,15 @@ public class copiapres extends javax.swing.JDialog {
                     + "FROM cmpres WHERE mpre_id='"+pres+"'";
             Statement scmpres = (Statement) conex.createStatement();
             scmpres.execute(cmpres);
+            Statement valus = (Statement) conex.createStatement();
+            String sql = "INSERT INTO mvalus (desde, hasta, status, mpre_id, tipo, lapso)"
+                    + "SELECT desde, hasta, status, '"+nombre+"', tipo, lapso FROM mvalus WHERE mpre_id='"+pres+"'";
+            valus.execute(sql);
+            Statement dvalus = (Statement) conex.createStatement();
+            String sdvalus = "INSERT INTO dvalus SELECT '"+nombre+"', mvalu_id, mppre_id,cantidad,"
+                    + " precio, numepart, status, aumento, payd_id"
+                    + " FROM dvalus WHERE mpre_id='"+pres+"'";
+            dvalus.execute(sdvalus);
             
 
         } catch (SQLException ex) {
@@ -115,12 +128,17 @@ public class copiapres extends javax.swing.JDialog {
         try {
             Statement ste = (Statement) conex.createStatement();
             String sql = "INSERT INTO mpres "
-                    + "SELECT '"+nombre+"', nomabr, nombre, ubicac, fecini, fecfin, porcgam,porcfi, porimp,poripa,porpre,"
-                    + "poruti, codpro,codcon, parpre, nrocon, nroctr, fecapr,nrolic, status, mpres_id, memo, timemo, fecmemo, seleccionado, "
-                    + "partidapres FROM mpres WHERE id='"+pres+"'";
+                    + "SELECT '"+nombre+"', nomabr, nombre, ubicac, fecini, fecfin,"
+                    + "feccon, fecimp, "
+                    + " porgam,porcfi, porimp,poripa,porpre,"
+                    + "poruti, codpro,codcon, parpre, nrocon, nroctr, fecapr,"
+                    + "nrolic, status, mpres_id, memo, timemo, fecmemo, "
+                    + "seleccionado "
+                    + " FROM mpres WHERE id='"+pres+"'";
             ste.execute(sql);
             copiarresto();
             JOptionPane.showMessageDialog(null, "Se ha copiado el presupuesto");
+            
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "No se ha copiado el presupuesto");
             Logger.getLogger(copiapres.class.getName()).log(Level.SEVERE, null, ex);
@@ -157,7 +175,7 @@ public class copiapres extends javax.swing.JDialog {
 
         jPanel3.setBackground(new java.awt.Color(97, 126, 171));
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11));
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Copiar Presupuesto");
@@ -187,6 +205,11 @@ public class copiapres extends javax.swing.JDialog {
         okButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 okButtonMouseClicked(evt);
+            }
+        });
+        okButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                okButtonActionPerformed(evt);
             }
         });
 
@@ -233,7 +256,7 @@ public class copiapres extends javax.swing.JDialog {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(257, 257, 257)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -252,11 +275,11 @@ public class copiapres extends javax.swing.JDialog {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 139, Short.MAX_VALUE)
         );
 
         pack();
@@ -281,6 +304,10 @@ public class copiapres extends javax.swing.JDialog {
         
         doClose(RET_OK);        // TODO add your handling code here:
     }//GEN-LAST:event_okButtonMouseClicked
+
+    private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_okButtonActionPerformed
     
     private void doClose(int retStatus) {
         returnStatus = retStatus;

@@ -543,7 +543,7 @@ public class Presupuesto extends javax.swing.JInternalFrame {
             .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
         );
 
-        jTable2.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        jTable2.setFont(new java.awt.Font("Tahoma", 0, 10));
         jTable2.setToolTipText("Haga Doble Click sobre Cualquier Partida para ver Detalle");
         jTable2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -993,6 +993,11 @@ public class Presupuesto extends javax.swing.JInternalFrame {
 
         jButton24.setIcon(new javax.swing.ImageIcon(getClass().getResource("/winspapus/imagenes/copia1.fw.png"))); // NOI18N
         jButton24.setToolTipText("Copiar APU en otro Presupuesto");
+        jButton24.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton24ActionPerformed(evt);
+            }
+        });
 
         jButton32.setIcon(new javax.swing.ImageIcon(getClass().getResource("/winspapus/imagenes/merge.fw.png"))); // NOI18N
         jButton32.setToolTipText("Copiar APU en otro Presupuesto");
@@ -1026,7 +1031,7 @@ public class Presupuesto extends javax.swing.JInternalFrame {
                 .addGap(0, 0, 0)
                 .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel12Layout.createSequentialGroup()
-                        .addComponent(jButton32, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
+                        .addComponent(jButton32)
                         .addContainerGap())
                     .addComponent(jButton13, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1557,10 +1562,10 @@ public class Presupuesto extends javax.swing.JInternalFrame {
        
         
         //Solo se suman los totales de las partidas originales
-        String cargasinredondeo = "SELECT IF(precasu=0,SUM(cantidad*precunit),SUM(cantidad*precasu)) "
+        String cargasinredondeo = "SELECT SUM(cantidad*IF(precasu=0,precunit,precasu)) "
                 + "FROM `winspapu`.`mppres` WHERE  tipo='Org' AND (mpre_id='"+id+"' OR mpre_id IN "
                 + "(SELECT id from mpres where mpres_id='"+id+"'))";
-        
+        System.out.println("totales cargartotal: "+cargasinredondeo);
         try {
             Statement st1 = (Statement) conex.createStatement();
             Statement st2 = (Statement) conex.createStatement();
@@ -1804,10 +1809,15 @@ private void formInternalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
         ResultSet resultabus = tabus.executeQuery(mtabus);
             ResultSet resultptabs = ptabs.executeQuery(mparts);
             while (resultabus.next()){
+                if(resultabus.getObject(1)!=null)
                 padyga = resultabus.getObject(1).toString()+"%";
+                 if(resultabus.getObject(2)!=null)
                 pcosfin = resultabus.getObject(2).toString()+"%";
+                  if(resultabus.getObject(3)!=null)
                 pimpue = resultabus.getObject(3).toString()+"%";
+                   if(resultabus.getObject(4)!=null)
                 pprest = resultabus.getObject(4).toString()+"%";
+                    if(resultabus.getObject(5)!=null)
                 putild = resultabus.getObject(5).toString()+"%";
             }
             
@@ -2177,6 +2187,10 @@ public void agrega(){
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         //COPIAR PRESUPUESTO COPIA TODO VALUACIONES, PARTIDAS, VARIACIONES, AUMENTOS, CRONOGRAMA, CAPITULOS
         copiapres copia = new copiapres(null,true,conex,id);
+        x = (prin.getWidth()/2)-250;
+        y = (prin.getHeight()/2)-100;
+        copia.setBounds(x, y, 500, 200);
+        copia.setVisible(true);
         
           // TODO add your handling code here:
     }//GEN-LAST:event_jButton3ActionPerformed
@@ -2299,6 +2313,7 @@ public void agrega(){
                     Logger.getLogger(Presupuesto.class.getName()).log(Level.SEVERE, null, ex);
                 }
                }else{
+                   entrarafocus15=1;
                    jTextField15.setText("");
                    jTextField14.setText("");
                    jTextArea2.setText("");
@@ -2372,6 +2387,7 @@ public void agrega(){
                    jTextField18.setText("");
                    jTextField19.setText("");
                    jTextField20.setText("");
+                   entrarafocus15=1;
                     
                 }
            }
@@ -2547,7 +2563,7 @@ public void agrega(){
             jTextArea2.setText("");
 
         } catch (SQLException ex) {
-
+          
             JOptionPane.showMessageDialog(this, "No Se ha insertado la partida");
 
             Logger.getLogger(Presupuesto.class.getName()).log(Level.SEVERE, null, ex);
@@ -3084,16 +3100,16 @@ jTextArea2.setEditable(true);
                 String borrarpartidas = "DELETE FROM mppres WHERE mpre_id='"+id+"' OR mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+id+"')";
                 String borrarmats = "DELETE FROM deppres WHERE mpre_id='"+id+"' OR mpre_id IN (SELECT id FROM mpres WHERE  mpres_id='"+id+"')";
                 String borrarequips = "DELETE FROM dmpres WHERE mpre_id='"+id+"' OR mpre_id IN (SELECT id FROM mpres WHERE  mpres_id='"+id+"')";
-                String borrarmano = "DELETE FROM deppres WHERE mpre_id='"+id+"' OR mpre_id IN (SELECT id FROM mpres WHERE  mpres_id='"+id+"')";
                 String borrarmates = "DELETE FROM mmpres WHERE mpre_id='"+id+"' OR mpre_id IN (SELECT id FROM mpres WHERE  mpres_id='"+id+"')";
                 String borrarequipos = "DELETE FROM mepres WHERE mpre_id='"+id+"' OR mpre_id IN (SELECT id FROM mpres WHERE  mpres_id='"+id+"')";
                 String borrarmanos = "DELETE FROM mmopres WHERE mpre_id='"+id+"' OR mpre_id IN (SELECT id FROM mpres WHERE  mpres_id='"+id+"')";
+                String borrardmanos = "DELETE FROM dmoppres WHERE mpre_id='"+id+"' OR mpre_id IN (SELECT id FROM mpres WHERE  mpres_id='"+id+"')";
                 String detvalus = "DELETE FROM dvalus WHERE mpre_id='"+id+"' OR mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+id+"')";
                 String mvalus = "DELETE FROM mvalus WHERE mpre_id='"+id+"' OR mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+id+"')";
                 String admppres = "DELETE FROM admppres WHERE mpre_id='"+id+"' OR mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+id+"')";
                 String pays = "DELETE FROM pays WHERE mpre_id='"+id+"' OR mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+id+"')";
                 String cmpres = "DELETE FROM cmpres WHERE mpre_id='"+id+"' OR mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+id+"')";
-                
+                String rcppres = "DELETE FROM rcppres WHERE mpre_id='"+id+"' OR mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+id+"')";
                 String borrar = "DELETE FROM mpres where id='"+id+"'";
                 String borrarNP =  "DELETE FROM mpres WHERE mpres_id='"+id+"'";
                 Statement stpres = (Statement) conex.createStatement();
@@ -3107,7 +3123,8 @@ jTextArea2.setEditable(true);
                 stppres.execute(borrarpartidas);
                 stppres.execute(borrarmats);
                 stppres.execute(borrarequips);
-                stppres.execute(borrarmano);
+                stppres.execute(rcppres);
+                stppres.execute(borrardmanos);
                 stppres.execute(borrarmates);
                 stppres.execute(borrarequipos);
                 stppres.execute(borrarmanos);
@@ -3514,6 +3531,10 @@ private void jTextField18FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST
         
         
     }//GEN-LAST:event_jButton31ActionPerformed
+
+    private void jButton24ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton24ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton24ActionPerformed
     public void vaciacampospres(){
         jTextField5.setText("");
         jTextField6.setText("");

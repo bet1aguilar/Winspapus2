@@ -139,10 +139,15 @@ public class tab extends javax.swing.JDialog {
                     jTextField1.setText(rs.getObject(1).toString());
                     jTextField2.setText(rs.getObject(2).toString());    
                     jDateChooser1.setDate(fecha);
+                    if(rs.getObject(4)!=null)
                     jTextField3.setText(rs.getObject(4).toString());
+                     if(rs.getObject(5)!=null)
                     jTextField4.setText(rs.getObject(5).toString());
+                      if(rs.getObject(6)!=null)
                     jTextField5.setText(rs.getObject(6).toString());
+                       if(rs.getObject(7)!=null)
                     jTextField6.setText(rs.getObject(7).toString());
+                        if(rs.getObject(8)!=null)
                     jTextField7.setText(rs.getObject(8).toString());
                 
             }

@@ -50,10 +50,10 @@ public class apu extends javax.swing.JDialog {
     int insertare=0;
     private float contequip=0;
     private float contmano=0;
-    float cantidad, precio, desperdi;
+    float cantidad=0, precio=0, desperdi=0;
     String descri;
-    String prest, util, fina, adm, imp, impart;
-    float rendimiento;
+    String prest="0", util="0", fina="0", adm="0", imp="0", impart="0";
+    float rendimiento=0;
     int filamat;
     int cantmano=0;
     Principal prin;
@@ -204,12 +204,13 @@ public class apu extends javax.swing.JDialog {
                     
                     
                 }
-                contmat = (float) (Math.rint((contmat+0.000001)*100)/100);
                 mmtabs.addRow(fila);
-               
-                jTextField2.setText(String.valueOf(contmat));
+                
             }
-             
+             contmat = (float) (Math.rint((contmat+0.000001)*100)/100);
+               String esnan = String.valueOf(contmat);
+               System.out.println("contmat "+esnan);
+                jTextField2.setText(String.valueOf(contmat));
         } catch (SQLException ex) {
             System.out.println("Noooo");
             Logger.getLogger(apu.class.getName()).log(Level.SEVERE, null, ex);
@@ -308,6 +309,8 @@ public class apu extends javax.swing.JDialog {
                         
                 
             }
+             if(rendimiento==0)
+                 rendimiento=1;
              contequip = contequip/rendimiento;
              contequip = (float) (Math.rint((contequip+0.000001)*100)/100);
         } catch (SQLException ex) {
@@ -425,6 +428,8 @@ public class apu extends javax.swing.JDialog {
         bono = cantmano * bono;
         subsid = cantmano * subsid;
         contmano = contmano + presta +bono +subsid;
+         if(rendimiento==0)
+                 rendimiento=1;
         contmano = contmano / rendimiento;
         contmano = (float) (Math.rint((contmano+0.000001)*100)/100);
         jTextField5.setText(String.valueOf(rendimiento));
@@ -1970,6 +1975,7 @@ insertare=1;
         System.out.println("contotal impu fin "+contototal);
         auxcontotal = (float) (Math.rint((contototal+0.000001)*100)/100);
         redondeado = (float) Math.rint(contototal+0.000001);
+        
         NumberFormat formatoNumero = NumberFormat.getNumberInstance();
             formatoNumero.setMaximumFractionDigits(2);
             formatoNumero.setMinimumFractionDigits(2);
@@ -1978,6 +1984,7 @@ insertare=1;
             jTextField23.setText(String.valueOf(formatoNumero.format(auxcontotal)));
         
         contototal = auxcontotal;
+     
         String consulta = "UPDATE mppres SET precunit="+contototal+", precasu="+redondeado+" WHERE numero='"+numero+"' AND (mpre_id='"+pres+"' OR mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+pres+"'))";
         System.out.println(consulta);
         try {

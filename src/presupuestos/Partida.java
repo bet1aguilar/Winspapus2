@@ -518,12 +518,13 @@ public final void buscagrupo() throws SQLException{
 
         jLabel13.setText("Presupuesto NP:");
 
+        jTextField2.setText("0");
         jTextField2.setNextFocusableComponent(jComboBox1);
 
         jLabel4.setText("Descripción:");
 
         jTextArea1.setColumns(22);
-        jTextArea1.setFont(new java.awt.Font("Monospaced", 0, 11));
+        jTextArea1.setFont(new java.awt.Font("Monospaced", 0, 11)); // NOI18N
         jTextArea1.setLineWrap(true);
         jTextArea1.setRows(3);
         jTextArea1.setWrapStyleWord(true);
@@ -1132,7 +1133,7 @@ public void validafloat( java.awt.event.KeyEvent evt,String valor){
     private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1ActionPerformed
 float unitario = (float) totalprecunit;
         float redondeado = (float) Math.rint(unitario);
-        float cantidad = Float.valueOf(jTextField7.getText().toString());
+        float cantidad = (float) totalcantidad;
         
         if(jCheckBox1.isSelected()){
             jTextField15.setText(String.valueOf(redondeado));
@@ -1344,7 +1345,43 @@ private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:ev
             
                 Statement st = (Statement) conex.createStatement();
                 st.execute(sql);
+                  String cuentas = "SELECT count(*) FROM mptabs WHERE mtabus_id='PRUEBA' AND codicove='"+ids+"'";
+                  Statement stcuentas = (Statement) conex.createStatement();
+                  ResultSet rstcuenta = stcuentas.executeQuery(cuentas);
+                  int si=0;
+                  while(rstcuenta.next()){
+                      si = rstcuenta.getInt(1);
+                  }
+                  if(si==0){
+                int op =JOptionPane.showConfirmDialog(null, "¿Desea Agregar esta partida en Tabulador de Prueba?", "Tabulador", JOptionPane.YES_NO_OPTION);
+                if(op==JOptionPane.YES_OPTION){
+                    String selectcount = "SELECT count(*) FROM mtabus WHERE id='PRUEBA'";
+                    Statement stcount = (Statement) conex.createStatement();
+                    ResultSet rst = stcount.executeQuery(selectcount);
+                    int cuenta =0;
+                    while(rst.next()){
+                        cuenta = rst.getInt(1);
+                    }
+                    if(cuenta==0){
+                        String inserta = "INSERT INTO mtabus (id, descri, vigencia, status) VALUES "
+                                + "('PRUEBA', 'PARTIDAS A SER INSERTADAS EN SIGUIENTES TABULADORES', NOW(), 1)";
+                        Statement stinsert = (Statement) conex.createStatement();
+                        stinsert.execute(inserta);
+                        JOptionPane.showMessageDialog(rootPane, "Tabulador de prueba agregado, modifique los valores necesarios");
+                    }
+                  String insertapart = "INSERT INTO mptabs (codicove,numero,numegrup,descri, mbdat_id,porcgad, porcpre, porcutil, "
+                          + "precasu, precunit, rendimi, unidad, redondeo, status, mtabus_id, cantidad,capitulo)"
+                          + " SELECT id, numero, numegrup, descri,idband, porcgad, porcpre, porcutil, precasu, precunit, rendimi, "
+                          + "unidad, redondeo, 1, 'PRUEBA', cantidad, ctabs_id FROM mppres WHERE numero="+numero+" AND"
+                          + " (mpre_id='"+mpre_id+"' OR mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+mpre_id+"'))";
+                  Statement stinserta = (Statement) conex.createStatement();
+                  stinserta.execute(insertapart);
+                }
+                  }
                 JOptionPane.showMessageDialog(rootPane, "Se ha insertado la Partida");
+                
+                
+                
             } catch (SQLException ex) {
                 Logger.getLogger(Partida.class.getName()).log(Level.SEVERE, null, ex);
             }

@@ -15,7 +15,7 @@ import com.mysql.jdbc.ResultSetMetaData;
 import com.mysql.jdbc.Statement;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.security.Principal;
+
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -31,6 +31,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
+import winspapus.Principal;
 import winspapus.tab;
 
 /**
@@ -44,6 +45,7 @@ public class materiales extends javax.swing.JDialog {
     /** A return status code - returned if OK button has been pressed */
     public static final int RET_OK = 1;
     private Connection conexion;
+    private Principal obje;
     private Statement stmt;
     private String tabu;
 String [] materiales, auxmat;
@@ -51,10 +53,11 @@ String [] materiales, auxmat;
  int contsel =0, auxcont=0;
  String numepart, codicove;
     /** Creates new form materiales */
-    public materiales(java.awt.Frame parent, boolean modal, String mtabu, String num, String codicove) {
+    public materiales(java.awt.Frame parent, boolean modal, String mtabu, String num, String codicove, Principal obj) {
         super(parent, modal);
         initComponents();
         tabu = mtabu;
+        this.obje = obj;
         numepart = num;
         this.codicove = codicove;
         conectar();
@@ -189,6 +192,7 @@ private void cambiarcabecera() {
         jTable1 = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
 
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
@@ -244,6 +248,11 @@ private void cambiarcabecera() {
                 okButtonMouseClicked(evt);
             }
         });
+        okButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                okButtonActionPerformed(evt);
+            }
+        });
 
         jTable1.setAutoCreateRowSorter(true);
         jTable1.setFont(new java.awt.Font("Tahoma", 0, 10));
@@ -287,16 +296,25 @@ private void cambiarcabecera() {
                 .addContainerGap())
         );
 
+        jButton1.setText("Nuevo");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(452, Short.MAX_VALUE)
+                .addContainerGap(439, Short.MAX_VALUE)
+                .addComponent(jButton1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(cancelButton)
-                .addGap(66, 66, 66))
+                .addContainerGap())
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
@@ -320,8 +338,9 @@ private void cambiarcabecera() {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 149, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cancelButton)
                     .addComponent(okButton)
-                    .addComponent(cancelButton))
+                    .addComponent(jButton1))
                 .addGap(26, 26, 26))
         );
 
@@ -511,6 +530,20 @@ private void cambiarcabecera() {
         JOptionPane.showMessageDialog(null, "Se han Agregado los materiales, modifique los valores necesarios"); 
         doClose(RET_OK);        // TODO add your handling code here:
     }//GEN-LAST:event_okButtonMouseClicked
+
+    private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_okButtonActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        nuevosmateriales nuevos = new nuevosmateriales(null, true, conexion, tabu);
+          int x=(obje.getWidth()/2)-350;
+           int y=(obje.getHeight()/2-200);
+            nuevos.setBounds(x, y, 750, 380);            
+           nuevos.setVisible(true);
+        cargarmateriales();
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton1ActionPerformed
     
     private void doClose(int retStatus) {
         returnStatus = retStatus;
@@ -524,6 +557,7 @@ private void cambiarcabecera() {
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cancelButton;
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel4;

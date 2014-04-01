@@ -654,7 +654,7 @@ public class Principal extends javax.swing.JFrame {
         );
 
         jTable1.setAutoCreateRowSorter(true);
-        jTable1.setFont(new java.awt.Font("Tahoma", 0, 9)); // NOI18N
+        jTable1.setFont(new java.awt.Font("Tahoma", 0, 9));
         jTable1.setEditingColumn(0);
         jTable1.setEditingRow(0);
         jTable1.setName("mtabustable"); // NOI18N
@@ -689,7 +689,7 @@ public class Principal extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 70, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 105, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -831,7 +831,7 @@ public class Principal extends javax.swing.JFrame {
         );
 
         jTable2.setAutoCreateRowSorter(true);
-        jTable2.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        jTable2.setFont(new java.awt.Font("Tahoma", 0, 10));
         jTable2.setEditingColumn(0);
         jTable2.setEditingRow(0);
         jTable2.setName("mtabustable"); // NOI18N
@@ -863,13 +863,13 @@ public class Principal extends javax.swing.JFrame {
         jLabel14.setText("Código COVENIN:");
         jLabel14.setAlignmentY(0.0F);
 
-        jLabel15.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        jLabel15.setFont(new java.awt.Font("Tahoma", 0, 10));
 
-        jLabel19.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        jLabel19.setFont(new java.awt.Font("Tahoma", 0, 10));
 
-        jLabel23.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        jLabel23.setFont(new java.awt.Font("Tahoma", 0, 10));
 
-        jLabel27.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        jLabel27.setFont(new java.awt.Font("Tahoma", 0, 10));
 
         javax.swing.GroupLayout jPanel16Layout = new javax.swing.GroupLayout(jPanel16);
         jPanel16.setLayout(jPanel16Layout);
@@ -915,7 +915,7 @@ public class Principal extends javax.swing.JFrame {
         jPanel17.setBackground(new java.awt.Color(217, 224, 231));
         jPanel17.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
 
-        jLabel25.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        jLabel25.setFont(new java.awt.Font("Tahoma", 0, 10));
 
         jLabel24.setFont(new java.awt.Font("Tahoma", 1, 10));
         jLabel24.setText("Admin. y Gastos %:");
@@ -923,7 +923,7 @@ public class Principal extends javax.swing.JFrame {
         jLabel16.setFont(new java.awt.Font("Tahoma", 1, 10));
         jLabel16.setText("Número:");
 
-        jLabel29.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        jLabel29.setFont(new java.awt.Font("Tahoma", 0, 10));
 
         jLabel20.setFont(new java.awt.Font("Tahoma", 1, 10));
         jLabel20.setText("Unidad Medida:");
@@ -931,15 +931,15 @@ public class Principal extends javax.swing.JFrame {
         jLabel28.setFont(new java.awt.Font("Tahoma", 1, 10));
         jLabel28.setText("Prestaciones %:");
 
-        jLabel21.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        jLabel21.setFont(new java.awt.Font("Tahoma", 0, 10));
 
-        jLabel17.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        jLabel17.setFont(new java.awt.Font("Tahoma", 0, 10));
 
         jLabel31.setFont(new java.awt.Font("Tahoma", 1, 10));
         jLabel31.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel31.setText("Precio Unitario:");
 
-        jLabel33.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        jLabel33.setFont(new java.awt.Font("Tahoma", 0, 10));
 
         javax.swing.GroupLayout jPanel17Layout = new javax.swing.GroupLayout(jPanel17);
         jPanel17.setLayout(jPanel17Layout);
@@ -995,7 +995,7 @@ public class Principal extends javax.swing.JFrame {
 
         jTextArea1.setColumns(20);
         jTextArea1.setEditable(false);
-        jTextArea1.setFont(new java.awt.Font("Times New Roman", 0, 11)); // NOI18N
+        jTextArea1.setFont(new java.awt.Font("Times New Roman", 0, 11));
         jTextArea1.setLineWrap(true);
         jTextArea1.setRows(2);
         jTextArea1.setWrapStyleWord(true);
@@ -1024,7 +1024,7 @@ public class Principal extends javax.swing.JFrame {
                         .addComponent(jLabel5))
                     .addGroup(jPanel29Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 45, Short.MAX_VALUE)))
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 42, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -1073,9 +1073,9 @@ public class Principal extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 176, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 141, Short.MAX_VALUE)
                 .addGap(0, 0, 0)
-                .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         jPanel4.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(102, 102, 102), 1, true));
@@ -1106,7 +1106,7 @@ public class Principal extends javax.swing.JFrame {
         jPanel13.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 102, 102)), "Materiales"));
 
         jTable4.setAutoCreateRowSorter(true);
-        jTable4.setFont(new java.awt.Font("Tahoma", 0, 9)); // NOI18N
+        jTable4.setFont(new java.awt.Font("Tahoma", 0, 9));
         jTable4.setToolTipText("Para editar Cantidades haga doble click en la columna deseada");
         jTable4.getTableHeader().setReorderingAllowed(false);
         jTable4.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -1212,7 +1212,7 @@ public class Principal extends javax.swing.JFrame {
         jPanel14.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(153, 153, 153), 1, true), "Mano de Obra"));
 
         jTable5.setAutoCreateRowSorter(true);
-        jTable5.setFont(new java.awt.Font("Tahoma", 0, 9)); // NOI18N
+        jTable5.setFont(new java.awt.Font("Tahoma", 0, 9));
         jTable5.setToolTipText("Para editar Cantidades haga doble click en la columna deseada");
         jTable5.getTableHeader().setReorderingAllowed(false);
         jTable5.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -1322,7 +1322,7 @@ public class Principal extends javax.swing.JFrame {
         jPanel12.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(153, 153, 153), 1, true), "Equipos"));
 
         jTable3.setAutoCreateRowSorter(true);
-        jTable3.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        jTable3.setFont(new java.awt.Font("Tahoma", 0, 10));
         jTable3.setToolTipText("Para editar Cantidades haga doble click en la columna deseada");
         jTable3.getTableHeader().setReorderingAllowed(false);
         jTable3.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -1450,8 +1450,8 @@ public class Principal extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(8, 8, 8))
@@ -1462,7 +1462,7 @@ public class Principal extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jPanel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
@@ -2407,10 +2407,13 @@ public class Principal extends javax.swing.JFrame {
            util = (contotal+admin) * util;
          System.out.println("utilidad: "+util);
            auxcontotal = contotal+admin+util;
+           financiero=0;
+           if(finanzas!=null){
            financiero = Float.valueOf(finanzas.toString())/100;
            
            financiero = auxcontotal * financiero;
            System.out.println("financiero: "+financiero);
+           }
            impuesto = Float.valueOf(this.impu)/100;
            
            impuesto = auxcontotal * impuesto;
@@ -2515,8 +2518,7 @@ public class Principal extends javax.swing.JFrame {
        
         try {
             Statement s = (Statement) conexion.createStatement();
-            ResultSet rs = s.executeQuery("SELECT id,descri, DATE_FORMAT(vigencia, '%d/%m/%Y'), padyga, pprest, putild, pcosfin, pimpue FROM Mtabus WHERE id LIKE '%"+busqueda+"%' || descri LIKE '%"+busqueda+"%'");
-            
+            ResultSet rs = s.executeQuery("SELECT id,descri, DATE_FORMAT(vigencia, '%d/%m/%Y'), padyga, pprest, putild, pcosfin, pimpue FROM Mtabus WHERE status=1 AND (id LIKE '%"+busqueda+"%' || descri LIKE '%"+busqueda+"%')");
             ResultSetMetaData rsMd = (ResultSetMetaData) rs.getMetaData();
             int cantidadColumnas = rsMd.getColumnCount();
              for (int i = 1; i <= cantidadColumnas; i++) {
@@ -2660,7 +2662,7 @@ public class Principal extends javax.swing.JFrame {
 
     private void jButton14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton14ActionPerformed
            
-        materiales mat = new materiales(this, true, cadena, num, codicove);
+        materiales mat = new materiales(this, true, cadena, num, codicove,this);
            x=(this.getWidth()/2)-315;
             y=(this.getHeight()/2-275);
             mat.setBounds(x, y, 750,550);            
