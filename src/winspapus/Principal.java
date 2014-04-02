@@ -2223,7 +2223,10 @@ public class Principal extends javax.swing.JFrame {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
         }
           float auxconteq;
-          conteq = conteq / (Float.valueOf(jLabel23.getText().toString()));
+          float rendimi = Float.valueOf(jLabel23.getText().toString());
+          if(rendimi==0)
+              rendimi=1;
+          conteq = conteq / (rendimi);
           System.out.println("contequip: "+conteq);
           auxconteq= (float) (Math.rint((conteq+0.000001)*100)/100);
           jLabel37.setText(Float.toString(auxconteq));
@@ -2304,7 +2307,10 @@ public class Principal extends javax.swing.JFrame {
              subsid = cant * subsid;
              auxcontmano = contmano + prestaciones + bono +subsid;
              float auxcont;
-             contmano = auxcontmano /  (Float.valueOf(jLabel23.getText().toString())); //RENDIMIENTO
+             float rendimi = Float.valueOf(jLabel23.getText().toString());
+          if(rendimi==0)
+              rendimi=1;
+             contmano = auxcontmano /  (rendimi); //RENDIMIENTO
             auxcont= (float) (Math.rint((contmano+0.000001)*100)/100);
             System.out.println("contmano: "+contmano);
             jLabel39.setText(Float.toString(auxcont));
@@ -2414,8 +2420,10 @@ public class Principal extends javax.swing.JFrame {
            financiero = auxcontotal * financiero;
            System.out.println("financiero: "+financiero);
            }
+          if(impu!=null) 
            impuesto = Float.valueOf(this.impu)/100;
-           
+           else
+              impuesto=0;
            impuesto = auxcontotal * impuesto;
            System.out.println("impuesto: "+impuesto);
            auxcontotal = auxcontotal + impuesto + financiero;
@@ -3377,6 +3385,12 @@ private void jTable4PropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FI
     }//GEN-LAST:event_jMenuItem18ActionPerformed
 
     private void jMenuItem45ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem45ActionPerformed
+        confirmarmatriz conf = new confirmarmatriz(this, false,conexion, cadena,this);
+         int xi = (this.getWidth()/2)-100;
+          int yi = (this.getHeight()/2)-100;
+          conf.setBounds(xi, yi, 250, 300);
+          conf.setVisible(true);
+        
         // TODO add your handling code here:
     }//GEN-LAST:event_jMenuItem45ActionPerformed
 

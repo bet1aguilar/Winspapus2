@@ -1682,7 +1682,7 @@ public class apu extends javax.swing.JDialog {
                     int op = JOptionPane.showConfirmDialog(this, "¿Desea agregar nuevo material en el tabulador de estudio?","",JOptionPane.YES_NO_OPTION);
                     if(op==JOptionPane.YES_OPTION){
                         String insertabu = "INSERT INTO mtabus (id, descri, vigencia,status,seleccionado) "
-                                + "VALUES ('ESTUDIO','PARTIDAS DEL PROPIETARIO DEL SISTEMA', CURDATE(), 1,0)";
+                                + "VALUES ('ESTUDIO',PARTIDAS A SER INSERTADAS EN SIGUIENTES TABULADORES', CURDATE(), 1,0)";
                         Statement insertar = (Statement) conex.createStatement();
                         insertar.execute(insertabu);
                         String insertmat = "INSERT INTO mmtabs (mtabus_id,id, descri, desperdi, precio, unidad, status)"

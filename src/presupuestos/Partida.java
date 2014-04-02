@@ -240,8 +240,14 @@ public class Partida extends javax.swing.JDialog {
                     precio =(float) precunit;
                 } else{
                     jCheckBox1.setSelected(true);
-                     precio = Float.valueOf(jTextField15.getText());
+                     precio = (float) precasu;
                 }
+                if(precunit==0)
+                    precio = (float) precasu;
+                
+                totalprecasu = precasu;
+                totalprecunit = precunit;
+                
                 jSpinner1.setValue(numpartida);
                
                 jTextField13.setText(rsts.getObject(12).toString());
@@ -410,6 +416,8 @@ public final void buscagrupo() throws SQLException{
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTextArea2 = new javax.swing.JTextArea();
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -458,6 +466,10 @@ public final void buscagrupo() throws SQLException{
         jLabel18 = new javax.swing.JLabel();
         jTextField9 = new javax.swing.JTextField();
         jLabel20 = new javax.swing.JLabel();
+
+        jTextArea2.setColumns(20);
+        jTextArea2.setRows(5);
+        jScrollPane2.setViewportView(jTextArea2);
 
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
@@ -524,7 +536,7 @@ public final void buscagrupo() throws SQLException{
         jLabel4.setText("Descripción:");
 
         jTextArea1.setColumns(22);
-        jTextArea1.setFont(new java.awt.Font("Monospaced", 0, 11)); // NOI18N
+        jTextArea1.setFont(new java.awt.Font("Monospaced", 0, 11));
         jTextArea1.setLineWrap(true);
         jTextArea1.setRows(3);
         jTextArea1.setWrapStyleWord(true);
@@ -645,6 +657,11 @@ public final void buscagrupo() throws SQLException{
         jTextField15.setText("0.00");
         jTextField15.setToolTipText("");
         jTextField15.setNextFocusableComponent(jCheckBox1);
+        jTextField15.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jTextField15FocusLost(evt);
+            }
+        });
         jTextField15.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 jTextField15KeyTyped(evt);
@@ -1172,14 +1189,26 @@ if (evt.getKeyCode() == KeyEvent.VK_TAB) {
     private void jTextField7FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField7FocusLost
         float precunit;
           precunit = (float) totalprecunit;
-        if(jTextField12.getText().toString().equals("0.00"))
+         
+        if(totalprecunit==0)
         {
-            precunit = Float.valueOf(jTextField15.getText().toString());
+            precunit = (float) totalprecasu;
         }
+        int nomodifica=0;
         if(jTextField7.getText().equals("")){
             jTextField7.setText(val);
+            nomodifica=1;
         }
-        float cantidad = Float.valueOf(jTextField7.getText().toString()), total1;
+         float cantidad =0;
+        if(edita==0)
+       cantidad= Float.valueOf(jTextField7.getText().toString());
+        else{
+            if(nomodifica==1)
+            cantidad = (float) totalcantidad;
+            else
+                cantidad= Float.valueOf(jTextField7.getText().toString());
+        }
+         float  total1;
         total1 = precunit*cantidad;
         
         NumberFormat formatoNumero = NumberFormat.getNumberInstance();
@@ -1236,7 +1265,7 @@ private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:ev
         String numero = "0", descri = jTextArea1.getText().toString();
         int idband = jComboBox1.getSelectedIndex()+1;
         String porcgad = jTextField4.getText().toString(), porcpre = jTextField5.getText().toString();
-        String porcutil = jTextField6.getText().toString(), precasu = String.valueOf(totalprecasu);
+        String porcutil = jTextField6.getText().toString(), precasu = String.valueOf(jTextField15.getText());
         String precunit = String.valueOf(totalprecunit), rendimi = jTextField13.getText().toString();
         String unidad = jTextField10.getText().toString(), redondeo, cantidad = String.valueOf(totalcantidad);
         String tipos = null;
@@ -1249,7 +1278,7 @@ private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:ev
                     precasu = String.valueOf(Math.rint(((precuni+0.000001)*100)/100));
                     System.out.println("precasu"+precasu);
                 }
-                
+                precasu = String.valueOf(jTextField15.getText());
             String sqls = "SELECT numero FROM mppres where numegrup ="+jSpinner1.getValue()+" And (mpre_id='"+presupuesto+"'"
                     + " OR mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+presupuesto+"'))";
                 try {
@@ -1355,7 +1384,7 @@ private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:ev
                   if(si==0){
                 int op =JOptionPane.showConfirmDialog(null, "¿Desea Agregar esta partida en Tabulador de Prueba?", "Tabulador", JOptionPane.YES_NO_OPTION);
                 if(op==JOptionPane.YES_OPTION){
-                    String selectcount = "SELECT count(*) FROM mtabus WHERE id='PRUEBA'";
+                    String selectcount = "SELECT count(*) FROM mtabus WHERE id='ESTUDIO'";
                     Statement stcount = (Statement) conex.createStatement();
                     ResultSet rst = stcount.executeQuery(selectcount);
                     int cuenta =0;
@@ -1364,7 +1393,7 @@ private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:ev
                     }
                     if(cuenta==0){
                         String inserta = "INSERT INTO mtabus (id, descri, vigencia, status) VALUES "
-                                + "('PRUEBA', 'PARTIDAS A SER INSERTADAS EN SIGUIENTES TABULADORES', NOW(), 1)";
+                                + "('ESTUDIO', 'PARTIDAS A SER INSERTADAS EN SIGUIENTES TABULADORES', NOW(), 1)";
                         Statement stinsert = (Statement) conex.createStatement();
                         stinsert.execute(inserta);
                         JOptionPane.showMessageDialog(rootPane, "Tabulador de prueba agregado, modifique los valores necesarios");
@@ -1372,7 +1401,7 @@ private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:ev
                   String insertapart = "INSERT INTO mptabs (codicove,numero,numegrup,descri, mbdat_id,porcgad, porcpre, porcutil, "
                           + "precasu, precunit, rendimi, unidad, redondeo, status, mtabus_id, cantidad,capitulo)"
                           + " SELECT id, numero, numegrup, descri,idband, porcgad, porcpre, porcutil, precasu, precunit, rendimi, "
-                          + "unidad, redondeo, 1, 'PRUEBA', cantidad, ctabs_id FROM mppres WHERE numero="+numero+" AND"
+                          + "unidad, redondeo, 1, 'ESTUDIO', cantidad, ctabs_id FROM mppres WHERE numero="+numero+" AND"
                           + " (mpre_id='"+mpre_id+"' OR mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+mpre_id+"'))";
                   Statement stinserta = (Statement) conex.createStatement();
                   stinserta.execute(insertapart);
@@ -1403,15 +1432,21 @@ private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:ev
         } // TODO add your handling code here:
 }//GEN-LAST:event_okButtonMouseClicked
 
-    private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_okButtonActionPerformed
-
     private void jTextField7FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField7FocusGained
         val = jTextField7.getText().toString();
         jTextField7.setText("");
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField7FocusGained
+
+    private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_okButtonActionPerformed
+
+    private void jTextField15FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField15FocusLost
+ totalprecasu = Float.valueOf(jTextField15.getText().toString());
+        
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField15FocusLost
     
     private void doClose(int retStatus) {
         returnStatus = retStatus;
@@ -1454,8 +1489,10 @@ private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:ev
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSpinner jSpinner1;
     private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JTextArea jTextArea2;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField10;
     private javax.swing.JTextField jTextField12;

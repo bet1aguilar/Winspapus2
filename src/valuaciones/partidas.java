@@ -359,8 +359,9 @@ public final void cargapresupuesto() throws SQLException{
         verificarcheck();
         
         for(int i=0; i<contsel;i++){
-            String sql = "SELECT id, precunit FROM mppres where numero='"+partidas[i]+"' AND mpre_id='"+mpres+"' "
+            String sql = "SELECT id, IF(precunit=0,precasu,precunit) FROM mppres where numero='"+partidas[i]+"' AND mpre_id='"+mpres+"' "
                     + "AND status=1";
+            System.out.println("Quiero ver Precio: "+sql);
             try {
                 Statement st = (Statement) conex.createStatement();
                 ResultSet rst = st.executeQuery(sql);
@@ -494,8 +495,9 @@ public final void cargapresupuesto() throws SQLException{
      
    
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
-        
+     
     partida = jTable1.rowAtPoint(evt.getPoint());
+
     String part = jTable1.getValueAt(partida, 1).toString();
     Object obj;
        Boolean bol;
@@ -504,6 +506,7 @@ public final void cargapresupuesto() throws SQLException{
                     bol = (Boolean) obj;
                     if (bol.booleanValue()) {
                        // System.out.println("Selecciono este material");
+                        
                         auxpart[auxcont] = part;
                         auxcont++;
                     }else
@@ -541,7 +544,7 @@ public final void cargapresupuesto() throws SQLException{
             if(columna==1){
                 return Integer.class;
             }
-            if(columna>4)
+            if(columna>4&& columna!=7)
             {
                 return Double.class;
             }
@@ -558,7 +561,7 @@ public final void cargapresupuesto() throws SQLException{
             Statement s = (Statement) conex.createStatement();
             String sql="SELECT numegrup, id, descri, tipo,cantidad, numero, unidad "
                     + "FROM mppres WHERE  (id LIKE'%"+busqueda+"%' || "
-                    + "descri LIKE '%"+busqueda+"%') "
+                    + "descri LIKE '%"+busqueda+"%' || numegrup LIKE '%"+busqueda+"%') "
                     + "AND (mpre_id='"+mpres+"' OR mpre_id IN (SELECT id from mpres "
                     + "where mpres_id ='"+mpres+"' "
                     + "GROUP BY id)) AND numero NOT IN (SELECT numepart FROM dvalus WHERE "
@@ -616,9 +619,7 @@ public final void cargapresupuesto() throws SQLException{
                             fila[6]=cantidadacum;
                         }
                         }
-                        if(i==7){
-                            fila[i]=0;
-                        }
+                       
                     }
                 }
                 mat.addRow(fila);
@@ -674,13 +675,17 @@ public final void cargapresupuesto() throws SQLException{
         float acumulada, valuada, contratada;
          if (!jTable1.isEditing() && jTable1.editCellAt(jTable1.getSelectedRow(),
                 jTable1.getSelectedColumn())) {
+                 
             jTable1.getEditorComponent().requestFocusInWindow();
             char car = evt.getKeyChar();
             if((car<'0'||car>'9')&& evt.getKeyCode()!=10 &&evt.getKeyCode() !=9 ){
+              
                 evt.consume();
                 
             }else{
+               
                 if (evt.getKeyCode() == 9 || evt.getKeyCode() == 10) {
+                
                     contratada = Float.valueOf(jTable1.getValueAt(partida, 5).toString());
                     acumulada = Float.valueOf(jTable1.getValueAt(partida, 6).toString());
                     valuada = Float.valueOf(jTable1.getValueAt(partida, 7).toString());
@@ -688,8 +693,6 @@ public final void cargapresupuesto() throws SQLException{
                     if((acumulada+valuada)>contratada){
                        JOptionPane.showMessageDialog(null, "La cantidad valuada excede a la cantidad contratada");
                     }
-                }else{
-                    jTable1.setValueAt("", partida, 7);
                 }
             }
          }

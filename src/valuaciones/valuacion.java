@@ -1224,7 +1224,7 @@ public void inserta(){
                 numero=rstconsulta.getString(1);
             }
             mvalu = jSpinner1.getValue().toString();
-            String select = "SELECT precunit FROM mppres where id='" + codigo + "' AND mpre_id='" + pres+"'";
+            String select = "SELECT IF(precunit=0,precasu, precunit) FROM mppres where id='" + codigo + "' AND mpre_id='" + pres+"'";
             Statement st = conex.createStatement();
             ResultSet rst = st.executeQuery(select);
             while (rst.next()) {
@@ -1295,7 +1295,7 @@ public void inserta(){
         buscapartida();
 }   
 
-    void buscapartida() {
+    public void buscapartida() {
         try {
             estavalu = 0;
             String sql = "SELECT dv.mppre_id, mp.numegrup, mp.descri, mp.cantidad, dv.numepart, "

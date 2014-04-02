@@ -8,7 +8,9 @@
  *
  * Created on 16/07/2013, 11:25:51 AM
  */
-package winspapus;
+package winspapus.equipos;
+import winspapus.materiales.*;
+import winspapus.*;
 
 import com.itextpdf.text.pdf.codec.Base64.OutputStream;
 import com.mysql.jdbc.Connection;
@@ -50,7 +52,7 @@ import net.sf.jasperreports.view.JasperViewer;
  *
  * @author Betmart
  */
-public class reporteapu extends javax.swing.JDialog {
+public class reporteequipos extends javax.swing.JDialog {
 
     /** A return status code - returned if Cancel button has been pressed */
     public static final int RET_CANCEL = 0;
@@ -60,12 +62,12 @@ public class reporteapu extends javax.swing.JDialog {
     String ruta;
     String mtabus, numero;
     /** Creates new form reporteapu */
-    public reporteapu(java.awt.Frame parent, boolean modal, Connection conex, String mtabus, String num) {
+    public reporteequipos(java.awt.Frame parent, boolean modal, Connection conex, String mtabus) {
         super(parent, modal);
         initComponents();
         this.conex = conex;
         this.mtabus = mtabus;
-        this.numero = num;
+        
                 
         // Close the dialog when Esc is pressed
         String cancelName = "cancel";
@@ -86,15 +88,14 @@ public class reporteapu extends javax.swing.JDialog {
               
             try {
                 
-               input = new FileInputStream(new File("APU.jrxml"));
+               input = new FileInputStream(new File("equipo.jrxml"));
             } catch (FileNotFoundException ex) {
-                Logger.getLogger(reporteapu.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(reporteequipos.class.getName()).log(Level.SEVERE, null, ex);
             }
             JasperDesign design = JRXmlLoader.load(input); 
             JasperReport report = JasperCompileManager.compileReport(design);
             Map parameters = new HashMap();
             parameters.put("mtabus", mtabus);
-            parameters.put("numegrup", numero);
             JasperPrint print = JasperFillManager.fillReport(report, parameters, conex);
             FileOutputStream output=null;
             String auxruta=ruta;
@@ -103,7 +104,7 @@ public class reporteapu extends javax.swing.JDialog {
                 try {
                 output = new FileOutputStream(new File(ruta));
             } catch (FileNotFoundException ex) {
-                Logger.getLogger(reporteapu.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(reporteequipos.class.getName()).log(Level.SEVERE, null, ex);
             }
                 JasperExportManager.exportReportToPdfStream(print, output);
                 
@@ -115,7 +116,7 @@ public class reporteapu extends javax.swing.JDialog {
                     
                 output = new FileOutputStream(new File(ruta));
             } catch (FileNotFoundException ex) {
-                Logger.getLogger(reporteapu.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(reporteequipos.class.getName()).log(Level.SEVERE, null, ex);
             }
                  JRXlsExporter exporterXLS = new JRXlsExporter();
             exporterXLS.setParameter(JRXlsExporterParameter.JASPER_PRINT, print);
@@ -128,7 +129,7 @@ public class reporteapu extends javax.swing.JDialog {
                 try {
                     output.write(outputByteArray.toByteArray());
                 } catch (IOException ex) {
-                    Logger.getLogger(reporteapu.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(reporteequipos.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
             
@@ -214,18 +215,16 @@ public class reporteapu extends javax.swing.JDialog {
 
         jPanel4.setBackground(new java.awt.Color(97, 126, 171));
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11));
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Generar Reporte de Análisis de Precio Unitario");
+        jLabel1.setText("Matriz de Costos de Equipos");
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 393, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 403, Short.MAX_VALUE)
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
