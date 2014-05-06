@@ -74,7 +74,7 @@ public class Principal extends javax.swing.JFrame {
        DefaultTableModel mptabs;
    String codimate, descrimate, preciomate, cantidadmate, unidadmate, desperdiciomate;
    String codiequipo, codimano, impu, finanzas;
-   private Connection conexion = null, conexremota=null;
+   private Connection conexion = null, conexremota=null, conespapu = null;
    public int llamaabusca=0;
      Principal obj= this;
      JScrollPane scroll;
@@ -168,13 +168,14 @@ public class Principal extends javax.swing.JFrame {
         } catch (SQLException ex) {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
         }
-        try {
-            
+        try {          
+            //
             conexion = (Connection) DriverManager.getConnection("jdbc:mysql://localhost/winspapu", "root", "04160481070MSag");
             //establer seguridad local
             Statement seg = (Statement) conexion.createStatement();
             Statement esc = (Statement) conexion.createStatement();
             String sql;
+ 
             sql="select * from mpresadm";
             ResultSet rst = seg.executeQuery(sql);             
             rst.last();
@@ -185,7 +186,7 @@ public class Principal extends javax.swing.JFrame {
             String dd=obj2.getSerialNumber("C");
             if (regis==0){
                 int opc;
-                opc=JOptionPane.showConfirmDialog(null, "Atención el Sistema se va a Ejecutar por primero vez, Desea Continuar?","INICIA DE SISTEMA",JOptionPane.YES_NO_OPTION);
+                opc=JOptionPane.showConfirmDialog(null, "Atención el Sistema se va a Ejecutar por primero vez, Desea Continuar?","INICIAR DE SISTEMA",JOptionPane.YES_NO_OPTION);
                 if ((opc==1)||(opc==2)){
                    System.exit(0);
                 } 
@@ -196,6 +197,23 @@ public class Principal extends javax.swing.JFrame {
                 sql="insert into mpresadm values ('"+fecha1+"','"+dd+"','"+tm+"','1111-2222-3333-4444','1')";
                 System.out.println(sql);
                 esc.execute(sql); 
+                  //establecer seguridad remota
+                String sSistemaOperativo = System.getProperty("os.name");
+                System.out.println(sSistemaOperativo);
+                opc=JOptionPane.showConfirmDialog(null, "Atención Asegúrese de estar conectado a Internet","INICIAR DE SISTEMA",JOptionPane.YES_NO_OPTION);
+                if ((opc==1)||(opc==2)){
+                   esc.execute("delete from mpresadm");                      
+                   System.exit(0);
+                }     
+                conespapu = (Connection) DriverManager.getConnection("jdbc:mysql://spapu.db.11811826.hostedresource.com/spapu", "spapu", "Rahp81261!");
+                sql="select * from banco";
+                Statement esc1 = (Statement) conespapu.createStatement();
+                ResultSet resg=esc1.executeQuery(sql);
+                while (resg.next())
+                {
+                   System.out.println(resg.getString("nombre"));
+                }    
+                   
 //                conexremota = (Connection) DriverManager.getConnection("jdbc:mysql://dominiospapu/spapu", "root", "04160481070MSag");
          //       Statement st = (Statement) conexremota.createStatement();
                 
