@@ -56,6 +56,9 @@ WHERE mppres.mpre_id=$P{mpres} GROUP BY mppres.mpre_id]]>
 	<parameter name="fecha" class="java.lang.String"/>
 	<parameter name="totalenletra" class="java.lang.String"/>
 	<parameter name="titulo" class="java.lang.String"/>
+	<parameter name="presnoprevista" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
 	<queryString>
 		<![CDATA[SELECT
      CONCAT(mppres.`id`,'\n',mppres.`descri`) AS mppres_descri,
@@ -103,7 +106,7 @@ FROM
      INNER JOIN `mprops` mprops ON mpres.`codpro` = mprops.`id`
      INNER JOIN `mconts` mconts ON mpres.`codcon` = mconts.`id`
 WHERE
-     mppres.mpre_id IN (SELECT id FROM `mpres` WHERE mpres_id = $P{mpres})]]>
+     (mppres.mpre_id IN (SELECT id FROM `mpres` WHERE mpres_id = $P{mpres})) AND mpres.id=$P{presnoprevista}]]>
 	</queryString>
 	<field name="mppres_descri" class="java.lang.String"/>
 	<field name="total" class="java.math.BigDecimal">

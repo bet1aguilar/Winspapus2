@@ -171,6 +171,7 @@ public class reportepresupuesto extends javax.swing.JDialog {
 
         jTextField2.setText("0");
 
+        jCheckBox4.setSelected(true);
         jCheckBox4.setText("Reflejar Impuestos");
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
@@ -192,8 +193,8 @@ public class reportepresupuesto extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jCheckBox4))
+                    .addComponent(jCheckBox4)
+                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -452,7 +453,8 @@ public void generareportepres(){
                     float impuesto=0;
                     input = new FileInputStream(new File("noprevista.jrxml"));
                     String select = "SELECT SUM(IF(precunit=0, precasu,precunit)*cantidad),mp.porimp as porimp FROM mppres, mpres as mp WHERE "
-                            + "mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+pres+"') AND mpre_id=mp.id";
+                            + "(mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+pres+"')) AND mpre_id=mp.id AND mp.id='"+jTextField2.getText().toString()+"'";
+                    System.out.println("Consulta Nro. en Letra no prevista "+select);
                     try {
                         Statement ste = (Statement) conex.createStatement();
                         ResultSet rste = ste.executeQuery(select);
@@ -510,7 +512,9 @@ public void generareportepres(){
           }else{
               letras="";
           }
-                  
+           if(cual==2){
+                parameters.put("presnoprevista", jTextField2.getText());
+           }
             parameters.put("mpres", pres);
             parameters.put("fecha", fecha);
             parameters.put("titulo",titulo);

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="modificado" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isFloatColumnFooter="true" uuid="7ac9b189-65e2-45f1-a720-ba496152f913">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="modificado" language="groovy" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isFloatColumnFooter="true" uuid="7ac9b189-65e2-45f1-a720-ba496152f913">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
@@ -104,7 +104,9 @@ IFNULL((SELECT SUM(disminucion) FROM admppres WHERE numepart=mp.numero AND mpre_
 	<parameter name="fecha" class="java.lang.String"/>
 	<parameter name="totalenletra" class="java.lang.String"/>
 	<queryString>
-		<![CDATA[SELECT IF(tipo!='VP',mp.numegrup,IFNULL(mp.tiporec,numegrup)) as numegrup, CONCAT(mp.id,'\n',mp.descri) as descri, mp.unidad, tipo,
+		<![CDATA[SELECT
+IF(tipo='NP','PARTIDAS NO PREVISTAS',IF(tipo='VP','RECONSIDERACIONES DE PRECIOS','')) as titulo,
+IF(tipo!='VP',mp.numegrup,IFNULL(mp.tiporec,numegrup)) as numegrup, CONCAT(mp.id,'\n',mp.descri) as descri, mp.unidad, tipo,
 IFNULL(IF(tipo!='VP',SUM(mp.cantidad+IFNULL((SELECT SUM(aumento) FROM admppres WHERE numepart=mp.numero AND mpre_id=$P{mpres}),0)-
 IFNULL((SELECT SUM(disminucion) FROM admppres WHERE numepart=mp.numero AND mpre_id=$P{mpres}),0)),mp.cantidad),0) as cantidad, IF(mp.precasu=0,mp.precunit,mp.precasu) as precunit,
 cantidad*IF(mp.precasu=0,mp.precunit,mp.precasu) as total, p.nombre as mpres_nombre,
@@ -115,8 +117,9 @@ mc.ingres as mconts_ingres, mc.civres as mconts_civres, mc.ingins as mconts_ingi
  FROM mppres as mp, mpres p,
 mconts as mc, mprops as prop WHERE (mp.mpre_id =$P{mpres} OR mpre_id IN (SELECT id FROM mpres WHERE mpres_id=$P{mpres})) AND mp.mpre_id=p.id
 AND p.codcon = mc.id AND p.codpro = prop.id
- GROUP BY mp.numegrup ORDER BY mp.numegrup]]>
+ GROUP BY mp.numegrup, titulo ORDER BY mp.numegrup]]>
 	</queryString>
+	<field name="titulo" class="java.lang.String"/>
 	<field name="numegrup" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
@@ -145,7 +148,7 @@ AND p.codcon = mc.id AND p.codpro = prop.id
 	<field name="mconts_cedres" class="java.lang.String"/>
 	<field name="mpres_porimp" class="java.lang.String"/>
 	<field name="mconts_encabe" class="java.lang.String"/>
-	<field name="porimp" class="java.lang.Double">
+	<field name="porimp" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="conts_logo" class="java.lang.Object"/>
