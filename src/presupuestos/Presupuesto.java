@@ -123,6 +123,9 @@ public class Presupuesto extends javax.swing.JInternalFrame {
         prin.setpres(presu);
         
     }
+    public double settotal(){
+        return total;
+    }
     public final void buscartab() throws SQLException{
          DefaultTableModel cont = new DefaultTableModel();
         jComboBox1.removeAllItems();
@@ -914,7 +917,7 @@ public class Presupuesto extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(1, 1, 1)
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 326, Short.MAX_VALUE)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 313, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel13, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -1030,7 +1033,7 @@ public class Presupuesto extends javax.swing.JInternalFrame {
             .addGroup(jPanel12Layout.createSequentialGroup()
                 .addGap(0, 0, 0)
                 .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton32, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
+                    .addComponent(jButton32, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton13, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -1454,8 +1457,8 @@ public class Presupuesto extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 212, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel12, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1476,7 +1479,7 @@ public class Presupuesto extends javax.swing.JInternalFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, 565, Short.MAX_VALUE))
+                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -1491,7 +1494,7 @@ public class Presupuesto extends javax.swing.JInternalFrame {
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 576, Short.MAX_VALUE)
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 563, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -1561,9 +1564,8 @@ public class Presupuesto extends javax.swing.JInternalFrame {
        jTextField11.setText("0.00");
        jTextField12.setText("0.00"); 
        jTextField13.setText("0.00");
-        String cargasinredondeo = "SELECT SUM(cantidad*IF(precasu=0,precunit,precasu)) "
-                + "FROM `winspapu`.`mppres` WHERE  tipo='Org' AND (mpre_id='"+id+"' OR mpre_id IN "
-                + "(SELECT id from mpres where mpres_id='"+id+"'))";
+        String cargasinredondeo = "SELECT SUM(ROUND(IF(mppres.`precunit`=0,mppres.`precasu`,precunit)*cantidad,2)) "
+                + "FROM `winspapu`.`mppres` WHERE  tipo='Org' AND mpre_id='"+id+"'";
         System.out.println("totales cargartotal: "+cargasinredondeo);
         try {
             Statement st1 = (Statement) conex.createStatement();
@@ -1572,19 +1574,21 @@ public class Presupuesto extends javax.swing.JInternalFrame {
             
             while (rst1.next()){
                 if(rst1.getObject(1)!=null) {
-                    subtotal1 = rst1.getFloat(1);
+                    subtotal = rst1.getDouble(1);
+                     System.out.println("subtotal bd: "+rst1.getDouble(1));
                 }
             }
-           
+           System.out.println("subtotal: "+subtotal);
             impuesto = Float.valueOf(jTextField10.getText().toString());
             
-            subtotal = subtotal1;
+          
             impuesto = subtotal*(impuesto/100);
-            total = (float)(Math.rint(((subtotal+impuesto)+0.000001)*100)/100);
+           
+            total = subtotal+impuesto;
             
             
-            subtotal = (float)Math.rint(((subtotal+0.000001)*100))/100;
-            impuesto = (float) Math.rint(((impuesto+0.000001)*100))/100;
+          
+         
             NumberFormat formatoNumero = NumberFormat.getNumberInstance();
             formatoNumero.setMaximumFractionDigits(2);
             formatoNumero.setMinimumFractionDigits(2);
@@ -1753,6 +1757,7 @@ private void formInternalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
     public void cargapartida(){
         jButton11.setEnabled(true);
         int redondear=0;
+        double total2=0;
        int idband = 0;
        String tipo="";
         adicional = 0;
@@ -1760,16 +1765,19 @@ private void formInternalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
         idpartida = jTable2.getValueAt(filapartida, 2).toString();
         String mtabs = null, mpre = "", descri = null, unidad = null, cantidad = null, precuni = null, padyga = null, pcosfin = null, pimpue = null, pprest = null, putild = null, numegrup = null;       
         
-        String sql = "SELECT mpre_id, descri, unidad,cantidad, redondeo, precasu, precunit,"
-                + "id,tipo, idband FROM mppres WHERE id='"+idpartida+"' AND numegrup="+numpartida+" AND (mpre_id='"+id+"' OR "
+        String sql = "SELECT mpre_id, descri, unidad,cantidad, redondeo, ROUND(IFNULL(IF(precunit=0,precasu, precunit),0),2) as precunit, "
+                + "ROUND(cantidad*IFNULL(IF(precunit=0,precasu, precunit),0),2) as total,"
+                + "id,tipo, idband FROM mppres WHERE id='"+idpartida+"' AND numegrup="+numpartida+" AND "
+                + "(mpre_id='"+id+"' OR "
                 + "mpre_id IN (SELECT id from mpres where mpres_id ='"+id+"' GROUP BY id))";
        
       
         try {
             Statement partidas1 = (Statement) conex.createStatement();
+            ResultSet resultado = partidas1.executeQuery(sql);
             Statement tabus = (Statement) conex.createStatement();  
             Statement ptabs = (Statement) conex.createStatement();           
-            ResultSet resultado = partidas1.executeQuery(sql);
+            
             
             
             while (resultado.next()){
@@ -1780,19 +1788,12 @@ private void formInternalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
                 cantidad = resultado.getObject("cantidad").toString();
                 redondear = resultado.getInt("redondeo");
                 tipo = resultado.getString("tipo");
-                if(resultado.getObject("precunit")!=null) {
+                total2=resultado.getDouble("total");
+               
                     precuni = resultado.getObject("precunit").toString();
-                }else{
-                    precuni= "0.00";
-                }
-                if(redondear==1){
-                    precuni=resultado.getString("precasu");
-                }else{
-                    precuni = resultado.getObject("precunit").toString();
-                }
+               
                 
-                if("0.00".equals(precuni)||"0".equals(precuni)|| "0,00".equals(precuni))
-                    precuni=resultado.getString("precasu");
+                
                     
                 codicove = resultado.getObject("id").toString();
             
@@ -1881,16 +1882,15 @@ private void formInternalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
             jTextField17.setText(unidad);
             
            
-            
-            double total2 = Math.rint((Float.valueOf(precuni)*Float.valueOf(cantidad)+0.0000001)*100)/100;
+           
+         
              NumberFormat formatoNumero = NumberFormat.getNumberInstance();
             formatoNumero.setMaximumFractionDigits(2);
             formatoNumero.setMinimumFractionDigits(2);
             double cant = Math.rint(Float.valueOf(cantidad)*100)/100;
-            double precio = Math.rint(Float.valueOf(precuni)*100)/100;
              jTextField18.setText(String.valueOf(cant));
-            jTextField19.setText(String.valueOf(precio));
-            jTextField20.setText(String.valueOf(formatoNumero.format(total2)));
+            jTextField19.setText(String.valueOf(precuni));
+            jTextField20.setText(formatoNumero.format((total2)));
            
             jButton14.setEnabled(true);
             id=auxid;
@@ -2453,7 +2453,7 @@ public void agrega(){
                     + "SELECT '"+numpre+"', nomabr, nombre, ubicac, fecini,"
                     + "fecfin, feccon, fecimp, porgam, porcfi, porimp, poripa,"
                     + "porpre, poruti, codpro, codcon, parpre, nrocon, nroctr, fecapr,"
-                    + "nrolic, 1, '"+id+"',memo,timemo, fecmemo, 0  FROM mpres WHERE id='"+id+"'";
+                    + "nrolic, 1, '"+id+"',memo,timemo, fecmemo, 0, partidapres FROM mpres WHERE id='"+id+"'";
 
                     // System.out.println("Inserta Presupuesto Adicional: "+insertar);
                     Statement insert = (Statement) conex.createStatement();

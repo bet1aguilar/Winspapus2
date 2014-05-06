@@ -398,11 +398,7 @@ public class tab extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
     
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
-        try {
-                desconectar();
-            } catch (Exception ex) {
-                Logger.getLogger(tab.class.getName()).log(Level.SEVERE, null, ex);
-            }
+       
         doClose(RET_CANCEL);
     }//GEN-LAST:event_cancelButtonActionPerformed
 
@@ -497,11 +493,7 @@ public class tab extends javax.swing.JDialog {
         
          JOptionPane.showMessageDialog(this, "Precio Referencial Guardado");
         obj.buscatab();
-            try {
-                desconectar();
-            } catch (Exception ex) {
-                Logger.getLogger(tab.class.getName()).log(Level.SEVERE, null, ex);
-            }
+         
         
         doClose(RET_OK);
         }else{
