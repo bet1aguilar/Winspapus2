@@ -32,12 +32,27 @@ public class denumeroaletra {
         if(numero.indexOf(",")==-1){
             numero = numero + ",00";
         }
+        String Num[] = numero.split(",");
+        if (Integer.parseInt(Num[1]) == 0) {//si el valor es cero
+                literal = "cero ";
+            } else if (Integer.parseInt(Num[1]) > 999999) {//si es millon
+                literal = getMillones(Num[1]);
+            } else if (Integer.parseInt(Num[1]) > 999) {//si es miles
+                literal = getMiles(Num[1]);
+            } else if (Integer.parseInt(Num[1]) > 99) {//si es centena
+                literal = getCentenas(Num[1]);
+            } else if (Integer.parseInt(Num[1]) > 9) {//si es decena
+                literal = getDecenas(Num[1]);
+            } else {//sino unidades -> 9
+                literal = getUnidades(Num[1]);
+            }
+             parte_decimal = literal + " CÉNTIMOS";
         //se valida formato de entrada -> 0,00 y 999 999 999,00
         if (Pattern.matches("\\d{1,9},\\d{1,2}", numero)) {
             //se divide el numero 0000000,00 -> entero y decimal
-            String Num[] = numero.split(",");            
+                        
             //de da formato al numero decimal
-            parte_decimal = Num[1] + "/100 Bolivares.";
+           
             //se convierte el numero a literal
             if (Integer.parseInt(Num[0]) == 0) {//si el valor es cero
                 literal = "cero ";
@@ -52,12 +67,11 @@ public class denumeroaletra {
             } else {//sino unidades -> 9
                 literal = getUnidades(Num[0]);
             }
+            
             //devuelve el resultado en mayusculas o minusculas
-            if (mayusculas) {
-                return (literal + parte_decimal).toUpperCase();
-            } else {
-                return (literal + parte_decimal);
-            }
+          
+                return (literal+" Bolivares con " + parte_decimal).toUpperCase();
+           
         } else {//error, no se puede convertir
             return literal = null;
         }

@@ -50,6 +50,7 @@ import presupuestos.Presupuesto;
 import presupuestos.diagrama;
 import presupuestos.memoria;
 import presupuestos.tabpresupuesto;
+import reportes.reportepresupuesto;
 /**
  *
  * @author Betmart
@@ -1827,6 +1828,11 @@ public class Principal extends javax.swing.JFrame {
         jMenu7.setEnabled(false);
 
         jMenuItem16.setText("Presupuesto");
+        jMenuItem16.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem16ActionPerformed(evt);
+            }
+        });
         jMenu7.add(jMenuItem16);
         jMenu7.add(jSeparator1);
 
@@ -2305,7 +2311,7 @@ public class Principal extends javax.swing.JFrame {
             prestaciones = contmano * prestaciones;
             bono = cant * bono;
              subsid = cant * subsid;
-             auxcontmano = contmano + prestaciones + bono +subsid;
+             auxcontmano = contmano + prestaciones + bono + subsid;
              float auxcont;
              float rendimi = Float.valueOf(jLabel23.getText().toString());
           if(rendimi==0)
@@ -3395,9 +3401,7 @@ private void jTable4PropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FI
     }//GEN-LAST:event_jMenuItem45ActionPerformed
 
     private void jMenuItem46ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem46ActionPerformed
-        
-        
-        entro1();// TODO add your handling code here:
+         entro1();
     }//GEN-LAST:event_jMenuItem46ActionPerformed
 
     private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
@@ -3406,19 +3410,14 @@ private void jTable4PropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FI
         y=(this.getHeight()/2)-(600/2);
         cap.setBounds(x, y, 700, 600);
         cap.setVisible(true);
-        
-        // TODO add your handling code here:
     }//GEN-LAST:event_jMenuItem9ActionPerformed
 
 private void jMenuItem39ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem39ActionPerformed
     RecuperarTab recu=new RecuperarTab(this, true,conexion, this);
     int xi=(this.getWidth()/2)-600/2;
     int yi=(this.getHeight()/2)-200/2;
-    
     recu.setBounds(xi, yi, 600, 250);
-    recu.setVisible(true);    
-    
-    // TODO add your handling code here:
+    recu.setVisible(true);        
 }//GEN-LAST:event_jMenuItem39ActionPerformed
 
 private void jMenuItem43ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem43ActionPerformed
@@ -3499,6 +3498,16 @@ recalcula();        // TODO add your handling code here:
         
         // TODO add your handling code here:
     }//GEN-LAST:event_jMenuItem33ActionPerformed
+
+    private void jMenuItem16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem16ActionPerformed
+        double totalpres = presupuesto.gettotal();
+        reportepresupuesto report = new reportepresupuesto(this, false, conexion, presup,totalpres);
+         int xi = (this.getWidth()/2)-700/2;
+        int yi = (this.getHeight()/2)-450/2;
+         report.setBounds(xi, yi, 700, 450);
+        report.setVisible(true);
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItem16ActionPerformed
     public void recalcula()
     {
        recalcula recal = new recalcula(this, true, conexion, cadena);
