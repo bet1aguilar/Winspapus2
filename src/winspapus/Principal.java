@@ -58,7 +58,8 @@ import reportes.reportepresupuesto;
 public class Principal extends javax.swing.JFrame {
     String principio="";
     String seleccionado;
-    String utilidad;
+    String utilidad;    
+    public int sinst;
     int buscala = 0;
     private Presupuesto presupuesto = null;
     int filamate = 0, filaequipo=0, filamano=0;
@@ -175,7 +176,9 @@ public class Principal extends javax.swing.JFrame {
             //establer seguridad local
             Statement seg = (Statement) conexion.createStatement();
             Statement esc = (Statement) conexion.createStatement();
-            String sql;
+
+            String sql;            
+
  
             sql="select * from mpresadm";
             ResultSet rst = seg.executeQuery(sql);             
@@ -207,14 +210,19 @@ public class Principal extends javax.swing.JFrame {
                    System.exit(0);
                 }     
                 conespapu = (Connection) DriverManager.getConnection("jdbc:mysql://spapu.db.11811826.hostedresource.com/spapu", "spapu", "Rahp81261!");
-                sql="select * from banco";
-                Statement esc1 = (Statement) conespapu.createStatement();
-                ResultSet resg=esc1.executeQuery(sql);
-                while (resg.next())
-                {
-                   System.out.println(resg.getString("nombre"));
-                }    
-                   
+
+                instalador instalar=new instalador(this, true,conespapu, this);
+                int xi=(this.getWidth()/2)-350/2;
+                int yi=(this.getHeight()/2)-100/2;
+                instalar.setBounds(xi, yi, 350, 150);
+                instalar.setVisible(true);
+                if (sinst==0) {
+                   esc.execute("delete from mpresadm");                      
+                   System.exit(0); 
+                }                    
+               
+                 
+
 //                conexremota = (Connection) DriverManager.getConnection("jdbc:mysql://dominiospapu/spapu", "root", "04160481070MSag");
          //       Statement st = (Statement) conexremota.createStatement();
                 
