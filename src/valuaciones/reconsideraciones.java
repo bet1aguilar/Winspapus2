@@ -111,8 +111,6 @@ public class reconsideraciones extends javax.swing.JDialog {
         jTextField9 = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
         jTextField10 = new javax.swing.JTextField();
-        jLabel12 = new javax.swing.JLabel();
-        jTextField11 = new javax.swing.JTextField();
         jButton6 = new javax.swing.JButton();
         jButton7 = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -214,7 +212,7 @@ public class reconsideraciones extends javax.swing.JDialog {
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap(332, Short.MAX_VALUE)
+                .addContainerGap(342, Short.MAX_VALUE)
                 .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -248,6 +246,7 @@ public class reconsideraciones extends javax.swing.JDialog {
 
         jPanel4.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, java.awt.Color.darkGray, java.awt.Color.gray, java.awt.Color.darkGray, java.awt.Color.gray));
 
+        jTextField3.setEditable(false);
         jTextField3.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         jTextField3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -267,6 +266,12 @@ public class reconsideraciones extends javax.swing.JDialog {
         jLabel7.setText("Precio Unitario:");
 
         jTextField2.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        jTextField2.setNextFocusableComponent(jTextField7);
+        jTextField2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTextField2MouseClicked(evt);
+            }
+        });
         jTextField2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField2ActionPerformed(evt);
@@ -280,11 +285,17 @@ public class reconsideraciones extends javax.swing.JDialog {
                 jTextField2FocusLost(evt);
             }
         });
+        jTextField2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField2KeyTyped(evt);
+            }
+        });
 
         jTextArea1.setColumns(20);
         jTextArea1.setEditable(false);
         jTextArea1.setLineWrap(true);
         jTextArea1.setRows(3);
+        jTextArea1.setWrapStyleWord(true);
         jTextArea1.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 jTextArea1KeyPressed(evt);
@@ -376,9 +387,15 @@ public class reconsideraciones extends javax.swing.JDialog {
 
         jTextField7.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         jTextField7.setText("0.00");
+        jTextField7.setNextFocusableComponent(jTextField9);
         jTextField7.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 jTextField7FocusGained(evt);
+            }
+        });
+        jTextField7.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField7KeyTyped(evt);
             }
         });
 
@@ -403,17 +420,20 @@ public class reconsideraciones extends javax.swing.JDialog {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 jTextField9FocusGained(evt);
             }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jTextField9FocusLost(evt);
+            }
+        });
+        jTextField9.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField9KeyTyped(evt);
+            }
         });
 
         jLabel11.setText("Partida:");
 
         jTextField10.setEditable(false);
         jTextField10.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-
-        jLabel12.setText("Precio Asumido:");
-
-        jTextField11.setEditable(false);
-        jTextField11.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
 
         jButton6.setText("Agregar");
         jButton6.addActionListener(new java.awt.event.ActionListener() {
@@ -449,16 +469,14 @@ public class reconsideraciones extends javax.swing.JDialog {
                         .addComponent(jButton6)
                         .addGap(18, 18, 18)
                         .addComponent(jButton7)))
-                .addGap(126, 126, 126)
+                .addGap(127, 127, 127)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel11, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel12, javax.swing.GroupLayout.Alignment.TRAILING))
+                    .addComponent(jLabel11, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jTextField8, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 199, Short.MAX_VALUE)
-                    .addComponent(jTextField10, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 199, Short.MAX_VALUE)
-                    .addComponent(jTextField11, javax.swing.GroupLayout.DEFAULT_SIZE, 199, Short.MAX_VALUE))
+                    .addComponent(jTextField10, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 199, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel5Layout.setVerticalGroup(
@@ -472,14 +490,9 @@ public class reconsideraciones extends javax.swing.JDialog {
                     .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(6, 6, 6)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel11))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextField11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel12)))
+                    .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel11))
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -491,7 +504,7 @@ public class reconsideraciones extends javax.swing.JDialog {
                 .addContainerGap())
         );
 
-        jTable1.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        jTable1.setFont(new java.awt.Font("Tahoma", 0, 10));
         jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jTable1MouseClicked(evt);
@@ -512,15 +525,13 @@ public class reconsideraciones extends javax.swing.JDialog {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 737, Short.MAX_VALUE))
-                        .addContainerGap())))
+                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 737, Short.MAX_VALUE))
+                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -598,7 +609,7 @@ public class reconsideraciones extends javax.swing.JDialog {
         jTextField8.setText("0");
         jTextField9.setText("");
         jTextField10.setText("0.00");
-        jTextField11.setText("0.00");
+       
         String sql = "SELECT id, numegrup, descri, cantidad, precunit, tiporec FROM mppres WHERE "
                 + "nrocuadro="+nrocuadro+" "
                 + "AND nrocuadro IS NOT NULL AND (mpre_id='"+mpres+"' OR mpre_id IN "
@@ -745,7 +756,27 @@ public class reconsideraciones extends javax.swing.JDialog {
         }
     }
     private void jTextField2FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField2FocusLost
-        buscapartida();
+        String cuenta = "SELECT count(*) FROM mppres WHERE mppre_id="+jTextField2.getText().toString()+" AND ("
+                + "mpre_id='"+mpres+"' OR mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+mpres+"'))";
+        int cuantos=0;
+        try {
+            
+            Statement stcuenta = (Statement) conex.createStatement();
+            ResultSet rstcuenta = stcuenta.executeQuery(cuenta);
+            while(rstcuenta.next()){
+                cuantos = rstcuenta.getInt(1);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(reconsideraciones.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        if(cuantos==0){
+            buscapartida();
+        }
+        else{
+            JOptionPane.showMessageDialog(rootPane, "Partida ya existe en esta reconsideración ingrese otra");
+            jTextField2.setText("");
+            jTextField2.requestFocus();
+        }
       
         
     }//GEN-LAST:event_jTextField2FocusLost
@@ -766,7 +797,7 @@ public class reconsideraciones extends javax.swing.JDialog {
                  cantidadrecon = Float.valueOf(jTextField7.getText().toString());
                  nuevopreciasum = Float.valueOf(jTextField9.getText().toString());
                  nuevopreciasum = cantidadrecon*nuevopreciasum;
-                 jTextField11.setText(String.valueOf(nuevopreciasum));
+               
         } catch (SQLException ex) {
             Logger.getLogger(reconsideraciones.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -788,7 +819,7 @@ public class reconsideraciones extends javax.swing.JDialog {
                  cantidadrecon = Float.valueOf(jTextField7.getText().toString());
                  nuevopreciasum = Float.valueOf(jTextField9.getText().toString());
                  nuevopreciasum = cantidadrecon*nuevopreciasum;
-                 jTextField11.setText(String.valueOf(nuevopreciasum));
+                
         } catch (SQLException ex) {
             Logger.getLogger(reconsideraciones.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -811,7 +842,7 @@ public class reconsideraciones extends javax.swing.JDialog {
             }
             //Copia de la partida
             String selecciona = "SELECT idband, porcgad, porcpre, porcutil, precasu, precunit, rendimi, unidad"
-                    + ", redondeo, status FROM mppres WHERE "
+                    + ", redondeo, status, numero FROM mppres WHERE "
                     + "numegrup = "+numegrup+" AND (mpre_id='"+mpres+"' OR mpre_id IN (SELECT id FROM mpres "
                     + "WHERE mpres_id='"+mpres+"'))";
             
@@ -836,7 +867,7 @@ public class reconsideraciones extends javax.swing.JDialog {
                 unidad = rstr.getObject("unidad").toString();
                 redondeo = rstr.getObject("redondeo").toString();
                 status = rstr.getObject("status").toString();
-                
+                numero = rstr.getObject("numero").toString();
             }                   
             cantidad = jTextField7.getText().toString();
             precunit = jTextField9.getText().toString();
@@ -845,13 +876,13 @@ public class reconsideraciones extends javax.swing.JDialog {
             String inserta = "INSERT INTO mppres (mpre_id, id, numero, numegrup, descri, "
                     + " idband, porcgad, porcpre, porcutil, precasu, precunit, rendimi, "
                     + "unidad, redondeo, status,"
-                    + "cantidad, tipo, nrocuadro, tiporec) "
+                    + "cantidad, tipo, nrocuadro, tiporec,mppre_id) "
                     + " VALUES ('"+codnuevopres+"','"+jTextField3.getText()+"', "+contar+", "+numegrup1+", "
                     + "'"+jTextArea1.getText()+"',"
                     + ""+idband+", "+porcgad+", "+porcpre+","+porcutil+","
-                    + " "+nuevopreciasum+", "+precunit+", "+rendimi+", "
+                    + " "+precasu+", "+precunit+", "+rendimi+", "
                     + "'"+unidad+"', "+redondeo+", "+status+","+cantidad+",'VP', "
-                    + " "+nrocuadro+", 'VP-"+jTextField2.getText()+"')";
+                    + " "+nrocuadro+", 'VP-"+jTextField2.getText()+"',"+numero+")";
             
          //   System.out.println("Inserta "+inserta);
             Statement sts = (Statement) conex.createStatement();
@@ -877,11 +908,15 @@ public class reconsideraciones extends javax.swing.JDialog {
             if(contare==0){
                 //INSERT
                 
-                String consultainsert = "INSERT INTO mpres (id, nomabr,nombre,ubicac,fecini,fecfin,feccon,fecinmp,porcgam,)"
+                String consultainsert = "INSERT INTO mpres (id, nomabr,nombre,ubicac,fecini,fecfin,feccon,fecimp,"
+                        + "porgam,porcfi, porimp,"
+                        + "poripa, porpre, poruti, codpro, codcon, parpre, nrocon, nroctr, fecapr, nrolic, status, "
+                        + "mpres_id, memo, "
+                        + "timemo, fecmemo, seleccionado, partidapres)"
                         + "SELECT '"+codnuevopres+"', nomabr, nombre, ubicac, fecini,"
                     + "fecfin, feccon, fecimp, porgam, porcfi, porimp, poripa, "
                     + "porpre, poruti, codpro, codcon, parpre, nrocon, nroctr, fecapr,"
-                    + "nrolic, 1, '"+mpres+"',memo,timemo, fecmemo, 0 FROM mpres WHERE id='"+mpres+"'";
+                    + "nrolic, 1, '"+mpres+"',memo,timemo, fecmemo, 0,partidapres FROM mpres WHERE id='"+mpres+"'";
                 Statement insertapres = (Statement) conex.createStatement();
                 insertapres.execute(consultainsert);                
             }
@@ -929,7 +964,7 @@ public class reconsideraciones extends javax.swing.JDialog {
                 if(cuantos==0){
                     String insertemat = "INSERT INTO mmpres "
                             + "SELECT '"+codnuevopres+"', id, descri,desperdi, precio, unidad, status "
-                            + "FROM mmpres WHERE numepart = "+num+" AND (mpre_id='"+mpres+"' OR "
+                            + "FROM mmpres WHERE id='"+codmat+"' AND numepart = "+num+" AND (mpre_id='"+mpres+"' OR "
                             + "mpre_id IN (SELECT id FROM mpres WHERE mpres_id = '"+mpres+"' ))";
                     Statement insertar = (Statement) conex.createStatement();
                     insertar.execute(insertemat);
@@ -943,7 +978,7 @@ public class reconsideraciones extends javax.swing.JDialog {
             while(rsequipos.next()){
                 String codeq = rsequipos.getString("mepre_id");
                 String cuentas = "SELECT count(*) FROM mepres WHERE id = '"+codeq+"' AND "
-                        + "(mpre_id='"+mpres+"' OR mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+mpres+"'))";
+                        + " mpre_id='"+codnuevopres+"'";
                 Statement stcuentas = (Statement) conex.createStatement();
                 ResultSet rstcuentas = stcuentas.executeQuery(cuentas);
                 int cuantos=0;
@@ -953,7 +988,7 @@ public class reconsideraciones extends javax.swing.JDialog {
                 if(cuantos==0){
                     String inserteq = "INSERT INTO mepres "
                             + "SELECT '"+codnuevopres+"', id, descri,deprecia, precio, status "
-                            + "FROM mepres WHERE id = "+codeq+" AND (mpre_id='"+mpres+"' OR "
+                            + "FROM mepres WHERE id = '"+codeq+"' AND (mpre_id='"+mpres+"' OR "
                             + "mpre_id IN (SELECT id FROM mpres WHERE mpres_id = '"+mpres+"' ))";
                     Statement insertar = (Statement) conex.createStatement();
                     insertar.execute(inserteq);
@@ -968,7 +1003,7 @@ public class reconsideraciones extends javax.swing.JDialog {
             while(rsmano.next()){
                 String codmano = rsmano.getString("mmopre_id");
                 String cuentas = "SELECT count(*) FROM mmopres WHERE id = '"+codmano+"' AND "
-                        + "(mpre_id='"+mpres+"' OR mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+mpres+"'))";
+                        + "mpre_id='"+codnuevopres+"'";
                 Statement stcuentas = (Statement) conex.createStatement();
                 ResultSet rstcuentas = stcuentas.executeQuery(cuentas);
                 int cuantos=0;
@@ -977,8 +1012,8 @@ public class reconsideraciones extends javax.swing.JDialog {
                 }
                 if(cuantos==0){
                     String insermano = "INSERT INTO mmopres "
-                            + "SELECT '"+codnuevopres+"', id, descri,deprecia, bono, salario, subsid, status "
-                            + "FROM mmopres WHERE id = "+codmano+" AND (mpre_id='"+mpres+"' OR "
+                            + "SELECT '"+codnuevopres+"', id, descri, bono, salario, subsid, status "
+                            + "FROM mmopres WHERE id = '"+codmano+"' AND (mpre_id='"+mpres+"' OR "
                             + "mpre_id IN (SELECT id FROM mpres WHERE mpres_id = '"+mpres+"' ))";
                     Statement insertar = (Statement) conex.createStatement();
                     insertar.execute(insermano);
@@ -1091,15 +1126,37 @@ public class reconsideraciones extends javax.swing.JDialog {
     }//GEN-LAST:event_jTextField2ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+       numegrup = jTable1.getValueAt(filapart, 1).toString();
+        String selecnuevo = "SELECT mpre_id FROM mppres WHERE numegrup="+numegrup+" AND (mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+mpres+"'))";
+           
+        try {
+                Statement stse = (Statement) conex.createStatement();
+                ResultSet rstse = stse.executeQuery(selecnuevo);
+                while(rstse.next()){
+                    codnuevopres=rstse.getString(1);
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(reconsideraciones.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        int op=JOptionPane.showConfirmDialog(rootPane, "Desea Eliminar Esta Partida de la reconsideración de precios? "+codnuevopres,"Borrar de Reconsideración",JOptionPane.YES_NO_OPTION);
+       if(op==JOptionPane.YES_OPTION){
        
-        numegrup = jTable1.getValueAt(filapart, 1).toString();
-        String delete ="DELETE FROM mppres WHERE numegrup="+numegrup+" AND mpre_id='"+mpres+"' OR mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+mpres+"')";
+        String delete ="DELETE FROM mppres WHERE numegrup="+numegrup+" AND "
+                + "mpre_id='"+codnuevopres+"'";
+        String deletemat = "DELETE FROM dmpres WHERE mpre_id='"+codnuevopres+"' AND numepart="+numero+"";
+        String deleteequipo = "DELETE FROM deppres WHERE mpre_id='"+codnuevopres+"' AND numero="+numero+"";
+        String deletemano = "DELETE FROM dmoppres WHERE mpre_id='"+codnuevopres+"' AND numero="+numero+"";
         try {
             Statement st = (Statement) conex.createStatement();
             st.execute(delete);
+             st.execute(deleteequipo);
+              st.execute(deletemano);
+               st.execute(deletemat);
             JOptionPane.showMessageDialog(null, "Se ha eliminado la partida");
+            buscacuadro();
         } catch (SQLException ex) {
             Logger.getLogger(reconsideraciones.class.getName()).log(Level.SEVERE, null, ex);
+        }
         }
     }//GEN-LAST:event_jButton5ActionPerformed
 
@@ -1146,6 +1203,50 @@ public class reconsideraciones extends javax.swing.JDialog {
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
     ver();
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jTextField7KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField7KeyTyped
+
+               
+        int code = evt.getKeyCode();
+        char car = evt.getKeyChar();
+ if ((car<'0' || car>'9') && car!='.') {  
+           
+            evt.consume();
+        }
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField7KeyTyped
+
+    private void jTextField9KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField9KeyTyped
+      
+        
+          int code = evt.getKeyCode();
+        char car = evt.getKeyChar();
+ if ((car<'0' || car>'9') && car!='.') {  
+           
+            evt.consume();
+        }// TODO add your handling code here:
+    }//GEN-LAST:event_jTextField9KeyTyped
+
+    private void jTextField2KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField2KeyTyped
+ int code = evt.getKeyCode();
+        char car = evt.getKeyChar();
+ if ((car<'0' || car>'9') ) {  
+           
+            evt.consume();
+        }        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField2KeyTyped
+
+    private void jTextField2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField2MouseClicked
+        jTextField2.setText("");
+        
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField2MouseClicked
+
+    private void jTextField9FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField9FocusLost
+        
+        
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField9FocusLost
      private void ver() 
      {
          String parti=jTable1.getValueAt(filapart, 1).toString();
@@ -1182,7 +1283,6 @@ public class reconsideraciones extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -1202,7 +1302,6 @@ public class reconsideraciones extends javax.swing.JDialog {
     private javax.swing.JTable jTable1;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextField jTextField10;
-    private javax.swing.JTextField jTextField11;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;

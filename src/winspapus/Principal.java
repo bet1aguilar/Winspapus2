@@ -3483,7 +3483,7 @@ recalcula();        // TODO add your handling code here:
         aumentosdismi aumento = new aumentosdismi(this, true, presup, conexion,total);
         int xi = (this.getWidth()/2)-1200/2;
         int yi = (this.getHeight()/2)-650/2;
-        aumento.setBounds(xi, yi, 1200, 700);
+        aumento.setBounds(xi, yi, 1250, 700);
         aumento.setVisible(true);
         
         
