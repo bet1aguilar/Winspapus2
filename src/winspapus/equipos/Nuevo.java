@@ -203,7 +203,7 @@ public class Nuevo extends javax.swing.JDialog {
             }
         });
 
-        jPanel2.setBackground(new java.awt.Color(97, 126, 171));
+        jPanel2.setBackground(new java.awt.Color(100, 100, 100));
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11));
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
@@ -224,6 +224,7 @@ public class Nuevo extends javax.swing.JDialog {
                 .addContainerGap())
         );
 
+        jLabel6.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel6.setText("Depreciación:");
 
         jLabel21.setForeground(new java.awt.Color(255, 0, 0));
@@ -231,14 +232,17 @@ public class Nuevo extends javax.swing.JDialog {
 
         jTextField8.setToolTipText("Ingrese Descripción del material");
 
+        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel2.setText("Código *:");
 
         jTextField1.setToolTipText("Ingrese Código de Equipo");
 
+        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel4.setText("Descripción:");
 
         jTextField3.setToolTipText("Ingrese Depreciación del equipo");
 
+        jLabel12.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel12.setText("Precio:");
 
         jLabel9.setFont(new java.awt.Font("Tahoma", 0, 14));

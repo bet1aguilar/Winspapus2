@@ -191,7 +191,7 @@ public class variatab extends javax.swing.JDialog {
             }
         });
 
-        jPanel7.setBackground(new java.awt.Color(97, 126, 171));
+        jPanel7.setBackground(new java.awt.Color(100, 100, 100));
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 11));
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));

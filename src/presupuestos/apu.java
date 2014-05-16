@@ -578,7 +578,7 @@ public class apu extends javax.swing.JDialog {
             }
         });
 
-        jPanel2.setBackground(new java.awt.Color(97, 126, 171));
+        jPanel2.setBackground(new java.awt.Color(100, 100, 100));
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11));
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
@@ -601,7 +601,8 @@ public class apu extends javax.swing.JDialog {
 
         jTabbedPane1.setTabLayoutPolicy(javax.swing.JTabbedPane.SCROLL_TAB_LAYOUT);
 
-        jTable1.setFont(new java.awt.Font("Tahoma", 0, 10));
+        jTable1.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        jTable1.setSelectionBackground(new java.awt.Color(255, 153, 51));
         jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jTable1MouseClicked(evt);
@@ -1069,6 +1070,7 @@ public class apu extends javax.swing.JDialog {
         );
 
         jTable2.setFont(new java.awt.Font("Tahoma", 0, 10));
+        jTable2.setSelectionBackground(new java.awt.Color(255, 153, 51));
         jTable2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jTable2MouseClicked(evt);
@@ -1171,6 +1173,7 @@ public class apu extends javax.swing.JDialog {
         jTabbedPane1.addTab("Equipos", new javax.swing.ImageIcon(getClass().getResource("/winspapus/imagenes/equipobarra.png")), jPanel4); // NOI18N
 
         jTable3.setFont(new java.awt.Font("Tahoma", 0, 10));
+        jTable3.setSelectionBackground(new java.awt.Color(255, 153, 51));
         jTable3.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jTable3MouseClicked(evt);
@@ -1480,7 +1483,7 @@ public class apu extends javax.swing.JDialog {
                 .addContainerGap()
                 .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 179, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 176, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );

@@ -134,6 +134,7 @@ private void cambiarcabecera() {
         );
 
         jTable1.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        jTable1.setSelectionBackground(new java.awt.Color(255, 153, 51));
         jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jTable1MouseClicked(evt);
@@ -141,9 +142,9 @@ private void cambiarcabecera() {
         });
         jScrollPane1.setViewportView(jTable1);
 
-        jPanel2.setBackground(new java.awt.Color(97, 126, 171));
+        jPanel2.setBackground(new java.awt.Color(100, 100, 100));
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11));
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Materiales Matriz de Costos");
@@ -165,6 +166,7 @@ private void cambiarcabecera() {
         jLabel2.setText("Seleccione el Precio Referencial para el cual desea modificar los materiales");
 
         jTable2.setFont(new java.awt.Font("Tahoma", 0, 9)); // NOI18N
+        jTable2.setSelectionBackground(new java.awt.Color(255, 153, 51));
         jTable2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jTable2MouseClicked(evt);

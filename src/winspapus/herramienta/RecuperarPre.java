@@ -123,9 +123,9 @@ public class RecuperarPre extends javax.swing.JDialog {
             }
         });
 
-        jPanel3.setBackground(new java.awt.Color(97, 126, 171));
+        jPanel3.setBackground(new java.awt.Color(100, 100, 100));
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11));
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Recuperar Presupuesto");

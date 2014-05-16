@@ -143,7 +143,7 @@ public class reportepresupuesto extends javax.swing.JDialog {
             }
         });
 
-        jPanel3.setBackground(new java.awt.Color(97, 126, 171));
+        jPanel3.setBackground(new java.awt.Color(100, 100, 100));
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11));
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
@@ -440,13 +440,20 @@ public class reportepresupuesto extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 public void generareportepres(){
+     JasperPrint print=null;
          try {
+             
               FileInputStream input=null;
               String titulo = jTextField1.getText().toString();
             try {
                 
                 if(cual==1){
-               input = new FileInputStream(new File("presupuestos.jrxml"));
+                    if(jCheckBox2.isSelected()){
+                         input = new FileInputStream(new File("presupuestosubtotal.jrxml"));
+                    }else{
+                         input = new FileInputStream(new File("presupuestos.jrxml"));
+                    }
+              
                
                }
                 if(cual==2){
@@ -515,13 +522,18 @@ public void generareportepres(){
            if(cual==2){
                 parameters.put("presnoprevista", jTextField2.getText());
            }
+           if(cual!=3){
+           
             parameters.put("mpres", pres);
             parameters.put("fecha", fecha);
             parameters.put("titulo",titulo);
              parameters.put("totalenletra",letras);
-            JasperPrint print = JasperFillManager.fillReport(report, parameters, conex);
+          
+           print = JasperFillManager.fillReport(report, parameters, conex);
+             }
             FileOutputStream output=null;
             String auxruta=ruta;
+            
             if(jCheckBox1.isSelected()){
                 ruta= ruta+".pdf";
                 try {

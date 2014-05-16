@@ -544,6 +544,7 @@ public class Principal extends javax.swing.JFrame {
 
         jInternalFrame1.setClosable(true);
         jInternalFrame1.setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
+        jInternalFrame1.setIconifiable(true);
         jInternalFrame1.setMaximizable(true);
         jInternalFrame1.setTitle("Gestionar Listado de Precios Referenciales");
         jInternalFrame1.setPreferredSize(new java.awt.Dimension(1040, 600));
@@ -568,11 +569,11 @@ public class Principal extends javax.swing.JFrame {
         jPanel2.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(102, 102, 102), 1, true));
         jPanel2.setAutoscrolls(true);
 
-        jPanel5.setBackground(new java.awt.Color(97, 126, 171));
-        jPanel5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(107, 173, 240)));
+        jPanel5.setBackground(new java.awt.Color(100, 100, 100));
+        jPanel5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(100, 100, 100)));
 
-        jLabel1.setBackground(new java.awt.Color(97, 126, 171));
-        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 12));
+        jLabel1.setBackground(new java.awt.Color(100, 100, 100));
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setLabelFor(jPanel5);
@@ -681,10 +682,11 @@ public class Principal extends javax.swing.JFrame {
         );
 
         jTable1.setAutoCreateRowSorter(true);
-        jTable1.setFont(new java.awt.Font("Tahoma", 0, 9));
+        jTable1.setFont(new java.awt.Font("Tahoma", 0, 9)); // NOI18N
         jTable1.setEditingColumn(0);
         jTable1.setEditingRow(0);
         jTable1.setName("mtabustable"); // NOI18N
+        jTable1.setSelectionBackground(new java.awt.Color(255, 153, 51));
         jTable1.getTableHeader().setReorderingAllowed(false);
         jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -722,11 +724,11 @@ public class Principal extends javax.swing.JFrame {
 
         jPanel3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
 
-        jPanel7.setBackground(new java.awt.Color(97, 126, 171));
-        jPanel7.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(107, 173, 240)));
+        jPanel7.setBackground(new java.awt.Color(100, 100, 100));
+        jPanel7.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(100, 100, 100)));
 
-        jLabel3.setBackground(new java.awt.Color(97, 126, 171));
-        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 12));
+        jLabel3.setBackground(new java.awt.Color(100, 100, 100));
+        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setLabelFor(jPanel5);
@@ -858,10 +860,11 @@ public class Principal extends javax.swing.JFrame {
         );
 
         jTable2.setAutoCreateRowSorter(true);
-        jTable2.setFont(new java.awt.Font("Tahoma", 0, 10));
+        jTable2.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         jTable2.setEditingColumn(0);
         jTable2.setEditingRow(0);
         jTable2.setName("mtabustable"); // NOI18N
+        jTable2.setSelectionBackground(new java.awt.Color(255, 153, 51));
         jTable2.getTableHeader().setReorderingAllowed(false);
         jTable2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -890,7 +893,7 @@ public class Principal extends javax.swing.JFrame {
         jLabel14.setText("Código COVENIN:");
         jLabel14.setAlignmentY(0.0F);
 
-        jLabel15.setFont(new java.awt.Font("Tahoma", 0, 10));
+        jLabel15.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
 
         jLabel19.setFont(new java.awt.Font("Tahoma", 0, 10));
 
@@ -950,7 +953,7 @@ public class Principal extends javax.swing.JFrame {
         jLabel16.setFont(new java.awt.Font("Tahoma", 1, 10));
         jLabel16.setText("Número:");
 
-        jLabel29.setFont(new java.awt.Font("Tahoma", 0, 10));
+        jLabel29.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
 
         jLabel20.setFont(new java.awt.Font("Tahoma", 1, 10));
         jLabel20.setText("Unidad Medida:");
@@ -1107,11 +1110,11 @@ public class Principal extends javax.swing.JFrame {
 
         jPanel4.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(102, 102, 102), 1, true));
 
-        jPanel11.setBackground(new java.awt.Color(97, 126, 171));
-        jPanel11.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(107, 173, 240)));
+        jPanel11.setBackground(new java.awt.Color(100, 100, 100));
+        jPanel11.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(100, 100, 100)));
 
         jLabel6.setBackground(new java.awt.Color(97, 126, 171));
-        jLabel6.setFont(new java.awt.Font("Tahoma", 0, 12));
+        jLabel6.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel6.setText("Análisis de Precio Unitario");
@@ -1135,6 +1138,7 @@ public class Principal extends javax.swing.JFrame {
         jTable4.setAutoCreateRowSorter(true);
         jTable4.setFont(new java.awt.Font("Tahoma", 0, 9));
         jTable4.setToolTipText("Para editar Cantidades haga doble click en la columna deseada");
+        jTable4.setSelectionBackground(new java.awt.Color(255, 153, 51));
         jTable4.getTableHeader().setReorderingAllowed(false);
         jTable4.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -1226,7 +1230,7 @@ public class Principal extends javax.swing.JFrame {
                     .addGroup(jPanel13Layout.createSequentialGroup()
                         .addGap(31, 31, 31)
                         .addComponent(jLabel9))
-                    .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 131, Short.MAX_VALUE))
+                    .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -1241,6 +1245,7 @@ public class Principal extends javax.swing.JFrame {
         jTable5.setAutoCreateRowSorter(true);
         jTable5.setFont(new java.awt.Font("Tahoma", 0, 9));
         jTable5.setToolTipText("Para editar Cantidades haga doble click en la columna deseada");
+        jTable5.setSelectionBackground(new java.awt.Color(255, 153, 51));
         jTable5.getTableHeader().setReorderingAllowed(false);
         jTable5.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -1351,6 +1356,7 @@ public class Principal extends javax.swing.JFrame {
         jTable3.setAutoCreateRowSorter(true);
         jTable3.setFont(new java.awt.Font("Tahoma", 0, 10));
         jTable3.setToolTipText("Para editar Cantidades haga doble click en la columna deseada");
+        jTable3.setSelectionBackground(new java.awt.Color(255, 153, 51));
         jTable3.getTableHeader().setReorderingAllowed(false);
         jTable3.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -1436,7 +1442,7 @@ public class Principal extends javax.swing.JFrame {
             .addGroup(jPanel12Layout.createSequentialGroup()
                 .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel7)
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE))
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 118, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)

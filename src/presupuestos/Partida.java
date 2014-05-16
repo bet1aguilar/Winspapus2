@@ -477,7 +477,7 @@ public final void buscagrupo() throws SQLException{
             }
         });
 
-        jPanel2.setBackground(new java.awt.Color(97, 126, 171));
+        jPanel2.setBackground(new java.awt.Color(100, 100, 100));
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11));
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
@@ -536,7 +536,7 @@ public final void buscagrupo() throws SQLException{
         jLabel4.setText("Descripción:");
 
         jTextArea1.setColumns(22);
-        jTextArea1.setFont(new java.awt.Font("Monospaced", 0, 11));
+        jTextArea1.setFont(new java.awt.Font("Monospaced", 0, 11)); // NOI18N
         jTextArea1.setLineWrap(true);
         jTextArea1.setRows(3);
         jTextArea1.setWrapStyleWord(true);

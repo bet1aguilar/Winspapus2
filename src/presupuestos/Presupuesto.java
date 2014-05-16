@@ -523,11 +523,11 @@ public class Presupuesto extends javax.swing.JInternalFrame {
 
         jPanel3.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(102, 102, 102), 1, true));
 
-        jPanel8.setBackground(new java.awt.Color(97, 126, 171));
-        jPanel8.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(107, 173, 240)));
+        jPanel8.setBackground(new java.awt.Color(100, 100, 100));
+        jPanel8.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(100, 100, 100)));
 
-        jLabel3.setBackground(new java.awt.Color(97, 126, 171));
-        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 12));
+        jLabel3.setBackground(new java.awt.Color(100, 100, 100));
+        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setText("Obra Activa");
@@ -546,8 +546,9 @@ public class Presupuesto extends javax.swing.JInternalFrame {
             .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
         );
 
-        jTable2.setFont(new java.awt.Font("Tahoma", 0, 10));
+        jTable2.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         jTable2.setToolTipText("Haga Doble Click sobre Cualquier Partida para ver Detalle");
+        jTable2.setSelectionBackground(new java.awt.Color(255, 153, 51));
         jTable2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jTable2MouseClicked(evt);
@@ -925,11 +926,11 @@ public class Presupuesto extends javax.swing.JInternalFrame {
 
         jPanel5.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(102, 102, 102), 1, true));
 
-        jPanel7.setBackground(new java.awt.Color(97, 126, 171));
-        jPanel7.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(107, 173, 240)));
+        jPanel7.setBackground(new java.awt.Color(100, 100, 100));
+        jPanel7.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(100, 100, 100)));
 
-        jLabel2.setBackground(new java.awt.Color(97, 126, 171));
-        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 12));
+        jLabel2.setBackground(new java.awt.Color(100, 100, 100));
+        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setText("Seleccionar Partidas para Presupuesto del Tabulador");
@@ -1046,7 +1047,8 @@ public class Presupuesto extends javax.swing.JInternalFrame {
                 .addContainerGap())
         );
 
-        jTable1.setFont(new java.awt.Font("Tahoma", 0, 10));
+        jTable1.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        jTable1.setSelectionBackground(new java.awt.Color(255, 153, 51));
         jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jTable1MouseClicked(evt);
