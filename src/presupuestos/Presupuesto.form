@@ -868,7 +868,7 @@
                               <EmptySpace min="-2" max="-2" attributes="0"/>
                               <Component id="jPanel6" min="-2" pref="36" max="-2" attributes="0"/>
                               <EmptySpace min="-2" max="-2" attributes="0"/>
-                              <Component id="jScrollPane1" pref="212" max="32767" attributes="0"/>
+                              <Component id="jScrollPane1" pref="215" max="32767" attributes="0"/>
                               <EmptySpace min="-2" max="-2" attributes="0"/>
                               <Component id="jPanel9" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>

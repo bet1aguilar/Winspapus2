@@ -1696,7 +1696,7 @@ private void formInternalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
        
         Nuevo s = new Nuevo(prin, true, this, conex);
-        s.setBounds((this.getWidth()/2)-450, (this.getHeight()/2)-275, 900, 550);
+        s.setBounds((this.getWidth()/2)-450, (this.getHeight()/2)-275, 900, 600);
         s.setVisible(true);
         vaciacampos();
        
