@@ -28,6 +28,7 @@ import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 import net.sf.jasperreports.engine.JRException;
@@ -314,6 +315,11 @@ public class reportepresupuesto extends javax.swing.JDialog {
         });
 
         jButton1.setText("...");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jCheckBox7.setText("Excel");
 
@@ -637,6 +643,17 @@ public void generareportepres(){
     private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField3ActionPerformed
+
+private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+            JFileChooser fileChooser = new JFileChooser();
+        int seleccion = fileChooser.showSaveDialog(jTextField1);
+        
+        File fichero = fileChooser.getSelectedFile();
+        jTextField1.setText(fichero.getPath().toString());
+        ruta = jTextField1.getText().toString();
+    
+    // TODO add your handling code here:
+}//GEN-LAST:event_jButton1ActionPerformed
     
     private void doClose(int retStatus) {
         returnStatus = retStatus;

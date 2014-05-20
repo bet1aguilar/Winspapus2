@@ -353,9 +353,10 @@ agrupa();
                 String actualiza = "UPDATE mptabs SET precasu="+precasu+", redondeo=1 WHERE mtabus_id='"+tabu+"' AND status=1";
                 Statement stactuliza = (Statement) conex.createStatement();
                 stactuliza.execute(actualiza);
-            JOptionPane.showMessageDialog(rootPane, "Se han redondeado todos los precios unitarios del listado de precios "+tabu);
+            
 
             }
+            JOptionPane.showMessageDialog(rootPane, "Se han redondeado todos los precios unitarios del listado de precios "+tabu);
         } catch (SQLException ex) {
             Logger.getLogger(recalcula.class.getName()).log(Level.SEVERE, null, ex);
         }

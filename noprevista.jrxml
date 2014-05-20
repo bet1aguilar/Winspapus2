@@ -62,7 +62,7 @@ WHERE mppres.mpre_id=$P{mpres} GROUP BY mppres.mpre_id]]>
 	<queryString>
 		<![CDATA[SELECT
      CONCAT(mppres.`id`,'\n',mppres.`descri`) AS mppres_descri,
-     mppres.cantidad*IF(precunit=0,precasu,precunit) AS total,
+     mppres.cantidad*IF(precasu=0,precunit,precasu) AS total,
      mpres.`id` AS mpres_id,
      mpres.`nomabr` AS mpres_nomabr,
      mpres.`nombre` AS mpres_nombre,
@@ -86,7 +86,7 @@ WHERE mppres.mpre_id=$P{mpres} GROUP BY mppres.mpre_id]]>
      mpres.`memo` AS mpres_memo,
      mpres.`seleccionado` AS mpres_seleccionado,
      mppres.`numegrup` AS mppres_numegrup,
-     IF(mppres.`precunit`=0, mppres.`precasu`, mppres.precunit) AS mppres_precunit,
+     IF(mppres.`precasu`=0, mppres.`precunit`, mppres.precasu) AS mppres_precunit,
      mppres.`unidad` AS mppres_unidad,
      mppres.`cantidad` AS mppres_cantidad,
 

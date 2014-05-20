@@ -1566,7 +1566,7 @@ public class Presupuesto extends javax.swing.JInternalFrame {
        jTextField11.setText("0.00");
        jTextField12.setText("0.00"); 
        jTextField13.setText("0.00");
-        String cargasinredondeo = "SELECT SUM(ROUND(IF(mppres.`precunit`=0,mppres.`precasu`,precunit)*cantidad,2)) "
+        String cargasinredondeo = "SELECT SUM(ROUND(IF(mppres.`precasu`=0,mppres.`precunit`,precasu)*cantidad,2)) "
                 + "FROM `winspapu`.`mppres` WHERE  tipo='Org' AND mpre_id='"+id+"'";
         System.out.println("totales cargartotal: "+cargasinredondeo);
         try {
