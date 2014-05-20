@@ -14,6 +14,7 @@ import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import javax.swing.JDesktopPane;
 import javax.swing.border.Border;
 /**
  * @web http://jc-mouse.blogspot.com/
@@ -21,11 +22,14 @@ import javax.swing.border.Border;
  */
 public class Imagen implements Border {    
     BufferedImage fondo;
-    public Imagen(){    
+    JDesktopPane panel;
+    public Imagen(JDesktopPane jpanel){    
         try {       
-            //se obtiene la imagen            
-            URL url = new URL(getClass().getResource("/winspapus/imagenes/imagen-2.jpg").toString());
-            fondo = ImageIO.read(url);    
+            //se obtiene la imagen   
+            this.panel = jpanel;
+            URL url = new URL(getClass().getResource("/winspapus/imagenes/imagen-1.jpg").toString());
+            fondo = ImageIO.read(url);  
+            
             
         } catch (IOException ex) {
             Logger.getLogger(Imagen.class.getName()).log(Level.SEVERE, null, ex);
@@ -36,7 +40,7 @@ public class Imagen implements Border {
     public void paintBorder(Component c, Graphics g, int x, int y, int width, int height){     
         //se dibuja la imagen de fondo en el centro del contenedor
         //cada que se redimensione el contenedor, la imagen automaticamente se posiciona en el centro
-        g.drawImage(fondo, (x + (width - fondo.getWidth())),(y + (height - fondo.getHeight())/2), null);
+        g.drawImage(fondo, 0,0, panel.getWidth(), panel.getHeight(), null);
     }
 
     @Override

@@ -123,7 +123,7 @@ public class Principal extends javax.swing.JFrame {
     jTable5.getTableHeader().setSize(new Dimension(25,40));
     jTable5.getTableHeader().setPreferredSize(new Dimension(20,30));
     jTable5.setRowHeight(20);
-        jDesktopPane1.setBorder(new Imagen());
+        jDesktopPane1.setBorder(new Imagen(jDesktopPane1));
        
         jScrollPane8.getViewport().add(jPanel1);
       jInternalFrame1.setVisible(false);

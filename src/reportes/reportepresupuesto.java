@@ -475,9 +475,9 @@ public void generareportepres(){
                     }
                     
                 }
-                if(cual==3){
+                if(cual==3){ 
                     float impuesto = 0;
-                    input = new FileInputStream(new File("modificado.jrxml"));
+                    input = new FileInputStream(new File("modificadodesdejava.jrxml"));
                   String select = "SELECT SUM(cantidad*precunit), IFNULL(IF(tipo!='VP',SUM(mp.cantidad+IFNULL((SELECT SUM(aumento) "
                           + "FROM admppres WHERE numepart=mp.numero AND mpre_id='"+pres+"'),0)-"
     +"IFNULL((SELECT SUM(disminucion) FROM admppres WHERE numepart=mp.numero AND mpre_id='"+pres+"'),0)),"
