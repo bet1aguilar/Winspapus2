@@ -24,7 +24,7 @@ public class Imagen implements Border {
     public Imagen(){    
         try {       
             //se obtiene la imagen            
-            URL url = new URL(getClass().getResource("/winspapus/imagenes/fondo.png").toString());
+            URL url = new URL(getClass().getResource("/winspapus/imagenes/imagen-2.jpg").toString());
             fondo = ImageIO.read(url);    
             
         } catch (IOException ex) {
@@ -36,7 +36,7 @@ public class Imagen implements Border {
     public void paintBorder(Component c, Graphics g, int x, int y, int width, int height){     
         //se dibuja la imagen de fondo en el centro del contenedor
         //cada que se redimensione el contenedor, la imagen automaticamente se posiciona en el centro
-        g.drawImage(fondo, (x + (width - fondo.getWidth())/2),(y + (height - fondo.getHeight())/2), null);
+        g.drawImage(fondo, (x + (width - fondo.getWidth())),(y + (height - fondo.getHeight())/2), null);
     }
 
     @Override
