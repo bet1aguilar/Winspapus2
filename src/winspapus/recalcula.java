@@ -466,7 +466,8 @@ agrupa();
                 float contmat = 0, contequipo =0, contmano = 0, cantmano=0, bono=0, subsid=0, precunitrecalculado=0;
                 float precunit;
                 
-                String consulta = "SELECT SUM(((mm.precio+(mm.precio*(mm.desperdi/100)))*dm.cantidad)) as total FROM dmtabs as dm"
+                String consulta = "SELECT SUM(((mm.precio+(mm.precio*(mm.desperdi/100)))*dm.cantidad)) as total FROM "
+                        + "dmtabs as dm, mmtabs as mm "
                         + " WHERE dm.mmtab_id=mm.id AND dm.mtabus_id=mm.mtabus_id AND mm.mtabus_id='"+tabu+"' AND "
                         + "dm.numepart="+numero;
                 Statement mates = (Statement) conex.createStatement();
@@ -474,8 +475,9 @@ agrupa();
                 while(rmates.next()){
                     contmat = rmates.getFloat(1);
                 }
-                String consultaeq = "SELECT SUM(IF(me.deprecia=0,de.cantidad*me.precio, de.cantidad*me.deprecia*me.precio)) as total FROM "
-                        + "deptabs WHERE me.id=de.metab_id AND me.mtabus_id=de.mtabus_id AND de.mtabus_id='"+tabu+"' AND de.numero="+numero+"";
+                String consultaeq = "SELECT SUM(IF(me.deprecia=0,de.cantidad*me.precio, de.cantidad*me.deprecia*me.precio)) "
+                        + "as total FROM "
+                        + "deptabs as de, metabs as me WHERE me.id=de.metab_id AND me.mtabus_id=de.mtabus_id AND de.mtabus_id='"+tabu+"' AND de.numero="+numero+"";
                 Statement steq = (Statement) conex.createStatement();
                 ResultSet rsteq = steq.executeQuery(consultaeq);
                 while(rsteq.next()){
@@ -485,7 +487,7 @@ agrupa();
                 contequipo = contequipo/rendimi;
                 }
                 String consultaman = "SELECT SUM(do.cant) as cantidad, mo.bono, mo.subsid, SUM(mo.salario*do*cantidad) as total"
-                        + " FROM mo as mmotabs, do as dmoptabs WHERE do.mmotab_id = mo.id AND do.mtabus_id= mo.mtabus_id"
+                        + " FROM mmotabs as mo,dmoptabs as do WHERE do.mmotab_id = mo.id AND do.mtabus_id= mo.mtabus_id"
                         + " AND do.mtabus_id='"+tabu+"' AND do.numero = "+numero+"";
                 Statement stman = (Statement) conex.createStatement();
                 ResultSet rstman = stman.executeQuery(consultaman);
