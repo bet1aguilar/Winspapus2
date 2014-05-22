@@ -292,11 +292,19 @@
               <SubComponents>
                 <MenuItem class="javax.swing.JMenuItem" name="jMenuItem32">
                   <Properties>
+                    <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                      <Image iconType="3" name="/winspapus/imagenes/apu.png"/>
+                    </Property>
                     <Property name="text" type="java.lang.String" value="Actualizar Matriz de Costos"/>
                   </Properties>
                 </MenuItem>
+                <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator7">
+                </MenuItem>
                 <MenuItem class="javax.swing.JMenuItem" name="jMenuItem33">
                   <Properties>
+                    <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                      <Image iconType="3" name="/winspapus/imagenes/materialbarra.png"/>
+                    </Property>
                     <Property name="text" type="java.lang.String" value="Materiales"/>
                   </Properties>
                   <Events>
@@ -305,11 +313,20 @@
                 </MenuItem>
                 <MenuItem class="javax.swing.JMenuItem" name="jMenuItem34">
                   <Properties>
+                    <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                      <Image iconType="3" name="/winspapus/imagenes/equipobarra.png"/>
+                    </Property>
                     <Property name="text" type="java.lang.String" value="Equipos"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem34ActionPerformed"/>
+                  </Events>
                 </MenuItem>
                 <MenuItem class="javax.swing.JMenuItem" name="jMenuItem35">
                   <Properties>
+                    <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                      <Image iconType="3" name="/winspapus/imagenes/barracasco.png"/>
+                    </Property>
                     <Property name="text" type="java.lang.String" value="Mano de Obra"/>
                   </Properties>
                 </MenuItem>
@@ -317,6 +334,9 @@
                 </MenuItem>
                 <MenuItem class="javax.swing.JMenuItem" name="jMenuItem36">
                   <Properties>
+                    <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                      <Image iconType="3" name="/winspapus/imagenes/imprimir.png"/>
+                    </Property>
                     <Property name="text" type="java.lang.String" value="Imprimir Matriz"/>
                   </Properties>
                 </MenuItem>

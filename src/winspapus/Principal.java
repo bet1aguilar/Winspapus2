@@ -48,6 +48,7 @@ import winspapus.partidas.*;
 import presupuestos.Nuevo;
 import presupuestos.Presupuesto;
 import presupuestos.diagrama;
+import presupuestos.equipo.matrizequipospres;
 import presupuestos.memoria;
 import presupuestos.tabpresupuesto;
 import reportes.reportepresupuesto;
@@ -415,6 +416,7 @@ public class Principal extends javax.swing.JFrame {
         jMenuItem7 = new javax.swing.JMenuItem();
         jMenu15 = new javax.swing.JMenu();
         jMenuItem32 = new javax.swing.JMenuItem();
+        jSeparator7 = new javax.swing.JPopupMenu.Separator();
         jMenuItem33 = new javax.swing.JMenuItem();
         jMenuItem34 = new javax.swing.JMenuItem();
         jMenuItem35 = new javax.swing.JMenuItem();
@@ -861,7 +863,7 @@ public class Principal extends javax.swing.JFrame {
         );
 
         jTable2.setAutoCreateRowSorter(true);
-        jTable2.setFont(new java.awt.Font("Tahoma", 0, 10));
+        jTable2.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         jTable2.setEditingColumn(0);
         jTable2.setEditingRow(0);
         jTable2.setName("mtabustable"); // NOI18N
@@ -1787,9 +1789,12 @@ public class Principal extends javax.swing.JFrame {
         jMenu15.setText("Matriz de Costos");
         jMenu15.setEnabled(false);
 
+        jMenuItem32.setIcon(new javax.swing.ImageIcon(getClass().getResource("/winspapus/imagenes/apu.png"))); // NOI18N
         jMenuItem32.setText("Actualizar Matriz de Costos");
         jMenu15.add(jMenuItem32);
+        jMenu15.add(jSeparator7);
 
+        jMenuItem33.setIcon(new javax.swing.ImageIcon(getClass().getResource("/winspapus/imagenes/materialbarra.png"))); // NOI18N
         jMenuItem33.setText("Materiales");
         jMenuItem33.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1798,13 +1803,21 @@ public class Principal extends javax.swing.JFrame {
         });
         jMenu15.add(jMenuItem33);
 
+        jMenuItem34.setIcon(new javax.swing.ImageIcon(getClass().getResource("/winspapus/imagenes/equipobarra.png"))); // NOI18N
         jMenuItem34.setText("Equipos");
+        jMenuItem34.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem34ActionPerformed(evt);
+            }
+        });
         jMenu15.add(jMenuItem34);
 
+        jMenuItem35.setIcon(new javax.swing.ImageIcon(getClass().getResource("/winspapus/imagenes/barracasco.png"))); // NOI18N
         jMenuItem35.setText("Mano de Obra");
         jMenu15.add(jMenuItem35);
         jMenu15.add(jSeparator3);
 
+        jMenuItem36.setIcon(new javax.swing.ImageIcon(getClass().getResource("/winspapus/imagenes/imprimir.png"))); // NOI18N
         jMenuItem36.setText("Imprimir Matriz");
         jMenu15.add(jMenuItem36);
 
@@ -3523,7 +3536,7 @@ recalcula();        // TODO add your handling code here:
     }//GEN-LAST:event_jMenuItem47ActionPerformed
 
     private void jMenuItem33ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem33ActionPerformed
-        matrizmaterialespres materiales = new matrizmaterialespres(this, true, conexion, presup);
+        matrizmaterialespres materiales = new matrizmaterialespres(this, true, conexion, presup,this);
         int xi = (this.getWidth()/2)-700/2;
         int yi = (this.getHeight()/2)-500/2;
         materiales.setBounds(xi, yi, 700, 500);
@@ -3541,6 +3554,16 @@ recalcula();        // TODO add your handling code here:
         report.setVisible(true);
         // TODO add your handling code here:
     }//GEN-LAST:event_jMenuItem16ActionPerformed
+
+private void jMenuItem34ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem34ActionPerformed
+// TODO add your handling code here:
+    
+    matrizequipospres equipos = new matrizequipospres(this, true, conexion, presup,this);
+        int xi = (this.getWidth()/2)-700/2;
+        int yi = (this.getHeight()/2)-500/2;
+        equipos.setBounds(xi, yi, 700, 500);
+        equipos.setVisible(true);
+}//GEN-LAST:event_jMenuItem34ActionPerformed
     public void recalcula()
     {
        recalcula recal = new recalcula(this, true, conexion, cadena);
@@ -3754,6 +3777,7 @@ recalcula();        // TODO add your handling code here:
     private javax.swing.JPopupMenu.Separator jSeparator4;
     private javax.swing.JPopupMenu.Separator jSeparator5;
     private javax.swing.JPopupMenu.Separator jSeparator6;
+    private javax.swing.JPopupMenu.Separator jSeparator7;
     private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable2;
     private javax.swing.JTable jTable3;

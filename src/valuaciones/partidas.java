@@ -6,6 +6,8 @@ package valuaciones;
 
 import com.mysql.jdbc.ResultSetMetaData;
 import com.mysql.jdbc.Statement;
+import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.sql.Connection;
@@ -18,6 +20,7 @@ import javax.swing.ActionMap;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.KeyStroke;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
@@ -50,6 +53,7 @@ public final class partidas extends javax.swing.JDialog {
     private float[] cantidades;
     private String mvalu;
     valuacion val;
+    private int i;
     /**
      * Creates new form partidas
      */
@@ -73,7 +77,12 @@ public final class partidas extends javax.swing.JDialog {
                     doClose(RET_CANCEL);
                 }
             });
-        
+          jTable1.setOpaque(true);
+    jTable1.setShowHorizontalLines(true);
+    jTable1.setShowVerticalLines(false);
+    jTable1.getTableHeader().setSize(new Dimension(25,40));
+    jTable1.getTableHeader().setPreferredSize(new Dimension(30,40));
+    jTable1.setRowHeight(25);
     }
 public final void cargapresupuesto() throws SQLException{
         Statement st = (Statement) conex.createStatement();
@@ -492,10 +501,9 @@ public final void cargapresupuesto() throws SQLException{
         
     }
      
-   
-    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
-     
-    partida = jTable1.rowAtPoint(evt.getPoint());
+   public void hacerbool(int partida){
+            
+    
 
     String part = jTable1.getValueAt(partida, 1).toString();
     Object obj;
@@ -520,6 +528,10 @@ public final void cargapresupuesto() throws SQLException{
                         }
                     }
                 }
+   }
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+        partida = jTable1.rowAtPoint(evt.getPoint());
+        hacerbool(partida);
     }//GEN-LAST:event_jTable1MouseClicked
     
     
@@ -627,7 +639,8 @@ public final void cargapresupuesto() throws SQLException{
         } catch (SQLException ex) {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+       jTable1.getInputMap
+               (JTable.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER,0), "selectNextColumnCell");
          jTable1.getColumnModel().getColumn(4).setMaxWidth(0);
 
              jTable1.getColumnModel().getColumn(4).setMinWidth(0);
@@ -672,6 +685,7 @@ public final void cargapresupuesto() throws SQLException{
 
     private void jTable1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTable1KeyPressed
         float acumulada, valuada, contratada;
+        
          if (!jTable1.isEditing() && jTable1.editCellAt(jTable1.getSelectedRow(),
                 jTable1.getSelectedColumn())) {
                  
@@ -684,7 +698,7 @@ public final void cargapresupuesto() throws SQLException{
             }else{
                
                 if (evt.getKeyCode() == 9 || evt.getKeyCode() == 10) {
-                
+                   
                     contratada = Float.valueOf(jTable1.getValueAt(partida, 5).toString());
                     acumulada = Float.valueOf(jTable1.getValueAt(partida, 6).toString());
                     valuada = Float.valueOf(jTable1.getValueAt(partida, 7).toString());

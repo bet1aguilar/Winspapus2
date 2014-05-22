@@ -186,8 +186,8 @@ public class Partida extends javax.swing.JDialog {
         }
     }
     public final void llenavalores(){
-        String llena = "SELECT id, tipo, descri, nropresupuesto, porcutil, idband, IFNULL(precunit,0.00),"
-                + " IFNULL(precasu,0.00), redondeo, porcpre, porcgad, rendimi, IFNULL(cantidad,0.00), unidad,numero FROM mppres WHERE "
+        String llena = "SELECT id, tipo, descri, nropresupuesto, porcutil, idband, IFNULL(precunit,0.00) as precunit,"
+                + " IFNULL(precasu,0.00) as precasu, redondeo, porcpre, porcgad, rendimi, IFNULL(cantidad,0.00), unidad,numero FROM mppres WHERE "
                 + "numegrup='"+numpartida+"'"
                 + " AND (mpre_id='"+presupuesto+"' OR mpre_id IN "
                 + "(SELECT id from mpres where mpres_id='"+presupuesto+"' GROUP BY id)) ";

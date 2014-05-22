@@ -14,6 +14,7 @@ import java.sql.Statement;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -53,6 +54,7 @@ public final class valuacion extends javax.swing.JDialog {
         jDateChooser1.setDate(new Date());
         jDateChooser2.setDate(new Date());
         jDateChooser3.setDate(new Date());
+        jTextField3.setVisible(false);
         this.pres = mpres;
         this.conex = conex;
         try {
@@ -263,7 +265,7 @@ public final class valuacion extends javax.swing.JDialog {
 
         jPanel4.setBackground(new java.awt.Color(100, 100, 100));
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11));
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Valuaciones del Presupuesto");
@@ -440,7 +442,7 @@ public final class valuacion extends javax.swing.JDialog {
 
         jTextField3.setEditable(false);
 
-        jTable1.setFont(new java.awt.Font("Tahoma", 0, 10));
+        jTable1.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         jTable1.setSelectionBackground(new java.awt.Color(255, 153, 51));
         jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -615,7 +617,7 @@ public final class valuacion extends javax.swing.JDialog {
             }
         });
 
-        jTextField10.setToolTipText("Código COVENIN");
+        jTextField10.setToolTipText("Cantidad Valuada");
         jTextField10.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 jTextField10FocusLost(evt);
@@ -854,6 +856,27 @@ public final class valuacion extends javax.swing.JDialog {
                 return Object.class;
             }
         };
+        Date fecha=null;
+        String consultafechafin = "SELECT hasta FROM mvalus WHERE mpre_id='"+pres+"' ORDER BY hasta DESC LIMIT 1";
+        try {
+            Statement sfecha = conex.createStatement();
+            ResultSet rsfecha = sfecha.executeQuery(consultafechafin);
+            while(rsfecha.next()){
+                fecha=rsfecha.getDate(1);
+            }
+            if(fecha!=null){
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(fecha);
+                calendar.add(Calendar.DAY_OF_YEAR, 1);
+                fecha=calendar.getTime();
+            }else
+            {
+                fecha=new Date();
+            }
+            jDateChooser1.setDate(fecha);
+        } catch (SQLException ex) {
+            Logger.getLogger(valuacion.class.getName()).log(Level.SEVERE, null, ex);
+        }
         jTable1.setModel(metabs);
         jTextField4.setText("0.00");
         estavalu=0;
@@ -874,7 +897,7 @@ public final class valuacion extends javax.swing.JDialog {
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jSpinner1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSpinner1StateChanged
-
+        acum=0;
         mvalu = jSpinner1.getValue().toString();
         int cont = 0;
         System.out.println("mvalu " + mvalu);
@@ -899,8 +922,10 @@ public final class valuacion extends javax.swing.JDialog {
 
         if (jComboBox1.getSelectedItem() != null) {
             if (jComboBox1.getSelectedItem().equals("Otro")) {
+                jTextField3.setVisible(true);
                 jTextField3.setEditable(true);
             } else {
+                jTextField3.setVisible(false);
                 jTextField3.setEditable(false);
             }
         }
@@ -1191,7 +1216,21 @@ private void jTextField8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST
 }//GEN-LAST:event_jTextField8MouseClicked
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        
+       int op=JOptionPane.showConfirmDialog(rootPane, "Desea Eliminar Valuación?", "Eliminar Valuación", JOptionPane.YES_NO_OPTION);
+       String numvalu = jSpinner1.getValue().toString();
+       if(op==JOptionPane.YES_OPTION){
+        String eliminar = "DELETE FROM mvalus WHERE id="+numvalu+" AND mpre_id='"+pres+"'";
+        String elidvalu = "DELETE FROM dvalus WHERE mvalu_id="+numvalu+" AND mpre_id='"+pres+"'";
+            try {
+                Statement ste = conex.createStatement();
+                ste.execute(eliminar);
+                ste.execute(elidvalu);
+            } catch (SQLException ex) {
+                Logger.getLogger(valuacion.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            JOptionPane.showMessageDialog(rootPane, "Valuación Eliminada");
+                    doClose(RET_CANCEL);
+       }
         
         
         // TODO add your handling code here:
@@ -1354,7 +1393,7 @@ public void inserta(){
                 Object[] filas = new Object[cantidadColumnas];
                 for (int i = 0; i < cantidadColumnas; i++) {
                     if (i == 7) {
-                        estavalu += Float.valueOf(rs.getObject(i).toString());
+                        estavalu += Float.valueOf(rs.getObject(i+1).toString());
                     }
                     if(i!=4){
                     filas[i] = rs.getObject(i + 1);
@@ -1448,7 +1487,7 @@ public void inserta(){
     }
 
     public void buscaacum() {
-
+        acum=0;
         String sql = "SELECT SUM(cantidad * precio) FROM dvalus as dv WHERE mpre_id='" + pres + "' OR mpre_id IN (SELECT id FROM mpres WHERE mpre_id='" + pres + "')";
         try {
             Statement stmt = (Statement) conex.createStatement();
@@ -1456,11 +1495,11 @@ public void inserta(){
 
             while (rste.next()) {
                 if (rste.getObject(1) != null) {
-                    acum = Float.valueOf(rste.getObject(1).toString());
+                    acum += Float.valueOf(rste.getObject(1).toString());
                 }
             }
 
-            acum = (float) Math.rint((acum * 100) / 100) * impuesto / 100;
+            acum = (float) Math.rint((acum * 100) / 100) * (1+impuesto / 100);
             NumberFormat formatoNumero = NumberFormat.getNumberInstance();
             formatoNumero.setMaximumFractionDigits(2);
             formatoNumero.setMinimumFractionDigits(2);

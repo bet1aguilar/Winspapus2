@@ -349,7 +349,7 @@ String pres;
             ResultSet rst = st.executeQuery(redondea);
             while(rst.next()){
                 precunit = rst.getFloat(1);
-                precasu = (float) Math.rint(((precunit+0.000001)*100))/100;
+                precasu = (float) Math.rint(precunit);
                 numero = rst.getString(2);
                 String actualiza = "UPDATE mppres SET precasu="+precasu+", redondeo=1 WHERE mpre_id='"+pres+"'"
                         + "AND numero="+numero+" AND status=1";
@@ -367,7 +367,7 @@ String pres;
     public void precasuaprecunit(){
         float precunit, precasu;
         String numero;
-        String redondea = "SELECT precasu,numero FROM mppres WHERE mpre_id='"+pres+"' AND status=1";
+        String redondea = "SELECT precunit,numero FROM mppres WHERE mpre_id='"+pres+"' AND status=1";
         try {
             Statement st = (Statement) conex.createStatement();
             ResultSet rst = st.executeQuery(redondea);
@@ -375,13 +375,14 @@ String pres;
                 precunit = rst.getFloat(1);
                
                 numero = rst.getString(2);
-                String actualiza = "UPDATE mppres SET precunit="+precunit+", redondeo=1 WHERE mpre_id='"+pres+"'"
+                String actualiza = "UPDATE mppres SET precasu="+precunit+", redondeo=1 WHERE mpre_id='"+pres+"'"
                         + "AND numero="+numero+" AND status=1";
                 Statement stactuliza = (Statement) conex.createStatement();
                 stactuliza.execute(actualiza);
-            JOptionPane.showMessageDialog(rootPane, "Se han igualado los precios unitarios a los precios asumidos del Presupuesto "+pres);
+            
 
             }
+            JOptionPane.showMessageDialog(rootPane, "Se han igualado los precios unitarios a los precios asumidos del Presupuesto "+pres);
         } catch (SQLException ex) {
             Logger.getLogger(recalcula.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -495,8 +496,8 @@ String pres;
                 contequipo = contequipo/rendimi;
                 }
                 String consultaman = "SELECT SUM(do.cant) as cantidad, mo.bono, mo.subsid, SUM(mo.salario*do*cantidad) as total"
-                        + " FROM mo as mmotabs, do as dmoptabs WHERE do.mmotab_id = mo.id AND do.mtabus_id= mo.mtabus_id"
-                        + " AND do.mtabus_id='"+pres+"' AND do.numero = "+numero+"";
+                        + " FROM mo as mmopres, do as dmoppresWHERE do.mmopre_id = mo.id AND do.mpre_id= mo.mpre_id"
+                        + " AND do.mpre_id='"+pres+"' AND do.numero = "+numero+"";
                 Statement stman = (Statement) conex.createStatement();
                 ResultSet rstman = stman.executeQuery(consultaman);
                 while(rstman.next()){
@@ -527,12 +528,12 @@ String pres;
                 cosfin = porcutil * cosfin/100;
                 porcutil = porcutil + impu +cosfin;
                 precunitrecalculado = porcutil;
-                String actualiza = "UPDATE mptabs SET precunit="+precunitrecalculado+" WHERE numero="+numero+" AND mtabus_id='"+pres+"'";
+                String actualiza = "UPDATE mppres SET precunit="+precunitrecalculado+" WHERE numero="+numero+" AND mtabus_id='"+pres+"'";
                 Statement stact = (Statement) conex.createStatement();
               stact.execute(actualiza);
               
             }
-           JOptionPane.showMessageDialog(rootPane, "Se han actulizado los precios unitarios de las partidas según el APU");
+           JOptionPane.showMessageDialog(rootPane, "Se han actualizado los precios unitarios de las partidas según el APU");
         } catch (SQLException ex) {
             Logger.getLogger(recalcula.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -541,6 +542,8 @@ String pres;
         
     }
     public void actualizalistado(){
+        // Al actualizar listado, actualizo precios de materiales equipo y mano de obra según el tab activo
+        
         
     }
     public void borrarapus(){
@@ -550,13 +553,13 @@ String pres;
            
             
                 
-                String borradetmat = "DELETE FROM dmptabs WHERE AND mtabus_id='"+pres+"'";
+                String borradetmat = "DELETE FROM dmpres WHERE AND mpre_id='"+pres+"'";
                 Statement borramat = (Statement) conex.createStatement();
                 borramat.execute(borradetmat);
-                String borradetequip = "DELETE FROM deptabs WHERE mtabus_id='"+pres+"'";
+                String borradetequip = "DELETE FROM deppres WHERE mpre_id='"+pres+"'";
                 Statement borraequip = (Statement) conex.createStatement();
                 borraequip.execute(borradetequip);
-                String borradetmano = "DELETE FROM dmoptabs WHERE mtabus_id='"+pres+"'";
+                String borradetmano = "DELETE FROM dmoppres WHERE mpre_id='"+pres+"'";
                 Statement borramano = (Statement) conex.createStatement();
                 borramano.execute(borradetmano);
           JOptionPane.showMessageDialog(rootPane, "Se han eliminado los ánalisis de precio unitario de las partidas del listado de precios "+pres);
@@ -603,29 +606,45 @@ String pres;
 
     private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_okButtonMouseClicked
         if(jRadioButton1.isSelected()){
+            int op=JOptionPane.showConfirmDialog(rootPane, "Proceso delicado, desea continuar? s/n","Borrar Precios Unitarios", JOptionPane.YES_NO_OPTION);
+            if(op==JOptionPane.YES_OPTION)
             borraprecasu();
         }
         if(jRadioButton2.isSelected()){
+            int op=JOptionPane.showConfirmDialog(rootPane, "Proceso delicado, desea continuar? s/n","Redondear Precios Unitarios a Precios Asumidos", JOptionPane.YES_NO_OPTION);
+            if(op==JOptionPane.YES_OPTION)
             redondprecunit();
         }
         if(jRadioButton3.isSelected()){
+             int op=JOptionPane.showConfirmDialog(rootPane, "Proceso delicado, desea continuar? s/n","Igualar Precios Asumidos a Precios Unitarios", JOptionPane.YES_NO_OPTION);
+            if(op==JOptionPane.YES_OPTION)
             precasuaprecunit();
         }
         if(jRadioButton4.isSelected()){
             aumenta=Float.valueOf(jTextField1.getText().toString());
+             int op=JOptionPane.showConfirmDialog(rootPane, "Proceso delicado, desea continuar? s/n","Aumentar "+aumenta+"%", JOptionPane.YES_NO_OPTION);
+            if(op==JOptionPane.YES_OPTION)
             porcaumenta();
         }
         if(jRadioButton5.isSelected()){
             dismi=Float.valueOf(jTextField2.getText().toString());
+              int op=JOptionPane.showConfirmDialog(rootPane, "Proceso delicado, desea continuar? s/n","Disminuir "+dismi+"%", JOptionPane.YES_NO_OPTION);
+            if(op==JOptionPane.YES_OPTION)
             porcdismi();
         }
         if(jRadioButton6.isSelected()){
+            int op=JOptionPane.showConfirmDialog(rootPane, "Proceso delicado, desea continuar? s/n","Recalcular Precio Unitario Según APU", JOptionPane.YES_NO_OPTION);
+            if(op==JOptionPane.YES_OPTION)
             recalcularprecapu();
         }
      if(jRadioButton7.isSelected()){
+         int op=JOptionPane.showConfirmDialog(rootPane, "Proceso delicado, desea continuar? s/n","Recalcular Precios Unitarios según listado de precios activo", JOptionPane.YES_NO_OPTION);
+            if(op==JOptionPane.YES_OPTION)
             recalcularpres();
         }
         if(jRadioButton8.isSelected()){
+            int op=JOptionPane.showConfirmDialog(rootPane, "Proceso delicado, desea continuar? s/n","Borrar Análisis de Precio Unitario", JOptionPane.YES_NO_OPTION);
+            if(op==JOptionPane.YES_OPTION)
             borrarapus();
         }
       

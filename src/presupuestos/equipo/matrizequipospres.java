@@ -8,7 +8,7 @@
  *
  * Created on 13/09/2013, 12:48:38 PM
  */
-package presupuesto.materiales;
+package presupuestos.equipo;
 
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.ResultSetMetaData;
@@ -24,7 +24,6 @@ import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
-import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
@@ -36,7 +35,7 @@ import winspapus.Principal;
  *
  * @author Betmart
  */
-public class matrizmaterialespres extends javax.swing.JDialog {
+public class matrizequipospres extends javax.swing.JDialog {
 
     /** A return status code - returned if Cancel button has been pressed */
     public static final int RET_CANCEL = 0;
@@ -44,11 +43,11 @@ public class matrizmaterialespres extends javax.swing.JDialog {
     public static final int RET_OK = 1;
     Connection conex;
     String pres;
-    String mat ="";
+    String eq ="";
     String busqueda="";
     Principal prin;
     /** Creates new form matrizmateriales */
-    public matrizmaterialespres(java.awt.Frame parent, boolean modal, Connection conex, String pres, Principal prin) {
+    public matrizequipospres(java.awt.Frame parent, boolean modal, Connection conex, String pres, Principal prin) {
         super(parent, modal);
         initComponents();
         this.pres = pres;
@@ -59,8 +58,8 @@ public class matrizmaterialespres extends javax.swing.JDialog {
     jTable1.getTableHeader().setSize(new Dimension(25,40));
     jTable1.getTableHeader().setPreferredSize(new Dimension(25,30));
     jTable1.setRowHeight(20);
-        cargamats();
-        super.setTitle("Materiales del Presupuesto "+pres);
+        cargaeq();
+        super.setTitle("Equipos del Presupuesto "+pres);
         // Close the dialog when Esc is pressed
         String cancelName = "cancel";
         InputMap inputMap = getRootPane().getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
@@ -76,7 +75,7 @@ public class matrizmaterialespres extends javax.swing.JDialog {
     }
 
     
-    public final void cargamats(){
+    public final void cargaeq(){
         if(!(jTextField1.getText().equals(""))){
             busqueda=jTextField1.getText().toString();
         }
@@ -88,7 +87,7 @@ public class matrizmaterialespres extends javax.swing.JDialog {
                  }
              };
              Statement st = (Statement) conex.createStatement();
-             String sql="SELECT id, descri, precio, desperdi, unidad FROM mmpres WHERE mpre_id='"+pres+"' AND status=1 AND "
+             String sql="SELECT id, descri, deprecia ,precio FROM mepres WHERE mpre_id='"+pres+"' AND status=1 AND "
                      + "(id LIKE'%"+busqueda+"%' || descri LIKE '%"+busqueda+"%')";
              ResultSet rst = st.executeQuery(sql);
              jTable1.setModel(mmtabs);
@@ -109,7 +108,7 @@ public class matrizmaterialespres extends javax.swing.JDialog {
                  }
                   cambiacabecera();
         } catch (SQLException ex) {
-            Logger.getLogger(matrizmaterialespres.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(matrizequipospres.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     private void cambiacabecera() {
@@ -122,14 +121,12 @@ public class matrizmaterialespres extends javax.swing.JDialog {
         tc.setHeaderValue("Descripción");
         tc.setPreferredWidth(100);
         tc = tcm.getColumn(2); 
-        tc.setHeaderValue("Precio");
+        tc.setHeaderValue("Depreciación");
         tc.setPreferredWidth(30);
         tc = tcm.getColumn(3); 
-        tc.setHeaderValue("Desperdicio");
+        tc.setHeaderValue("Precio");
         tc.setPreferredWidth(30);
-        tc = tcm.getColumn(4); 
-        tc.setHeaderValue("Unidad");
-        tc.setPreferredWidth(30);
+       
          
        th.repaint(); 
     }
@@ -186,28 +183,13 @@ public class matrizmaterialespres extends javax.swing.JDialog {
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/winspapus/imagenes/edita.fw.png"))); // NOI18N
         jButton2.setToolTipText("Editar");
         jButton2.setEnabled(false);
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
 
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/winspapus/imagenes/borra.png"))); // NOI18N
         jButton3.setToolTipText("Borrar");
         jButton3.setEnabled(false);
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
-            }
-        });
 
         jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/winspapus/imagenes/recalcula.fw.png"))); // NOI18N
         jButton4.setToolTipText("Recalcula");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
-            }
-        });
 
         jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/winspapus/imagenes/anade.fw.png"))); // NOI18N
         jButton5.setToolTipText("Nuevo Material");
@@ -270,7 +252,7 @@ public class matrizmaterialespres extends javax.swing.JDialog {
                 .addContainerGap())
         );
 
-        jTable1.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        jTable1.setFont(new java.awt.Font("Tahoma", 0, 10));
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -386,9 +368,9 @@ public class matrizmaterialespres extends javax.swing.JDialog {
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
         jButton2.setEnabled(true);
         jButton3.setEnabled(true);
-        int filamat=0;
-        filamat = jTable1.rowAtPoint(evt.getPoint());
-        mat = jTable1.getValueAt(filamat, 0).toString();
+        int filaeq=0;
+        filaeq = jTable1.rowAtPoint(evt.getPoint());
+        eq = jTable1.getValueAt(filaeq, 0).toString();
         // TODO add your handling code here:
     }//GEN-LAST:event_jTable1MouseClicked
 
@@ -402,67 +384,26 @@ private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:ev
 
 private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
     busqueda="";
-    cargamats();
+    cargaeq();
     // TODO add your handling code here:
 }//GEN-LAST:event_jButton1ActionPerformed
 
 private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
- nuevosmateriales nuevos = new nuevosmateriales(null, true, conex, pres);
+ nuevoequipos nuevos = new nuevoequipos(null, true, conex, pres);
  int xi=  (prin.getWidth()/2)-800/2;
  int yi=(prin.getHeight()/2)-400/2;
  nuevos.setBounds(xi, yi, 800, 400);
   nuevos.setVisible(true);
-  cargamats();
     // TODO add your handling code here:
 }//GEN-LAST:event_jButton5ActionPerformed
 
 private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
     jTextField1.setText("");
     busqueda="";
-    cargamats();
+    cargaeq();
     
     // TODO add your handling code here:
 }//GEN-LAST:event_jButton6ActionPerformed
-
-private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-    nuevosmateriales nuevos = new nuevosmateriales(prin, true, conex, pres, 1, mat);
- int xi=  (prin.getWidth()/2)-800/2;
- int yi=(prin.getHeight()/2)-400/2;
- nuevos.setBounds(xi, yi, 800, 400);
-  nuevos.setVisible(true);
-  cargamats();
-    // TODO add your handling code here:
-}//GEN-LAST:event_jButton2ActionPerformed
-
-private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-    busqueda="";
-    int op = JOptionPane.showConfirmDialog(rootPane, "Seguro desea eliminar el material?","Eliminar Material",JOptionPane.YES_NO_OPTION);
-    if(op==JOptionPane.YES_OPTION){
-            try {
-                String delete = "DELETE FROM mmpres WHERE mpre_id='"+pres+"' AND id='"+mat+"'";
-                
-                Statement st = (Statement) conex.createStatement();
-                st.execute(delete);
-                JOptionPane.showMessageDialog(rootPane, "Se ha eliminado el material de la matriz de presupuesto");
-            }
-            // TODO add your handling code here:
-            catch (SQLException ex) {
-                Logger.getLogger(matrizmaterialespres.class.getName()).log(Level.SEVERE, null, ex);
-            }
-    }
-    cargamats();
-    // TODO add your handling code here:
-}//GEN-LAST:event_jButton3ActionPerformed
-
-private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-recalcula nuevos = new recalcula(prin, true, pres, conex);
- int xi=  (prin.getWidth()/2)-350/2;
- int yi=(prin.getHeight()/2)-300/2;
- nuevos.setBounds(xi, yi, 350, 300);
-  nuevos.setVisible(true);
-    cargamats();
-    // TODO add your handling code here:
-}//GEN-LAST:event_jButton4ActionPerformed
     
     private void doClose(int retStatus) {
         returnStatus = retStatus;

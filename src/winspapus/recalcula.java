@@ -524,7 +524,7 @@ agrupa();
               stact.execute(actualiza);
               
             }
-           JOptionPane.showMessageDialog(rootPane, "Se han actulizado los precios unitarios de las partidas según el APU");
+           JOptionPane.showMessageDialog(rootPane, "Se han actualizado los precios unitarios de las partidas según el APU");
         } catch (SQLException ex) {
             Logger.getLogger(recalcula.class.getName()).log(Level.SEVERE, null, ex);
         }
