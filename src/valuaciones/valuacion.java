@@ -1400,7 +1400,8 @@ public void inserta(){
                     }else{
                         numero = rs.getObject(5).toString();
                         String consulto = "SELECT SUM(cantidad) as cantidad "
-                                + "FROM dvalus WHERE numepart='"+numero+"' AND mpre_id='"+pres+"'";
+                                + "FROM dvalus WHERE numepart='"+numero+"' AND mpre_id='"+pres+"' AND "
+                                + " mvalu_id<="+jSpinner1.getValue()+"";
                         Statement stconsulto = (Statement) conex.createStatement();
                         ResultSet rstconsulto = stconsulto.executeQuery(consulto);
                         while(rstconsulto.next()){

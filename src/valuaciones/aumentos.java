@@ -43,15 +43,16 @@ public class aumentos extends javax.swing.JDialog {
     String partida, pres;
     Connection conex;
     private int auxcont;
+    String mvalu="";
     /** Creates new form aumentos */
-    public aumentos(java.awt.Frame parent, boolean modal, String mpres, Connection conex) {
+    public aumentos(java.awt.Frame parent, boolean modal, String mpres, Connection conex,String mvalu) {
         super(parent, modal);
         initComponents();
         this.conex = conex;
-      
+      this.mvalu = mvalu;
         this.pres = mpres;
         cargaraumentos();
-        
+        this.setTitle("Partidas que tienen Aumento en la valuación "+mvalu);
         String cancelName = "cancel";
         InputMap inputMap = getRootPane().getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), cancelName);
@@ -95,13 +96,18 @@ public class aumentos extends javax.swing.JDialog {
                
                jTable1.setModel(mat);
        
-        String select = "SELECT mp.numegrup,  mp.id, mp.cantidad as cantidad, SUM(dv.cantidad) as cantacumvalu,"
-                + " (SELECT SUM(cantidad) FROM dvalus WHERE mpre_id='"+pres+"' AND numepart=mp.numero GROUP BY numepart)-"
-                + "mp.cantidad-IFNULL((SELECT SUM(aumento) FROM admppres WHERE numepart=mp.numero AND mpre_id='"+pres+"'),0) "
+        String select = "SELECT mp.numegrup, "
+                + " mp.id, "
+                + "mp.cantidad as cantidad, "
+                + "(SELECT SUM(dv.cantidad) FROM dvalus WHERE mpre_id='"+pres+"' AND numepart=mp.numero AND mvalu_id="+mvalu+") as cantacumvalu,"
+                + " (SELECT SUM(cantidad) FROM dvalus WHERE mpre_id='"+pres+"' AND "
+                + "mvalu_id="+mvalu+" AND numepart=mp.numero GROUP BY numepart)-"
+                + "mp.cantidad-IFNULL((SELECT SUM(aumento) FROM admppres WHERE "
+                + "numepart=mp.numero AND mpre_id='"+pres+"'),0) "
         + "as cantaum "
         + "FROM mppres as mp, dvalus as dv "
                 + "WHERE mp.cantidad+IFNULL((SELECT SUM(aumento) FROM admppres WHERE numepart=mp.numero AND mpre_id='"+pres+"'),0)"
-                + "<(SELECT SUM(cantidad) FROM dvalus WHERE mpre_id='"+pres+"' AND numepart=mp.numero GROUP BY numepart)"
+                + "<(SELECT SUM(cantidad) FROM dvalus WHERE mpre_id='"+pres+"' AND mvalu_id="+mvalu+" AND numepart=mp.numero GROUP BY numepart)"
                 + " AND mp.numero=dv.numepart"
                 + " AND (dv.mpre_id=mp.mpre_id"
                 + " OR dv.mpre_id IN (SELECT id FROM mpres WHERE mpres_id = dv.mpre_id))"
@@ -118,7 +124,8 @@ public class aumentos extends javax.swing.JDialog {
              for (int i = 2; i <= cantidadColumnas; i++) {
                  if(i<7){
                  mat.addColumn(rsMd.getColumnLabel(i-1));
-                 }else{
+                 }
+                    else{
                   mat.addColumn("Aumento");   
                  }
             }
@@ -132,7 +139,7 @@ public class aumentos extends javax.swing.JDialog {
                     fila[i]=rst.getObject(i);
                    }else
                    {
-                       fila[i]=0;
+                       fila[i]=rst.getObject(5);
                    }
                     
                 }
@@ -144,14 +151,8 @@ public class aumentos extends javax.swing.JDialog {
         }
             int filas = jTable1.getRowCount();
             auxpart = new String[filas];
-            jTable1.getColumnModel().getColumn(3).setMaxWidth(0);
-
-             jTable1.getColumnModel().getColumn(3).setMinWidth(0);
-
-             jTable1.getTableHeader().getColumnModel().getColumn(3).setMaxWidth(0);
-
-             jTable1.getTableHeader().getColumnModel().getColumn(3).setMinWidth(0);
-               //cambiarcabecera();
+            
+            cambiarcabecera();
     }
     
     @SuppressWarnings("unchecked")
@@ -385,16 +386,16 @@ public class aumentos extends javax.swing.JDialog {
        tc = tcm.getColumn(2);        
         tc.setHeaderValue("Código");
         tc.setPreferredWidth(250);
-        tc = tcm.getColumn(4);        
+        tc = tcm.getColumn(3);        
         tc.setHeaderValue("Cant. Cont.");
         tc.setPreferredWidth(50);
-        tc = tcm.getColumn(5);
+        tc = tcm.getColumn(4);
         tc.setHeaderValue("Acum. Valu.");
         tc.setPreferredWidth(50);
-        tc = tcm.getColumn(6);         
+        tc = tcm.getColumn(5);         
         tc.setHeaderValue("Cant. a Aum.");
         tc.setPreferredWidth(50);
-        tc = tcm.getColumn(7);         
+        tc = tcm.getColumn(6);         
         tc.setHeaderValue("Cantidad");
         tc.setPreferredWidth(30);
      th.repaint(); 

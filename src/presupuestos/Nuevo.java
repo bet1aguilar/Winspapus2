@@ -1279,7 +1279,7 @@ private void jTextField2KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
 
 private void jTextField3KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField3KeyTyped
     
-    if(jTextField3.getText().length()==100){
+    if(jTextField3.getText().length()==45){
             evt.consume();
         }
     Character c = evt.getKeyChar();

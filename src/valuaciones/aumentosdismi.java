@@ -7,6 +7,7 @@ package valuaciones;
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.ResultSetMetaData;
 import com.mysql.jdbc.Statement;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.sql.ResultSet;
@@ -72,6 +73,12 @@ public class aumentosdismi extends javax.swing.JDialog {
             modelovalu();
             buscapartida();
             cargavalores();
+             jTable1.setOpaque(true);
+    jTable1.setShowHorizontalLines(true);
+    jTable1.setShowVerticalLines(false);
+    jTable1.getTableHeader().setSize(new Dimension(25,40));
+    jTable1.getTableHeader().setPreferredSize(new Dimension(30,40));
+    jTable1.setRowHeight(25);
         } catch (SQLException ex) {
             Logger.getLogger(aumentosdismi.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -424,7 +431,7 @@ public class aumentosdismi extends javax.swing.JDialog {
 
         jPanel4.setBackground(new java.awt.Color(100, 100, 100));
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11));
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Aumentos y Disminuciones");
@@ -443,7 +450,6 @@ public class aumentosdismi extends javax.swing.JDialog {
                 .addContainerGap())
         );
 
-        jTable1.setFont(new java.awt.Font("Tahoma", 0, 10));
         jTable1.setSelectionBackground(new java.awt.Color(255, 153, 51));
         jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -1172,7 +1178,8 @@ public void buscarpartida1(String part){
            
         try {
             String partida = part;
-            String cuenta = "SELECT count(*) FROM dvalus as dv, mppres as mp WHERE mp.numegrup="+partida+" AND mp.id = dv.mppre_id";
+            String cuenta = "SELECT count(*) FROM dvalus as dv, mppres as mp "
+                    + "WHERE mp.numegrup="+partida+" AND mp.id = dv.mppre_id";
                 int cuentan=0;
              Statement stt = (Statement) conex.createStatement();
              ResultSet rstt = stt.executeQuery(cuenta);
@@ -1204,7 +1211,8 @@ public void buscarpartida1(String part){
                    
                 }
                 float aumento=0, dismi=0, totalaum, totaldismi, total, totalpart;
-                String num = "SELECT numero FROM mppres WHERE numegrup='"+nume+"' AND (mpre_id='"+pres+"' OR mpre_id IN (SELECT id"
+                String num = "SELECT numero FROM mppres WHERE numegrup='"+nume+"' AND (mpre_id='"+pres+"' "
+                        + "OR mpre_id IN (SELECT id"
                         + " FROM mpres WHERE mpres_id='"+pres+"'))";
                 Statement str = (Statement) conex.createStatement();
                 String numero=null;
@@ -1212,8 +1220,10 @@ public void buscarpartida1(String part){
                 while(rstr.next()){
                     numero = rstr.getString(1);
                 }                
-                String consultaumento = "SELECT SUM(aumento), SUM(disminucion) FROM admppres WHERE payd_id="+jSpinner3.getValue()+" "
-                        + "AND numepart="+numero+" AND mpre_id='"+pres+"' OR mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+pres+"')";
+                String consultaumento = "SELECT SUM(aumento), SUM(disminucion) FROM admppres "
+                        + "WHERE payd_id="+jSpinner3.getValue()+" "
+                        + "AND numepart="+numero+" AND mpre_id='"+pres+"' OR mpre_id IN (SELECT id FROM "
+                        + "mpres WHERE mpres_id='"+pres+"')";
                 Statement con = (Statement) conex.createStatement();
                 ResultSet rcon = con.executeQuery(consultaumento);
                 while(rcon.next()){
@@ -1222,7 +1232,8 @@ public void buscarpartida1(String part){
                 }
                 float acumaumento = 0, acumdismi=0;
                 String consultacum = "SELECT SUM(aumento), SUM(disminucion) FROM admppres WHERE "
-                        + "numepart="+numero+" AND mpre_id='"+pres+"' OR mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+pres+"')";
+                        + "numepart="+numero+" AND mpre_id='"+pres+"' OR mpre_id IN "
+                        + "(SELECT id FROM mpres WHERE mpres_id='"+pres+"')";
                 Statement stacum = (Statement) conex.createStatement();
                 ResultSet rstacum = stacum.executeQuery(consultacum);
                 while(rstacum.next()){
@@ -1231,7 +1242,8 @@ public void buscarpartida1(String part){
                 }
                 cantidad = Float.valueOf(jTextField7.getText().toString());
                 float cantvaluado = 0;
-                String valuado = "SELECT SUM(cantidad) FROM dvalus WHERE  (mpre_id='"+pres+"' OR mpre_id IN (SELECT id FROM mpres "
+                String valuado = "SELECT SUM(cantidad) FROM dvalus WHERE  (mpre_id='"+pres+"' "
+                        + "OR mpre_id IN (SELECT id FROM mpres "
                         + "WHERE "
                         + "mpres_id='"+pres+"')) AND numepart="+numero+"";
                 Statement stvaluado = (Statement) conex.createStatement();
@@ -1352,9 +1364,10 @@ public void buscarpartida1(String part){
                 }               
                 cantidad = Float.valueOf(jTextField7.getText().toString());
                 float cantvaluado = 0;
-                String valuado = "SELECT SUM(cantidad) FROM dvalus WHERE  (mpre_id='"+pres+"' OR mpre_id IN (SELECT id FROM mpres "
+                String valuado = "SELECT SUM(cantidad) FROM dvalus WHERE  "
+                        + "(mpre_id='"+pres+"' OR mpre_id IN (SELECT id FROM mpres "
                         + "WHERE "
-                        + "mpres_id='"+pres+"')) AND numepart="+numero+"";
+                        + "mpres_id='"+pres+"')) AND numepart="+numero+" AND mvalu_id="+jSpinner4.getValue()+"";
                 Statement stvaluado = (Statement) conex.createStatement();
                 ResultSet rstvaluado = stvaluado.executeQuery(valuado);
                 while(rstvaluado.next()){
@@ -1412,7 +1425,9 @@ public void buscarpartida1(String part){
     }//GEN-LAST:event_jSpinner1StateChanged
      public final void buscapartida(){
         try {
-            String sql = "SELECT mp.numegrup, mp.id, mp.descri,mp.cantidad, dv.cantidad, ad.aumento,"
+            String sql = "SELECT mp.numegrup, mp.id, mp.descri,mp.cantidad, (SELECT SUM(cantidad) FROM dvalus "
+                    + "WHERE mpre_id='"+pres+"' AND numepart=mp.numero AND mvalu_id="+jSpinner4.getValue()+") "
+                    + "as cantidad, ad.aumento,"
                     + "ad.disminucion, ad.mvalu_id"
                     + " FROM mppres as mp, admppres as ad, dvalus as dv WHERE ad.payd_id="+jSpinner3.getValue()+" "
                     + "AND ad.mpre_id='"+pres+"' AND ad.numepart=mp.numero AND (mp.mpre_id=ad.mpre_id OR mp.mpre_id IN "
@@ -1919,7 +1934,7 @@ private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
  int x = (this.getWidth()/2)-300;
            int y = (this.getHeight()/2)-200;
           
-           aumentos partida1 = new aumentos(p, true,pres,conex);
+           aumentos partida1 = new aumentos(p, true,pres,conex,jSpinner4.getValue().toString());
            partida1.setBounds(x, y, 600, 400);
            partida1.setVisible(true);        
     // TODO add your handling code here:

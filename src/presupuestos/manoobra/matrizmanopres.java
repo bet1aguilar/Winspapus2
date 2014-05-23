@@ -44,7 +44,7 @@ public class matrizmanopres extends javax.swing.JDialog {
     public static final int RET_OK = 1;
     Connection conex;
     String pres;
-    String eq ="";
+    String mano ="";
     String busqueda="";
     Principal prin;
     /** Creates new form matrizmateriales */
@@ -60,7 +60,7 @@ public class matrizmanopres extends javax.swing.JDialog {
     jTable1.getTableHeader().setPreferredSize(new Dimension(25,30));
     jTable1.setRowHeight(20);
         cargamano();
-        super.setTitle("Equipos del Presupuesto "+pres);
+        super.setTitle("Mano de Obra del Presupuesto "+pres);
         // Close the dialog when Esc is pressed
         String cancelName = "cancel";
         InputMap inputMap = getRootPane().getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
@@ -121,17 +121,15 @@ public class matrizmanopres extends javax.swing.JDialog {
        tc = tcm.getColumn(1); 
         tc.setHeaderValue("Descripción");
         tc.setPreferredWidth(100);
+        
         tc = tcm.getColumn(2); 
-        tc.setHeaderValue("Depreciación");
-        tc.setPreferredWidth(30);
-        tc = tcm.getColumn(3); 
         tc.setHeaderValue("Salario");
         tc.setPreferredWidth(30);
-       tc = tcm.getColumn(4); 
+       tc = tcm.getColumn(3); 
         tc.setHeaderValue("Bono");
         tc.setPreferredWidth(30);
-        tc = tcm.getColumn(5); 
-        tc.setHeaderValue("Subsid");
+        tc = tcm.getColumn(4); 
+        tc.setHeaderValue("Subsidio");
         tc.setPreferredWidth(30);
          
        th.repaint(); 
@@ -391,7 +389,7 @@ public class matrizmanopres extends javax.swing.JDialog {
         jButton3.setEnabled(true);
         int filaeq=0;
         filaeq = jTable1.rowAtPoint(evt.getPoint());
-        eq = jTable1.getValueAt(filaeq, 0).toString();
+        mano = jTable1.getValueAt(filaeq, 0).toString();
         // TODO add your handling code here:
     }//GEN-LAST:event_jTable1MouseClicked
 
@@ -428,7 +426,7 @@ private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
 
-       nuevamano nuevos = new nuevamano(null, true, conex, pres, 1, eq);
+       nuevamano nuevos = new nuevamano(null, true, conex, pres, 1, mano);
  int xi=  (prin.getWidth()/2)-800/2;
  int yi=(prin.getHeight()/2)-400/2;
  nuevos.setBounds(xi, yi, 800, 400);
@@ -440,7 +438,7 @@ private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
 int op=JOptionPane.showConfirmDialog(rootPane, "Desea Eliminar el equipo?", "Eliminar Equipo",JOptionPane.YES_NO_OPTION);
        if(op==JOptionPane.YES_OPTION){
             try {
-                String delete = "DELETE FROM mepres WHERE id='"+eq+"' AND mpre_id='"+pres+"'";
+                String delete = "DELETE FROM mmopres WHERE id='"+mano+"' AND mpre_id='"+pres+"'";
                 Statement st = (Statement) conex.createStatement();
                 st.execute(delete);
                 JOptionPane.showMessageDialog(rootPane, "Se ha eliminado el equipo");

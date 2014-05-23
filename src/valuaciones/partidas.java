@@ -6,7 +6,6 @@ package valuaciones;
 
 import com.mysql.jdbc.ResultSetMetaData;
 import com.mysql.jdbc.Statement;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -639,8 +638,8 @@ public final void cargapresupuesto() throws SQLException{
         } catch (SQLException ex) {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
         }
-       jTable1.getInputMap
-               (JTable.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER,0), "selectNextColumnCell");
+    // jTable1.getInputMap
+            //   (JTable.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER,0), "selectNextColumnCell");
          jTable1.getColumnModel().getColumn(4).setMaxWidth(0);
 
              jTable1.getColumnModel().getColumn(4).setMinWidth(0);

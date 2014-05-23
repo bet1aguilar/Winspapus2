@@ -31,6 +31,7 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 import presupuesto.materiales.matrizmaterialespres;
 import presupuestos.equipo.matrizequipospres;
+import presupuestos.manoobra.matrizmanopres;
 import valuaciones.aumentosdismi;
 import valuaciones.reconsideraciones;
 import valuaciones.valuacion;
@@ -382,12 +383,12 @@ public class Presupuesto extends javax.swing.JInternalFrame {
         setNextFocusableComponent(jTable2);
         setPreferredSize(new java.awt.Dimension(1100, 645));
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
-            public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
-            }
             public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
                 formInternalFrameClosed(evt);
             }
             public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
             }
             public void internalFrameDeactivated(javax.swing.event.InternalFrameEvent evt) {
             }
@@ -395,7 +396,7 @@ public class Presupuesto extends javax.swing.JInternalFrame {
             }
             public void internalFrameIconified(javax.swing.event.InternalFrameEvent evt) {
             }
-            public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
+            public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
             }
         });
 
@@ -517,6 +518,11 @@ public class Presupuesto extends javax.swing.JInternalFrame {
         jButton35.setFocusable(false);
         jButton35.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jButton35.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButton35.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton35ActionPerformed(evt);
+            }
+        });
         jToolBar1.add(jButton35);
 
         jButton23.setIcon(new javax.swing.ImageIcon(getClass().getResource("/winspapus/imagenes/borrargrande.fw.png"))); // NOI18N
@@ -597,11 +603,11 @@ public class Presupuesto extends javax.swing.JInternalFrame {
             }
         });
         jTable2.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                jTable2KeyPressed(evt);
-            }
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 jTable2KeyReleased(evt);
+            }
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTable2KeyPressed(evt);
             }
         });
         jScrollPane4.setViewportView(jTable2);
@@ -1501,7 +1507,7 @@ public class Presupuesto extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 207, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 211, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -3612,6 +3618,16 @@ private void jButton34ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
     
     // TODO add your handling code here:
 }//GEN-LAST:event_jButton34ActionPerformed
+
+private void jButton35ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton35ActionPerformed
+
+     matrizmanopres mano = new matrizmanopres(prin, true, conex, id,prin);
+        int xi = (this.getWidth()/2)-700/2;
+        int yi = (this.getHeight()/2)-500/2;
+        mano.setBounds(xi, yi, 700, 500);
+        mano.setVisible(true);
+    // TODO add your handling code here:
+}//GEN-LAST:event_jButton35ActionPerformed
     public void vaciacampospres(){
         jTextField5.setText("");
         jTextField6.setText("");

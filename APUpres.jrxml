@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report2" language="groovy" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="cc1b8ae2-f7ca-41db-a004-b9de7407b6b8">
-	<property name="ireport.zoom" value="1.2396694214876032"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="144"/>
+	<property name="ireport.zoom" value="1.4641000000000013"/>
+	<property name="ireport.x" value="125"/>
+	<property name="ireport.y" value="0"/>
 	<style name="table">
 		<box>
 			<topPen lineWidth="1.0" lineColor="#000000"/>
@@ -238,9 +238,7 @@
 		</field>
 	</subDataset>
 	<subDataset name="manoobra" uuid="3702e382-dd72-48a1-8f60-f441039ae808">
-		<parameter name="numegrup" class="java.lang.String">
-			<defaultValueExpression><![CDATA[121]]></defaultValueExpression>
-		</parameter>
+		<parameter name="numegrup" class="java.lang.String"/>
 		<parameter name="mpres" class="java.lang.String">
 			<defaultValueExpression><![CDATA[$P{mpres}]]></defaultValueExpression>
 		</parameter>
@@ -269,151 +267,6 @@
 			<fieldDescription><![CDATA[]]></fieldDescription>
 		</field>
 	</subDataset>
-	<subDataset name="TotalMano" uuid="7c8dcebc-f6a0-426c-b2d5-042acf146610">
-		<parameter name="mtabus" class="java.lang.String">
-			<defaultValueExpression><![CDATA['COPIA-2010']]></defaultValueExpression>
-		</parameter>
-		<parameter name="numegrup" class="java.lang.String">
-			<defaultValueExpression><![CDATA[121]]></defaultValueExpression>
-		</parameter>
-		<queryString>
-			<![CDATA[SELECT (s.total+s.presta+s.bono+s.subsid)/IF(s.rendimi=0,1,s.rendimi) as total,FORMAT((s.total+s.presta+s.bono+s.subsid),2) AS sub FROM
-(SELECT SUM(sb.total) as total, SUM(sb.cantidad), (sb.bono*SUM(sb.cantidad)) as bono,
-(sb.subsid*sb.cantidad) as subsid, (SUM(sb.total)*(sb.presta/100)) as presta, sb.rendimi as rendimi
- FROM (SELECT mp.mtabus_id as tabu,
-dmo.cantidad*mmo.salario as total, dmo.cantidad as cantidad, mmo.bono as bono, mmo.subsid as subsid,
-mp.porcpre as presta, mp.rendimi as rendimi
-FROM mmotabs as mmo, dmoptabs as dmo, mptabs as mp
-WHERE dmo.mtabus_id=$P{mtabus} AND mmo.mtabus_id=dmo.mtabus_id
-AND dmo.numero=mp.numero AND mp.numero=$P{numegrup} AND mp.mtabus_id = dmo.mtabus_id AND dmo.mmotab_id=mmo.id GROUP BY mmo.id) as sb GROUP BY tabu) as s]]>
-		</queryString>
-		<field name="total" class="java.math.BigDecimal"/>
-		<field name="sub" class="java.lang.String"/>
-	</subDataset>
-	<subDataset name="Calculosmano" uuid="31a6df35-d32e-422d-b8f4-9fcb1e4387db">
-		<parameter name="mtabus" class="java.lang.String">
-			<defaultValueExpression><![CDATA['COPIA-2010']]></defaultValueExpression>
-		</parameter>
-		<parameter name="numegrup" class="java.lang.String">
-			<defaultValueExpression><![CDATA[121]]></defaultValueExpression>
-		</parameter>
-		<queryString>
-			<![CDATA[SELECT SUM(sb.total) as total,
-ROUND((SUM(sb.cantidadpart)*8)/IF(sb.rendimi=0,1,sb.rendimi),2) as productividad,
-ROUND(((SUM(sb.cantidadpart)*8)/IF(sb.rendimi=0,1,sb.rendimi))*sb.cantidad,2) as horas,
-FORMAT((sb.bono*SUM(sb.cantidad)),2) as calbono,
-FORMAT((sb.subsid*sb.cantidad),2) as calsubsid, sb.bono as bono, sb.subsid as subsid, (SUM(sb.total)*(sb.presta/100)) as presta, sb.presta as prestac, sb.rendimi as rendimi
- FROM (SELECT mp.mtabus_id as tabu,
-dmo.cantidad*mmo.salario as total, dmo.cantidad as cantidad, mmo.bono as bono, mmo.subsid as subsid,
-mp.porcpre as presta, mp.rendimi as rendimi, mp.cantidad as cantidadpart
-FROM mmotabs as mmo, dmoptabs as dmo, mptabs as mp
-WHERE dmo.mtabus_id=$P{mtabus} AND mmo.mtabus_id=dmo.mtabus_id
-AND dmo.numero=mp.numero AND mp.mtabus_id=dmo.mtabus_id AND mp.numero=$P{numegrup} AND dmo.mmotab_id=mmo.id GROUP BY mmo.id)
-as sb GROUP BY tabu]]>
-		</queryString>
-		<field name="total" class="java.math.BigDecimal"/>
-		<field name="bono" class="java.math.BigDecimal">
-			<fieldDescription><![CDATA[]]></fieldDescription>
-		</field>
-		<field name="subsid" class="java.math.BigDecimal">
-			<fieldDescription><![CDATA[]]></fieldDescription>
-		</field>
-		<field name="presta" class="java.math.BigDecimal"/>
-		<field name="rendimi" class="java.math.BigDecimal">
-			<fieldDescription><![CDATA[]]></fieldDescription>
-		</field>
-		<field name="prestac" class="java.lang.String"/>
-		<field name="calbono" class="java.lang.String"/>
-		<field name="calsubsid" class="java.lang.String"/>
-		<field name="horas" class="java.lang.String"/>
-		<field name="productividad" class="java.lang.String"/>
-	</subDataset>
-	<subDataset name="valorespartida" uuid="a6e2e84d-db39-4b07-a471-760e82b0853e">
-		<parameter name="numegrup" class="java.lang.String">
-			<defaultValueExpression><![CDATA[121]]></defaultValueExpression>
-		</parameter>
-		<parameter name="mtabus" class="java.lang.String">
-			<defaultValueExpression><![CDATA['COPIA-2010']]></defaultValueExpression>
-		</parameter>
-		<queryString>
-			<![CDATA[SELECT ROUND(unit.total,2)+ROUND((unit.total*unit.gad),2) as totalgad, ROUND((unit.total*unit.gad),2) as gad,
-ROUND((unit.total+(unit.total*unit.gad))*unit.util,2) as util,
-ROUND(unit.total,2)+ROUND((unit.total*unit.gad),2)+ROUND((unit.total+(unit.total*unit.gad))*unit.util,2)
- as totalutil,
-ROUND((unit.total+(unit.total+(unit.total*unit.gad))*unit.util+(unit.total*unit.gad))*unit.fin,2) as fin,
-ROUND((unit.total+(unit.total+(unit.total*unit.gad))*unit.util+(unit.total*unit.gad))*unit.impue,2) as impue, unit.total as total
-FROM (SELECT (mano.total+mat.total+equip.total) as total, mano.gad as gad, mano.util as util, mano.fin as fin, mano.impue as impue
-FROM (SELECT ROUND((s.total+s.presta+s.bono+s.subsid)/IF(s.rendimi=0,1,s.rendimi),2) as total, s.gad/100 as gad,s.util/ 100 as util,s.fin/100 as fin,
-s.impue/100 as impue  FROM
-(SELECT SUM(sb.total) as total, SUM(sb.cantidad), (sb.bono*SUM(sb.cantidad)) as bono,
-(sb.subsid*sb.cantidad) as subsid, (SUM(sb.total)*(sb.presta/100)) as presta, sb.presta as prestac,
-sb.rendimi as rendimi,
-sb.gad as gad, sb.util as util,sb.fin as fin, sb.impue as impue
- FROM (SELECT mp.mtabus_id as tabu,
-dmo.cantidad*mmo.salario as total, dmo.cantidad as cantidad, mmo.bono as bono, mmo.subsid as subsid,
-mp.porcpre as presta, mp.rendimi as rendimi, mp.porcgad as gad, mp.porcutil as util, mt.pcosfin as fin, mt.pimpue as impue
-FROM mmotabs as mmo, dmoptabs as dmo, mptabs as mp, mtabus as mt
-WHERE dmo.mtabus_id=$P{mtabus} AND mmo.mtabus_id=dmo.mtabus_id AND mp.mtabus_id=dmo.mtabus_id
-AND dmo.numero=mp.numero AND mp.numero=$P{numegrup} AND dmo.mmotab_id=mmo.id AND mt.id = mp.mtabus_id GROUP BY mmo.id) as sb GROUP BY tabu) as s) as mano,
-(SELECT ROUND(SUM(sb.total)/IF(sb.rendimi=0,1,sb.rendimi),2) as total, SUM(sb.total) as sub FROM
-(SELECT mp.mtabus_id as tabu, mp.rendimi as rendimi, me.deprecia*de.cantidad*me.precio as total
-FROM metabs as me, deptabs as de, mptabs as mp
-WHERE de.mtabus_id=$P{mtabus} AND mp.mtabus_id=de.mtabus_id AND me.mtabus_id=de.mtabus_id
-AND de.numero=mp.numero AND mp.numero=$P{numegrup} AND de.metab_id=me.id GROUP BY me.id) as sb GROUP BY tabu) AS equip,
-(SELECT SUM(sb.total) as total FROM (SELECT mp.mtabus_id as tabu, ROUND(IF(mm.desperdi>0,((mm.precio+(mm.precio*(mm.desperdi/100)))*dm.cantidad),dm.cantidad*mm.precio),2)
- as total
-FROM mmtabs as mm, dmtabs as dm, mptabs as mp
-WHERE dm.mtabus_id=$P{mtabus} AND mm.mtabus_id=dm.mtabus_id
-AND dm.numepart=mp.numero AND mp.numero=$P{numegrup} AND dm.mmtab_id=mm.id GROUP BY mm.id) as sb GROUP BY tabu) AS mat) AS unit]]>
-		</queryString>
-		<field name="total" class="java.math.BigDecimal"/>
-		<field name="gad" class="java.lang.String"/>
-		<field name="util" class="java.lang.String"/>
-		<field name="fin" class="java.lang.String"/>
-		<field name="impue" class="java.lang.String"/>
-		<field name="totalgad" class="java.lang.String"/>
-		<field name="totalutil" class="java.lang.String"/>
-	</subDataset>
-	<subDataset name="valorespartida_1" uuid="c9aecde7-4591-43e5-9f37-f3ae27be9b9a">
-		<parameter name="numegrup" class="java.lang.String">
-			<defaultValueExpression><![CDATA[121]]></defaultValueExpression>
-		</parameter>
-		<parameter name="mtabus" class="java.lang.String">
-			<defaultValueExpression><![CDATA['COPIA-2010']]></defaultValueExpression>
-		</parameter>
-		<queryString>
-			<![CDATA[SELECT ROUND(unit.total,2)+ROUND((unit.total*unit.gad),2) as totalgad, ROUND((unit.total*unit.gad),2) as gad, ROUND((unit.total+(unit.total*unit.gad))*unit.util,2) as util, ROUND(unit.total,2)+ROUND((unit.total*unit.gad),2)+ROUND((unit.total+(unit.total*unit.gad))*unit.util,2)
- as totalutil,
-ROUND((unit.total+(unit.total+(unit.total*unit.gad))*unit.util+(unit.total*unit.gad))*unit.fin,2) as fin,
-ROUND((unit.total+(unit.total+(unit.total*unit.gad))*unit.util+(unit.total*unit.gad))*unit.impue,2) as impue, unit.total as total
-FROM (SELECT (mano.total+mat.total+equip.total) as total, mano.gad as gad, mano.util as util, mano.fin as fin, mano.impue as impue
-FROM (SELECT (s.total+s.presta+s.bono+s.subsid)/s.rendimi as total, s.gad/100 as gad,s.util/ 100 as util,s.fin/100 as fin,s.impue/100 as impue  FROM
-(SELECT SUM(sb.total) as total, SUM(sb.cantidad), (sb.bono*SUM(sb.cantidad)) as bono,
-(sb.subsid*sb.cantidad) as subsid, (SUM(sb.total)*(sb.presta/100)) as presta, sb.presta as prestac, sb.rendimi as rendimi, sb.gad as gad, sb.util as util,sb.fin as fin, sb.impue as impue
- FROM (SELECT mp.mtabus_id as tabu,
-dmo.cantidad*mmo.salario as total, dmo.cantidad as cantidad, mmo.bono as bono, mmo.subsid as subsid,
-mp.porcpre as presta, mp.rendimi as rendimi, mp.porcgad as gad, mp.porcutil as util, mt.pcosfin as fin, mt.pimpue as impue
-FROM mmotabs as mmo, dmoptabs as dmo, mptabs as mp, mtabus as mt
-WHERE dmo.mtabus_id=$P{mtabus} AND mmo.mtabus_id=dmo.mtabus_id
-AND dmo.numero=mp.numero AND mp.numero=$P{numegrup} AND dmo.mmotab_id=mmo.id AND mt.id = mp.mtabus_id GROUP BY mmo.id) as sb GROUP BY tabu) as s) as mano,
-(SELECT SUM(sb.total)/sb.rendimi as total, SUM(sb.total) as sub FROM
-(SELECT mp.mtabus_id as tabu, mp.rendimi as rendimi, me.deprecia*de.cantidad*me.precio as total
-FROM metabs as me, deptabs as de, mptabs as mp
-WHERE de.mtabus_id=$P{mtabus} AND me.mtabus_id=de.mtabus_id
-AND de.numero=mp.numero AND mp.numero=$P{numegrup} AND de.metab_id=me.id GROUP BY me.id) as sb GROUP BY tabu) AS equip,
-(SELECT SUM(sb.total) as total FROM (SELECT mp.mtabus_id as tabu, IF(mm.desperdi>0,mm.desperdi*dm.cantidad*mm.precio,dm.cantidad*mm.precio) as total
-FROM mmtabs as mm, dmtabs as dm, mptabs as mp
-WHERE dm.mtabus_id=$P{mtabus} AND mm.mtabus_id=dm.mtabus_id
-AND dm.numepart=mp.numero AND mp.numero=$P{numegrup} AND dm.mmtab_id=mm.id GROUP BY mm.id) as sb GROUP BY tabu) AS mat) AS unit]]>
-		</queryString>
-		<field name="total" class="java.math.BigDecimal"/>
-		<field name="gad" class="java.lang.String"/>
-		<field name="util" class="java.lang.String"/>
-		<field name="fin" class="java.lang.String"/>
-		<field name="impue" class="java.lang.String"/>
-		<field name="totalgad" class="java.lang.String"/>
-		<field name="totalutil" class="java.lang.String"/>
-	</subDataset>
 	<parameter name="mpres" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
@@ -421,23 +274,32 @@ AND dm.numepart=mp.numero AND mp.numero=$P{numegrup} AND dm.mmtab_id=mm.id GROUP
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<parameter name="fecha" class="java.lang.String"/>
+	<parameter name="nroenletra" class="java.lang.String"/>
+	<parameter name="nombrecont" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT
-     IFNULL(mppres.numenletra,0) AS numenletra,
      mppres.`id` AS mppres_codicove,
      mppres.`numegrup` AS mppres_numegrup,
-     mppres.`descri` AS mppres_descri,
-     mppres.`unidad` AS mppres_unidad,
+    mp.porgam as porcgad,
      mppres.`cantidad` AS mppres_cantidad,
-     IF(mppres.`rendimi`=0,1,mppres.rendimi) AS mppres_rendimi,
-     mppres.`numenletra` AS numenletra,
-     mppres.`porcgad` AS mppres_porcgad,
-     mp.pprest as mpres_pprest,
-     mppres.`porcutil` AS mppres_porcutil,
-     mp.`pcosfin` AS mpres_pcosfin,
-     mp.`pimpue` AS mpres_pimpue,
+     mppres.rendimi as rendimi,
+     mppres.descri as descri,
+     mc.nombre as contratista,
+     mc.encabe as encabezado,
+     mc.logo as logocont,
+     mc.ingres as nombres,
+     mc.civres as civres,
+     mpr.nombre as propietario,
+     mpr.logo as logoprop,
+     mp.nombre as nombreobra,
+     mp.ubicac as ubicacionobra,
+     mp.porpre as mpres_pprest,
+     mp.`poruti` AS mppres_porcutil,
+     mp.`porcfi` AS mpres_pcosfin,
+     mp.`porimp` AS mpres_pimpue,
      mppres.`precunit` AS mppres_precunit,
      mppres.`precasu` AS mppres_precasu,
+     mppres.`unidad` AS mppres_unidad,
      mppres.`mpre_id` AS mppres_mpre_id,
      mp.`id` AS mpre_id,
      IFNULL(ROUND(
@@ -451,61 +313,75 @@ WHERE de.mpre_id=$P{mpres} AND mp.mpre_id=de.mpre_id AND de.mepre_id=me.id AND m
 AND de.mppre_id=mp.id AND de.numero=mp.numero AND mp.numegrup=$P{numegrup}),2),0) as subtotalequipo,
 
 IFNULL(ROUND((SELECT SUM(me.precio*me.deprecia*de.cantidad)/IF(mp.rendimi=0,1,mp.rendimi) FROM mepres as me, deppres as de, mppres as mp
-WHERE de.mpre_id=$P{mpres} AND mp.mpre_id=de.mpre_id AND de.mepre_id=me.id AND me.mtabus_id=mp.mtabus_id
-AND de.mptab_id=mp.codicove AND de.numero=mp.numero AND mp.numegrup=$P{numegrup}),2),0) as totalequipo,
+WHERE de.mpre_id=$P{mpres} AND mp.mpre_id=de.mpre_id AND de.mepre_id=me.id AND me.mpre_id=mp.mpre_id
+AND de.mppre_id=mp.id AND de.numero=mp.numero AND mp.numegrup=$P{numegrup}),2),0) as totalequipo,
 
-IFNULL(ROUND((SELECT SUM(dmo.cantidad*mo.salario) FROM dmoptabs as dmo, mmotabs as mo, mppres as mp
-WHERE dmo.mmotab_id=mo.id AND dmo.mtabus_id=$P{mtabus} AND dmo.mtabus_id=mp.mtabus_id AND dmo.numero=mp.numero
-AND mo.mtabus_id=dmo.mtabus_id AND mp.numegrup=$P{numegrup}),2),0) as subtotalmano,
+IFNULL(ROUND((SELECT SUM(dmo.cantidad*mo.salario) FROM dmoppres as dmo, mmopres as mo, mppres as mp
+WHERE dmo.mmopre_id=mo.id AND dmo.mpre_id=$P{mpres} AND dmo.mpre_id=mp.mpre_id AND dmo.numero=mp.numero
+AND mo.mpre_id=dmo.mpre_id AND mp.numegrup=$P{numegrup}),2),0) as subtotalmano,
 
-IFNULL(ROUND((SELECT SUM(dmo.cantidad*mo.salario)*mt.pprest/100 FROM dmoptabs as dmo, mtabus as mt, mmotabs as mo, mppres as mp
-WHERE dmo.mmotab_id=mo.id AND dmo.mtabus_id=$P{mtabus} AND mt.id=dmo.mtabus_id AND dmo.mtabus_id=mp.mtabus_id AND dmo.numero=mp.numero
-AND mo.mtabus_id=dmo.mtabus_id AND mp.numegrup=$P{numegrup}),2),0) as prestaciones,
+IFNULL(ROUND((SELECT SUM(dmo.cantidad*mo.salario)*mt.porpre/100 FROM dmoppres as dmo, mpres as mt, mmopres as mo, mppres as mp
+WHERE dmo.mmopre_id=mo.id AND dmo.mpre_id=$P{mpres} AND mt.id=dmo.mpre_id AND dmo.mpre_id=mp.mpre_id AND dmo.numero=mp.numero
+AND mo.mpre_id=dmo.mpre_id AND mp.numegrup=$P{numegrup}),2),0) as prestaciones,
 
-(SELECT bono FROM mmotabs WHERE mtabus_id=$P{mtabus} LIMIT 1) as bono,
+(SELECT bono FROM mmopres WHERE mpre_id=$P{mpres} LIMIT 1) as bono,
 
-IFNULL(ROUND((SELECT SUM(dmo.cantidad)*mo.bono FROM dmoptabs as dmo, mmotabs as mo, mppres as mp WHERE mp.mtabus_id=$P{mtabus} AND dmo.mmotab_id=mo.id AND mp.mtabus_id = dmo.mtabus_id AND mo.mtabus_id=mp.mtabus_id AND dmo.numero = mp.numero AND mp.numegrup=$P{numegrup}),2),0) as montobono,
+IFNULL(ROUND((SELECT SUM(dmo.cantidad)*mo.bono FROM dmoppres as dmo, mmopres as mo, mppres as mp WHERE mp.mpre_id=$P{mpres} AND
+dmo.mmopre_id=mo.id AND mp.mpre_id = dmo.mpre_id AND mo.mpre_id=mp.mpre_id AND dmo.numero = mp.numero AND mp.numegrup=$P{numegrup}),2),0) as montobono,
 
-IFNULL(ROUND((SELECT subsid FROM mmotabs WHERE mtabus_id=$P{mtabus} LIMIT 1),2),0) as subsid,
+IFNULL(ROUND((SELECT subsid FROM mmopres WHERE mpre_id=$P{mpres} LIMIT 1),2),0) as subsid,
 
-IFNULL(ROUND((SELECT SUM(dmo.cantidad)*mo.subsid FROM dmoptabs as dmo, mmotabs as mo, mppres as mp WHERE mp.mtabus_id=$P{mtabus} AND mp.mtabus_id = dmo.mtabus_id AND mo.mtabus_id=mp.mtabus_id AND dmo.numero = mp.numero AND mp.numegrup=$P{numegrup} ),2),0)  as montosubsid,
+IFNULL(ROUND((SELECT SUM(dmo.cantidad)*mo.subsid FROM dmoppres as dmo, mmopres as mo, mppres as mp WHERE mp.mpre_id=$P{mpres}
+AND mp.mpre_id = dmo.mpre_id AND mo.mpre_id=mp.mpre_id AND dmo.numero = mp.numero AND mp.numegrup=$P{numegrup} ),2),0)  as montosubsid,
 
-IFNULL(ROUND((SELECT SUM(dmo.cantidad*mo.salario)+ SUM(dmo.cantidad*mo.salario)*(mt.pprest/100) + SUM(dmo.cantidad)*mo.bono + SUM(dmo.cantidad)*mo.subsid FROM dmoptabs as dmo, mtabus as mt, mmotabs as mo,mppres as mp WHERE
-mt.id=$P{mtabus} AND mo.mtabus_id=mt.id AND dmo.mtabus_id = mt.id AND dmo.mmotab_id=mo.id AND dmo.numero=mp.numero AND mp.numegrup=$P{numegrup}) ,2),0) as costomano,
+IFNULL(ROUND((SELECT SUM(dmo.cantidad*mo.salario)+ SUM(dmo.cantidad*mo.salario)*(mt.porpre/100) + SUM(dmo.cantidad)*mo.bono +
+SUM(dmo.cantidad)*mo.subsid FROM dmoppres as dmo,
+ mpres as mt, mmopres as mo,mppres as mp WHERE
+mt.id=$P{mpres} AND mo.mpre_id=mt.id AND dmo.mpre_id = mt.id AND dmo.mmopre_id=mo.id AND dmo.numero=mp.numero AND mp.numegrup=$P{numegrup}) ,2),0) as costomano,
 
-IFNULL(ROUND((SELECT (SUM(dmo.cantidad*mo.salario)+ SUM(dmo.cantidad*mo.salario)*(mt.pprest/100) + SUM(dmo.cantidad)*mo.bono + SUM(dmo.cantidad)*mo.subsid)/IF(mp.rendimi=0,1,mp.rendimi) FROM dmoptabs as dmo, mtabus as mt, mmotabs as mo, mppres as mp WHERE
-mt.id=$P{mtabus} AND mo.mtabus_id=mt.id AND dmo.mtabus_id = mt.id AND dmo.mmotab_id=mo.id AND dmo.numero=mp.numero AND mp.numegrup=$P{numegrup}),2),0) as totalmano,
+IFNULL(ROUND((SELECT (SUM(dmo.cantidad*mo.salario)+ SUM(dmo.cantidad*mo.salario)*(mt.porpre/100) + SUM(dmo.cantidad)*mo.bono + SUM(dmo.cantidad)*mo.subsid)/IF(mp.rendimi=0,1,mp.rendimi) FROM dmoppres as dmo, mpres as mt, mmopres as mo, mppres as mp WHERE
+mt.id=$P{mpres} AND mo.mpre_id=mt.id AND dmo.mpre_id = mt.id AND dmo.mmopre_id=mo.id AND dmo.numero=mp.numero AND mp.numegrup=$P{numegrup}),2),0) as totalmano,
 
-IFNULL(ROUND((SELECT SUM(dmo.cantidad) FROM dmoptabs as dmo, mppres as mp WHERE dmo.mtabus_id=$P{mtabus} AND dmo.numero=mp.numero AND mp.mtabus_id=dmo.mtabus_id AND mp.numegrup=$P{numegrup}),2),0) as cantmano
+IFNULL(ROUND((SELECT SUM(dmo.cantidad) FROM dmoppres as dmo, mppres as mp WHERE dmo.mpre_id=$P{mpres} AND dmo.numero=mp.numero AND mp.mpre_id=dmo.mpre_id AND mp.numegrup=$P{numegrup}),2),0) as cantmano
 
 FROM
-     `mpres` mp INNER JOIN `mppres` mppres ON mpres.`id` = mppres.`mpre_id`
+     `mpres` as mp, `mppres` as mppres, mconts as mc, mprops as mpr
 WHERE
      mppres.mpre_id =$P{mpres}
- AND mppres.numero = $P{numegrup}]]>
+ AND mppres.numero = $P{numegrup}
+AND (mppres.mpre_id=mp.id OR mppres.mpre_id IN (SELECT id FROM mpres WHERE mpres_id=$P{mpres}))
+AND mp.codcon = mc.id AND mp.codpro = mpr.id]]>
 	</queryString>
-	<field name="numenletra" class="java.lang.String">
+	<field name="mppres_codicove" class="java.lang.String"/>
+	<field name="mppres_numegrup" class="java.math.BigDecimal"/>
+	<field name="porcgad" class="java.math.BigDecimal"/>
+	<field name="mppres_cantidad" class="java.math.BigDecimal"/>
+	<field name="rendimi" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="mptabs_codicove" class="java.lang.String"/>
-	<field name="mptabs_numegrup" class="java.math.BigDecimal"/>
-	<field name="mptabs_descri" class="java.lang.String"/>
-	<field name="mptabs_unidad" class="java.lang.String"/>
-	<field name="mptabs_cantidad" class="java.math.BigDecimal"/>
-	<field name="mptabs_rendimi" class="java.math.BigDecimal"/>
-	<field name="propietario" class="java.lang.String">
+	<field name="descri" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="mptabs_porcgad" class="java.math.BigDecimal"/>
-	<field name="mtabus_pprest" class="java.math.BigDecimal"/>
-	<field name="mptabs_porcutil" class="java.math.BigDecimal"/>
-	<field name="mtabus_pcosfin" class="java.math.BigDecimal"/>
-	<field name="mtabus_pimpue" class="java.math.BigDecimal"/>
-	<field name="mptabs_precunit" class="java.math.BigDecimal"/>
-	<field name="mptabs_precasu" class="java.math.BigDecimal"/>
-	<field name="mptabs_mtabus_id" class="java.lang.String"/>
-	<field name="mtabus_id" class="java.lang.String"/>
-	<field name="mtabus_vigencia" class="java.lang.String"/>
+	<field name="contratista" class="java.lang.String"/>
+	<field name="encabezado" class="java.lang.String"/>
+	<field name="logocont" class="java.lang.Object"/>
+	<field name="nombres" class="java.lang.String"/>
+	<field name="civres" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="propietario" class="java.lang.String"/>
+	<field name="logoprop" class="java.lang.Object"/>
+	<field name="nombreobra" class="java.lang.String"/>
+	<field name="ubicacionobra" class="java.lang.String"/>
+	<field name="mpres_pprest" class="java.math.BigDecimal"/>
+	<field name="mppres_porcutil" class="java.math.BigDecimal"/>
+	<field name="mpres_pcosfin" class="java.math.BigDecimal"/>
+	<field name="mpres_pimpue" class="java.math.BigDecimal"/>
+	<field name="mppres_precunit" class="java.math.BigDecimal"/>
+	<field name="mppres_precasu" class="java.math.BigDecimal"/>
+	<field name="mppres_unidad" class="java.lang.String"/>
+	<field name="mppres_mpre_id" class="java.lang.String"/>
+	<field name="mpre_id" class="java.lang.String"/>
 	<field name="totalmat" class="java.math.BigDecimal"/>
 	<field name="subtotalequipo" class="java.math.BigDecimal"/>
 	<field name="totalequipo" class="java.math.BigDecimal"/>
@@ -523,7 +399,7 @@ WHERE
 	<field name="totalmano" class="java.math.BigDecimal"/>
 	<field name="cantmano" class="java.math.BigDecimal"/>
 	<variable name="productividad" class="java.lang.Double">
-		<variableExpression><![CDATA[(($F{mptabs_cantidad}*8)/$F{mptabs_rendimi})]]></variableExpression>
+		<variableExpression><![CDATA[(($F{mppres_cantidad}*8)/$F{rendimi})]]></variableExpression>
 		<initialValueExpression><![CDATA[0]]></initialValueExpression>
 	</variable>
 	<variable name="horas" class="java.lang.Double">
@@ -535,11 +411,11 @@ WHERE
 		<initialValueExpression><![CDATA[0]]></initialValueExpression>
 	</variable>
 	<variable name="admin" class="java.lang.Double">
-		<variableExpression><![CDATA[$V{porunidad}*($F{mptabs_porcgad}/100)]]></variableExpression>
+		<variableExpression><![CDATA[$V{porunidad}*($F{porcgad}/100)]]></variableExpression>
 		<initialValueExpression><![CDATA[0]]></initialValueExpression>
 	</variable>
 	<variable name="prest" class="java.lang.Double">
-		<variableExpression><![CDATA[$F{subtotalmano}*($F{mtabus_pprest}/100)]]></variableExpression>
+		<variableExpression><![CDATA[$F{subtotalmano}*($F{mpres_pprest}/100)]]></variableExpression>
 		<initialValueExpression><![CDATA[0]]></initialValueExpression>
 	</variable>
 	<variable name="totalmano" class="java.lang.Double">
@@ -547,7 +423,7 @@ WHERE
 		<initialValueExpression><![CDATA[0]]></initialValueExpression>
 	</variable>
 	<variable name="xunidad" class="java.lang.Double" resetType="None">
-		<variableExpression><![CDATA[$V{totalmano}/$F{mptabs_rendimi}]]></variableExpression>
+		<variableExpression><![CDATA[$V{totalmano}/$F{rendimi}]]></variableExpression>
 		<initialValueExpression><![CDATA[0]]></initialValueExpression>
 	</variable>
 	<variable name="matequip" class="java.lang.Double">
@@ -558,7 +434,7 @@ WHERE
 		<initialValueExpression><![CDATA[0]]></initialValueExpression>
 	</variable>
 	<variable name="admin1" class="java.lang.Double">
-		<variableExpression><![CDATA[$V{porunidad}*($F{mptabs_porcgad}/100)]]></variableExpression>
+		<variableExpression><![CDATA[$V{porunidad}*($F{porcgad}/100)]]></variableExpression>
 		<initialValueExpression><![CDATA[0]]></initialValueExpression>
 	</variable>
 	<variable name="subtotaladm" class="java.lang.Double">
@@ -566,7 +442,7 @@ WHERE
 		<initialValueExpression><![CDATA[0]]></initialValueExpression>
 	</variable>
 	<variable name="util" class="java.lang.Double">
-		<variableExpression><![CDATA[$V{subtotaladm}*($F{mptabs_porcutil}/100)]]></variableExpression>
+		<variableExpression><![CDATA[$V{subtotaladm}*($F{mppres_porcutil}/100)]]></variableExpression>
 		<initialValueExpression><![CDATA[0]]></initialValueExpression>
 	</variable>
 	<variable name="subtotalutil" class="java.lang.Double">
@@ -574,11 +450,11 @@ WHERE
 		<initialValueExpression><![CDATA[0]]></initialValueExpression>
 	</variable>
 	<variable name="financiamiento" class="java.lang.Double">
-		<variableExpression><![CDATA[$V{subtotalutil}*($F{mtabus_pcosfin}/100)]]></variableExpression>
+		<variableExpression><![CDATA[$V{subtotalutil}*($F{mpres_pcosfin}/100)]]></variableExpression>
 		<initialValueExpression><![CDATA[0]]></initialValueExpression>
 	</variable>
 	<variable name="impuesto" class="java.lang.Double">
-		<variableExpression><![CDATA[$V{subtotalutil}*($F{mtabus_pimpue}/100)]]></variableExpression>
+		<variableExpression><![CDATA[$V{subtotalutil}*($F{mpres_pimpue}/100)]]></variableExpression>
 		<initialValueExpression><![CDATA[0]]></initialValueExpression>
 	</variable>
 	<variable name="preciounit" class="java.lang.Double">
@@ -589,44 +465,16 @@ WHERE
 		<band splitType="Stretch"/>
 	</background>
 	<pageHeader>
-		<band height="168" splitType="Stretch">
+		<band height="134" splitType="Stretch">
 			<staticText>
-				<reportElement uuid="aceae799-d9b8-4fef-a5be-b418bec5fb70" x="0" y="138" width="99" height="15"/>
-				<box>
-					<pen lineWidth="1.0"/>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Propietario Prec. Ref.]]></text>
-			</staticText>
-			<staticText>
-				<reportElement uuid="fe07f56e-1473-4ec6-bde3-9ae2496ac0d9" x="185" y="88" width="231" height="20"/>
+				<reportElement uuid="fe07f56e-1473-4ec6-bde3-9ae2496ac0d9" x="167" y="52" width="231" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Análisis de precio Unitario]]></text>
 			</staticText>
-			<textField>
-				<reportElement uuid="c73f808a-6849-45c0-afab-4a1964003628" stretchType="RelativeToBandHeight" isPrintRepeatedValues="false" x="0" y="153" width="99" height="15"/>
-				<box>
-					<pen lineWidth="1.0"/>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{propietario}]]></textFieldExpression>
-			</textField>
 			<staticText>
-				<reportElement uuid="2d4554bc-877c-4365-adcb-dc39d9a627ef" style="table_TH" positionType="Float" mode="Opaque" x="0" y="108" width="42" height="15" backcolor="#FFFFFF"/>
+				<reportElement uuid="2d4554bc-877c-4365-adcb-dc39d9a627ef" style="table_TH" positionType="Float" mode="Opaque" x="304" y="74" width="42" height="15" backcolor="#FFFFFF"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -640,7 +488,7 @@ WHERE
 				<text><![CDATA[Nro.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="e8d53ed4-f22e-4036-a64a-bbdfd2219b68" positionType="Float" mode="Opaque" x="42" y="108" width="71" height="15" backcolor="#FFFFFF"/>
+				<reportElement uuid="e8d53ed4-f22e-4036-a64a-bbdfd2219b68" positionType="Float" mode="Opaque" x="346" y="74" width="71" height="15" backcolor="#FFFFFF"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -654,7 +502,7 @@ WHERE
 				<text><![CDATA[Código]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="e2114fd1-e665-4252-bd21-65ba46b3cb7b" positionType="Float" mode="Opaque" x="113" y="108" width="54" height="15" backcolor="#FFFFFF"/>
+				<reportElement uuid="e2114fd1-e665-4252-bd21-65ba46b3cb7b" positionType="Float" mode="Opaque" x="417" y="74" width="54" height="15" backcolor="#FFFFFF"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -668,7 +516,7 @@ WHERE
 				<text><![CDATA[Unidad]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="123a08fb-bd7e-45d3-93b4-af35981ee0a4" positionType="Float" mode="Opaque" x="167" y="108" width="46" height="15" backcolor="#FFFFFF"/>
+				<reportElement uuid="123a08fb-bd7e-45d3-93b4-af35981ee0a4" positionType="Float" mode="Opaque" x="471" y="74" width="46" height="15" backcolor="#FFFFFF"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -682,7 +530,7 @@ WHERE
 				<text><![CDATA[Cantidad]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="f2f6c67c-fd3d-42ab-b0e4-126564209800" positionType="Float" mode="Opaque" x="213" y="108" width="55" height="15" backcolor="#FFFFFF"/>
+				<reportElement uuid="f2f6c67c-fd3d-42ab-b0e4-126564209800" positionType="Float" mode="Opaque" x="517" y="74" width="54" height="15" backcolor="#FFFFFF"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -696,7 +544,7 @@ WHERE
 				<text><![CDATA[Rendimi]]></text>
 			</staticText>
 			<textField>
-				<reportElement uuid="7f4c9bed-9ebb-4f52-82c0-734f5a0580dc" x="167" y="123" width="46" height="15"/>
+				<reportElement uuid="7f4c9bed-9ebb-4f52-82c0-734f5a0580dc" x="471" y="89" width="46" height="15"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -705,12 +553,12 @@ WHERE
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="7"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{mptabs_cantidad}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{mppres_cantidad}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="2a24901f-7f92-45d2-98fd-01c0cde10428" x="113" y="123" width="54" height="15"/>
+				<reportElement uuid="2a24901f-7f92-45d2-98fd-01c0cde10428" x="417" y="89" width="54" height="15"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -719,12 +567,12 @@ WHERE
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="7"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{mptabs_unidad}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{mppres_unidad}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="8df8859a-cc4c-4e4a-a1de-023238339a21" x="42" y="123" width="71" height="15"/>
+				<reportElement uuid="8df8859a-cc4c-4e4a-a1de-023238339a21" x="346" y="89" width="71" height="15"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -733,12 +581,12 @@ WHERE
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="7"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{mptabs_codicove}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{mppres_codicove}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="8138dae9-af92-4241-a89b-27dd473d4c37" x="0" y="123" width="42" height="15"/>
+				<reportElement uuid="8138dae9-af92-4241-a89b-27dd473d4c37" x="304" y="89" width="42" height="15"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -747,12 +595,12 @@ WHERE
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="7"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{mptabs_numegrup}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{mppres_numegrup}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="0a76cc27-8e13-4583-99de-b886229b077d" x="213" y="123" width="55" height="15"/>
+				<reportElement uuid="0a76cc27-8e13-4583-99de-b886229b077d" x="517" y="89" width="54" height="15"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -761,12 +609,12 @@ WHERE
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="7"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{mptabs_rendimi}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{rendimi}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement uuid="40f5dcaf-7a9a-404d-bc98-14f0ba1f5f5a" stretchType="RelativeToBandHeight" x="268" y="108" width="303" height="60"/>
+				<reportElement uuid="40f5dcaf-7a9a-404d-bc98-14f0ba1f5f5a" stretchType="RelativeToTallestObject" x="304" y="119" width="267" height="15"/>
 				<box topPadding="3" leftPadding="3" bottomPadding="3" rightPadding="3">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -777,92 +625,141 @@ WHERE
 				<textElement textAlignment="Justified" verticalAlignment="Middle">
 					<font size="6"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{mptabs_descri}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{descri}]]></textFieldExpression>
 			</textField>
 			<image>
-				<reportElement uuid="10dae668-4d61-4c45-b015-8cc2a0febc96" x="0" y="2" width="73" height="64"/>
-				<imageExpression><![CDATA[]]></imageExpression>
+				<reportElement uuid="10dae668-4d61-4c45-b015-8cc2a0febc96" x="0" y="2" width="54" height="50"/>
+				<imageExpression><![CDATA[JRImageRenderer.getInstance((byte []) $F{logocont})]]></imageExpression>
 			</image>
-			<image>
-				<reportElement uuid="34cae204-5bf2-479d-b3f7-aff5cc4b2253" x="505" y="0" width="66" height="66"/>
-				<imageExpression><![CDATA[]]></imageExpression>
+			<image hAlign="Right">
+				<reportElement uuid="34cae204-5bf2-479d-b3f7-aff5cc4b2253" x="515" y="0" width="56" height="52"/>
+				<imageExpression><![CDATA[JRImageRenderer.getInstance((byte []) $F{logoprop})]]></imageExpression>
 			</image>
-			<staticText>
-				<reportElement uuid="603b2957-34b6-4244-ad72-16385258247d" x="99" y="138" width="86" height="15"/>
-				<box>
-					<pen lineWidth="1.0"/>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Código Prec. Ref.]]></text>
-			</staticText>
 			<textField>
-				<reportElement uuid="6acbc72e-214e-49b7-a671-606fe77f2076" stretchType="RelativeToBandHeight" isPrintRepeatedValues="false" x="99" y="153" width="86" height="15"/>
-				<box>
-					<pen lineWidth="1.0"/>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{mptabs_mtabus_id}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement uuid="201bab68-04c2-4d85-8dbd-c971a15c02d2" x="185" y="138" width="83" height="15"/>
-				<box>
-					<pen lineWidth="1.0"/>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Vigencia Prec. Ref.]]></text>
-			</staticText>
-			<textField>
-				<reportElement uuid="7db81c84-5255-43b1-b84c-525d97bb6bf4" stretchType="RelativeToBandHeight" isPrintRepeatedValues="false" x="185" y="153" width="83" height="15"/>
-				<box>
-					<pen lineWidth="1.0"/>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{mtabus_vigencia}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement uuid="4a325b2c-cf08-40a6-99c8-e289d126bace" positionType="Float" x="454" y="77" width="109" height="11"/>
+				<reportElement uuid="4a325b2c-cf08-40a6-99c8-e289d126bace" positionType="Float" x="453" y="63" width="109" height="11"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Pág. "+$V{PAGE_NUMBER}+" de "]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" evaluationTime="Report">
-				<reportElement uuid="be6b0399-11ae-4cb2-95ec-b151e60106a7" x="563" y="77" width="9" height="11"/>
+				<reportElement uuid="be6b0399-11ae-4cb2-95ec-b151e60106a7" x="562" y="63" width="9" height="11"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="24b5b105-a40e-4272-9ae3-6f1894b1349c" x="481" y="66" width="90" height="11"/>
+				<reportElement uuid="24b5b105-a40e-4272-9ae3-6f1894b1349c" x="483" y="52" width="90" height="11"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{fecha}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="a22162da-c9a3-48cd-a7a8-271d86fc6a40" style="table_TH" positionType="Float" mode="Opaque" x="0" y="74" width="113" height="15" backcolor="#FFFFFF"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Propietario]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="bf45e1ed-d1eb-47ec-8395-509868cd367a" x="0" y="89" width="113" height="15"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{propietario}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="19a522ed-1706-4547-b4ee-cbb372325dc2" style="table_TH" positionType="Float" mode="Opaque" x="113" y="74" width="191" height="15" backcolor="#FFFFFF"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Ubicación]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="bd4146d8-73c8-46c0-9338-d41987959e25" x="113" y="89" width="191" height="15"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ubicacionobra}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="3bf51285-a693-4755-9e5e-87773b96c577" style="table_TH" mode="Opaque" x="0" y="104" width="304" height="15" backcolor="#FFFFFF"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Obra]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="08d3fadc-49fd-47c9-a8a1-2d3ad40cd339" stretchType="RelativeToTallestObject" x="0" y="119" width="304" height="15"/>
+				<box leftPadding="3" bottomPadding="2" rightPadding="2">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombreobra}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="561c224d-c36b-4aa0-a152-501ae62f8366" style="table_TH" mode="Opaque" x="304" y="104" width="267" height="15" backcolor="#FFFFFF"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Partida]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="5182c448-52f5-43b3-9dbd-80f8a7fc13f0" x="54" y="0" width="461" height="52"/>
+				<textElement textAlignment="Center">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{encabezado}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageHeader>
@@ -1283,8 +1180,8 @@ WHERE
 						<datasetParameter name="numegrup">
 							<datasetParameterExpression><![CDATA[$P{numegrup}]]></datasetParameterExpression>
 						</datasetParameter>
-						<datasetParameter name="mtabus">
-							<datasetParameterExpression><![CDATA[$P{mtabus}]]></datasetParameterExpression>
+						<datasetParameter name="mpres">
+							<datasetParameterExpression><![CDATA[$P{mpres}]]></datasetParameterExpression>
 						</datasetParameter>
 						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 					</datasetRun>
@@ -1396,7 +1293,7 @@ WHERE
 				</jr:table>
 			</componentElement>
 		</band>
-		<band height="12" splitType="Immediate">
+		<band height="11" splitType="Immediate">
 			<rectangle>
 				<reportElement uuid="1c814987-a7d8-4dbf-b8dd-21abed8f055a" x="0" y="0" width="571" height="11"/>
 			</rectangle>
@@ -1458,7 +1355,7 @@ WHERE
 				<textElement textAlignment="Right" verticalAlignment="Top">
 					<font size="7"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{mtabus_pprest}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{mpres_pprest}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00">
 				<reportElement uuid="6457fa99-6382-4c80-9a5a-79d4bd68e21d" x="245" y="14" width="90" height="11"/>
@@ -1515,14 +1412,14 @@ WHERE
 				<textFieldExpression><![CDATA[$V{xunidad}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement uuid="9a81cc5f-f74c-4dfb-99ec-5b516932f341" x="1" y="80" width="99" height="11"/>
+				<reportElement uuid="9a81cc5f-f74c-4dfb-99ec-5b516932f341" x="1" y="79" width="99" height="11"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="7" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Fecha:]]></text>
 			</staticText>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="b23f2b1d-494a-4542-8c6d-b6519ecbabf1" x="100" y="81" width="90" height="11"/>
+				<reportElement uuid="b23f2b1d-494a-4542-8c6d-b6519ecbabf1" x="100" y="79" width="90" height="11"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="7"/>
 				</textElement>
@@ -1542,14 +1439,6 @@ WHERE
 				</textElement>
 				<textFieldExpression><![CDATA[$V{productividad}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement uuid="a19f023a-9c5a-4489-92dc-e52543a48a74" x="2" y="93" width="189" height="39"/>
-				<box leftPadding="5"/>
-				<textElement textAlignment="Right">
-					<font size="7"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{numenletra}]]></textFieldExpression>
-			</textField>
 			<textField pattern="#,##0.00">
 				<reportElement uuid="d9a44531-c3fd-4c85-9129-40a61e24b36c" x="99" y="59" width="91" height="11"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
@@ -1558,7 +1447,7 @@ WHERE
 				<textFieldExpression><![CDATA[$V{horas}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement uuid="a6fb7200-c75e-48c9-bd5f-d109ad241dd0" x="1" y="70" width="99" height="11"/>
+				<reportElement uuid="a6fb7200-c75e-48c9-bd5f-d109ad241dd0" x="1" y="69" width="99" height="11"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="7" isBold="true"/>
 				</textElement>
@@ -1585,7 +1474,7 @@ WHERE
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="7"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{mtabus_pimpue}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{mpres_pimpue}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement uuid="f4a3b529-8bf8-4798-a66e-de116986ffe2" x="355" y="119" width="83" height="11"/>
@@ -1621,7 +1510,7 @@ WHERE
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="7"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{mptabs_precasu}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{mppres_precasu}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement uuid="01d5537f-cbf4-410c-ad0d-93d03b0d0d4f" x="285" y="59" width="153" height="11"/>
@@ -1635,7 +1524,7 @@ WHERE
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="7"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{mtabus_pcosfin}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{mpres_pcosfin}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00">
 				<reportElement uuid="731a286b-7a9e-4230-b8dc-1d343c05c78b" x="482" y="80" width="90" height="11"/>
@@ -1708,7 +1597,7 @@ WHERE
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="7"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{mptabs_porcutil}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{mppres_porcutil}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement uuid="ff1679a5-6e17-4bdb-b52c-c23c5f46ae22" x="355" y="89" width="83" height="11"/>
@@ -1722,7 +1611,7 @@ WHERE
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="7"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{mptabs_porcgad}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{porcgad}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement uuid="5980b9a2-2431-4378-b93c-83a54b41a794" x="355" y="99" width="83" height="11"/>
@@ -1742,6 +1631,42 @@ WHERE
 			<line>
 				<reportElement uuid="c9ff669d-13df-40c1-bfef-9552db744efc" x="0" y="58" width="573" height="1"/>
 			</line>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="98e91b77-a122-4973-b738-f55dd2e774c1" x="1" y="110" width="189" height="39"/>
+				<box topPadding="3" leftPadding="3" bottomPadding="3"/>
+				<textElement textAlignment="Right">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{nroenletra}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="7720d6cc-1b9b-4ec3-8cd9-ab5aa052c977" x="0" y="89" width="99" height="11"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Calculado Por:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="e473b341-a8b0-4c22-b568-5602198512b4" x="1" y="99" width="99" height="11"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[C.I.V.:]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="57bd6f1a-f5ef-4176-afc7-b3d21a4398a8" x="100" y="89" width="90" height="11"/>
+				<textElement textAlignment="Right">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombres}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="f6aa5da4-88d5-42ec-896d-8e134e7151ec" x="99" y="99" width="90" height="11"/>
+				<textElement textAlignment="Right">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{civres}]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 	<pageFooter>

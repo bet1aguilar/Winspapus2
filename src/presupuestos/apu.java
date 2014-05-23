@@ -399,14 +399,17 @@ public class apu extends javax.swing.JDialog {
                     if(i==6){
                         
                             valor+= rs1.getFloat(7);
-                            fila[i]= Float.toString(valor);
+                            fila[i] =Math.rint(rs1.getFloat(7)*100)/100;
+                           
                     }
                         if(i==2){
                             cantmano += rs1.getInt(3);
+                           
                         }
                        
-                    
+                    if(i!=6){
                        fila[i]=rs1.getObject(i+1);
+                    }
                     
                     
                 }
@@ -425,9 +428,13 @@ public class apu extends javax.swing.JDialog {
           contmano = valor; 
           System.out.println("contmano en apu "+contmano);
         presta = contmano* (Float.valueOf(prest)/100);
+         System.out.println("Presta "+presta);
         bono = cantmano * bono;
+         System.out.println("Bono "+bono);
         subsid = cantmano * subsid;
+         System.out.println("subsidio "+subsid);
         contmano = contmano + presta +bono +subsid;
+         System.out.println("contmano "+contmano);
          if(rendimiento==0)
                  rendimiento=1;
         contmano = contmano / rendimiento;

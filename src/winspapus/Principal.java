@@ -49,6 +49,7 @@ import presupuestos.Nuevo;
 import presupuestos.Presupuesto;
 import presupuestos.diagrama;
 import presupuestos.equipo.*;
+import presupuestos.manoobra.matrizmanopres;
 import presupuestos.memoria;
 import presupuestos.tabpresupuesto;
 import reportes.reportepresupuesto;
@@ -534,7 +535,6 @@ public class Principal extends javax.swing.JFrame {
         });
 
         jDesktopPane1.setBackground(new java.awt.Color(204, 204, 204));
-        jDesktopPane1.setBorder(new javax.swing.border.MatteBorder(new javax.swing.ImageIcon(getClass().getResource("/winspapus/imagenes/fondo.png")))); // NOI18N
         jDesktopPane1.setAlignmentX(0.0F);
         jDesktopPane1.setAlignmentY(0.0F);
         jDesktopPane1.setAutoscrolls(true);
@@ -864,7 +864,7 @@ public class Principal extends javax.swing.JFrame {
         );
 
         jTable2.setAutoCreateRowSorter(true);
-        jTable2.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        jTable2.setFont(new java.awt.Font("Tahoma", 0, 10));
         jTable2.setEditingColumn(0);
         jTable2.setEditingRow(0);
         jTable2.setName("mtabustable"); // NOI18N
@@ -1815,6 +1815,11 @@ public class Principal extends javax.swing.JFrame {
 
         jMenuItem35.setIcon(new javax.swing.ImageIcon(getClass().getResource("/winspapus/imagenes/barracasco.png"))); // NOI18N
         jMenuItem35.setText("Mano de Obra");
+        jMenuItem35.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem35ActionPerformed(evt);
+            }
+        });
         jMenu15.add(jMenuItem35);
         jMenu15.add(jSeparator3);
 
@@ -3565,6 +3570,16 @@ private void jMenuItem34ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
         equipos.setBounds(xi, yi, 700, 500);
         equipos.setVisible(true);
 }//GEN-LAST:event_jMenuItem34ActionPerformed
+
+private void jMenuItem35ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem35ActionPerformed
+    matrizmanopres manoobra = new matrizmanopres(this, true, conexion, presup,this);
+        int xi = (this.getWidth()/2)-700/2;
+        int yi = (this.getHeight()/2)-500/2;
+        manoobra.setBounds(xi, yi, 700, 500);
+        manoobra.setVisible(true);
+    
+    // TODO add your handling code here:
+}//GEN-LAST:event_jMenuItem35ActionPerformed
     public void recalcula()
     {
        recalcula recal = new recalcula(this, true, conexion, cadena);

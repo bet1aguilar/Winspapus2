@@ -9,6 +9,7 @@
 	<parameter name="totalenletra" class="java.lang.String"/>
 	<parameter name="fecha" class="java.lang.String"/>
 	<parameter name="titulo" class="java.lang.String"/>
+	<parameter name="logocont" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT CONCAT(mppres.id,"\n",mppres.`descri`) AS mppres_descri,
 IF(mppres.`precasu`=0,mppres.`precunit`,precasu) AS mppres_precunit,      ROUND(IF(mppres.`precasu`=0,mppres.`precunit`,precasu)*cantidad,2) AS total,

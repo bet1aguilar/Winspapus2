@@ -99,7 +99,7 @@ public class nuevamano extends javax.swing.JDialog {
         });
     }
       public final void definemodelo(){
-        String consulta = "SELECT id FROM mepres WHERE mpre_id='"+pres+"' AND status=1";
+        String consulta = "SELECT id FROM mmopres WHERE mpre_id='"+pres+"' AND status=1";
         String [] mate;
         try {
             Statement st = (Statement) conex.createStatement();
@@ -152,7 +152,8 @@ public class nuevamano extends javax.swing.JDialog {
         try {
             Statement carga = (Statement) conex.createStatement();
             
-            String consulta="SELECT id, descri, deprecia, precio FROM mepres WHERE mpre_id='"+pres+"' AND id='"+codmano+"' AND status=1";
+            String consulta="SELECT id, descri, bono , salario, subsid "
+                    + "FROM mepres WHERE mpre_id='"+pres+"' AND id='"+codmano+"' AND status=1";
             ResultSet rscarga = carga.executeQuery(consulta);
             
             while(rscarga.next()){
@@ -160,6 +161,7 @@ public class nuevamano extends javax.swing.JDialog {
                 jTextField8.setText(rscarga.getObject(2).toString());
                 jTextField3.setText(rscarga.getObject(3).toString());
                 jTextField7.setText(rscarga.getObject(4).toString());
+                jTextField7.setText(rscarga.getObject(5).toString());
             }
         } catch (SQLException ex) {
             Logger.getLogger(nuevamano.class.getName()).log(Level.SEVERE, null, ex);
@@ -268,7 +270,7 @@ public class nuevamano extends javax.swing.JDialog {
         jLabel20.setForeground(new java.awt.Color(255, 0, 0));
         jLabel20.setText("* Campo no puede ser vacio");
 
-        jLabel12.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel12.setFont(new java.awt.Font("Tahoma", 1, 11));
         jLabel12.setText("Salario:");
 
         jTextField7.setToolTipText("Ingrese Código del Tabulador");
@@ -311,7 +313,7 @@ public class nuevamano extends javax.swing.JDialog {
             }
         });
 
-        jLabel13.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel13.setFont(new java.awt.Font("Tahoma", 1, 11));
         jLabel13.setText("Subsidio:");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -400,7 +402,7 @@ public class nuevamano extends javax.swing.JDialog {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 327, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 327, Short.MAX_VALUE)
         );
 
         pack();
