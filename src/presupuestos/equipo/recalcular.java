@@ -8,7 +8,7 @@
  *
  * Created on 20/09/2012, 10:05:38 PM
  */
-package winspapus.equipos;
+package presupuestos.equipo;
 
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.Statement;
@@ -35,16 +35,16 @@ public class recalcular extends javax.swing.JDialog {
     /** A return status code - returned if OK button has been pressed */
     public static final int RET_OK = 1;
     private Connection conex;
-    private String mtabu;
+    private String pres;
     
     /** Creates new form recalcular */
-    public recalcular(java.awt.Frame parent, boolean modal, String mtabu, Connection conex) {
+    public recalcular(java.awt.Frame parent, boolean modal, String pres, Connection conex) {
         super(parent, modal);
         initComponents();
         jLabel6.setVisible(false);
         jLabel5.setVisible(false);
         this.conex = conex;
-        this.mtabu = mtabu;
+        this.pres = pres;
         // Close the dialog when Esc is pressed
         String cancelName = "cancel";
         InputMap inputMap = getRootPane().getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
@@ -52,6 +52,7 @@ public class recalcular extends javax.swing.JDialog {
         ActionMap actionMap = getRootPane().getActionMap();
         actionMap.put(cancelName, new AbstractAction() {
 
+            @Override
             public void actionPerformed(ActionEvent e) {
                 doClose(RET_CANCEL);
             }
@@ -134,11 +135,6 @@ public class recalcular extends javax.swing.JDialog {
         okButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 okButtonMouseClicked(evt);
-            }
-        });
-        okButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                okButtonActionPerformed(evt);
             }
         });
 
@@ -248,7 +244,7 @@ public class recalcular extends javax.swing.JDialog {
                 try {
                     //AUMENTO
                     Statement st = (Statement) conex.createStatement();
-                    String sql="UPDATE metabs set precio=precio*"+porcentaje+" WHERE mtabus_id='"+mtabu+"'";
+                    String sql="UPDATE mepres set precio=precio*"+porcentaje+" WHERE mpre_id='"+pres+"'";
                     st.execute(sql);
                     JOptionPane.showMessageDialog(null, "Se ha aumentado el precio de los equipos en un "+jTextField1.getText().toString()+"%");
                 } catch (SQLException ex) {
@@ -259,9 +255,9 @@ public class recalcular extends javax.swing.JDialog {
                 if(seleccionado==1){
                     porcentaje = 1-Float.valueOf(jTextField1.getText().toString())/100;
                 try {
-                    //AUMENTO
+                    //DISMINUCION
                     Statement st = (Statement) conex.createStatement();
-                    String sql="UPDATE metabs set precio=precio*"+porcentaje+" WHERE mtabus_id='"+mtabu+"'";
+                    String sql="UPDATE mepres set precio=precio*"+porcentaje+" WHERE mpre_id='"+pres+"'";
                     st.execute(sql);
                     JOptionPane.showMessageDialog(null, "Se ha reducido el precio de los materiales en un "+jTextField1.getText().toString()+"%");
                 } catch (SQLException ex) {
@@ -277,10 +273,6 @@ public class recalcular extends javax.swing.JDialog {
                 jLabel6.setVisible(true);
             }        // TODO add your handling code here:
     }//GEN-LAST:event_okButtonMouseClicked
-
-    private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_okButtonActionPerformed
     
     private void doClose(int retStatus) {
         returnStatus = retStatus;

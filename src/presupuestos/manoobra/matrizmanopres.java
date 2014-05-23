@@ -8,7 +8,7 @@
  *
  * Created on 13/09/2013, 12:48:38 PM
  */
-package presupuestos.equipo;
+package presupuestos.manoobra;
 
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.ResultSetMetaData;
@@ -36,7 +36,7 @@ import winspapus.Principal;
  *
  * @author Betmart
  */
-public class matrizequipospres extends javax.swing.JDialog {
+public class matrizmanopres extends javax.swing.JDialog {
 
     /** A return status code - returned if Cancel button has been pressed */
     public static final int RET_CANCEL = 0;
@@ -48,7 +48,7 @@ public class matrizequipospres extends javax.swing.JDialog {
     String busqueda="";
     Principal prin;
     /** Creates new form matrizmateriales */
-    public matrizequipospres(java.awt.Frame parent, boolean modal, Connection conex, String pres, Principal prin) {
+    public matrizmanopres(java.awt.Frame parent, boolean modal, Connection conex, String pres, Principal prin) {
         super(parent, modal);
         initComponents();
         this.pres = pres;
@@ -59,7 +59,7 @@ public class matrizequipospres extends javax.swing.JDialog {
     jTable1.getTableHeader().setSize(new Dimension(25,40));
     jTable1.getTableHeader().setPreferredSize(new Dimension(25,30));
     jTable1.setRowHeight(20);
-        cargaeq();
+        cargamano();
         super.setTitle("Equipos del Presupuesto "+pres);
         // Close the dialog when Esc is pressed
         String cancelName = "cancel";
@@ -76,7 +76,7 @@ public class matrizequipospres extends javax.swing.JDialog {
     }
 
     
-    public final void cargaeq(){
+    public final void cargamano(){
         if(!(jTextField1.getText().equals(""))){
             busqueda=jTextField1.getText().toString();
         }
@@ -88,7 +88,7 @@ public class matrizequipospres extends javax.swing.JDialog {
                  }
              };
              Statement st = (Statement) conex.createStatement();
-             String sql="SELECT id, descri, deprecia ,precio FROM mepres WHERE mpre_id='"+pres+"' AND status=1 AND "
+             String sql="SELECT id, descri, salario ,bono, subsid FROM mmopres WHERE mpre_id='"+pres+"' AND status=1 AND "
                      + "(id LIKE'%"+busqueda+"%' || descri LIKE '%"+busqueda+"%')";
              ResultSet rst = st.executeQuery(sql);
              jTable1.setModel(mmtabs);
@@ -109,7 +109,7 @@ public class matrizequipospres extends javax.swing.JDialog {
                  }
                   cambiacabecera();
         } catch (SQLException ex) {
-            Logger.getLogger(matrizequipospres.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(matrizmanopres.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     private void cambiacabecera() {
@@ -125,9 +125,14 @@ public class matrizequipospres extends javax.swing.JDialog {
         tc.setHeaderValue("Depreciación");
         tc.setPreferredWidth(30);
         tc = tcm.getColumn(3); 
-        tc.setHeaderValue("Precio");
+        tc.setHeaderValue("Salario");
         tc.setPreferredWidth(30);
-       
+       tc = tcm.getColumn(4); 
+        tc.setHeaderValue("Bono");
+        tc.setPreferredWidth(30);
+        tc = tcm.getColumn(5); 
+        tc.setHeaderValue("Subsid");
+        tc.setPreferredWidth(30);
          
        th.repaint(); 
     }
@@ -249,10 +254,10 @@ public class matrizequipospres extends javax.swing.JDialog {
 
         jPanel4.setBackground(new java.awt.Color(100, 100, 100));
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11));
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Equipos");
+        jLabel1.setText("Mano de Obra");
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -268,7 +273,7 @@ public class matrizequipospres extends javax.swing.JDialog {
                 .addContainerGap())
         );
 
-        jTable1.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        jTable1.setFont(new java.awt.Font("Tahoma", 0, 10));
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -400,36 +405,34 @@ private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:ev
 
 private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
     busqueda="";
-    cargaeq();
+    cargamano();
     // TODO add your handling code here:
 }//GEN-LAST:event_jButton1ActionPerformed
 
 private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
- nuevoequipos nuevos = new nuevoequipos(null, true, conex, pres);
+ nuevamano nuevos = new nuevamano(null, true, conex, pres);
  int xi=  (prin.getWidth()/2)-800/2;
  int yi=(prin.getHeight()/2)-400/2;
  nuevos.setBounds(xi, yi, 800, 400);
   nuevos.setVisible(true);
-  cargaeq();
     // TODO add your handling code here:
 }//GEN-LAST:event_jButton5ActionPerformed
 
 private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
     jTextField1.setText("");
     busqueda="";
-    cargaeq();
+    cargamano();
     
     // TODO add your handling code here:
 }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
 
-       nuevoequipos nuevos = new nuevoequipos(null, true, conex, pres, 1, eq);
+       nuevamano nuevos = new nuevamano(null, true, conex, pres, 1, eq);
  int xi=  (prin.getWidth()/2)-800/2;
  int yi=(prin.getHeight()/2)-400/2;
  nuevos.setBounds(xi, yi, 800, 400);
   nuevos.setVisible(true); 
-  cargaeq();
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -441,11 +444,10 @@ int op=JOptionPane.showConfirmDialog(rootPane, "Desea Eliminar el equipo?", "Eli
                 Statement st = (Statement) conex.createStatement();
                 st.execute(delete);
                 JOptionPane.showMessageDialog(rootPane, "Se ha eliminado el equipo");
-                cargaeq();
             }
             // TODO add your handling code here:
             catch (SQLException ex) {
-                Logger.getLogger(matrizequipospres.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(matrizmanopres.class.getName()).log(Level.SEVERE, null, ex);
             }
            
        }  
@@ -453,12 +455,12 @@ int op=JOptionPane.showConfirmDialog(rootPane, "Desea Eliminar el equipo?", "Eli
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-recalcular nuevos = new recalcular(prin, true, pres, conex);
+recalcula nuevos = new recalcula(prin, true, pres, conex);
  int xi=  (prin.getWidth()/2)-350/2;
  int yi=(prin.getHeight()/2)-300/2;
  nuevos.setBounds(xi, yi, 350, 300);
   nuevos.setVisible(true);
-    cargaeq();
+    cargamano();
         
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton4ActionPerformed

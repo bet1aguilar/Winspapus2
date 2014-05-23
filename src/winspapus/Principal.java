@@ -48,7 +48,7 @@ import winspapus.partidas.*;
 import presupuestos.Nuevo;
 import presupuestos.Presupuesto;
 import presupuestos.diagrama;
-import presupuestos.equipo.matrizequipospres;
+import presupuestos.equipo.*;
 import presupuestos.memoria;
 import presupuestos.tabpresupuesto;
 import reportes.reportepresupuesto;
@@ -236,6 +236,7 @@ public class Principal extends javax.swing.JFrame {
             }
             //
         } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this, "Error al Conectar con la Base de Datos, verifique que este ejecución el servicio MariaDB");
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
             System.out.println("Error al conectar la bd");
         }
@@ -3558,7 +3559,7 @@ recalcula();        // TODO add your handling code here:
 private void jMenuItem34ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem34ActionPerformed
 // TODO add your handling code here:
     
-    matrizequipospres equipos = new matrizequipospres(this, true, conexion, presup,this);
+        matrizequipospres equipos = new matrizequipospres(this, true, conexion, presup,this);
         int xi = (this.getWidth()/2)-700/2;
         int yi = (this.getHeight()/2)-500/2;
         equipos.setBounds(xi, yi, 700, 500);

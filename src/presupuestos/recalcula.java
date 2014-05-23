@@ -39,12 +39,14 @@ public class recalcula extends javax.swing.JDialog {
 Connection conex;
 float aumenta, dismi;
 String pres;
+Presupuesto objpres;
     /** Creates new form recalcula */
-    public recalcula(java.awt.Frame parent, boolean modal, Connection conex, String pres) {
+    public recalcula(java.awt.Frame parent, boolean modal, Connection conex, String pres, Presupuesto objpres) {
         super(parent, modal);
         initComponents();
         this.conex = conex;
         this.pres = pres;
+        this.objpres=objpres;
         agrupa();
         // Close the dialog when Esc is pressed
         String cancelName = "cancel";
@@ -472,7 +474,7 @@ String pres;
                 porcutil = rsconteo.getFloat("porcutil");
                 porcpre = rsconteo.getFloat("porcpre");
                 float contmat = 0, contequipo =0, contmano = 0, cantmano=0, bono=0, subsid=0, precunitrecalculado=0;
-                float precunit;
+                float precunit=0;
                 
                 String consulta = "SELECT SUM(((mm.precio+(mm.precio*(mm.desperdi/100)))*dm.cantidad)) as total FROM "
                         + "dmpres as dm, mmpres as mm "
@@ -485,8 +487,8 @@ String pres;
                 }
                 String consultaeq = "SELECT SUM(IF(me.deprecia=0, de.cantidad*me.precio,"
                         + " de.cantidad*me.deprecia*me.precio)) as total FROM "
-                        + "deppres as de, mepres as me WHERE me.id=de.metab_id AND me.mtabus_id=de.mtabus_id"
-                        + " AND de.mtabus_id='"+pres+"' AND de.numero="+numero+"";
+                        + "deppres as de, mepres as me WHERE me.id=de.mepre_id AND me.mpre_id=de.mpre_id"
+                        + " AND de.mpre_id='"+pres+"' AND de.numero="+numero+"";
                 Statement steq = (Statement) conex.createStatement();
                 ResultSet rsteq = steq.executeQuery(consultaeq);
                 while(rsteq.next()){
@@ -495,8 +497,8 @@ String pres;
                 if(rendimi>0){
                 contequipo = contequipo/rendimi;
                 }
-                String consultaman = "SELECT SUM(do.cant) as cantidad, mo.bono, mo.subsid, SUM(mo.salario*do*cantidad) as total"
-                        + " FROM mo as mmopres, do as dmoppresWHERE do.mmopre_id = mo.id AND do.mpre_id= mo.mpre_id"
+                String consultaman = "SELECT SUM(do.cantidad) as cantidad, mo.bono, mo.subsid, SUM(mo.salario*do.cantidad) as total"
+                        + " FROM mmopres as mo, dmoppres as do WHERE do.mmopre_id = mo.id AND do.mpre_id= mo.mpre_id"
                         + " AND do.mpre_id='"+pres+"' AND do.numero = "+numero+"";
                 Statement stman = (Statement) conex.createStatement();
                 ResultSet rstman = stman.executeQuery(consultaman);
@@ -518,33 +520,80 @@ String pres;
                 precunit = contmat + contequipo + contmano;
                 porcgad = precunit * (1+porcgad/100);
                 porcutil = porcgad * (1+porcutil/100);
-                if(impu==0){
-                    impu=1;
-                }
-                if(cosfin==0){
-                    cosfin=1;
-                }
+                
                 impu = porcutil * impu/100;
                 cosfin = porcutil * cosfin/100;
                 porcutil = porcutil + impu +cosfin;
                 precunitrecalculado = porcutil;
-                String actualiza = "UPDATE mppres SET precunit="+precunitrecalculado+" WHERE numero="+numero+" AND mtabus_id='"+pres+"'";
+                String actualiza = "UPDATE mppres SET precunit="+precunitrecalculado+",precasu="+precunitrecalculado+" WHERE numero="+numero+" AND mpre_id='"+pres+"'";
                 Statement stact = (Statement) conex.createStatement();
               stact.execute(actualiza);
               
             }
            JOptionPane.showMessageDialog(rootPane, "Se han actualizado los precios unitarios de las partidas según el APU");
         } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(rootPane, "No se han actualizado los precios unitarios de las partidas según el APU");
             Logger.getLogger(recalcula.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        
+        try {
+            objpres.buscapartida();
+        } catch (SQLException ex) {
+            Logger.getLogger(recalcula.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
     }
     public void actualizalistado(){
         // Al actualizar listado, actualizo precios de materiales equipo y mano de obra según el tab activo
+        String selecttab="SELECT id FROM mtabus WHERE seleccionado=1";
+        String tabu="";
+        try {
+            Statement stab = (Statement) conex.createStatement();
+            ResultSet rstab = stab.executeQuery(selecttab);
+            while(rstab.next()){
+                tabu = rstab.getString(1);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(recalcula.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
-        
+        String update ="UPDATE mepres "
+                + " INNER JOIN metabs ON "
+                + " mepres.id= metabs.id AND metabs.mtabus_id='"+tabu+"'"
+                + " SET mepres.precio = metabs.precio,"
+                + " mepres.deprecia=metabs.deprecia"
+                + " WHERE mepres.mpre_id='"+pres+"'";
+        try {
+            Statement stupdate = (Statement) conex.createStatement();
+            stupdate.execute(update);
+        } catch (SQLException ex) {
+            Logger.getLogger(recalcula.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        String mate = "UPDATE mmpres"
+                + " INNER JOIN mmtabs ON"
+                + " mmpres.id=mmtabs.id AND mmtabs.mtabus_id='"+tabu+"'"
+                + " SET mmpres.precio = mmtabs.precio, "
+                + "mmpres.desperdi = mmtabs.desperdi"
+                + " WHERE mmpres.mpre_id='"+pres+"'";
+         try {
+            Statement stupdate = (Statement) conex.createStatement();
+            stupdate.execute(mate);
+        } catch (SQLException ex) {
+            Logger.getLogger(recalcula.class.getName()).log(Level.SEVERE, null, ex);
+        }
+         String mano = "UPDATE mmopres "
+                 + "INNER JOIN mmotabs ON "
+                 + "mmopres.id=mmotabs.id AND mmotabs.mtabus_id='"+tabu+"' "
+                 + "SET mmopres.salario=mmotabs.salario, "
+                 + "mmopres.bono = mmotabs.bono, "
+                 + "mmopres.subsid = mmotabs.subsid"
+                 + " WHERE mmopres.mpre_id='"+pres+"'";
+         try {
+            Statement stupdate = (Statement) conex.createStatement();
+            stupdate.execute(mano);
+        } catch (SQLException ex) {
+            Logger.getLogger(recalcula.class.getName()).log(Level.SEVERE, null, ex);
+        }
+         recalcularprecapu();
     }
     public void borrarapus(){
         String numero;
@@ -640,15 +689,15 @@ String pres;
      if(jRadioButton7.isSelected()){
          int op=JOptionPane.showConfirmDialog(rootPane, "Proceso delicado, desea continuar? s/n","Recalcular Precios Unitarios según listado de precios activo", JOptionPane.YES_NO_OPTION);
             if(op==JOptionPane.YES_OPTION)
-            recalcularpres();
+            actualizalistado();
         }
         if(jRadioButton8.isSelected()){
             int op=JOptionPane.showConfirmDialog(rootPane, "Proceso delicado, desea continuar? s/n","Borrar Análisis de Precio Unitario", JOptionPane.YES_NO_OPTION);
             if(op==JOptionPane.YES_OPTION)
             borrarapus();
         }
-      
-        doClose(RET_OK);        // TODO add your handling code here:
+      doClose(RET_OK);
+        
     }//GEN-LAST:event_okButtonMouseClicked
 
 private void jTextField1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyTyped

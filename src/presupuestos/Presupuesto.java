@@ -382,18 +382,18 @@ public class Presupuesto extends javax.swing.JInternalFrame {
         setNextFocusableComponent(jTable2);
         setPreferredSize(new java.awt.Dimension(1100, 645));
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
+            public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
+                formInternalFrameClosed(evt);
+            }
+            public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
+            }
             public void internalFrameDeactivated(javax.swing.event.InternalFrameEvent evt) {
             }
             public void internalFrameDeiconified(javax.swing.event.InternalFrameEvent evt) {
             }
             public void internalFrameIconified(javax.swing.event.InternalFrameEvent evt) {
-            }
-            public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
-            }
-            public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
-            }
-            public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
-                formInternalFrameClosed(evt);
             }
             public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
             }
@@ -477,6 +477,7 @@ public class Presupuesto extends javax.swing.JInternalFrame {
 
         jButton21.setIcon(new javax.swing.ImageIcon(getClass().getResource("/winspapus/imagenes/capitulobarra.png"))); // NOI18N
         jButton21.setToolTipText("Capitulos del Presupuesto");
+        jButton21.setEnabled(false);
         jButton21.setFocusable(false);
         jButton21.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jButton21.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -587,7 +588,7 @@ public class Presupuesto extends javax.swing.JInternalFrame {
             .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
         );
 
-        jTable2.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        jTable2.setFont(new java.awt.Font("Tahoma", 0, 10));
         jTable2.setToolTipText("Haga Doble Click sobre Cualquier Partida para ver Detalle");
         jTable2.setSelectionBackground(new java.awt.Color(255, 153, 51));
         jTable2.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -1088,7 +1089,7 @@ public class Presupuesto extends javax.swing.JInternalFrame {
                 .addContainerGap())
         );
 
-        jTable1.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        jTable1.setFont(new java.awt.Font("Tahoma", 0, 10));
         jTable1.setSelectionBackground(new java.awt.Color(255, 153, 51));
         jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -1500,7 +1501,7 @@ public class Presupuesto extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 215, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 207, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -3583,7 +3584,7 @@ private void jTextField18FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST
     }//GEN-LAST:event_jButton24ActionPerformed
 
 private void jButton25ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton25ActionPerformed
-        recalcula recal = new recalcula(prin, true, conex, id);
+        recalcula recal = new recalcula(prin, true, conex, id,this);
        int xi = (this.getWidth()/2)-350/2;
        int yi = (this.getHeight()/2)-450/2;
        recal.setBounds(xi, yi, 370, 470);
