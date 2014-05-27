@@ -374,8 +374,8 @@ WHERE id=$P{mtabus}]]>
 							<textField isStretchWithOverflow="true">
 								<reportElement uuid="590460a7-2426-4ae7-bcbd-971137c5ff7d" x="0" y="0" width="278" height="20"/>
 								<box leftPadding="5" rightPadding="5"/>
-								<textElement verticalAlignment="Middle">
-									<font size="8"/>
+								<textElement textAlignment="Justified" verticalAlignment="Middle">
+									<font size="7"/>
 								</textElement>
 								<textFieldExpression><![CDATA[$F{metabs_descri}]]></textFieldExpression>
 							</textField>

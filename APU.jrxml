@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report2" language="groovy" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="cc1b8ae2-f7ca-41db-a004-b9de7407b6b8">
 	<property name="ireport.zoom" value="1.2396694214876032"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="144"/>
+	<property name="ireport.x" value="33"/>
+	<property name="ireport.y" value="161"/>
 	<style name="table">
 		<box>
 			<topPen lineWidth="1.0" lineColor="#000000"/>
@@ -898,12 +898,12 @@ WHERE
 				</jr:table>
 			</componentElement>
 		</band>
-		<band height="11">
+		<band height="12">
 			<rectangle>
 				<reportElement uuid="d50bde9e-ad23-4ed7-a51e-092cccb85651" stretchType="RelativeToBandHeight" x="0" y="0" width="571" height="11"/>
 			</rectangle>
 			<staticText>
-				<reportElement uuid="240f21e7-0f85-4ba3-8251-a1ceb7992a4c" x="341" y="0" width="85" height="11"/>
+				<reportElement uuid="240f21e7-0f85-4ba3-8251-a1ceb7992a4c" x="397" y="1" width="85" height="11"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="7" isBold="true" isItalic="false"/>
 				</textElement>
@@ -1085,14 +1085,14 @@ WHERE
 				<reportElement uuid="c855038f-afb5-4236-b6a5-77256df6bd02" stretchType="RelativeToBandHeight" x="0" y="0" width="571" height="22"/>
 			</rectangle>
 			<staticText>
-				<reportElement uuid="f50adfd6-c281-4118-80aa-42d49d1e2c7c" x="341" y="0" width="85" height="11"/>
+				<reportElement uuid="f50adfd6-c281-4118-80aa-42d49d1e2c7c" x="395" y="0" width="85" height="11"/>
 				<textElement textAlignment="Right" verticalAlignment="Top">
 					<font size="7" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Total Equipos:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="47ec2b9b-dae9-4bbc-b718-6b0008100090" x="317" y="11" width="109" height="11"/>
+				<reportElement uuid="47ec2b9b-dae9-4bbc-b718-6b0008100090" x="371" y="11" width="109" height="11"/>
 				<textElement textAlignment="Right" verticalAlignment="Top">
 					<font size="7" isBold="true"/>
 				</textElement>
@@ -1255,7 +1255,7 @@ WHERE
 				<reportElement uuid="1c814987-a7d8-4dbf-b8dd-21abed8f055a" x="0" y="0" width="571" height="11"/>
 			</rectangle>
 			<staticText>
-				<reportElement uuid="f967abdb-2db4-4129-9efe-743725bfdba2" x="341" y="0" width="99" height="11"/>
+				<reportElement uuid="f967abdb-2db4-4129-9efe-743725bfdba2" x="381" y="0" width="99" height="11"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="7" isBold="true"/>
 				</textElement>
@@ -1308,14 +1308,14 @@ WHERE
 				<text><![CDATA[Total Mano de Obra:]]></text>
 			</staticText>
 			<textField pattern="#,##0.00">
-				<reportElement uuid="403ee90e-528a-4c00-a715-ea2a31b4efd8" x="244" y="2" width="90" height="11"/>
+				<reportElement uuid="403ee90e-528a-4c00-a715-ea2a31b4efd8" x="259" y="3" width="90" height="11"/>
 				<textElement textAlignment="Right" verticalAlignment="Top">
 					<font size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{mtabus_pprest}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00">
-				<reportElement uuid="6457fa99-6382-4c80-9a5a-79d4bd68e21d" x="245" y="14" width="90" height="11"/>
+				<reportElement uuid="6457fa99-6382-4c80-9a5a-79d4bd68e21d" x="252" y="15" width="90" height="11"/>
 				<textElement textAlignment="Right">
 					<font size="7"/>
 				</textElement>
@@ -1330,7 +1330,7 @@ WHERE
 				<textFieldExpression><![CDATA[$F{montobono}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="a37417f5-9c54-4db1-9ecd-45fb2e0b7eb0" x="245" y="24" width="90" height="11"/>
+				<reportElement uuid="a37417f5-9c54-4db1-9ecd-45fb2e0b7eb0" x="252" y="25" width="90" height="11"/>
 				<textElement textAlignment="Right">
 					<font size="7"/>
 				</textElement>
@@ -1435,7 +1435,7 @@ WHERE
 				<textFieldExpression><![CDATA[$V{impuesto}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="2bb632db-9d47-407d-8b99-ff6c38eb3ed8" x="265" y="119" width="74" height="11"/>
+				<reportElement uuid="2bb632db-9d47-407d-8b99-ff6c38eb3ed8" x="275" y="119" width="74" height="11"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="7"/>
 				</textElement>
@@ -1485,7 +1485,7 @@ WHERE
 				<text><![CDATA[COSTO DIRECTO POR UNIDAD:]]></text>
 			</staticText>
 			<textField>
-				<reportElement uuid="8803a464-0ea7-4c1f-837e-b494ddab8d0f" x="265" y="109" width="74" height="11"/>
+				<reportElement uuid="8803a464-0ea7-4c1f-837e-b494ddab8d0f" x="275" y="109" width="74" height="11"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="7"/>
 				</textElement>
@@ -1558,7 +1558,7 @@ WHERE
 				<text><![CDATA[% Adm. y Gastos:]]></text>
 			</staticText>
 			<textField>
-				<reportElement uuid="3a7972b3-8ad6-443a-bf6b-e330bab192e2" x="266" y="89" width="73" height="11"/>
+				<reportElement uuid="3a7972b3-8ad6-443a-bf6b-e330bab192e2" x="276" y="89" width="73" height="11"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="7"/>
 				</textElement>
@@ -1572,7 +1572,7 @@ WHERE
 				<text><![CDATA[% Utilidades:]]></text>
 			</staticText>
 			<textField pattern="#,##0.00">
-				<reportElement uuid="5b16b95a-88be-4b4c-a54d-3ffa84c00147" x="265" y="70" width="74" height="11"/>
+				<reportElement uuid="5b16b95a-88be-4b4c-a54d-3ffa84c00147" x="275" y="70" width="74" height="11"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="7"/>
 				</textElement>

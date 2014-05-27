@@ -328,10 +328,10 @@ WHERE id=$P{mtabus}]]>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column width="194" uuid="8b669e24-85c5-488a-9a43-870cf5c01364">
+					<jr:column width="246" uuid="8b669e24-85c5-488a-9a43-870cf5c01364">
 						<jr:columnHeader style="table 5_CH" height="14" rowSpan="1">
 							<staticText>
-								<reportElement uuid="66d3dab8-4f4e-4d6c-8954-69622a9151f8" mode="Opaque" x="0" y="0" width="194" height="14" backcolor="#CCCCCC"/>
+								<reportElement uuid="66d3dab8-4f4e-4d6c-8954-69622a9151f8" mode="Opaque" x="0" y="0" width="246" height="14" backcolor="#CCCCCC"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="8" isBold="true"/>
 								</textElement>
@@ -340,19 +340,19 @@ WHERE id=$P{mtabus}]]>
 						</jr:columnHeader>
 						<jr:detailCell style="table 5_TD" height="20" rowSpan="1">
 							<textField isStretchWithOverflow="true">
-								<reportElement uuid="00df816a-0534-4f2c-a320-40af63575d43" x="0" y="0" width="194" height="20"/>
+								<reportElement uuid="00df816a-0534-4f2c-a320-40af63575d43" x="0" y="0" width="246" height="20"/>
 								<box leftPadding="5" rightPadding="3"/>
-								<textElement verticalAlignment="Middle">
-									<font size="8"/>
+								<textElement textAlignment="Justified" verticalAlignment="Middle">
+									<font size="7"/>
 								</textElement>
 								<textFieldExpression><![CDATA[$F{Descripción}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column width="90" uuid="8955c57a-c95b-4b92-92b7-5011c0ee8b8b">
+					<jr:column width="41" uuid="8955c57a-c95b-4b92-92b7-5011c0ee8b8b">
 						<jr:columnHeader style="table 5_CH" height="14" rowSpan="1">
 							<staticText>
-								<reportElement uuid="aabc6800-834b-4db4-be83-66fcbf5fe780" mode="Opaque" x="0" y="0" width="90" height="14" backcolor="#CCCCCC"/>
+								<reportElement uuid="aabc6800-834b-4db4-be83-66fcbf5fe780" mode="Opaque" x="0" y="0" width="41" height="14" backcolor="#CCCCCC"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="8" isBold="true"/>
 								</textElement>
@@ -361,7 +361,7 @@ WHERE id=$P{mtabus}]]>
 						</jr:columnHeader>
 						<jr:detailCell style="table 5_TD" height="20" rowSpan="1">
 							<textField>
-								<reportElement uuid="68d61d36-9049-4797-bc70-e41610e4d218" x="0" y="0" width="90" height="20"/>
+								<reportElement uuid="68d61d36-9049-4797-bc70-e41610e4d218" x="0" y="0" width="41" height="20"/>
 								<box leftPadding="5"/>
 								<textElement textAlignment="Right" verticalAlignment="Middle">
 									<font size="8"/>

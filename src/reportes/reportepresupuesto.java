@@ -212,7 +212,7 @@ public class reportepresupuesto extends javax.swing.JDialog {
             }
         });
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Presupuesto Original", "Presupuesto de Partidas no Previstas", "Presupuesto Modificado" }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Presupuesto Original", "Presupuesto de Partidas no Previstas" }));
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 11));
         jLabel2.setText("Tipo de Presupuesto:");
@@ -483,7 +483,7 @@ public void generareportepres(){
                 }
                 if(cual==3){ 
                     float impuesto = 0;
-                    input = new FileInputStream(new File("modificadodesdejava.jrxml"));
+                    input = new FileInputStream(new File("modificado.jrxml"));
                   String select = "SELECT SUM(cantidad*precunit), IFNULL(IF(tipo!='VP',SUM(mp.cantidad+IFNULL((SELECT SUM(aumento) "
                           + "FROM admppres WHERE numepart=mp.numero AND mpre_id='"+pres+"'),0)-"
     +"IFNULL((SELECT SUM(disminucion) FROM admppres WHERE numepart=mp.numero AND mpre_id='"+pres+"'),0)),"

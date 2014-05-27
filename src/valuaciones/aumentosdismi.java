@@ -1252,6 +1252,7 @@ public void buscarpartida1(String part){
                     cantvaluado=rstvaluado.getFloat(1);
                 }
                  float diferencia = cantvaluado-cantidad;
+                 diferencia = (float) (Math.rint(diferencia*100)/100);
                 if(diferencia>0){
                    
                     diferencia = diferencia-acumaumento;
@@ -1423,10 +1424,11 @@ public void buscarpartida1(String part){
         buscarpartida(jSpinner1.getValue().toString());
         jButton2.setEnabled(true);
     }//GEN-LAST:event_jSpinner1StateChanged
-     public final void buscapartida(){
+     
+    public final void buscapartida(){
         try {
-            String sql = "SELECT mp.numegrup, mp.id, mp.descri,mp.cantidad, (SELECT SUM(cantidad) FROM dvalus "
-                    + "WHERE mpre_id='"+pres+"' AND numepart=mp.numero AND mvalu_id="+jSpinner4.getValue()+") "
+            String sql = "SELECT mp.numegrup, mp.id, mp.descri,mp.cantidad, IFNULL((SELECT SUM(cantidad) FROM dvalus "
+                    + "WHERE mpre_id='"+pres+"' AND numepart=mp.numero AND mvalu_id=ad.mvalu_id),0) "
                     + "as cantidad, ad.aumento,"
                     + "ad.disminucion, ad.mvalu_id"
                     + " FROM mppres as mp, admppres as ad, dvalus as dv WHERE ad.payd_id="+jSpinner3.getValue()+" "
@@ -1820,9 +1822,9 @@ public void buscarpartida1(String part){
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         disminuciontotal dismi = new disminuciontotal(p, true, conex, pres,jSpinner3.getValue().toString());
-       int xv = (p.getWidth()/2)-350;
+       int xv = (p.getWidth()/2)-800/2;
         int yv = (p.getHeight()/2)-210;
-       dismi.setBounds(xv, yv, 700, 420);
+       dismi.setBounds(xv, yv, 800, 420);
         dismi.setVisible(true);
         buscapartida();
         cargavalores();
@@ -1868,9 +1870,9 @@ public void buscarpartida1(String part){
        if(op==JOptionPane.YES_OPTION){
         
         disminucionparcial dismi = new disminucionparcial(null, true, conex, pres,jSpinner3.getValue().toString());
-        int xv = (p.getWidth()/2)-350;
+        int xv = (p.getWidth()/2)-800/2;
         int yv = (p.getHeight()/2)-210;
-        dismi.setBounds(xv, yv, 700, 420);
+        dismi.setBounds(xv, yv, 800, 420);
         dismi.setVisible(true);
         buscapartida();
        }
@@ -1931,12 +1933,13 @@ private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
 }//GEN-LAST:event_jButton9ActionPerformed
 
 private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
- int x = (this.getWidth()/2)-300;
+ int x = (this.getWidth()/2)-800/2;
            int y = (this.getHeight()/2)-200;
           
-           aumentos partida1 = new aumentos(p, true,pres,conex,jSpinner4.getValue().toString());
-           partida1.setBounds(x, y, 600, 400);
-           partida1.setVisible(true);        
+           aumentos partida1 = new aumentos(p, true,pres,conex,jSpinner4.getValue().toString(), jSpinner3.getValue().toString());
+           partida1.setBounds(x, y, 800, 400);
+           partida1.setVisible(true);     
+           buscapartida();
     // TODO add your handling code here:
 }//GEN-LAST:event_jButton1ActionPerformed
 

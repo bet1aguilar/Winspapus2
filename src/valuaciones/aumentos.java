@@ -12,6 +12,7 @@ package valuaciones;
 
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.Statement;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.sql.ResultSet;
@@ -44,14 +45,27 @@ public class aumentos extends javax.swing.JDialog {
     Connection conex;
     private int auxcont;
     String mvalu="";
+    private String busqueda="";
+    private boolean enc;
+    private String[] partidas;
+    private float[] cantidades;
+    String payd;
+    private int contsel;
     /** Creates new form aumentos */
-    public aumentos(java.awt.Frame parent, boolean modal, String mpres, Connection conex,String mvalu) {
+    public aumentos(java.awt.Frame parent, boolean modal, String mpres, Connection conex,String mvalu, String payd) {
         super(parent, modal);
         initComponents();
+        this.payd=payd;
         this.conex = conex;
       this.mvalu = mvalu;
         this.pres = mpres;
         cargaraumentos();
+       
+    jTable1.setShowHorizontalLines(true);
+    jTable1.setShowVerticalLines(false);
+    jTable1.getTableHeader().setSize(new Dimension(25,40));
+    jTable1.getTableHeader().setPreferredSize(new Dimension(30,40));
+    jTable1.setRowHeight(25);
         this.setTitle("Partidas que tienen Aumento en la valuación "+mvalu);
         String cancelName = "cancel";
         InputMap inputMap = getRootPane().getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
@@ -74,7 +88,7 @@ public class aumentos extends javax.swing.JDialog {
         
         DefaultTableModel mat = new DefaultTableModel() {@Override
         public boolean isCellEditable (int fila, int columna) {
-          if(columna==0 || columna==7) {
+          if(columna==0 || columna==6) {
                 return true;
             }
             return false;
@@ -101,18 +115,21 @@ public class aumentos extends javax.swing.JDialog {
                 + "mp.cantidad as cantidad, "
                 + "(SELECT SUM(dv.cantidad) FROM dvalus WHERE mpre_id='"+pres+"' AND numepart=mp.numero AND mvalu_id="+mvalu+") as cantacumvalu,"
                 + " (SELECT SUM(cantidad) FROM dvalus WHERE mpre_id='"+pres+"' AND "
-                + "mvalu_id="+mvalu+" AND numepart=mp.numero GROUP BY numepart)-"
+                + "mvalu_id<="+mvalu+" AND numepart=mp.numero GROUP BY numepart)-"
                 + "mp.cantidad-IFNULL((SELECT SUM(aumento) FROM admppres WHERE "
                 + "numepart=mp.numero AND mpre_id='"+pres+"'),0) "
         + "as cantaum "
         + "FROM mppres as mp, dvalus as dv "
                 + "WHERE mp.cantidad+IFNULL((SELECT SUM(aumento) FROM admppres WHERE numepart=mp.numero AND mpre_id='"+pres+"'),0)"
-                + "<(SELECT SUM(cantidad) FROM dvalus WHERE mpre_id='"+pres+"' AND mvalu_id="+mvalu+" AND numepart=mp.numero GROUP BY numepart)"
+                + "<(SELECT SUM(cantidad) FROM dvalus WHERE mpre_id='"+pres+"' AND mvalu_id<="+mvalu+" AND numepart=mp.numero GROUP BY numepart)"
                 + " AND mp.numero=dv.numepart"
                 + " AND (dv.mpre_id=mp.mpre_id"
                 + " OR dv.mpre_id IN (SELECT id FROM mpres WHERE mpres_id = dv.mpre_id))"
                 + " AND (mp.mpre_id='"+pres+"'"
-                + " OR mp.mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+pres+"')) GROUP BY mp.numegrup";
+                + " OR mp.mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+pres+"')) "
+                + "AND (mp.id LIKE '%"+busqueda+"%') "
+                + "AND mp.numero NOT IN (SELECT numepart FROM admppres WHERE payd_id="+payd+")"
+                + " GROUP BY mp.numegrup";
         
         System.out.println("SELECCIONA "+select);
         try {
@@ -132,7 +149,14 @@ public class aumentos extends javax.swing.JDialog {
              
              while (rst.next()) {
                 Object[] fila = new Object[cantidadColumnas];
-                Object obj = Boolean.valueOf(false);
+               enc=false;
+                    for(int j=0;j<auxcont;j++){
+                         if(rst.getObject(1).toString().equals(auxpart[j])){
+                                  enc=true;
+                         }
+                    }
+                Object obj = Boolean.valueOf(enc);
+                
                 fila[0]= obj;
                 for (int i = 1; i < cantidadColumnas; i++) {
                    if(i<6){
@@ -175,6 +199,7 @@ public class aumentos extends javax.swing.JDialog {
         jButton5 = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
 
         jPanel4.setBackground(new java.awt.Color(97, 126, 171));
 
@@ -228,17 +253,17 @@ public class aumentos extends javax.swing.JDialog {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(okButton, javax.swing.GroupLayout.Alignment.TRAILING, 0, 0, Short.MAX_VALUE)
-                    .addComponent(cancelButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(okButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cancelButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -246,7 +271,7 @@ public class aumentos extends javax.swing.JDialog {
 
         jPanel5.setBackground(new java.awt.Color(100, 100, 100));
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 11));
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setText("Agregar Partidas a Aumentos");
@@ -287,15 +312,32 @@ public class aumentos extends javax.swing.JDialog {
         jLabel6.setText("Buscar:");
 
         jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/winspapus/imagenes/buscar1.fw.png"))); // NOI18N
+        jButton5.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jButton5MousePressed(evt);
+            }
+        });
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/winspapus/imagenes/selecc1.fw.png"))); // NOI18N
         jButton1.setToolTipText("Seleccionar Todo");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/winspapus/imagenes/quita1.fw.png"))); // NOI18N
         jButton2.setToolTipText("Deseleccionar Todo");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
+            }
+        });
+
+        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/winspapus/imagenes/limpiar.fw.png"))); // NOI18N
+        jButton3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton3MouseClicked(evt);
             }
         });
 
@@ -309,12 +351,14 @@ public class aumentos extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(36, 36, 36))
+                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(86, 86, 86))
         );
         jPanel10Layout.setVerticalGroup(
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -323,10 +367,10 @@ public class aumentos extends javax.swing.JDialog {
                     .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jButton5)
-                    .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(jButton2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -336,7 +380,7 @@ public class aumentos extends javax.swing.JDialog {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(468, Short.MAX_VALUE)
+                .addContainerGap(469, Short.MAX_VALUE)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
@@ -345,7 +389,7 @@ public class aumentos extends javax.swing.JDialog {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(200, Short.MAX_VALUE))
+                .addContainerGap(135, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -396,9 +440,9 @@ public class aumentos extends javax.swing.JDialog {
         tc.setHeaderValue("Cant. a Aum.");
         tc.setPreferredWidth(50);
         tc = tcm.getColumn(6);         
-        tc.setHeaderValue("Cantidad");
+        tc.setHeaderValue("Aumento");
         tc.setPreferredWidth(30);
-     th.repaint(); 
+        th.repaint(); 
     }
     
     private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
@@ -415,7 +459,39 @@ public class aumentos extends javax.swing.JDialog {
     }//GEN-LAST:event_closeDialog
 
 private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_okButtonMouseClicked
-    
+    String numero="", precio="";
+        verificarcheck();
+        String inserta = "SELECT COUNT(*) FROM pays WHERE id="+payd+" AND mpre_id='"+pres+"'";
+        int cuenta=0;
+        try {
+            Statement st = (Statement) conex.createStatement();
+            ResultSet rst = st.executeQuery(inserta);
+            while(rst.next()){
+                cuenta=rst.getInt(1);
+            }
+            if(cuenta==0){
+                Statement insert = (Statement) conex.createStatement();
+                insert.execute("INSERT INTO pays (aumento,disminucion,mpre_id) "
+                        + "VALUES(0,0,'"+pres+"')");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(aumentos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        for(int i=0; i<contsel;i++){
+            String num="";
+            float aumento = 0;
+            
+            try {
+                
+                aumento = Float.valueOf(jTable1.getValueAt(i, 6).toString());
+                String insertar = "INSERT INTO admppres (payd_id,mpre_id,numepart,mvalu_id,aumento,disminucion)"
+                        + " VALUES ("+payd+",'"+pres+"', "+partidas[i]+", "+mvalu+","+aumento+",0)";
+                Statement in = (Statement) conex.createStatement();
+                in.execute(insertar);
+            } catch (SQLException ex) {
+                Logger.getLogger(aumentos.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     
     doClose(RET_OK);
 // TODO add your handling code here:
@@ -436,6 +512,77 @@ int totalfilas = jTable1.getRowCount();
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
         // TODO add your handling code here:
     }//GEN-LAST:event_jTable1MouseClicked
+
+private void jButton5MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton5MousePressed
+    busqueda = jTextField4.getText().toString();
+    cargaraumentos();
+    // TODO add your handling code here:
+}//GEN-LAST:event_jButton5MousePressed
+
+private void jButton3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton3MouseClicked
+    busqueda="";
+    jTextField4.setText("");
+    cargaraumentos();
+    
+    // TODO add your handling code here:
+}//GEN-LAST:event_jButton3MouseClicked
+public void verificarcheck() {
+
+        int registros = jTable1.getRowCount();
+        int columnas = jTable1.getColumnCount();
+       
+        Object obj;
+        partidas = new String [registros];
+        cantidades = new float [registros];
+        Boolean bol;
+        String strNombre;
+        StringBuilder builder = null;
+        int i, j;
+        for (i = 0; i < registros; i++) {
+            if (i == 0) {
+                builder = new StringBuilder();
+                builder.append("Partidas Seleccionadas :").append("\n");
+            }
+            for (j = 0; j < columnas; j++) {
+
+                obj = jTable1.getValueAt(i, j);
+                if (obj instanceof Boolean) {
+                    bol = (Boolean) obj;
+                    if (bol.booleanValue()) {
+                        
+                        partidas[contsel] =  jTable1.getValueAt(i, 1).toString();
+                        String consult = "SELECT numero FROM mppres WHERE numegrup="+partidas[contsel]+" AND mpre_id='"+pres+"'";
+                        try {
+                            Statement st = (Statement) conex.createStatement();
+                            ResultSet rst = st.executeQuery(consult);
+                            while(rst.next())
+                            {
+                                partidas[contsel]= rst.getObject(1).toString();
+                            }
+                        } catch (SQLException ex) {
+                            Logger.getLogger(partidas.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                        cantidades[contsel]=Float.valueOf(jTable1.getValueAt(i, 6).toString());
+                        strNombre = jTable1.getValueAt(i, 1).toString();
+                        builder.append("Nombre  :").append(strNombre).append("\n");
+                        contsel++;
+                    }
+                }
+
+            }
+
+        }
+        
+    }
+private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+             int totalfilas = jTable1.getRowCount();
+      // System.out.println("totalfilas: "+totalfilas);
+        for(int j=0; j<totalfilas; j++){
+            auxpart[j] = jTable1.getValueAt(j, 1).toString();
+        }
+        auxcont = totalfilas;
+        cargaraumentos();// TODO add your handling code here:
+}//GEN-LAST:event_jButton1ActionPerformed
     
     private void doClose(int retStatus) {
         returnStatus = retStatus;
@@ -448,6 +595,7 @@ int totalfilas = jTable1.getRowCount();
     private javax.swing.JButton cancelButton;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
