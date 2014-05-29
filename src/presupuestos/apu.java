@@ -608,7 +608,7 @@ public class apu extends javax.swing.JDialog {
 
         jTabbedPane1.setTabLayoutPolicy(javax.swing.JTabbedPane.SCROLL_TAB_LAYOUT);
 
-        jTable1.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        jTable1.setFont(new java.awt.Font("Tahoma", 0, 10));
         jTable1.setSelectionBackground(new java.awt.Color(255, 153, 51));
         jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -627,6 +627,12 @@ public class apu extends javax.swing.JDialog {
         jLabel9.setText("Código:");
 
         jLabel10.setText("Descripción:");
+
+        jTextField8.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField8KeyTyped(evt);
+            }
+        });
 
         jLabel11.setText("Cantidad:");
 
@@ -897,6 +903,12 @@ public class apu extends javax.swing.JDialog {
         jLabel15.setText("Código:");
 
         jLabel16.setText("Descripción:");
+
+        jTextField12.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField12KeyTyped(evt);
+            }
+        });
 
         jLabel17.setText("Cantidad:");
 
@@ -1264,6 +1276,12 @@ public class apu extends javax.swing.JDialog {
 
         jLabel22.setText("Descripción:");
 
+        jTextField16.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField16KeyTyped(evt);
+            }
+        });
+
         jLabel23.setText("Cantidad:");
 
         jTextField17.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
@@ -1490,7 +1508,7 @@ public class apu extends javax.swing.JDialog {
                 .addContainerGap()
                 .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 176, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 179, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -2597,7 +2615,12 @@ private void jTable3KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
 }//GEN-LAST:event_jTable3KeyReleased
 
 private void jTextField26KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField26KeyTyped
- char car = evt.getKeyChar();
+   Character c = evt.getKeyChar();
+                if(Character.isLetter(c)) {
+                    evt.setKeyChar(Character.toUpperCase(c));
+                }
+    
+    char car = evt.getKeyChar();
         
         
         if (jTextField26.getText().length()>7) {            
@@ -2606,7 +2629,12 @@ private void jTextField26KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:even
 }//GEN-LAST:event_jTextField26KeyTyped
 
 private void jTextField25KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField25KeyTyped
-      if (jTextField25.getText().length()>7) {            
+
+       Character c = evt.getKeyChar();
+                if(Character.isLetter(c)) {
+                    evt.setKeyChar(Character.toUpperCase(c));
+                }
+                if (jTextField25.getText().length()>7) {            
             evt.consume();
         }// TODO add your handling code here:        
     
@@ -2614,7 +2642,11 @@ private void jTextField25KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:even
 }//GEN-LAST:event_jTextField25KeyTyped
 
 private void jTextField24KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField24KeyTyped
-      if (jTextField24.getText().length()>7) {            
+   Character c = evt.getKeyChar();
+                if(Character.isLetter(c)) {
+                    evt.setKeyChar(Character.toUpperCase(c));
+                }
+    if (jTextField24.getText().length()>7) {            
             evt.consume();
         }// TODO add your handling code here:
     
@@ -2635,6 +2667,27 @@ private void jTextField15FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST
     jTextField15.setText("");
     // TODO add your handling code here:
 }//GEN-LAST:event_jTextField15FocusGained
+
+private void jTextField8KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField8KeyTyped
+   Character c = evt.getKeyChar();
+                if(Character.isLetter(c)) {
+                    evt.setKeyChar(Character.toUpperCase(c));
+                }// TODO add your handling code here:
+}//GEN-LAST:event_jTextField8KeyTyped
+
+private void jTextField12KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField12KeyTyped
+   Character c = evt.getKeyChar();
+                if(Character.isLetter(c)) {
+                    evt.setKeyChar(Character.toUpperCase(c));
+                }// TODO add your handling code here:
+}//GEN-LAST:event_jTextField12KeyTyped
+
+private void jTextField16KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField16KeyTyped
+   Character c = evt.getKeyChar();
+                if(Character.isLetter(c)) {
+                    evt.setKeyChar(Character.toUpperCase(c));
+                }// TODO add your handling code here:
+}//GEN-LAST:event_jTextField16KeyTyped
 
     private void doClose(int retStatus) {
         returnStatus = retStatus;

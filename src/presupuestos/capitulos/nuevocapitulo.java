@@ -35,7 +35,7 @@ public class nuevocapitulo extends javax.swing.JDialog {
     public static final int RET_CANCEL = 0;
     /** A return status code - returned if OK button has been pressed */
     public static final int RET_OK = 1;
-    String mtabus;
+    String mpres;
     Connection conex;
     int edita=0;
     String capituloid="";
@@ -44,7 +44,7 @@ public class nuevocapitulo extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         this.conex = conex;
-        this.mtabus = mtabus;
+        this.mpres = mtabus;
         // Close the dialog when Esc is pressed
         String cancelName = "cancel";
         InputMap inputMap = getRootPane().getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
@@ -63,7 +63,7 @@ public class nuevocapitulo extends javax.swing.JDialog {
         initComponents();
         this.conex = conex;
         this.edita = edita;
-        this.mtabus = mtabus;
+        this.mpres = mtabus;
         this.capituloid = capituloid;
         if(this.edita==3){
             jLabel1.setText("Nuevo Subcapitulo");
@@ -96,7 +96,7 @@ public class nuevocapitulo extends javax.swing.JDialog {
         return returnStatus;
     }
     public final void cargadatos(){
-        String sql = "SELECT codigo, descri FROM ctabs WHERE id="+capituloid+" AND mtabus_id='"+mtabus+"'";
+        String sql = "SELECT codigo, descri FROM cmpres WHERE id="+capituloid+" AND mpre_id='"+mpres+"'";
         try {
             Statement st = (Statement) conex.createStatement();
             ResultSet rst = st.executeQuery(sql);
@@ -200,8 +200,19 @@ public class nuevocapitulo extends javax.swing.JDialog {
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 11));
         jLabel3.setText("Descripción:");
 
+        jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField1KeyTyped(evt);
+            }
+        });
+
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
+        jTextArea1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextArea1KeyTyped(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTextArea1);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -273,7 +284,7 @@ String codigo = jTextField1.getText().toUpperCase();
         }
         if(vacio==0){
            
-        String sql ="SELECT COUNT(*) FROM ctabs WHERE codigo='"+codigo+"' AND mtabus_id='"+mtabus+"'";
+        String sql ="SELECT COUNT(*) FROM cmpres WHERE codigo='"+codigo+"' AND mpre_id='"+mpres+"'";
         try {
             Statement st = (Statement) conex.createStatement();
             ResultSet rst = st.executeQuery(sql);
@@ -282,7 +293,7 @@ String codigo = jTextField1.getText().toUpperCase();
             }
             if(cuenta==0){
                 int id =0;
-                String cuentaid = "SELECT id FROM ctabs ORDER BY id DESC LIMIT 1";
+                String cuentaid = "SELECT id FROM cmpres ORDER BY id DESC LIMIT 1";
                 Statement str = (Statement) conex.createStatement();
                 ResultSet rstr = str.executeQuery(cuentaid);
                 while(rstr.next()){
@@ -292,21 +303,21 @@ String codigo = jTextField1.getText().toUpperCase();
                 String inserta="";
                 String mensaje = "";
                 if(edita==0){
-                 inserta= "INSERT INTO ctabs (id, descri, codigo, mtabus_id) "
-                        + "VALUES ("+id+", '"+descri+"', '"+codigo+"', '"+mtabus+"')";
+                 inserta= "INSERT INTO cmpres (id, descri, codigo, mpre_id) "
+                        + "VALUES ("+id+", '"+descri+"', '"+codigo+"', '"+mpres+"')";
                        mensaje = "El capitulo ha sido insertado";
                 }
                 if(edita==1){
-                inserta= "UPDATE ctabs SET descri='"+descri+"' WHERE id="+capituloid+" AND mtbus_id='"+mtabus+"'";
+                inserta= "UPDATE cmpres SET descri='"+descri+"' WHERE id="+capituloid+" AND mpre_id='"+mpres+"'";
                        mensaje = "El capitulo ha sido modificado";
                 }
                 if(edita==2){
-                inserta= "UPDATE ctabs SET descri='"+descri+"' WHERE id="+capituloid+" AND mtbus_id='"+mtabus+"'";
+                inserta= "UPDATE cmpres SET descri='"+descri+"' WHERE id="+capituloid+" AND mpre_id='"+mpres+"'";
                        mensaje = "El subcapitulo ha sido modificado";
                 }
                 if(edita==3){
-                   inserta = "INSERT INTO ctabs (id, descri, codigo, mtabus_id, ctabs_id) "
-                        + "VALUES ("+id+", '"+descri+"', '"+codigo+"', '"+mtabus+"', "+capituloid+")";
+                   inserta = "INSERT INTO cmpres (id, descri, codigo, mpre_id, cmpres_id) "
+                        + "VALUES ("+id+", '"+descri+"', '"+codigo+"', '"+mpres+"', "+capituloid+")";
                    mensaje = "El subcapitulo ha sido insertado";
                 }
                 
@@ -326,6 +337,22 @@ String codigo = jTextField1.getText().toUpperCase();
             JOptionPane.showMessageDialog(null, "Ningún Campo puede estar vacio");
         }        // TODO add your handling code here:
     }//GEN-LAST:event_okButtonMouseClicked
+
+private void jTextField1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyTyped
+   Character c = evt.getKeyChar();
+                if(Character.isLetter(c)) {
+                    evt.setKeyChar(Character.toUpperCase(c));
+                }
+    
+    // TODO add your handling code here:
+}//GEN-LAST:event_jTextField1KeyTyped
+
+private void jTextArea1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextArea1KeyTyped
+   Character c = evt.getKeyChar();
+                if(Character.isLetter(c)) {
+                    evt.setKeyChar(Character.toUpperCase(c));
+                }// TODO add your handling code here:
+}//GEN-LAST:event_jTextArea1KeyTyped
          
     private void doClose(int retStatus) {
         returnStatus = retStatus;

@@ -140,6 +140,12 @@ public class copiarpart extends javax.swing.JDialog {
 
         jLabel5.setText("Número Partida Nueva:");
 
+        jTextField3.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField3KeyTyped(evt);
+            }
+        });
+
         jTextField4.setEditable(false);
 
         jLabel8.setForeground(new java.awt.Color(255, 0, 0));
@@ -504,6 +510,13 @@ public class copiarpart extends javax.swing.JDialog {
                 }
             }        // TODO add your handling code here:
     }//GEN-LAST:event_okButtonMouseClicked
+
+private void jTextField3KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField3KeyTyped
+   Character c = evt.getKeyChar();
+                if(Character.isLetter(c)) {
+                    evt.setKeyChar(Character.toUpperCase(c));
+                }// TODO add your handling code here:
+}//GEN-LAST:event_jTextField3KeyTyped
     
     private void doClose(int retStatus) {
         returnStatus = retStatus;

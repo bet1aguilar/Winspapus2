@@ -515,6 +515,11 @@ public final void buscagrupo() throws SQLException{
 
         jTextField1.setToolTipText("Ingrese Código de la Partida");
         jTextField1.setNextFocusableComponent(jSpinner1);
+        jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField1KeyTyped(evt);
+            }
+        });
 
         jLabel2.setText("Código Covenin *:");
 
@@ -536,7 +541,7 @@ public final void buscagrupo() throws SQLException{
         jLabel4.setText("Descripción:");
 
         jTextArea1.setColumns(22);
-        jTextArea1.setFont(new java.awt.Font("Monospaced", 0, 11)); // NOI18N
+        jTextArea1.setFont(new java.awt.Font("Monospaced", 0, 11));
         jTextArea1.setLineWrap(true);
         jTextArea1.setRows(3);
         jTextArea1.setWrapStyleWord(true);
@@ -544,6 +549,9 @@ public final void buscagrupo() throws SQLException{
         jTextArea1.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 jTextArea1KeyPressed(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextArea1KeyTyped(evt);
             }
         });
         jScrollPane1.setViewportView(jTextArea1);
@@ -1163,7 +1171,8 @@ float unitario = (float) totalprecunit;
     }//GEN-LAST:event_jCheckBox1ActionPerformed
 
     private void jTextArea1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextArea1KeyPressed
-if (evt.getKeyCode() == KeyEvent.VK_TAB) {
+
+        if (evt.getKeyCode() == KeyEvent.VK_TAB) {
             if (evt.getModifiers() == KeyEvent.SHIFT_MASK) {
                 ((javax.swing.JTextArea) evt.getSource()).transferFocusBackward();
             } else {
@@ -1422,6 +1431,7 @@ private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:ev
                     + "cantidad="+cantidad+", tipo='"+tipos+"', status=1"
                     + " WHERE (mpre_id='"+mpre_id+"' OR mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+mpre_id+"')) "
                     + "AND id='"+ids+"' AND numero="+numero;
+            System.out.println("actualiza "+sql);
             try {
                 Statement st = (Statement) conex.createStatement();
                 st.execute(sql);
@@ -1447,6 +1457,21 @@ private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:ev
         
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField15FocusLost
+
+   
+private void jTextField1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyTyped
+   Character c = evt.getKeyChar();
+                if(Character.isLetter(c)) {
+                    evt.setKeyChar(Character.toUpperCase(c));
+                }// TODO add your handling code here:
+}//GEN-LAST:event_jTextField1KeyTyped
+
+private void jTextArea1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextArea1KeyTyped
+   Character c = evt.getKeyChar();
+                if(Character.isLetter(c)) {
+                    evt.setKeyChar(Character.toUpperCase(c));
+                }// TODO add your handling code here:
+}//GEN-LAST:event_jTextArea1KeyTyped
     
     private void doClose(int retStatus) {
         returnStatus = retStatus;

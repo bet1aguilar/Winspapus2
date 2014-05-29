@@ -43,11 +43,11 @@ public class partidasub extends javax.swing.JDialog {
     public static final int RET_OK = 1;
     private DefaultTableModel metabs;
     Connection conex;
-    String mtabus, capitulo;
+    String mpres, capitulo;
     String id;
     private String codicove;
     /** Creates new form partidasub */
-    public partidasub(java.awt.Frame parent, boolean modal, Connection conex, String mtabus, String subcapitulo) {
+    public partidasub(java.awt.Frame parent, boolean modal, Connection conex, String mpres, String subcapitulo) {
         super(parent, modal);
         initComponents();
         jTable1.setOpaque(true);
@@ -57,7 +57,7 @@ public class partidasub extends javax.swing.JDialog {
     jTable1.getTableHeader().setPreferredSize(new Dimension(30,40));
     jTable1.setRowHeight(25);
         this.conex= conex;
-        this.mtabus = mtabus;
+        this.mpres = mpres;
         this.capitulo = subcapitulo;
         cargapartida();
         // Close the dialog when Esc is pressed
@@ -81,8 +81,8 @@ public class partidasub extends javax.swing.JDialog {
     public final void cargapartida(){
        try {
             Statement st = (Statement) conex.createStatement();
-            ResultSet rs = st.executeQuery("SELECT codicove, descri, numero, numegrup  "
-                    + " FROM Mptabs m WHERE m.mtabus_id = '"+mtabus+"' AND status=1 AND m.capitulo="+capitulo+" ORDER BY numegrup");
+            ResultSet rs = st.executeQuery("SELECT id, descri, numero, numegrup  "
+                    + " FROM Mppres m WHERE m.mpre_id = '"+mpres+"' AND status=1 AND m.capitulo="+capitulo+" ORDER BY numegrup");
             ResultSetMetaData rsMd = (ResultSetMetaData) rs.getMetaData();
             //System.out.println("siii entra en presupuesto");
             metabs = new DefaultTableModel(){@Override
@@ -335,9 +335,9 @@ public class partidasub extends javax.swing.JDialog {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         int op= JOptionPane.showConfirmDialog(null, "¿Desea eliminar la partida?"); 
         if(op==JOptionPane.YES_OPTION){
-        String actualiza = "UPDATE mptabs SET capitulo=NULL WHERE mtabus_id='"+mtabus+"' "
-                   + "AND codicove='"+codicove +"' AND (capitulo="+capitulo+" OR capitulo IN (SELECT id FROM ctabs WHERE "
-                   + "mtabus_id='"+mtabus+"' AND ctabs_id="+capitulo+"))";
+        String actualiza = "UPDATE mppres SET capitulo=NULL WHERE mpre_id='"+mpres+"' "
+                   + "AND id='"+codicove +"' AND (capitulo="+capitulo+" OR capitulo IN (SELECT id FROM cmpres WHERE "
+                   + "mpre_id='"+mpres+"' AND cmpres_id="+capitulo+"))";
           try {
             Statement st = (Statement) conex.createStatement();
             st.execute(actualiza);
@@ -350,8 +350,8 @@ public class partidasub extends javax.swing.JDialog {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-              capitulospartidas nuevo = new capitulospartidas(null, true, conex, mtabus,capitulo);
-       System.out.println("mtabus "+mtabus); 
+              capitulospartidas nuevo = new capitulospartidas(null, true, conex, mpres,capitulo);
+       System.out.println("mtabus "+mpres); 
        int xi = (this.getX());
         int yi = (this.getY());
         nuevo.setBounds(xi, yi, 700, 550);

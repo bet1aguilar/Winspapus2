@@ -14,6 +14,7 @@ import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.ResultSetMetaData;
 import com.mysql.jdbc.Statement;
 import java.awt.Dimension;
+import java.awt.Rectangle;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.sql.ResultSet;
@@ -32,6 +33,8 @@ import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 import presupuesto.materiales.matrizmaterialespres;
+import presupuestos.capitulos.capitulos;
+import presupuestos.capitulos.capitulospartidas;
 import presupuestos.equipo.matrizequipospres;
 import presupuestos.manoobra.matrizmanopres;
 import valuaciones.aumentosdismi;
@@ -1729,6 +1732,13 @@ public class Presupuesto extends javax.swing.JInternalFrame {
                  
             
         }
+            
+             int filas = jTable2.getRowCount()-1;
+             jTable2.getSelectionModel().setSelectionInterval(filas, filas);
+              Rectangle r = jTable2.getCellRect(jTable2.getSelectedRow(),jTable2.getSelectedColumn(), false);
+    jTable2.scrollRectToVisible(r);
+    filapartida=filas;
+    cargapartida();
              cargartotal();
              
     }
@@ -2170,6 +2180,7 @@ public void agrega(){
                 calculapartida(String.valueOf(nuevo), id, 0);
                 cargartotal();
                 buscapartida();
+                selecciona(nuevonumegrup);
                 cargapresupuesto();
             }else{
                     entrar=1;
@@ -2198,6 +2209,10 @@ public void agrega(){
             }
             }
 
+}
+
+public void selecciona(int numegrup){
+    
 }
     private void jButton12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton12ActionPerformed
         int totalfilas = jTable1.getRowCount();
@@ -2971,9 +2986,7 @@ public void agrega(){
                     ultima++;
                 }
             }
-           /* for(int h=ultima; h<coldata.length;h++){
-                
-            }*/
+           
         }
                   
       reordena reor = new reordena(conex, coldata, numeros, id, this);
@@ -3001,8 +3014,28 @@ public void agrega(){
 
     private void jTextField14FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField14FocusGained
 jTextArea2.setEditable(true);
-        
-        // TODO add your handling code here:
+String consulta = "SELECT tipo, nropresupuesto FROM mppres WHERE (mpre_id='"+id+"' OR mpre_id IN (SELECT id "
+                + "FROM mpres WHERE mpres_id = '"+id+"')) ORDER BY numero DESC LIMIT 1";
+String tipo = null,nro ="";
+        try {
+           Statement st = (Statement) conex.createStatement();
+           ResultSet rst = st.executeQuery(consulta);
+           while(rst.next())
+           {
+               nro = rst.getString(1);
+               tipo = rst.getString(2);
+               
+           }   
+           if(!tipo.equals("VP") || !tipo.equals("Org"))
+           {
+               jTextField16.setText(nro);
+               
+               
+           }
+                    // TODO add your handling code here:
+        } catch (SQLException ex) {
+            Logger.getLogger(Presupuesto.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jTextField14FocusGained
 
     private void jTextField14KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField14KeyTyped
@@ -3150,7 +3183,12 @@ jTextArea2.setEditable(true);
     }//GEN-LAST:event_jButton19ActionPerformed
 
     private void jButton21ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton21ActionPerformed
-     
+        capitulos cap = new capitulos(prin, true, conex, id);
+        int xi= (prin.getWidth()/2)-700/2;
+        int yi = (prin.getHeight()/2)-600/2;
+        cap.setBounds(xi, yi, 700, 600);
+        cap.setVisible(true);
+        busca();
         
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton21ActionPerformed
@@ -3297,10 +3335,14 @@ private void jTextField18FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST
                      if(cuenta==0){
                          
                           String insertare = "INSERT INTO mpres "
+                                  + "(id,nomabr,nombre,ubicac,fecini,fecfin,feccon,fecimp,porgam,porcfi,porimp,"
+                                  + "poripa,porpre,poruti,codpro,codcon,parpre,nrocon,nroctr,fecapr,nrolic,status,"
+                                  + "mpres_id,memo,timemo,fecmemo,seleccionado,fecharegistro)"
                                             + "SELECT '"+pres+"', nomabr, nombre, ubicac, fecini,"
                                             + "fecfin, feccon, fecimp, porgam, porcfi, porimp, poripa,"
                                             + "porpre, poruti, codpro, codcon, parpre, nrocon, nroctr, fecapr,"
-                                            + "nrolic, 1, '"+id+"',memo,timemo, fecmemo, 0  FROM mpres WHERE id='"+id+"'";
+                                            + "nrolic, 1, '"+id+"',memo,timemo, fecmemo, 0, NOW()  FROM "
+                                            + "mpres WHERE id='"+id+"'";
 
                     System.out.println("Inserta Presupuesto Adicional: "+insertar);
                     Statement insert = (Statement) conex.createStatement();

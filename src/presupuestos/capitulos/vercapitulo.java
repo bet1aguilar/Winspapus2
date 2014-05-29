@@ -41,7 +41,7 @@ public class vercapitulo extends javax.swing.JDialog {
     public static final int RET_CANCEL = 0;
     /** A return status code - returned if OK button has been pressed */
     public static final int RET_OK = 1;
-    String mtabus;
+    String mpres;
     String capitulo;
     Connection conex;
     String ids;
@@ -53,7 +53,7 @@ public class vercapitulo extends javax.swing.JDialog {
         initComponents();
         this.conex = conex;
         this.capitulo = capitulo;
-        this.mtabus = mtabus;
+        this.mpres = mtabus;
          jTable1.setOpaque(true);
     jTable1.setShowHorizontalLines(true);
     jTable1.setShowVerticalLines(false);
@@ -86,7 +86,7 @@ public class vercapitulo extends javax.swing.JDialog {
         try {
             Statement st = (Statement) conex.createStatement();
              ResultSet rs = st.executeQuery("SELECT codigo, descri, id "
-                     + " FROM ctabs WHERE mtabus_id='"+mtabus+"' AND ctabs_id="+capitulo+"");
+                     + " FROM cmpres WHERE mpre_id='"+mpres+"' AND cmpres_id="+capitulo+"");
              ResultSetMetaData rsMd = (ResultSetMetaData) rs.getMetaData();
              
              DefaultTableModel metabs1 = new DefaultTableModel(){@Override
@@ -113,18 +113,18 @@ public class vercapitulo extends javax.swing.JDialog {
                          }
                          else{
                              int cantsub=0, cantpart=0;
-                             String sub = "SELECT count(*) as cant FROM ctabs "
-                                     + "WHERE ctabs_id="+id+" AND mtabus_id='"+mtabus+"'";
+                             String sub = "SELECT count(*) as cant FROM cmpres "
+                                     + "WHERE cmpres_id="+id+" AND mpre_id='"+mpres+"'";
                              Statement stsub = (Statement) conex.createStatement();
                              ResultSet rstsub = stsub.executeQuery(sub);
                              while(rstsub.next()){
                                  cantsub = rstsub.getInt(1);
                              }
-                             String partida = "SELECT count(*) as cant FROM mptabs "
-                                     + "WHERE mtabus_id='"+mtabus+"' AND "
+                             String partida = "SELECT count(*) as cant FROM mppres "
+                                     + "WHERE mpre_id='"+mpres+"' AND "
                                      + "(capitulo="+id+" OR capitulo IN "
-                                     + "(SELECT id FROM ctabs "
-                                     + "WHERE ctabs_id="+id+" AND mtabus_id='"+mtabus+"')) ";
+                                     + "(SELECT id FROM cmpres "
+                                     + "WHERE cmpres_id="+id+" AND mpre_id='"+mpres+"')) ";
                              Statement part = (Statement) conex.createStatement();
                              ResultSet rspart = part.executeQuery(partida);
                              while(rspart.next()){
@@ -144,8 +144,8 @@ public class vercapitulo extends javax.swing.JDialog {
     public final void buscapartida(){
        try {
             Statement st = (Statement) conex.createStatement();
-            ResultSet rs = st.executeQuery("SELECT codicove, descri, numero, numegrup  "
-                    + " FROM Mptabs m WHERE m.mtabus_id = '"+mtabus+"' AND status=1 AND m.capitulo="+capitulo+" ORDER BY numegrup");
+            ResultSet rs = st.executeQuery("SELECT id, descri, numero, numegrup  "
+                    + " FROM Mppres m WHERE m.mpre_id = '"+mpres+"' AND status=1 AND m.capitulo="+capitulo+" ORDER BY numegrup");
             ResultSetMetaData rsMd = (ResultSetMetaData) rs.getMetaData();
             //System.out.println("siii entra en presupuesto");
             metabs = new DefaultTableModel(){@Override
@@ -542,8 +542,8 @@ public class vercapitulo extends javax.swing.JDialog {
     }//GEN-LAST:event_closeDialog
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
- capitulospartidas nuevo = new capitulospartidas(null, true, conex, mtabus,ids);
-       System.out.println("mtabus "+mtabus+ " capitulo: "+capitulo); 
+ capitulospartidas nuevo = new capitulospartidas(null, true, conex, mpres,ids);
+       System.out.println("mpres "+mpres+ " capitulo: "+capitulo); 
        int xi = (this.getX());
         int yi = (this.getY());
         nuevo.setBounds(xi, yi, 700, 550);
@@ -554,7 +554,7 @@ public class vercapitulo extends javax.swing.JDialog {
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
 
         
-                nuevocapitulo nuevo = new nuevocapitulo(null, true, mtabus, conex,2, ids);
+                nuevocapitulo nuevo = new nuevocapitulo(null, true, mpres, conex,2, ids);
         int xi = (this.getX()+100);
         int yi = (this.getY()+100);
         nuevo.setBounds(xi, yi, 550, 400);
@@ -566,7 +566,7 @@ public class vercapitulo extends javax.swing.JDialog {
         int fila = jTable1.rowAtPoint(evt.getPoint());
         
         String cap= jTable1.getValueAt(fila, 0).toString();
-        String sql = "SELECT id FROM ctabs WHERE codigo='"+cap+"'";
+        String sql = "SELECT id FROM cmpres WHERE codigo='"+cap+"'";
         try {
             Statement st = (Statement) conex.createStatement();
             ResultSet rst = st.executeQuery(sql);
@@ -586,8 +586,8 @@ public class vercapitulo extends javax.swing.JDialog {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
        
         
-        partidasub sub = new partidasub(null, true, conex, mtabus, ids);
-        System.out.println("mtabus "+mtabus+" ids "+ids);
+        partidasub sub = new partidasub(null, true, conex, mpres, ids);
+        System.out.println("mpres "+mpres+" ids "+ids);
         int xi = (this.getX());
         int yi = (this.getY());
         sub.setBounds(xi, yi, 700, 550);
@@ -601,9 +601,9 @@ public class vercapitulo extends javax.swing.JDialog {
        if(op==JOptionPane.YES_OPTION){
            
            
-           String actualiza = "UPDATE mptabs SET capitulo=NULL WHERE mtabus_id='"+mtabus+"' "
-                   + "AND codicove='"+jTable2.getValueAt(fila1, 0) +"' AND (capitulo="+capitulo+" OR capitulo IN (SELECT id FROM ctabs WHERE "
-                   + "mtabus_id='"+mtabus+"' AND ctabs_id="+capitulo+"))";
+           String actualiza = "UPDATE mppres SET capitulo=NULL WHERE mpre_id='"+mpres+"' "
+                   + "AND id='"+jTable2.getValueAt(fila1, 0) +"' AND (capitulo="+capitulo+" OR capitulo IN (SELECT id FROM cmpres WHERE "
+                   + "mpre_id='"+mpres+"' AND cmpres_id="+capitulo+"))";
            try {
                 Statement borra = (Statement) conex.createStatement();
                 borra.execute(actualiza);
@@ -624,7 +624,7 @@ public class vercapitulo extends javax.swing.JDialog {
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
 
         
-        nuevocapitulo nuevo = new nuevocapitulo(null, true, mtabus, conex,3, capitulo);
+        nuevocapitulo nuevo = new nuevocapitulo(null, true, mpres, conex,3, capitulo);
         int xi = (this.getX()+100);
         int yi = (this.getY()+100);
         nuevo.setBounds(xi, yi, 550, 400);
@@ -633,8 +633,8 @@ public class vercapitulo extends javax.swing.JDialog {
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
-               capitulospartidas nuevo = new capitulospartidas(null, true, conex, mtabus,capitulo);
-       System.out.println("mtabus "+mtabus); 
+               capitulospartidas nuevo = new capitulospartidas(null, true, conex, mpres,capitulo);
+       System.out.println("mpres "+mpres); 
        int xi = (this.getX());
         int yi = (this.getY());
         nuevo.setBounds(xi, yi, 700, 550);
@@ -649,9 +649,9 @@ public class vercapitulo extends javax.swing.JDialog {
        if(op==JOptionPane.YES_OPTION){
            
            
-           String actualiza = "UPDATE mptabs SET capitulo=NULL WHERE mtabus_id='"+mtabus+"' "
+           String actualiza = "UPDATE mppres SET capitulo=NULL WHERE mpre_id='"+mpres+"' "
                    + "AND (capitulo="+ids+" OR capitulo IN (SELECT id FROM ctabs WHERE "
-                   + "mtabus_id='"+mtabus+"' AND ctabs_id="+ids+"))";
+                   + "mpre_id='"+mpres+"' AND ctabs_id="+ids+"))";
            try {
                 Statement borra = (Statement) conex.createStatement();
                 borra.execute(actualiza);
@@ -659,8 +659,8 @@ public class vercapitulo extends javax.swing.JDialog {
                 Logger.getLogger(capitulos.class.getName()).log(Level.SEVERE, null, ex);
             }
            
-           String delete = "DELETE FROM ctabs WHERE (id="+ids+" OR ctabs_id="+ids+")"
-                   + " AND mtabus_id='"+mtabus+"'";
+           String delete = "DELETE FROM cmpres WHERE (id="+ids+" OR cmpres_id="+ids+")"
+                   + " AND mpre_id='"+mpres+"'";
             try {
                 Statement borra = (Statement) conex.createStatement();
                 borra.execute(delete);

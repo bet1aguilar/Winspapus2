@@ -444,7 +444,8 @@ public final void cargapresupuesto() throws SQLException{
                  Statement stm = (Statement) conex.createStatement();
                  stm.execute(inserta);
                 }else{
-                    int op=JOptionPane.showConfirmDialog(null, "Partida ya fue ingresada en valuación, ¿Desea modificar las cantidades? Si/No", "Modificar Partida en Valución", JOptionPane.YES_NO_OPTION);
+                    int op=JOptionPane.showConfirmDialog(null, "Partida ya fue ingresada en valuación, "
+                            + "¿Desea modificar las cantidades? Si/No", "Modificar Partida en Valución", JOptionPane.YES_NO_OPTION);
                     if(op==JOptionPane.YES_OPTION){
                         String update = "UPDATE dvalus SET cantidad="+cantidades[i]+" WHERE numepart="+partidas[i]+" "
                                 + "AND mpre_id='"+mpres+"' AND mvalu_id="+mvalu;
@@ -498,7 +499,8 @@ public final void cargapresupuesto() throws SQLException{
                     if (bol.booleanValue()) {
                         
                         partidas[contsel] =  jTable1.getValueAt(i, 1).toString();
-                        String consult = "SELECT numero FROM mppres WHERE numegrup="+partidas[contsel]+" AND mpre_id='"+mpres+"'";
+                        String consult = "SELECT numero FROM mppres WHERE "
+                                + "numegrup="+partidas[contsel]+" AND mpre_id='"+mpres+"'";
                         try {
                             Statement st = (Statement) conex.createStatement();
                             ResultSet rst = st.executeQuery(consult);

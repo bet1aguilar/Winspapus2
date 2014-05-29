@@ -474,7 +474,7 @@
                   <Font name="Tahoma" size="11" style="1"/>
                 </Property>
                 <Property name="horizontalAlignment" type="int" value="0"/>
-                <Property name="text" type="java.lang.String" value="Partida"/>
+                <Property name="text" type="java.lang.String" value="Informaci&#xf3;n de Partida"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JButton" name="jButton2">
@@ -544,7 +544,6 @@
                       </Group>
                       <EmptySpace min="-2" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jLabel12" alignment="0" pref="665" max="32767" attributes="0"/>
                           <Component id="jLabel32" alignment="1" pref="665" max="32767" attributes="1"/>
                           <Component id="jScrollPane2" pref="665" max="32767" attributes="0"/>
                           <Component id="jScrollPane1" pref="665" max="32767" attributes="0"/>
@@ -607,9 +606,7 @@
                           <Component id="jSpinner4" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jTextField4" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
-                      <Component id="jLabel12" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
                       <Component id="jLabel32" min="-2" pref="14" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="1" attributes="0">
@@ -767,12 +764,6 @@
             <Component class="javax.swing.JTextField" name="jTextField4">
               <Properties>
                 <Property name="editable" type="boolean" value="false"/>
-              </Properties>
-            </Component>
-            <Component class="javax.swing.JLabel" name="jLabel12">
-              <Properties>
-                <Property name="horizontalAlignment" type="int" value="0"/>
-                <Property name="text" type="java.lang.String" value="Seleccione Valuaci&#xf3;n 0 para las partidas de disminuci&#xf3;n Parcial"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel32">

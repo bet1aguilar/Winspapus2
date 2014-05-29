@@ -42,7 +42,7 @@ public class capitulospartidas extends javax.swing.JDialog {
     /** A return status code - returned if OK button has been pressed */
     public static final int RET_OK = 1;
     Connection conex;
-    String tabu;
+    String mpres;
     private DefaultTableModel metabs;
     private String[] auxpart;
     private int auxcont;
@@ -52,11 +52,11 @@ public class capitulospartidas extends javax.swing.JDialog {
     String capitulo;
     int shift=0;
     private int partida;
-    public capitulospartidas(java.awt.Frame parent, boolean modal, Connection conex, String tabu, String capitulo) {
+    public capitulospartidas(java.awt.Frame parent, boolean modal, Connection conex, String mpres, String capitulo) {
         super(parent, modal);
         initComponents();
         this.conex = conex;
-        this.tabu = tabu;
+        this.mpres = mpres;
         this.capitulo = capitulo;
         buscapartida();
         jTable1.setOpaque(true);
@@ -82,8 +82,9 @@ public class capitulospartidas extends javax.swing.JDialog {
     public final void buscapartida(){
         try {
             Statement st = (Statement) conex.createStatement();
-            ResultSet rs = st.executeQuery("SELECT codicove, descri, numero, numegrup  "
-                    + " FROM Mptabs m WHERE m.mtabus_id = '"+tabu+"' AND status=1 AND m.capitulo IS NULL OR capitulo='0' ORDER BY numegrup");
+            ResultSet rs = st.executeQuery("SELECT id, descri, numero, numegrup  "
+                    + " FROM Mppres m WHERE m.mpre_id = '"+mpres+"' AND status=1 AND m.capitulo IS NULL OR "
+                    + "capitulo='0' ORDER BY numegrup");
             ResultSetMetaData rsMd = (ResultSetMetaData) rs.getMetaData();
             //System.out.println("siii entra en presupuesto");
             metabs = new DefaultTableModel(){@Override
@@ -170,10 +171,13 @@ public class capitulospartidas extends javax.swing.JDialog {
        
         try {
             Statement s = (Statement) conex.createStatement();
-            ResultSet rs = s.executeQuery("SELECT codicove, descri, numero, numegrup FROM Mptabs m WHERE m.mtabus_id = '"+tabu+"' AND status=1 AND m.capitulo IS NULL OR m.capitulo='0'  AND (codicove LIKE'%"+busqueda+"%' || descri LIKE '%"+busqueda+"%') ORDER BY numegrup");
-            
+            ResultSet rs = s.executeQuery("SELECT id, descri, numero, numegrup "
+                    + "FROM mppres m WHERE m.mpre_id = '"+mpres+"' AND status=1 AND m.capitulo "
+                    + "IS NULL OR m.capitulo='0'  AND (id LIKE'%"+busqueda+"%' || descri LIKE '%"+busqueda+"%')"
+                    + " ORDER BY numegrup");
             ResultSetMetaData rsMd = (ResultSetMetaData) rs.getMetaData();
             int cantidadColumnas = rsMd.getColumnCount()+1;
+            
              mat.addColumn("");
              for (int i = 2; i <= cantidadColumnas; i++) {
                  mat.addColumn(rsMd.getColumnLabel(i-1));
@@ -505,8 +509,8 @@ public class capitulospartidas extends javax.swing.JDialog {
             
             
             for(int i=0; i<contsel;i++){
-                String actualiza = "UPDATE mptabs SET capitulo="+capitulo+" WHERE codicove='"+partidas[i]+"' "
-                        + "AND mtabus_id='"+tabu+"'";
+                String actualiza = "UPDATE mppres SET capitulo="+capitulo+" WHERE id='"+partidas[i]+"' "
+                        + "AND mpre_id='"+mpres+"'";
             try {
                 Statement sts = (Statement) conex.createStatement();
                 sts.execute(actualiza);
@@ -601,18 +605,26 @@ public class capitulospartidas extends javax.swing.JDialog {
         
         if(shift==1){
             
-        int filas[]=new int[auxcont];
+       
         int auxfilas[]=jTable1.getSelectedRows();
        
-            filas=auxfilas;
+       
         
-                 int totalfilas = filas.length;
+                 int totalfilas = auxfilas.length;
                  
       // System.out.println("totalfilas: "+totalfilas);
+       int auxaux=auxcont;          
+        auxcont = totalfilas;
+         int filas[];
+         filas=auxfilas;
+         String aux[] = auxpart;
         for(int i=0; i<auxcont; i++){
             auxpart[i] =(String) jTable1.getValueAt(filas[i], 1);
         }
-        auxcont = totalfilas;
+        String nuevocopia[]=new String[aux.length+auxpart.length];
+        System.arraycopy(aux, 0, nuevocopia, 0, aux.length);
+        System.arraycopy(auxpart, 0, nuevocopia, aux.length, auxpart.length);
+        auxpart = nuevocopia;
         busca();
         shift=0;
         }

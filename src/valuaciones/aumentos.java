@@ -127,6 +127,7 @@ public class aumentos extends javax.swing.JDialog {
                 + " OR dv.mpre_id IN (SELECT id FROM mpres WHERE mpres_id = dv.mpre_id))"
                 + " AND (mp.mpre_id='"+pres+"'"
                 + " OR mp.mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+pres+"')) "
+                + " AND dv.mvalu_id="+mvalu+" "
                 + "AND (mp.id LIKE '%"+busqueda+"%') "
                 + "AND mp.numero NOT IN (SELECT numepart FROM admppres WHERE payd_id="+payd+")"
                 + " GROUP BY mp.numegrup";

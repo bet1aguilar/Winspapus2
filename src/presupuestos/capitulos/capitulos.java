@@ -40,13 +40,13 @@ public class capitulos extends javax.swing.JDialog {
     public static final int RET_OK = 1;
     String ids = "";
     Connection conex;
-    String mtabus;
+    String mpres;
     /** Creates new form capitulos */
-    public capitulos(java.awt.Frame parent, boolean modal, Connection conex, String mtabus) {
+    public capitulos(java.awt.Frame parent, boolean modal, Connection conex, String mpres) {
         super(parent, modal);
         initComponents();
         this.conex = conex;
-        this.mtabus = mtabus;
+        this.mpres = mpres;
          jTable1.setOpaque(true);
     jTable1.setShowHorizontalLines(true);
     jTable1.setShowVerticalLines(false);
@@ -71,7 +71,7 @@ public class capitulos extends javax.swing.JDialog {
         try {
             Statement st = (Statement) conex.createStatement();
              ResultSet rs = st.executeQuery("SELECT codigo, descri, id "
-                     + " FROM ctabs WHERE mtabus_id='"+mtabus+"' AND ctabs_id IS NULL");
+                     + " FROM cmpres WHERE mpre_id='"+mpres+"' AND cmpres_id IS NULL");
              ResultSetMetaData rsMd = (ResultSetMetaData) rs.getMetaData();
              
              DefaultTableModel metabs = new DefaultTableModel(){@Override
@@ -99,18 +99,18 @@ public class capitulos extends javax.swing.JDialog {
                          }
                          else{
                              int cantsub=0, cantpart=0;
-                             String sub = "SELECT count(*) as cant FROM ctabs "
-                                     + "WHERE ctabs_id="+id+" AND mtabus_id='"+mtabus+"'";
+                             String sub = "SELECT count(*) as cant FROM cmpres "
+                                     + "WHERE cmpres_id="+id+" AND mpre_id='"+mpres+"'";
                              Statement stsub = (Statement) conex.createStatement();
                              ResultSet rstsub = stsub.executeQuery(sub);
                              while(rstsub.next()){
                                  cantsub = rstsub.getInt(1);
                              }
-                             String partida = "SELECT count(*) as cant FROM mptabs "
-                                     + "WHERE mtabus_id='"+mtabus+"' AND "
+                             String partida = "SELECT count(*) as cant FROM mppres "
+                                     + "WHERE mpre_id='"+mpres+"' AND "
                                      + "(capitulo="+id+" OR capitulo IN "
-                                     + "(SELECT id FROM ctabs "
-                                     + "WHERE ctabs_id="+id+" AND mtabus_id='"+mtabus+"')) ";
+                                     + "(SELECT id FROM cmpres "
+                                     + "WHERE cmpres_id="+id+" AND mpre_id='"+mpres+"')) ";
                              Statement part = (Statement) conex.createStatement();
                              ResultSet rspart = part.executeQuery(partida);
                              while(rspart.next()){
@@ -229,19 +229,19 @@ public class capitulos extends javax.swing.JDialog {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -249,13 +249,13 @@ public class capitulos extends javax.swing.JDialog {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jButton4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton6, javax.swing.GroupLayout.Alignment.LEADING, 0, 0, Short.MAX_VALUE)
-                    .addComponent(cancelButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.Alignment.LEADING, 0, 0, Short.MAX_VALUE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jButton4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cancelButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(15, Short.MAX_VALUE))
         );
 
@@ -282,7 +282,7 @@ public class capitulos extends javax.swing.JDialog {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jTable1.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        jTable1.setFont(new java.awt.Font("Tahoma", 0, 10));
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -309,7 +309,7 @@ public class capitulos extends javax.swing.JDialog {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 625, Short.MAX_VALUE)
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(289, Short.MAX_VALUE)
+                .addContainerGap(309, Short.MAX_VALUE)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -320,7 +320,7 @@ public class capitulos extends javax.swing.JDialog {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(15, 15, 15))
+                .addGap(18, 18, 18))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -347,8 +347,8 @@ public class capitulos extends javax.swing.JDialog {
     }//GEN-LAST:event_closeDialog
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-       capitulospartidas nuevo = new capitulospartidas(null, true, conex, mtabus,ids);
-       System.out.println("mtabus "+mtabus); 
+       capitulospartidas nuevo = new capitulospartidas(null, true, conex, mpres,ids);
+       System.out.println("mpres "+mpres); 
        int xi = (this.getX());
         int yi = (this.getY());
         nuevo.setBounds(xi, yi, 700, 550);
@@ -359,7 +359,7 @@ public class capitulos extends javax.swing.JDialog {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        nuevocapitulo nuevo = new nuevocapitulo(null, true, mtabus, conex,1, ids);
+        nuevocapitulo nuevo = new nuevocapitulo(null, true, mpres, conex,1, ids);
         int xi = (this.getX()+100);
         int yi = (this.getY()+100);
         nuevo.setBounds(xi, yi, 550, 400);
@@ -370,7 +370,7 @@ public class capitulos extends javax.swing.JDialog {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        nuevocapitulo nuevo = new nuevocapitulo(null, true, mtabus, conex);
+        nuevocapitulo nuevo = new nuevocapitulo(null, true, mpres, conex);
         int xi = (this.getX()+100);
         int yi = (this.getY()+100);
         nuevo.setBounds(xi, yi, 550, 400);
@@ -382,7 +382,7 @@ public class capitulos extends javax.swing.JDialog {
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
        int fila = jTable1.rowAtPoint(evt.getPoint());
        ids = jTable1.getValueAt(fila, 0).toString();
-       String consulta = "SELECT id FROM ctabs WHERE codigo='"+ids+"' AND mtabus_id='"+mtabus+"'";
+       String consulta = "SELECT id FROM cmpres WHERE codigo='"+ids+"' AND mpre_id='"+mpres+"'";
         try {
             Statement st = (Statement) conex.createStatement();
             ResultSet rst = st.executeQuery(consulta);
@@ -402,7 +402,7 @@ public class capitulos extends javax.swing.JDialog {
     }//GEN-LAST:event_jTable1MouseClicked
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        nuevocapitulo nuevo = new nuevocapitulo(null, true, mtabus, conex,3, ids);
+        nuevocapitulo nuevo = new nuevocapitulo(null, true, mpres, conex,3, ids);
         int xi = (this.getX()+100);
         int yi = (this.getY()+100);
         nuevo.setBounds(xi, yi, 550, 400);
@@ -412,7 +412,7 @@ public class capitulos extends javax.swing.JDialog {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        vercapitulo nuevo = new vercapitulo(null, true, mtabus, conex, ids);
+        vercapitulo nuevo = new vercapitulo(null, true, mpres, conex, ids);
         int xi = (this.getX());
         int yi = (this.getY());
         nuevo.setBounds(xi, yi, 700, 620);
@@ -426,9 +426,9 @@ public class capitulos extends javax.swing.JDialog {
        if(op==JOptionPane.YES_OPTION){
            
            
-           String actualiza = "UPDATE mptabs SET capitulo=NULL WHERE mtabus_id='"+mtabus+"' "
-                   + "AND (capitulo="+ids+" OR capitulo IN (SELECT id FROM ctabs WHERE "
-                   + "mtabus_id='"+mtabus+"' AND ctabs_id="+ids+"))";
+           String actualiza = "UPDATE mppres SET capitulo=NULL WHERE mpre_id='"+mpres+"' "
+                   + "AND (capitulo="+ids+" OR capitulo IN (SELECT id FROM cmpres WHERE "
+                   + "mpre_id='"+mpres+"' AND cmpres_id="+ids+"))";
            try {
                 Statement borra = (Statement) conex.createStatement();
                 borra.execute(actualiza);
@@ -436,8 +436,8 @@ public class capitulos extends javax.swing.JDialog {
                 Logger.getLogger(capitulos.class.getName()).log(Level.SEVERE, null, ex);
             }
            
-           String delete = "DELETE FROM ctabs WHERE (id="+ids+" OR ctabs_id="+ids+")"
-                   + " AND mtabus_id='"+mtabus+"'";
+           String delete = "DELETE FROM cmpres WHERE (id="+ids+" OR cmpres_id="+ids+")"
+                   + " AND mpre_id='"+mpres+"'";
             try {
                 Statement borra = (Statement) conex.createStatement();
                 borra.execute(delete);

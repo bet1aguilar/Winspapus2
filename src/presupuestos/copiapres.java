@@ -127,13 +127,15 @@ public class copiapres extends javax.swing.JDialog {
         String nombre = jTextField1.getText();
         try {
             Statement ste = (Statement) conex.createStatement();
-            String sql = "INSERT INTO mpres "
+            String sql = "INSERT INTO mpres (id,nomabr,nombre,ubicac,fecini,fecfin,feccon,fecimp,porcgam,porcfin,porimp"
+                    + ", poripa,porpre,poruti,codpro,codcon,parpre,nrocon,nroctr,fecapr,nrolic,status,mpres_id,memo,fecmemo,seleccionado,"
+                    + "fecharegistro)"
                     + "SELECT '"+nombre+"', nomabr, nombre, ubicac, fecini, fecfin,"
                     + "feccon, fecimp, "
                     + " porgam,porcfi, porimp,poripa,porpre,"
                     + "poruti, codpro,codcon, parpre, nrocon, nroctr, fecapr,"
                     + "nrolic, status, mpres_id, memo, timemo, fecmemo, "
-                    + "seleccionado "
+                    + "seleccionado, NOW()"
                     + " FROM mpres WHERE id='"+pres+"'";
             ste.execute(sql);
             copiarresto();
@@ -175,7 +177,7 @@ public class copiapres extends javax.swing.JDialog {
 
         jPanel3.setBackground(new java.awt.Color(100, 100, 100));
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11));
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Copiar Presupuesto");
@@ -243,6 +245,11 @@ public class copiapres extends javax.swing.JDialog {
                 jTextField1ActionPerformed(evt);
             }
         });
+        jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField1KeyTyped(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -267,7 +274,7 @@ public class copiapres extends javax.swing.JDialog {
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(46, 46, 46))
         );
 
@@ -308,6 +315,16 @@ public class copiapres extends javax.swing.JDialog {
     private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_okButtonActionPerformed
+
+private void jTextField1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyTyped
+   Character c = evt.getKeyChar();
+                if(Character.isLetter(c)) {
+                    evt.setKeyChar(Character.toUpperCase(c));
+                }
+                if(jTextField1.getText().length()==20){
+                    evt.consume();
+                }
+}//GEN-LAST:event_jTextField1KeyTyped
     
     private void doClose(int retStatus) {
         returnStatus = retStatus;
