@@ -42,8 +42,8 @@ public class copiapu {
             Logger.getLogger(copiapu.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        String num = "SELECT numero, rendimi FROM mppres WHERE id='"+partida+"' AND mpre_id="+mpres+" "
-                + "OR mpre_id IN (SELECT id FROM mpres WHERE mpre_id="+mpres+")";
+        String num = "SELECT numero, rendimi FROM mppres WHERE id='"+partida+"' AND mpre_id='"+mpres+"' "
+                + "OR mpre_id IN (SELECT id FROM mpres WHERE mpre_id='"+mpres+"')";
         try {
             Statement str = (Statement) conex.createStatement();
             ResultSet rstr = str.executeQuery(num);

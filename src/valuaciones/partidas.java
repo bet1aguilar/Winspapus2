@@ -388,7 +388,8 @@ public final void cargapresupuesto() throws SQLException{
         verificarcheck();
         
         for(int i=0; i<contsel;i++){
-            String sql = "SELECT id, IF(precunit=0,precasu,precunit) FROM mppres where numero='"+partidas[i]+"' AND mpre_id='"+mpres+"' "
+            String sql = "SELECT id, IF(precunit=0,precasu,precunit) FROM mppres where numero='"+partidas[i]+"' AND "
+                    + "(mpre_id='"+mpres+"' OR mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+mpres+"')) "
                     + "AND status=1";
             System.out.println("Quiero ver Precio: "+sql);
             try {
@@ -511,9 +512,17 @@ public final void cargapresupuesto() throws SQLException{
                         } catch (SQLException ex) {
                             Logger.getLogger(partidas.class.getName()).log(Level.SEVERE, null, ex);
                         }
-                        cantidades[contsel]=Float.valueOf(jTable1.getValueAt(i, 7).toString());
+                        if(jTable1.getValueAt(i, 7).toString()!=null)
+                        {
+                            cantidades[contsel]=Float
+                                    
+                                    .valueOf(jTable1.getValueAt(i, 7).toString());
+                        }else{
+                            cantidades[contsel]=1;
+                        }
                         strNombre = jTable1.getValueAt(i, 1).toString();
                         builder.append("Nombre  :").append(strNombre).append("\n");
+                        
                         contsel++;
                     }
                 }

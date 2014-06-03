@@ -52,7 +52,9 @@ public class reordena extends Thread{
                 Logger.getLogger(reordena.class.getName()).log(Level.SEVERE, null, ex);
             }
            
-                String sql = "UPDATE Mppres set numegrup="+(i+1)+" WHERE numero="+numeros[i]+" AND (mpre_id='"+cadena+"' OR mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+cadena+"' GROUP BY id))";
+                String sql = "UPDATE Mppres set numegrup="+(i+1)+" WHERE numero="+numeros[i]+" "
+                        + "AND (mpre_id='"+cadena+"' OR mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+cadena+"' "
+                        + "GROUP BY id))";
             try {
                 st.execute(sql);
             } catch (SQLException ex) {

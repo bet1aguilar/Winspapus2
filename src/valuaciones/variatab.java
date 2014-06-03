@@ -273,8 +273,8 @@ public class variatab extends javax.swing.JDialog {
 
     public void actualiza(String partida){
          String codicove = null, precunit=null, precasu=null;
-            String busca = "SELECT id FROM mppres WHERE numegrup="+partida+" AND mpre_id="+mpres+" "
-                    + "OR mpre_id IN (SELECT id FROM mpres WHERE mpres_id="+mpres+")";
+            String busca = "SELECT id FROM mppres WHERE numegrup="+partida+" AND mpre_id='"+mpres+"' "
+                    + "OR mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+mpres+"')";
             try {
                 Statement st = (Statement) conex.createStatement();
                 ResultSet rst = st.executeQuery(busca);
