@@ -300,6 +300,9 @@ String codigo = jTextField1.getText().toUpperCase();
                     id = rstr.getInt(1);
                     id++;
                 }
+                if(id==0){
+                    id++;
+                }
                 String inserta="";
                 String mensaje = "";
                 if(edita==0){

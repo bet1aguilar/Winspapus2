@@ -504,6 +504,7 @@ private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:ev
             
             obj.settabu(tab);
             if(cont>0){
+            obj.filapartida=0;
             obj.setid(presu);
             obj.settitulo(presu+" "+descri);
             obj.cargapresupuesto();

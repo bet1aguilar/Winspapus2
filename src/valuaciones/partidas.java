@@ -24,6 +24,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
+import presupuestos.Presupuesto;
 import winspapus.Principal;
 
 
@@ -52,13 +53,15 @@ public final class partidas extends javax.swing.JDialog {
     private String mvalu;
     valuacion val;
     private int i;
+   
     /**
      * Creates new form partidas
      */
     public partidas(java.awt.Frame parent, boolean modal, Connection conex, String mpres, String mvalu, valuacion valua) {
         super(parent, modal);
-        
+            
             initComponents();
+    
             this.conex = conex;
             this.mvalu = mvalu;
             this.mpres = mpres;
@@ -410,7 +413,8 @@ public final void cargapresupuesto() throws SQLException{
                     conta = Integer.parseInt(rscontar.getObject(1).toString());
                 }
                 if(conta==0){
-                    String inserta = "INSERT into mvalus (id, mpre_id) VALUES("+mvalu+",'"+mpres+"')";
+                    int lapso = val.getlapso();
+                    String inserta = "INSERT into mvalus (id, mpre_id,lapso) VALUES("+mvalu+",'"+mpres+"',"+lapso+")";
                     Statement stm = (Statement) conex.createStatement();
                     stm.execute(inserta);
                 }

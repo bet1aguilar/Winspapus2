@@ -310,10 +310,13 @@
         <Component class="javax.swing.JComboBox" name="jComboBox2">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="3">
+              <StringArray count="6">
                 <StringItem index="0" value="Original"/>
                 <StringItem index="1" value="No Prevista"/>
-                <StringItem index="2" value="Variaci&#xf3;n de Precio"/>
+                <StringItem index="2" value="Obra Extra"/>
+                <StringItem index="3" value="Obra Adicional"/>
+                <StringItem index="4" value="Obra C"/>
+                <StringItem index="5" value="Variaci&#xf3;n de Precio"/>
               </StringArray>
             </Property>
             <Property name="nextFocusableComponent" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
@@ -566,9 +569,7 @@
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace pref="165" max="32767" attributes="0"/>
-                      <Component id="jButton1" min="-2" pref="51" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
+                      <EmptySpace pref="222" max="32767" attributes="0"/>
                       <Component id="okButton" min="-2" pref="48" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jButton2" min="-2" pref="44" max="-2" attributes="0"/>
@@ -591,7 +592,6 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="1" attributes="0">
-                          <Component id="jButton1" alignment="1" pref="45" max="32767" attributes="1"/>
                           <Component id="okButton" alignment="0" pref="45" max="32767" attributes="1"/>
                           <Component id="jButton2" alignment="0" pref="45" max="32767" attributes="1"/>
                           <Component id="jButton3" alignment="1" max="32767" attributes="1"/>
@@ -626,17 +626,6 @@
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton2ActionPerformed"/>
-              </Events>
-            </Component>
-            <Component class="javax.swing.JButton" name="jButton1">
-              <Properties>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/winspapus/imagenes/nuevo.png"/>
-                </Property>
-                <Property name="toolTipText" type="java.lang.String" value="Nueva Partida"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
               </Events>
             </Component>
             <Component class="javax.swing.JButton" name="okButton">

@@ -76,6 +76,14 @@ public final class valuacion extends javax.swing.JDialog {
             }
         });
     }
+    public int getlapso(){
+        if(jRadioButton1.isSelected()){
+            return 0;
+        }else{
+            return 1;
+        }
+        
+    }
     public void calculacantpart(String partida){
         float cantval=0;
        float cantcont=0;  

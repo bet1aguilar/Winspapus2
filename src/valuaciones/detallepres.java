@@ -22,6 +22,7 @@ import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
+import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 import javax.swing.table.DefaultTableModel;
 
@@ -65,14 +66,10 @@ public class detallepres extends javax.swing.JDialog {
     }
     public final void buscapres(){
         String covenin="";
-        float acumaum=0, acumdismi=0, acumvari=0, acumnp=0;
+        float acumaum=0, acumdismi=0, acumvari=0, acumnp=0, acumoe=0, acumoa=0, acumoc=0;
         try {
             
-            String cuenta = "SELECT numegrup,numero, id FROM mppres WHERE mpre_id='"+pres+"' OR "
-                    + "mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+pres+"') ORDER BY numegrup";
-            
-            Statement scuenta = (Statement) conex.createStatement();
-            ResultSet rscuenta = scuenta.executeQuery(cuenta);
+           int pos=1;
              DefaultTableModel mepres = new DefaultTableModel(){
                    @Override
                public boolean isCellEditable (int row, int column) {
@@ -98,19 +95,22 @@ public class detallepres extends javax.swing.JDialog {
              mepres.addColumn("Aumentos");
              mepres.addColumn("Disminución");
              mepres.addColumn("VP");
-             mepres.addColumn("Partidas No Previstas");
-             while(rscuenta.next()){
-                 Object[] filas = new Object[5];
+             mepres.addColumn("NP");
+             mepres.addColumn("OA");
+             mepres.addColumn("OE");
+             mepres.addColumn("OC");
+             while(pos<31){
+                 Object[] filas = new Object[8];
                  float cantaumento = 0, precunitaumento = 0, cantdismi=0, precunitdismi=0;
-                 float precunitvaria=0, cantvari=0, precnp=0, cantnp=0;
-                 filas[0]=rscuenta.getString(1);
-                 covenin = rscuenta.getString(3);
-                 String numero = rscuenta.getString(2);
-                 String aumentopart = "SELECT SUM(a.aumento), IF(precasu=0,precunit,precasu) as precunit"
-                         + " FROM admppres a, mppres m WHERE a.numepart="+numero+" "
-                         + "AND (a.mpre_id='"+pres+"' OR a.mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+pres+"') "
+                 float precunitvaria=0, cantvari=0, precnp=0, cantnp=0,cantoa=0, cantoe=0, cantoc=0;
+                 float precoa=0, precoe=0, precoc=0;
+                 filas[0]=pos-1;
+                 
+                 String aumentopart = "SELECT SUM(a.aumento), SUM(IF(precasu=0,precunit,precasu)) as precunit"
+                         + " FROM admppres a, mppres m WHERE  "
+                         + " (a.mpre_id='"+pres+"' OR a.mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+pres+"') "
                          + ") AND (m.mpre_id='"+pres+"' OR m.mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+pres+"'))"
-                         + " AND a.numepart = m.numero GROUP BY a.payd_id";
+                         + " AND a.numepart = m.numero AND a.payd_id="+pos+" AND a.aumento>0";
                  Statement saumento = (Statement) conex.createStatement();
                  ResultSet rsaument = saumento.executeQuery(aumentopart);
                  while(rsaument.next()){
@@ -121,13 +121,16 @@ public class detallepres extends javax.swing.JDialog {
                  acumaum+=precunitaumento;
                   filas[1]=precunitaumento;
                   
-                  String dismi = "SELECT SUM(a.disminucion), IF(precasu=0,precunit,precasu) as precunit"
-                          + " FROM admppres a, mppres m WHERE a.numepart="+numero+" "
-                         + "AND (a.mpre_id='"+pres+"' OR a.mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+pres+"') "
-                         + ") AND (m.mpre_id='"+pres+"' OR m.mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+pres+"'))"
-                         + " AND a.numepart = m.numero GROUP BY a.payd_id";
+                  String dismi = "SELECT SUM(a.disminucion), SUM(IF(precasu=0,precunit,precasu)) as precunit"
+                          + " FROM admppres a, mppres m WHERE  "
+                         + "(a.mpre_id='"+pres+"' OR a.mpre_id IN (SELECT id FROM mpres WHERE "
+                          + "mpres_id='"+pres+"') "
+                         + ") AND (m.mpre_id='"+pres+"' OR m.mpre_id IN (SELECT id FROM mpres "
+                          + "WHERE mpres_id='"+pres+"'))"
+                         + " AND a.numepart = m.numero AND a.payd_id="+pos+" AND a.disminucion>0";
+                  System.out.println("dismi "+dismi);
                   Statement sdisminuacion = (Statement) conex.createStatement();
-                 ResultSet rsdismi = saumento.executeQuery(dismi);
+                 ResultSet rsdismi = sdisminuacion.executeQuery(dismi);
                  while(rsdismi.next()){
                      cantdismi=rsdismi.getFloat(1);
                      precunitdismi = rsdismi.getFloat(2);
@@ -137,9 +140,11 @@ public class detallepres extends javax.swing.JDialog {
                   filas[2]=precunitdismi;
                   acumdismi+=precunitdismi;
                   
-                  String consultavari = "SELECT IF(precasu=0, precunit, precasu) as precunit, cantidad FROM "
-                          + "mppres WHERE tipo='VP' AND (mpre_id='"+pres+"' OR mpre_id IN (SELECT id FROM"
-                          + " mpres WHERE mpres_id='"+pres+"')) AND numero="+numero;
+                  String consultavari = "SELECT SUM(IF(precasu=0, precunit, precasu)) as precunit, "
+                          + "SUM(cantidad) FROM "
+                          + "mppres WHERE tipo='VP' AND nrocuadro="+pos+1+" AND (mpre_id='"+pres+"' "
+                          + "OR mpre_id IN (SELECT id FROM"
+                          + " mpres WHERE mpres_id='"+pres+"'))";
                   Statement stconsutavari = (Statement) conex.createStatement();
                   ResultSet rstconsutavari = stconsutavari.executeQuery(consultavari);
                   while(rstconsutavari.next()){
@@ -150,11 +155,13 @@ public class detallepres extends javax.swing.JDialog {
                   filas[3]=precunitvaria;
                   acumvari+= precunitvaria;
                   
-                  String np = "SELECT IF(precasu=0, precunit, precasu) as precunit, cantidad FROM "
-                          + "mppres WHERE tipo='NP' AND (mpre_id='"+pres+"' OR mpre_id IN (SELECT id FROM"
-                          + " mpres WHERE mpres_id='"+pres+"')) AND numero="+numero;
+                  String np = "SELECT SUM(IF(precasu=0, precunit, precasu)) as precunit, "
+                          + "SUM(cantidad) FROM "
+                          + "mppres WHERE tipo='NP' AND tiponp='NP' AND nropresupuesto="+pos+" "
+                          + "AND (mpre_id='"+pres+"' OR mpre_id IN (SELECT id FROM"
+                          + " mpres WHERE mpres_id='"+pres+"')) ";
                  Statement stconsutanp = (Statement) conex.createStatement();
-                  ResultSet rstconsutanp = stconsutavari.executeQuery(np);
+                  ResultSet rstconsutanp = stconsutanp.executeQuery(np);
                   while(rstconsutanp.next()){
                       cantnp = rstconsutanp.getInt(2);
                       precnp = rstconsutanp.getInt(1);
@@ -162,8 +169,58 @@ public class detallepres extends javax.swing.JDialog {
                   precnp = precnp*cantnp;
                   filas[4]=precnp;
                   acumnp+= precnp; 
+              
+                  
+                   String oa = "SELECT SUM(IF(precasu=0, precunit, precasu)) as precunit, "
+                           + "SUM(cantidad) FROM "
+                          + "mppres WHERE tipo='NP' AND tiponp='OA' AND nropresupuesto="+pos+" AND "
+                           + "(mpre_id='"+pres+"' OR mpre_id IN (SELECT id FROM"
+                          + " mpres WHERE mpres_id='"+pres+"')) ";
+                 
+                 Statement stconsutaoa = (Statement) conex.createStatement();
+                  ResultSet rstconsutaoa = stconsutaoa.executeQuery(oa);
+                  while(rstconsutaoa.next()){
+                      cantoa = rstconsutaoa.getInt(2);
+                      precoa = rstconsutaoa.getInt(1);
+                  }
+                  precoa = precoa*cantoa;
+                  filas[5]=precoa;
+                  acumoa+= precoa; 
+                  
+                   String oe = "SELECT IF(precasu=0, precunit, precasu) as precunit, cantidad FROM "
+                          + "mppres WHERE tipo='NP' AND tiponp='OE' AND nropresupuesto="+pos+" AND "
+                           + "(mpre_id='"+pres+"' OR mpre_id IN (SELECT id FROM"
+                          + " mpres WHERE mpres_id='"+pres+"')) ";
+
+                 Statement stconsutaoe = (Statement) conex.createStatement();
+                  ResultSet rstconsutaoe = stconsutaoe.executeQuery(oe);
+                  while(rstconsutaoe.next()){
+                      cantoe = rstconsutaoe.getInt(2);
+                      precoe = rstconsutaoe.getInt(1);
+                  }
+                  precoe = precoe*cantoe;
+                  filas[6]=precoe;
+                  acumoe+= precoe; 
+                  
+                   String oc = "SELECT IF(precasu=0, precunit, precasu) as precunit, cantidad FROM "
+                          + "mppres WHERE tipo='NP' AND tiponp='OC' AND nropresupuesto="+pos+" AND "
+                           + "(mpre_id='"+pres+"' OR mpre_id IN (SELECT id FROM"
+                          + " mpres WHERE mpres_id='"+pres+"')) ";
+                 Statement stconsutaoc = (Statement) conex.createStatement();
+                  ResultSet rstconsutaoc = stconsutaoc.executeQuery(oc);
+                  while(rstconsutaoc.next()){
+                      cantoc = rstconsutaoc.getInt(2);
+                      precoc = rstconsutaoc.getInt(1);
+                  }
+                  precoc = precoc*cantoc;
+                  filas[7]=precoc;
+                  acumoc+= precoc; 
+                  
                   mepres.addRow(filas);
+                  
+                  pos++;
              }
+             
             } catch (SQLException ex) {
             Logger.getLogger(detallepres.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -171,7 +228,10 @@ public class detallepres extends javax.swing.JDialog {
         jTextField1.setText(String.valueOf(acumdismi));
         jTextField3.setText(String.valueOf(acumvari));
         jTextField5.setText(String.valueOf(acumnp));
-        float acumdif = acumaum+acumvari+acumnp-acumdismi;
+        jTextField7.setText(String.valueOf(acumoa));
+        jTextField8.setText(String.valueOf(acumoe));
+        jTextField9.setText(String.valueOf(acumoc));
+        float acumdif = acumaum+acumvari+acumnp+acumoa+acumoe+acumoc-acumdismi;
         jTextField6.setText(String.valueOf(acumdif));
          
            
@@ -198,8 +258,11 @@ public class detallepres extends javax.swing.JDialog {
         jTextField2 = new javax.swing.JTextField();
         jTextField3 = new javax.swing.JTextField();
         jTextField5 = new javax.swing.JTextField();
-        jLabel2 = new javax.swing.JLabel();
         jTextField6 = new javax.swing.JTextField();
+        jTextField7 = new javax.swing.JTextField();
+        jTextField8 = new javax.swing.JTextField();
+        jTextField9 = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
 
         jTextField4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -226,12 +289,13 @@ public class detallepres extends javax.swing.JDialog {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap()
+                .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(cancelButton, javax.swing.GroupLayout.DEFAULT_SIZE, 41, Short.MAX_VALUE)
                 .addContainerGap())
@@ -239,7 +303,7 @@ public class detallepres extends javax.swing.JDialog {
 
         jPanel4.setBackground(new java.awt.Color(100, 100, 100));
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11));
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Detalle de Presupuesto");
@@ -248,7 +312,7 @@ public class detallepres extends javax.swing.JDialog {
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 565, Short.MAX_VALUE)
+            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 742, Short.MAX_VALUE)
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -303,6 +367,35 @@ public class detallepres extends javax.swing.JDialog {
             }
         });
 
+        jTextField6.setEditable(false);
+        jTextField6.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+
+        jTextField7.setEditable(false);
+        jTextField7.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        jTextField7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField7ActionPerformed(evt);
+            }
+        });
+
+        jTextField8.setEditable(false);
+        jTextField8.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        jTextField8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField8ActionPerformed(evt);
+            }
+        });
+
+        jTextField9.setEditable(false);
+        jTextField9.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        jTextField9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField9ActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setText("Diferencia:");
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -311,16 +404,27 @@ public class detallepres extends javax.swing.JDialog {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 525, Short.MAX_VALUE))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 722, Short.MAX_VALUE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(65, 65, 65)
-                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(116, 116, 116)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addComponent(jTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, 80, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 80, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jTextField3, javax.swing.GroupLayout.DEFAULT_SIZE, 80, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jTextField5, javax.swing.GroupLayout.DEFAULT_SIZE, 80, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jTextField7, javax.swing.GroupLayout.DEFAULT_SIZE, 85, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jTextField8, javax.swing.GroupLayout.DEFAULT_SIZE, 85, Short.MAX_VALUE))
+                            .addComponent(jLabel2))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jTextField6, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 90, Short.MAX_VALUE)
+                            .addComponent(jTextField9, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 90, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -333,45 +437,35 @@ public class detallepres extends javax.swing.JDialog {
                     .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(21, 21, 21))
+                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
+                .addGap(14, 14, 14))
         );
-
-        jLabel2.setText("Diferencia:");
-
-        jTextField6.setEditable(false);
-        jTextField6.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 312, Short.MAX_VALUE)
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(40, 40, 40))
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addGap(678, 678, 678)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel2)
-                        .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -416,6 +510,18 @@ public class detallepres extends javax.swing.JDialog {
     private void jTextField5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField5ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField5ActionPerformed
+
+    private void jTextField7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField7ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField7ActionPerformed
+
+    private void jTextField8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField8ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField8ActionPerformed
+
+    private void jTextField9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField9ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField9ActionPerformed
     
     private void doClose(int retStatus) {
         returnStatus = retStatus;
@@ -442,6 +548,9 @@ public class detallepres extends javax.swing.JDialog {
     private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField5;
     private javax.swing.JTextField jTextField6;
+    private javax.swing.JTextField jTextField7;
+    private javax.swing.JTextField jTextField8;
+    private javax.swing.JTextField jTextField9;
     // End of variables declaration//GEN-END:variables
     private int returnStatus = RET_CANCEL;
 }

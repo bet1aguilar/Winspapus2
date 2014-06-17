@@ -762,7 +762,7 @@ public class reconsideraciones extends javax.swing.JDialog {
         }
     }
     private void jTextField2FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField2FocusLost
-        String cuenta = "SELECT count(*) FROM mppres WHERE mppre_id="+jTextField2.getText().toString()+" AND ("
+        String cuenta = "SELECT count(*) FROM mppres WHERE numegrup="+jTextField2.getText().toString()+" AND ("
                 + "mpre_id='"+mpres+"' OR mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+mpres+"'))";
         int cuantos=0;
         try {
@@ -977,7 +977,8 @@ public class reconsideraciones extends javax.swing.JDialog {
                 }
             }
             //INSERTA EQUIPOS EN MATRIZ DE COSTOS PARA EL NUEVO PRESUPUESTO
-            String equipos = "SELECT * FROM deppres WHERE numero="+num+" AND (mpre_id='"+mpres+"' OR mpre_id IN "
+            String equipos = "SELECT * FROM deppres WHERE numero="+num+" "
+                    + "AND (mpre_id='"+mpres+"' OR mpre_id IN "
                     + "(SELECT id FROM mpres WHERE mpres_id = '"+mpres+"'))";
             Statement sequipos = (Statement) conex.createStatement();
             ResultSet rsequipos = sequipos.executeQuery(equipos);
@@ -985,6 +986,7 @@ public class reconsideraciones extends javax.swing.JDialog {
                 String codeq = rsequipos.getString("mepre_id");
                 String cuentas = "SELECT count(*) FROM mepres WHERE id = '"+codeq+"' AND "
                         + " mpre_id='"+codnuevopres+"'";
+                
                 Statement stcuentas = (Statement) conex.createStatement();
                 ResultSet rstcuentas = stcuentas.executeQuery(cuentas);
                 int cuantos=0;
@@ -1008,8 +1010,10 @@ public class reconsideraciones extends javax.swing.JDialog {
             ResultSet rsmano = smano.executeQuery(mano);
             while(rsmano.next()){
                 String codmano = rsmano.getString("mmopre_id");
-                String cuentas = "SELECT count(*) FROM mmopres WHERE id = '"+codmano+"' AND "
+                String cuentas = "SELECT count(*) FROM "
+                        + "mmopres WHERE id = '"+codmano+"' AND "
                         + "mpre_id='"+codnuevopres+"'";
+                System.out.println("cuenta mano de obra vp "+cuentas);
                 Statement stcuentas = (Statement) conex.createStatement();
                 ResultSet rstcuentas = stcuentas.executeQuery(cuentas);
                 int cuantos=0;
@@ -1021,6 +1025,7 @@ public class reconsideraciones extends javax.swing.JDialog {
                             + "SELECT '"+codnuevopres+"', id, descri, bono, salario, subsid, status "
                             + "FROM mmopres WHERE id = '"+codmano+"' AND (mpre_id='"+mpres+"' OR "
                             + "mpre_id IN (SELECT id FROM mpres WHERE mpres_id = '"+mpres+"' ))";
+                    System.out.println(" inserta mano "+insermano);
                     Statement insertar = (Statement) conex.createStatement();
                     insertar.execute(insermano);
                 }
@@ -1257,7 +1262,7 @@ public class reconsideraciones extends javax.swing.JDialog {
      {
          String parti=jTable1.getValueAt(filapart, 1).toString();
          codnuevopres= mpres+" VP-"+nrocuadro;
-      Partida part = new Partida(prin, true, conex,codnuevopres, prin, 1, 0, codicove, parti, pres,"0");
+            Partida part = new Partida(prin, true, conex,codnuevopres, prin, 1, 0, codicove, parti, pres,"0");
         int x = (prin.getWidth()/2)-390;
         int y = (prin.getHeight()/2)-300;
         

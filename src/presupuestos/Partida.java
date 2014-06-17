@@ -75,7 +75,7 @@ public class Partida extends javax.swing.JDialog {
                 jLabel13.setVisible(false);
                 jTextField2.setVisible(false);
             }       
-            jButton1.setEnabled(false);
+           
             jButton2.setEnabled(false);
             jButton3.setEnabled(false);
             jButton4.setEnabled(false);
@@ -232,7 +232,7 @@ public class Partida extends javax.swing.JDialog {
             formatoNumero.setMinimumFractionDigits(2);
             jTextField12.setText(String.valueOf(formatoNumero.format(precunit)));
                totalprecunit = precunit;
-                jTextField15.setText(String.valueOf(formatoNumero.format(precasu)));
+                jTextField15.setText(String.valueOf(precasu));
                 totalprecasu=precasu;
                 redondeo = Integer.parseInt(rsts.getObject(9).toString());
                 if(redondeo==0){
@@ -457,7 +457,6 @@ public final void buscagrupo() throws SQLException{
         jPanel3 = new javax.swing.JPanel();
         jButton5 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
         okButton = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
@@ -525,7 +524,7 @@ public final void buscagrupo() throws SQLException{
 
         jLabel5.setText("Tipo:");
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Original", "No Prevista", "Variación de Precio" }));
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Original", "No Prevista", "Obra Extra", "Obra Adicional", "Obra C", "Variación de Precio" }));
         jComboBox2.setNextFocusableComponent(jTextArea1);
         jComboBox2.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -713,14 +712,6 @@ public final void buscagrupo() throws SQLException{
             }
         });
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/winspapus/imagenes/nuevo.png"))); // NOI18N
-        jButton1.setToolTipText("Nueva Partida");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-
         okButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/winspapus/imagenes/guardar.png"))); // NOI18N
         okButton.setToolTipText("Guardar Partida");
         okButton.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -766,9 +757,7 @@ public final void buscagrupo() throws SQLException{
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(165, Short.MAX_VALUE)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addContainerGap(222, Short.MAX_VALUE)
                 .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -789,7 +778,6 @@ public final void buscagrupo() throws SQLException{
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 45, Short.MAX_VALUE)
                     .addComponent(okButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 45, Short.MAX_VALUE)
                     .addComponent(jButton2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 45, Short.MAX_VALUE)
                     .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -1053,24 +1041,6 @@ public void validafloat( java.awt.event.KeyEvent evt,String valor){
         
     }//GEN-LAST:event_jSpinner1StateChanged
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        
-        jTextField1.setText("");
-        jSpinner1.setValue(entero);
-        jTextArea1.setText("");      
-        jTextField2.setText("");
-        jTextField10.setText("");
-        jTextField12.setText("0.00");
-        jTextField15.setText("0.00");
-        jCheckBox1.setSelected(false);
-        jTextField13.setText("");
-        jTextField7.setText("");
-        jTextField8.setText("");
-        jTextField9.setText("");
-        
-        
-    }//GEN-LAST:event_jButton1ActionPerformed
-
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
       int op = JOptionPane.showConfirmDialog(null, "¿Desea Eliminar esta Partida?");
         if(op == JOptionPane.YES_OPTION){
@@ -1306,13 +1276,28 @@ private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:ev
             Logger.getLogger(Partida.class.getName()).log(Level.SEVERE, null, ex);
             }
             }
+        String tiponp=null;
         if(jComboBox2.getSelectedItem().equals("Original")) {
             tipos = "Org";
         }
         if(jComboBox2.getSelectedItem().equals("No Prevista")) {
             tipos = "NP";
+            tiponp="NP";
+        }
+        if(jComboBox2.getSelectedItem().equals("Obra Extra")) {
+            tipos = "NP";
+            tiponp = "OE";
+        }
+        if(jComboBox2.getSelectedItem().equals("Obra Adicional")) {
+            tipos = "NP";
+            tiponp = "OA";
+        }
+        if(jComboBox2.getSelectedItem().equals("Obra C")) {
+            tipos = "NP";
+            tiponp = "OC";
         }
         if(jComboBox2.getSelectedItem().equals("Variación de Precio")) {
+            
             tipos = "VP";
         }
         
@@ -1355,9 +1340,9 @@ private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:ev
                 numegrup=1;
             }
             if(tipos.equals("NP")){
-                
+                String codpres = mpre_id+tiponp+adicional;
                 int cuenta=0;
-                String consultadi = "SELECT COUNT(*) FROM mpres WHERE id='"+adicional+"'";
+                String consultadi = "SELECT COUNT(*) FROM mpres WHERE id='"+codpres+"'";
                 Statement stadi = (Statement) conex.createStatement();
                 ResultSet rstadi = stadi.executeQuery(consultadi);
                 while(rstadi.next()){
@@ -1365,7 +1350,7 @@ private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:ev
                 }
                 if(cuenta==0){
                     String insertare = "INSERT INTO mpres "
-                    + "SELECT '"+adicional+"', nomabr, nombre, ubicac, fecini,"
+                    + "SELECT '"+codpres+"', nomabr, nombre, ubicac, fecini,"
                     + "fecfin, feccon, fecimp, porgam, porcfi, porimp, poripa,"
                     + "porpre, poruti, codpro, codcon, parpre, nrocon, nroctr, fecapr,"
                     + "nrolic, 1, '"+mpre_id+"',memo,timemo, fecmemo, 0  FROM mpres WHERE id='"+mpre_id+"'";
@@ -1374,7 +1359,15 @@ private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:ev
                     Statement insert = (Statement) conex.createStatement();
                     insert.execute(insertare);
                 }
-            }
+                 String sql = "INSERT INTO mppres (mpre_id, id, numero, numegrup, descri, idband, porcgad, porcpre"
+                    + ", porcutil, precasu, precunit, rendimi, unidad, redondeo, cantidad, tipo, status,nropresupuesto,tiponp)"
+                    + " VALUE ('"+adicional+"','"+ids+"', "+numero+", "+numegrup+", '"+descri+"', "+idband+","
+                    + " "+porcgad+", "+porcpre+","+porcutil+", "+precasu+", "+precunit+", "+rendimi+", '"+unidad+"',"
+                    + ""+redondeo+", "+cantidad+", '"+tipos+"', 1,'"+adicional+"','"+tiponp+"')";
+            
+                Statement st = (Statement) conex.createStatement();
+                st.execute(sql);
+            }else{
             String sql = "INSERT INTO mppres (mpre_id, id, numero, numegrup, descri, idband, porcgad, porcpre"
                     + ", porcutil, precasu, precunit, rendimi, unidad, redondeo, cantidad, tipo, status,nropresupuesto)"
                     + " VALUE ('"+mpre_id+"','"+ids+"', "+numero+", "+numegrup+", '"+descri+"', "+idband+","
@@ -1383,6 +1376,7 @@ private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:ev
             
                 Statement st = (Statement) conex.createStatement();
                 st.execute(sql);
+            }
                   String cuentas = "SELECT count(*) FROM mptabs WHERE mtabus_id='PRUEBA' AND codicove='"+ids+"'";
                   Statement stcuentas = (Statement) conex.createStatement();
                   ResultSet rstcuenta = stcuentas.executeQuery(cuentas);
@@ -1482,7 +1476,6 @@ private void jTextArea1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cancelButton;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;

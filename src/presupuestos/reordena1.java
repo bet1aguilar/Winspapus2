@@ -65,7 +65,7 @@ public class reordena1 extends Thread{
             }
         
         try {
-            obj.buscapartida();
+            obj.buscapartida1();
         } catch (SQLException ex) {
             Logger.getLogger(reordena1.class.getName()).log(Level.SEVERE, null, ex);
         }

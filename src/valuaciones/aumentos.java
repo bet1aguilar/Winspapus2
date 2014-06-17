@@ -472,6 +472,7 @@ private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:ev
             }
             if(cuenta==0){
                 Statement insert = (Statement) conex.createStatement();
+                
                 insert.execute("INSERT INTO pays (aumento,disminucion,mpre_id) "
                         + "VALUES(0,0,'"+pres+"')");
             }
