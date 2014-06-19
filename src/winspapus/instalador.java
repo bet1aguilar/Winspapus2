@@ -172,7 +172,7 @@ public class instalador extends javax.swing.JDialog {
     private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
        
         String sql; 
-        sql="select * from compra where serial='" + jTextField1  + "'";
+        sql="select * from compra where serial='" + jTextField1.getText()  + "'";
         Statement ser1 = null;
         try {
             ser1 = (Statement) conespapu.createStatement();

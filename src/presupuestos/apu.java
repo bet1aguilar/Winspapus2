@@ -60,13 +60,15 @@ public class apu extends javax.swing.JDialog {
     private float contototal;
     Partida part;
     private int filaequip;
+    
     private int filamano;
     public apu(java.awt.Frame parent, boolean modal, Connection conex, String pres, String partida, String numero, Principal p, String rendimi, Partida part) {
         super(parent, modal);
         initComponents();
         this.conex = conex;
         this.pres = pres;
-        this.numero = numero;
+        this.numero = numero; //Es numegrup
+        
         this.partida = partida;
         this.part = part;
         this.prin = p;
@@ -104,6 +106,21 @@ public class apu extends javax.swing.JDialog {
                 doClose(RET_CANCEL);
             }
         });
+    }
+    public void vernumero(){
+        String select = "SELECT numero FROM mppres WHERE (mpre_id='"+pres+"' AND "
+                + "mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+pres+"')) AND "
+                + "numegrup="+numero+"";
+        try {
+            Statement stselect = (Statement) conex.createStatement();
+            ResultSet rstselect = stselect.executeQuery(select);
+            while(rstselect.next()){
+                numero=rstselect.getString(1);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(apu.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }
     public final void cargartabus(){
         try {
@@ -170,7 +187,9 @@ public class apu extends javax.swing.JDialog {
  };
         String sql = "SELECT mm.id, mm.descri, mm.precio, dm.cantidad, mm.unidad, "
                 + "mm.desperdi, ((mm.precio+(mm.precio*(mm.desperdi/100)))*dm.cantidad) as total FROM "
-                + "mmpres as mm, dmpres as dm WHERE dm.mpre_id='"+pres+"' AND dm.numepart='"+numero+"'"
+                + "mmpres as mm, dmpres as dm WHERE "
+                + "(dm.mpre_id='"+pres+"' OR dm.mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+pres+"')) "
+                + "AND dm.numepart='"+numero+"'"
                 + " AND dm.mmpre_id=mm.id AND dm.mpre_id=mm.mpre_id GROUP BY mm.id";
         jTable1.setModel(mmtabs);
         try {
@@ -189,15 +208,11 @@ public class apu extends javax.swing.JDialog {
                  Object[] fila = new Object[cantidadColumnas];
                 for (int i = 0; i < cantidadColumnas; i++) {
                     if(i==6){
-                        if(Float.valueOf(rs1.getObject(6).toString())==0.00){
-                            
-                            valor = (float) (Math.rint(Float.valueOf(rs1.getObject(3).toString())*Float.valueOf(rs1.getObject(4).toString())*100)/100);
-                            fila[i]= Float.toString(valor);
-                        }else{
+                       
                             
                             valor = (float) (Math.rint(Float.valueOf(rs1.getObject(i+1).toString())*100)/100);
                             fila[i]=Float.toString(valor);
-                        }
+                    
                        contmat += valor; 
                     }else
                        fila[i]=rs1.getObject(i+1);
@@ -274,8 +289,11 @@ public class apu extends javax.swing.JDialog {
             Statement s1 = (Statement) conex.createStatement();
            String consulta="SELECT mm.id, mm.descri, mm.precio, dm.cantidad, "
                     + "mm.deprecia, (mm.deprecia*dm.cantidad*mm.precio) as total "
-                    + "FROM mepres as mm, deppres as dm WHERE dm.mpre_id='"+pres+"' AND"
-                    + " dm.numero='"+numero+"' AND dm.mepre_id=mm.id AND dm.mpre_id=mm.mpre_id GROUP BY mm.id";
+                    + "FROM mepres as mm, deppres as dm WHERE "
+                   + "(dm.mpre_id='"+pres+"' OR dm.mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+pres+"'))"
+                   + "AND"
+                    + " dm.numero='"+numero+"' AND dm.mepre_id=mm.id AND "
+                   + "dm.mpre_id=mm.mpre_id GROUP BY mm.id";
             ResultSet rs1 = s1.executeQuery(consulta);
             
             ResultSetMetaData rsMd = (ResultSetMetaData) rs1.getMetaData();
@@ -374,9 +392,13 @@ public class apu extends javax.swing.JDialog {
         jTable3.setModel(mmtabs);
         try {
             Statement s1 = (Statement) conex.createStatement();
-           String sql= "SELECT mm.id, mm.descri, dm.cantidad, mm.bono, mm.subsid, mm.salario,"
-                    + " (dm.cantidad*mm.salario) as total FROM mmopres as mm, dmoppres as dm"
-                    + " WHERE dm.mpre_id='"+pres+"' AND dm.numero='"+numero+"' "
+           String sql= "SELECT mm.id, mm.descri, dm.cantidad, mm.bono,"
+                   + " mm.subsid, mm.salario,"
+                    + " (dm.cantidad*mm.salario) as total "
+                   + "FROM mmopres as mm, dmoppres as dm "
+                    + " WHERE (dm.mpre_id='"+pres+"' OR dm.mpre_id IN "
+                   + "(SELECT id FROM mpres WHERE mpres_id='"+pres+"'))"
+                   + "AND dm.numero='"+numero+"' "
                     + " AND dm.mmopre_id=mm.id AND dm.mpre_id=mm.mpre_id "
                     + "GROUP BY mm.id";
             ResultSet rs1 = s1.executeQuery(sql);

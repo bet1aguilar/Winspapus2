@@ -200,7 +200,8 @@ public class Principal extends javax.swing.JFrame {
                 String fecha1;                                  
                 SimpleDateFormat formatofecha=new SimpleDateFormat("yyyy-MM-dd");
                 fecha1=formatofecha.format(hoy);    
-                sql="insert into mpresadm values ('"+fecha1+"','"+dd+"','"+tm+"','1111-2222-3333-4444','1')";
+                sql="insert into mpresadm"
+                        + " values ('"+fecha1+"','"+dd+"','"+tm+"','1111-2222-3333-4444','1')";
                 System.out.println(sql);
                 esc.execute(sql); 
                   //establecer seguridad remota
@@ -238,8 +239,10 @@ public class Principal extends javax.swing.JFrame {
             //
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(this, "Error al Conectar con la Base de Datos, verifique que este ejecución el servicio MariaDB");
+            System.exit(0);
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
             System.out.println("Error al conectar la bd");
+            
         }
     }
     public final void consultactivo(){
@@ -2185,14 +2188,11 @@ public class Principal extends javax.swing.JFrame {
                  Object[] filas = new Object[cantidadColumnas];
                 for (int i = 0; i < cantidadColumnas; i++) {
                     if(i==6){
-                        if(Float.valueOf(rs1.getObject(6).toString())==0.00){
-                            valor = (float) (Math.rint(Float.valueOf(rs1.getObject(3).toString())*Float.valueOf(rs1.getObject(4).toString())*100)/100);
-                            filas[i]= Float.toString(valor);
-                        }else{
+                       
                             
                             valor = (float) (Math.rint(Float.valueOf(rs1.getObject(i+1).toString())*100)/100);
                             filas[i]=Float.toString(valor);
-                        }
+                        
                        contmat += valor; 
                     }else {
                         filas[i]=rs1.getObject(i+1);
@@ -2314,7 +2314,12 @@ public class Principal extends javax.swing.JFrame {
         jTable5.setModel(motabs);
         try {
             Statement s1 = (Statement) conexion.createStatement();
-            ResultSet rs3 = s1.executeQuery("SELECT mm.id, mm.descri, dm.cantidad, mm.bono, mm.subsid, mm.salario, (mm.salario*dm.cantidad) as total FROM mmotabs as mm, dmoptabs as dm WHERE dm.mtabus_id='"+cadena+"' AND dm.numero='"+num+"' AND dm.mmotab_id=mm.id AND dm.mtabus_id=mm.mtabus_id GROUP BY mm.id");
+            ResultSet rs3 = s1.executeQuery("SELECT mm.id, mm.descri, "
+                    + "dm.cantidad, mm.bono, mm.subsid, mm.salario, "
+                    + "(mm.salario*dm.cantidad) as total FROM mmotabs as mm,"
+                    + " dmoptabs as dm WHERE dm.mtabus_id='"+cadena+"' AND "
+                    + "dm.numero='"+num+"' AND dm.mmotab_id=mm.id AND "
+                    + "dm.mtabus_id=mm.mtabus_id GROUP BY mm.id");
            
             ResultSetMetaData rsMd = (ResultSetMetaData) rs3.getMetaData();
             int cantidadColumnas = rsMd.getColumnCount();
