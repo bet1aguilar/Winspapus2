@@ -652,12 +652,17 @@ public class reconsideraciones extends javax.swing.JDialog {
         jTextField9.setText("");
 
        
-        String sql = "SELECT id, numegrup, descri, cantidad, precunit, (SELECT mp.precunit FROM "
+        String sql = "SELECT m.id, m.numegrup, m.cantidad, m.precunit, (SELECT mp.precunit FROM "
                 + "mppres as mp WHERE (mp.mpre_id='"+mpres+"' OR mp.mpre_id IN "
-                + "(SELECT id FROM mpres WHERE mpres_id='"+mpres+"')) AND mp.numero=mppre_id) as precunitario, tiporec FROM mppres WHERE "
-                + "nrocuadro="+nrocuadro+" "
-                + "AND nrocuadro IS NOT NULL AND (mpre_id='"+mpres+"' OR mpre_id IN "
-                + "(SELECT id FROM mpres WHERE mpres_id='"+mpres+"')) ORDER BY numegrup";
+                + "(SELECT id FROM mpres WHERE mpres_id='"+mpres+"')) AND mp.numero=m.mppre_id) as precunitario,"
+                + "(SELECT mp.precunit FROM "
+                + "mppres as mp WHERE (mp.mpre_id='"+mpres+"' OR mp.mpre_id IN "
+                + "(SELECT id FROM mpres WHERE mpres_id='"+mpres+"')) AND mp.numero=m.mppre_id) - m.precunit as delta"
+                + ", m.tiporec FROM "
+                + "mppres as m WHERE "
+                + "m.nrocuadro="+nrocuadro+" "
+                + "AND m.nrocuadro IS NOT NULL AND (m.mpre_id='"+mpres+"' OR m.mpre_id IN "
+                + "(SELECT id FROM mpres WHERE mpres_id='"+mpres+"')) ORDER BY m.numegrup";
         
         System.out.println(sql);
         
@@ -681,7 +686,7 @@ public class reconsideraciones extends javax.swing.JDialog {
                @Override
                 public Class getColumnClass(int columna)
            {
-                              if(columna==3 || columna==4){
+                              if(columna==3 || columna==4 || columna==5){
                         return Double.class;
                     }
                
@@ -724,17 +729,18 @@ public class reconsideraciones extends javax.swing.JDialog {
        tc = tcm.getColumn(1); 
        tc.setHeaderValue("Nro.");
        tc.setPreferredWidth(10);
+     
        tc = tcm.getColumn(2); 
-       tc.setHeaderValue("Descripción");
-       tc.setPreferredWidth(150);
-       tc = tcm.getColumn(3); 
        tc.setHeaderValue("Cantidad");
        tc.setPreferredWidth(20);
-       tc = tcm.getColumn(4); 
+       tc = tcm.getColumn(3); 
        tc.setHeaderValue("Prec. Recon.");
        tc.setPreferredWidth(30);
-       tc = tcm.getColumn(5); 
+       tc = tcm.getColumn(4); 
        tc.setHeaderValue("Prec. Orig");
+       tc.setPreferredWidth(20);
+        tc = tcm.getColumn(5); 
+       tc.setHeaderValue("Diferencia");
        tc.setPreferredWidth(20);
         tc = tcm.getColumn(6); 
        tc.setHeaderValue("Tipo");
@@ -1288,8 +1294,65 @@ public class reconsideraciones extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField9FocusLost
 
+    
+    public void borrarpres (String id){
+          
+            try {
+                
+                String borrarpartidas = "DELETE FROM mppres WHERE mpre_id='"+id+"'";
+                String borrarmats = "DELETE FROM deppres WHERE mpre_id='"+id+"'";
+                String borrarequips = "DELETE FROM dmpres WHERE mpre_id='"+id+"'";
+                String borrarmates = "DELETE FROM mmpres WHERE mpre_id='"+id+"'";
+                String borrarequipos = "DELETE FROM mepres WHERE mpre_id='"+id+"'";
+                String borrarmanos = "DELETE FROM mmopres WHERE mpre_id='"+id+"'";
+                String borrardmanos = "DELETE FROM dmoppres WHERE mpre_id='"+id+"'";
+                String detvalus = "DELETE FROM dvalus WHERE mpre_id='"+id+"'";
+                String mvalus = "DELETE FROM mvalus WHERE mpre_id='"+id+"'";
+                String admppres = "DELETE FROM admppres WHERE mpre_id='"+id+"'";
+                String pays = "DELETE FROM pays WHERE mpre_id='"+id+"'";
+                String cmpres = "DELETE FROM cmpres WHERE mpre_id='"+id+"'";
+                String rcppres = "DELETE FROM rcppres WHERE mpre_id='"+id+"'";
+                String borrar = "DELETE FROM mpres where id='"+id+"'";
+                String borrarNP =  "DELETE FROM mpres WHERE mpres_id='"+id+"'";
+                Statement stpres = (Statement) conex.createStatement();
+                Statement stppres = (Statement) conex.createStatement();
+                Statement stmats= (Statement) conex.createStatement();
+                Statement stequipo = (Statement) conex.createStatement();
+                Statement stmano = (Statement) conex.createStatement();
+                Statement stpresNP = (Statement) conex.createStatement();
+                
+                
+                stppres.execute(borrarpartidas);
+                stppres.execute(borrarmats);
+                stppres.execute(borrarequips);
+                stppres.execute(rcppres);
+                stppres.execute(borrardmanos);
+                stppres.execute(borrarmates);
+                stppres.execute(borrarequipos);
+                stppres.execute(borrarmanos);
+                stppres.execute(detvalus);
+                stppres.execute(mvalus);
+                stppres.execute(admppres);
+                stppres.execute(pays);
+                stpres.execute(cmpres);
+                stpres.execute(borrar);
+                stpresNP.execute(borrarNP);
+                JOptionPane.showMessageDialog(this, "La reconsideración ha sido eliminada!!");
+                buscacuadro();
+               }
+            // TODO add your handling code here:
+            catch (SQLException ex) {
+                Logger.getLogger(Presupuesto.class.getName()).log(Level.SEVERE, null, ex);
+            }
+    
+    
+    }
     private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
-        
+        int op=JOptionPane.showConfirmDialog(rootPane, "Desea eliminar esta reconsideración?","Eliminar Reconsideración", JOptionPane.YES_NO_OPTION);
+        if(op==JOptionPane.YES_OPTION){
+            String presrecon = jTextField8.getText();
+            borrarpres(presrecon);
+        }
         
         
         
