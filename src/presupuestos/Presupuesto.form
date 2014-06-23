@@ -465,16 +465,13 @@
                                                       </Group>
                                                       <Component id="jLabel18" min="-2" pref="130" max="-2" attributes="0"/>
                                                   </Group>
-                                                  <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
-                                                  <Group type="103" groupAlignment="0" attributes="0">
-                                                      <Group type="102" alignment="0" attributes="0">
-                                                          <Component id="jTextField14" pref="160" max="32767" attributes="0"/>
-                                                          <EmptySpace type="separate" min="-2" max="-2" attributes="0"/>
+                                                  <EmptySpace max="-2" attributes="0"/>
+                                                  <Group type="103" groupAlignment="1" attributes="0">
+                                                      <Component id="jLabel20" alignment="1" min="-2" max="-2" attributes="0"/>
+                                                      <Group type="102" alignment="1" attributes="0">
+                                                          <Component id="jTextField14" min="-2" pref="70" max="-2" attributes="0"/>
+                                                          <EmptySpace pref="126" max="32767" attributes="0"/>
                                                           <Component id="jLabel19" min="-2" max="-2" attributes="0"/>
-                                                      </Group>
-                                                      <Group type="102" alignment="1" attributes="1">
-                                                          <EmptySpace min="82" pref="82" max="82" attributes="0"/>
-                                                          <Component id="jLabel20" min="-2" max="-2" attributes="0"/>
                                                       </Group>
                                                   </Group>
                                                   <EmptySpace min="-2" max="-2" attributes="0"/>
@@ -517,10 +514,10 @@
                                   <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="2" attributes="0">
-                                      <Component id="jTextField14" alignment="2" min="-2" max="-2" attributes="0"/>
                                       <Component id="jLabel18" alignment="2" min="-2" max="-2" attributes="0"/>
                                       <Component id="jTextField15" alignment="2" min="-2" max="-2" attributes="0"/>
                                       <Component id="jLabel19" alignment="2" min="-2" max="-2" attributes="0"/>
+                                      <Component id="jTextField14" alignment="2" min="-2" max="-2" attributes="0"/>
                                   </Group>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="2" attributes="0">
@@ -930,7 +927,7 @@
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="jPanel6" min="-2" pref="31" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="jScrollPane1" pref="224" max="32767" attributes="0"/>
+                              <Component id="jScrollPane1" pref="228" max="32767" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="jPanel9" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
