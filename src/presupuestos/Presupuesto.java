@@ -1873,8 +1873,8 @@ private void formInternalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
         jTextField19.setText("");
         jTextField20.setText("");
     }
-    private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
-    int op = JOptionPane.showConfirmDialog(null, "¿Desea Eliminar esta Partida?");
+    public void borrar(){
+            int op = JOptionPane.showConfirmDialog(null, "¿Desea Eliminar esta Partida?");
    String numeros = jTable2.getValueAt(filapartida, 0).toString();
    String selectnumero = "SELECT numero, mpre_id FROM mppres WHERE "
            + "numegrup='"+numeros+"' AND (mpre_id ='"+id+"' OR mpre_id IN "
@@ -1927,6 +1927,9 @@ private void formInternalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
                 Logger.getLogger(Partida.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+    }
+    private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
+borrar();
        
     }//GEN-LAST:event_jButton10ActionPerformed
 
@@ -3190,8 +3193,8 @@ public void agrega(){
         
         valuacion val = new valuacion(prin, true, conex, id);
         int xv = (prin.getWidth()/2)-375;
-        int yv = (prin.getHeight()/2)-275;
-        val.setBounds(xv, yv, 850, 600);
+        int yv = (prin.getHeight()/2)-325;
+        val.setBounds(xv, yv, 850, 650);
         val.setVisible(true);
         
     }//GEN-LAST:event_jButton15ActionPerformed
@@ -3512,7 +3515,11 @@ String tipo ="",nro ="";
                 cargapartida();
          
                     
-        }        // TODO add your handling code here:
+        }  
+      if(code==127){
+          borrar();
+      }
+        // TODO add your handling code here:
     }//GEN-LAST:event_jTable2KeyReleased
 
     private void jButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton13ActionPerformed

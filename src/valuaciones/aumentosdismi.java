@@ -1807,8 +1807,8 @@ public void buscarpartida1(String part){
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
          valuacion val = new valuacion(p, true, conex, pres);
         int xv = (p.getWidth()/2)-375;
-        int yv = (p.getHeight()/2)-275;
-        val.setBounds(xv, yv, 830, 600);
+        int yv = (p.getHeight()/2)-325;
+        val.setBounds(xv, yv, 830, 650);
         val.setVisible(true);
         modelovalu();
         modelonumepart();

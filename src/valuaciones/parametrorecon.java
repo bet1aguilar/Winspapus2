@@ -761,7 +761,7 @@ public void verificarcheck() {
                     if (bol.booleanValue()) {
                         //Falta buscar numero real en mptabs
                         String numegrup=jTable1.getValueAt(i, 1).toString();
-                        cantidades[contsel]= Float.valueOf(jTable1.getValueAt(i, 4).toString());
+                        cantidades[contsel]= Float.valueOf(jTable1.getValueAt(i, 5).toString());
                         String select= "SELECT numero FROM mppres WHERE (mpre_id='"+pres+"' OR mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+pres+"'))"
                                 + " AND numegrup="+numegrup+"";
                         try {

@@ -3491,8 +3491,8 @@ busqueda="";// TODO add your handling code here:
 private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
         valuacion val = new valuacion(this, true, conexion, presup);
         int xv = (this.getWidth()/2)-375;
-        int yv = (this.getHeight()/2)-275;
-        val.setBounds(xv, yv, 800, 600);
+        int yv = (this.getHeight()/2)-325;
+        val.setBounds(xv, yv, 800, 650);
         val.setVisible(true);
 }//GEN-LAST:event_jMenuItem7ActionPerformed
 
