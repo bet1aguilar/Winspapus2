@@ -2174,7 +2174,10 @@ public class Principal extends javax.swing.JFrame {
         jTable4.setModel(mmtabs);
         try {
             Statement s1 = (Statement) conexion.createStatement();
-            String sql="SELECT mm.id, mm.descri, mm.precio, dm.cantidad, mm.unidad, mm.desperdi, ((mm.precio+(mm.precio*(mm.desperdi/100)))*dm.cantidad) as total FROM mmtabs as mm, dmtabs as dm, mptabs as mp WHERE dm.mtabus_id='"+cadena+"' AND mm.mtabus_id=dm.mtabus_id AND dm.numepart=mp.numero "
+            String sql="SELECT mm.id, mm.descri, mm.precio, dm.cantidad, mm.unidad, mm.desperdi,"
+                    + " ((mm.precio+(mm.precio*(mm.desperdi/100)))*dm.cantidad) as total FROM mmtabs as mm, "
+                    + "dmtabs as dm, mptabs as mp WHERE dm.mtabus_id='"+cadena+"' AND mm.mtabus_id=dm.mtabus_id "
+                    + "AND dm.numepart=mp.numero "
                    + "AND mp.numero='"+num+"' AND dm.mmtab_id=mm.id GROUP BY mm.id";
             ResultSet rs1 = s1.executeQuery(sql);
             
@@ -2242,7 +2245,10 @@ public class Principal extends javax.swing.JFrame {
          jTable3.setModel(metabs);
           try {
             Statement s1 = (Statement) conexion.createStatement();
-            ResultSet rs2 = s1.executeQuery("SELECT mm.id, mm.descri, mm.precio, mm.deprecia, dm.cantidad, (dm.cantidad*mm.deprecia*mm.precio) as total FROM metabs as mm, deptabs as dm WHERE dm.mtabus_id='"+cadena+"' AND dm.numero='"+num+"' AND dm.metab_id=mm.id AND dm.mtabus_id=mm.mtabus_id GROUP BY mm.id");
+            ResultSet rs2 = s1.executeQuery("SELECT mm.id, mm.descri, mm.precio, mm.deprecia, "
+                    + "dm.cantidad, (dm.cantidad*mm.deprecia*mm.precio) as total FROM metabs as mm, "
+                    + "deptabs as dm WHERE dm.mtabus_id='"+cadena+"' AND dm.numero='"+num+"'"
+                    + " AND dm.metab_id=mm.id AND dm.mtabus_id=mm.mtabus_id GROUP BY mm.id");
             
             ResultSetMetaData rsMd = (ResultSetMetaData) rs2.getMetaData();
             int cantidadColumnas = rsMd.getColumnCount();

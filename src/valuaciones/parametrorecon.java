@@ -97,6 +97,7 @@ public class parametrorecon extends javax.swing.JDialog {
                   jTextField10.setText(rs.getObject(7).toString());
                   jTextField9.setText(rs.getObject(8).toString());
                   
+                  
               }
         } catch (SQLException ex) {
             Logger.getLogger(parametrorecon.class.getName()).log(Level.SEVERE, null, ex);
@@ -168,6 +169,7 @@ public class parametrorecon extends javax.swing.JDialog {
         });
 
         okButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/winspapus/imagenes/guardar.png"))); // NOI18N
+        okButton.setToolTipText("Guardar Reconsideración");
         okButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 okButtonMouseClicked(evt);
@@ -190,21 +192,20 @@ public class parametrorecon extends javax.swing.JDialog {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(52, 52, 52)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(52, Short.MAX_VALUE)
                 .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(22, Short.MAX_VALUE))
+                    .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
         getRootPane().setDefaultButton(okButton);
@@ -415,13 +416,12 @@ public class parametrorecon extends javax.swing.JDialog {
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2)
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
         jTable1.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
@@ -455,23 +455,23 @@ public class parametrorecon extends javax.swing.JDialog {
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 216, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(362, Short.MAX_VALUE)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap(362, Short.MAX_VALUE)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -497,12 +497,14 @@ public class parametrorecon extends javax.swing.JDialog {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 517, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
- public void cuenta(){
+   
+    
+    public void cuenta(){
         try {
             String cuenta = "SELECT numero FROM mppres WHERE mpre_id='"+pres+"'"
                     + " OR mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+pres+"') "
@@ -529,6 +531,99 @@ public class parametrorecon extends javax.swing.JDialog {
         } catch (SQLException ex) {
             Logger.getLogger(reconsideraciones.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+     public float cambiapreciopartida(String numeropartida){
+        //AL CAMBIAR UN VALOR DE LOS PARAMETROS DEL PRESUPUESTO COMO LOS PORCENTAJES DE PRESTACIONES SOCIALES
+        // SE RECALCULA EL COSTO DE TODAS LAS PARTIDAS
+        float presta = Float.valueOf(jTextField5.getText())/100;
+        float admin = Float.valueOf(jTextField6.getText())/100;
+        float util = Float.valueOf(jTextField7.getText())/100;
+        float finan = Float.valueOf(jTextField8.getText())/100;
+        float impart = Float.valueOf(jTextField9.getText())/100;
+        float impgen = Float.valueOf(jTextField10.getText())/100;
+        float precio=0, totalmat=0, totaleq=0, totalmano=0, totalcantidad=0;
+        float bono=0, subsid=0;
+        String codpres = pres+" VP-"+nrocuadro;
+        float rendimi=0;
+        String mvalu=jComboBox1.getSelectedItem().toString();
+        //CONSULTA RENDIMIENTO DE LA PARTIDA
+        String selecrendimi = "SELECT rendimi FROM mppres WHERE numero="+numeropartida+" AND (mpre_id='"+pres+"' OR "
+                + "mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+pres+"'))";
+        try {
+            Statement sts = (Statement) conex.createStatement();
+            ResultSet rsts = sts.executeQuery(selecrendimi);
+            while(rsts.next()){
+                rendimi=rsts.getFloat(1);
+            }
+        } catch (SQLException ex) {
+            System.out.println("Error al consultar el rendimiento de la partida, cuando se va a insertar en una nueva reconsideración");
+            Logger.getLogger(parametrorecon.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        // SUMANDO TOTAL DE MATERIAL
+        String totalmaterial="SELECT SUM((mm.precio+(mm.precio*(mm.desperdi/100)))*dm.cantidad) as total "
+                + "FROM dmppres as dm, mmpres as mm WHERE dm.numepart="+numeropartida+" AND dm.mmpre_id=mm.id "
+                + "AND (dm.mpre_id='"+pres+"' OR dm.mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+pres+"'))"
+                + " AND dm.mpre_id = mm.mpre_id";
+        try {
+            Statement st = (Statement) conex.createStatement();
+            ResultSet rst = st.executeQuery(totalmaterial);
+            while(rst.next()){
+              totalmat = rst.getFloat("total");
+            }
+        } catch (SQLException ex) {
+            System.out.println("Error al Sumar materiales de la partida de la valuación para agregarla en reconsideración");
+            Logger.getLogger(parametrorecon.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        String totalequipo = "SELECT SUM(IF(me.deprecia=0, (de.cantidad*me.precio),(de.cantidad*me.deprecia*me.precio))) as total "
+                + "FROM mepres as me, deppres as de WHERE de.mepre_id=me.id AND de.numero="+numeropartida+" AND "
+                + "(de.mpre_id='"+pres+"' AND de.mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+pres+"')) "
+                + "AND de.mpre_id=me.mpre_id";
+        try {
+            Statement st= (Statement) conex.createStatement();
+            ResultSet rst = st.executeQuery(totalequipo);
+            while(rst.next()){
+                totaleq=rst.getFloat(1);
+            }
+        } catch (SQLException ex) {
+            System.out.println("Error al consultar el total en equipos para la inserción de partidas en la reconsideración");
+            Logger.getLogger(parametrorecon.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        String consultamano = "SELECT SUM(dm.cantidad) as cantidad, mm.bono, mm.subsid "
+                    + "SUM(mm.salario*dm.cantidad) as total FROM mmopres as mm, dmoppres as dm "
+                + "WHERE dm.numero ="+numeropartida+" AND (dm.mpre_id='"+pres+"' OR mpre_id IN "
+                + "(SELECT id FROM mpres WHERE mpres_id='"+pres+"')) AND dm.mmopre_id=mm.id AND dm.mpre_id = mm.mpre_id";
+        try {
+            Statement st = (Statement) conex.createStatement();
+            ResultSet rst = st.executeQuery(consultamano);
+            while(rst.next()){
+                totalmano = rst.getFloat("total");
+                totalcantidad = rst.getFloat("cantidad");
+                bono = rst.getFloat("mm.bono");
+                subsid = rst.getFloat("mm.subsid");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(parametrorecon.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        bono = totalcantidad*bono;
+        subsid = totalcantidad*subsid;
+        presta = totalmano*presta;
+        float auxcontmano = totalmano+bono+subsid+presta;
+        if(rendimi==0)
+            rendimi=1;
+        totalmano=auxcontmano/rendimi;
+        float total = totalmat+totaleq+totalmano;
+        float auxtotal=total;
+        admin = total*admin;
+        util=(auxtotal+admin)*util;
+        auxtotal=total+admin+util;
+        finan=auxtotal*finan;
+        impart=auxtotal*impart;
+        total=auxtotal+finan+impart;
+        return total;
+        
     }
     public void inserta(){
         String  idband = null, porcgad=null, porcpre=jTextField5.getText(), porcutil=null, precasu=null;
@@ -568,13 +663,14 @@ public class parametrorecon extends javax.swing.JDialog {
                     + ""+porcpre+", "+porutil+", codpro, codcon, parpre, nrocon, nroctr, fecapr,"
                     + "nrolic, 1, '"+pres+"',memo,timemo, fecmemo, 0,partidapres,NOW(), "+valu+" FROM mpres WHERE id='"+pres+"'");
                 }
-                cuenta();                        
+                cuenta();  
+                float precio=cambiapreciopartida(numero);
                 String insertpart = "INSERT INTO mppres (mpre_id, id, numero, numegrup, descri, "
                     + " idband, porcgad, porcpre, porcutil, precasu, precunit, rendimi, "
                     + "unidad, redondeo, status,"
                     + "cantidad, tipo, nrocuadro, tiporec,mppre_id) "
                         + "SELECT '"+codpres+"',id,"+nume+","+numegrupo+",descri,idband,"
-                        + "porcgad, porcpre, porcutil, precasu, precunit, rendimi, unidad, "
+                        + "porcgad, porcpre, porcutil, "+precio+", "+precio+", rendimi, unidad, "
                         + "redondeo, 1, "+cantvalu+", 'VP', "+nrocuadro+",'VP-"+numero+"',"+numero+" "
                         + "FROM mppres WHERE numero="+numero+" AND (mpre_id='"+pres+"' OR "
                         + "mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+pres+"'))";
