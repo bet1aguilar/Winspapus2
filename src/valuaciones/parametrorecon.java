@@ -599,7 +599,7 @@ public class parametrorecon extends javax.swing.JDialog {
         
         // SUMANDO TOTAL DE MATERIAL
         String totalmaterial="SELECT SUM((mm.precio+(mm.precio*(mm.desperdi/100)))*dm.cantidad) as total "
-                + "FROM dmppres as dm, mmpres as mm WHERE dm.numepart="+numeropartida+" AND dm.mmpre_id=mm.id "
+                + "FROM dmpres as dm, mmpres as mm WHERE dm.numepart="+numeropartida+" AND dm.mmpre_id=mm.id "
                 + "AND (dm.mpre_id='"+pres+"' OR dm.mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+pres+"'))"
                 + " AND dm.mpre_id = mm.mpre_id";
         try {
@@ -628,7 +628,7 @@ public class parametrorecon extends javax.swing.JDialog {
             Logger.getLogger(parametrorecon.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        String consultamano = "SELECT SUM(dm.cantidad) as cantidad, mm.bono, mm.subsid "
+        String consultamano = "SELECT SUM(dm.cantidad) as cantidad, mm.bono, mm.subsid, "
                     + "SUM(mm.salario*dm.cantidad) as total FROM mmopres as mm, dmoppres as dm "
                 + "WHERE dm.numero ="+numeropartida+" AND (dm.mpre_id='"+pres+"' OR mpre_id IN "
                 + "(SELECT id FROM mpres WHERE mpres_id='"+pres+"')) AND dm.mmopre_id=mm.id AND dm.mpre_id = mm.mpre_id";
@@ -642,6 +642,7 @@ public class parametrorecon extends javax.swing.JDialog {
                 subsid = rst.getFloat("mm.subsid");
             }
         } catch (SQLException ex) {
+            System.out.println("Error al sumar la cantidad de mano de obra en la inserción de la reconsideración");
             Logger.getLogger(parametrorecon.class.getName()).log(Level.SEVERE, null, ex);
         }
         bono = totalcantidad*bono;

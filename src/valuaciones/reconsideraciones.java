@@ -12,6 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.NumberFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.AbstractAction;
@@ -76,7 +77,8 @@ public class reconsideraciones extends javax.swing.JDialog {
     }
     public final void buscapres(){
         String numcuadro = jSpinner1.getValue().toString();
-      
+      codnuevopres= mpres+" VP-"+numcuadro;
+      //PARAMETROS DE LA RECONSIDERACIÓN
         String select="SELECT mp.mpre_id, p.valu,"
                 + "p.porpre, p.porgam, p.poruti, p.porcfi, p.poripa, p.porimp"                
                 + " FROM mppres as mp, mpres as p "
@@ -97,19 +99,47 @@ public class reconsideraciones extends javax.swing.JDialog {
                 jTextField12.setText(rst.getString("p.poripa"));
                 jTextField13.setText(rst.getString("p.porimp"));
             }
+            
+            //PARAMETROS DEL PRESUPUESTO ORIGINAL PARA LA VALUACION
+            
+            
+            
+            //-----------------------------------------------------
             float totalvalu=0, totalrecon=0;
             jTextField8.setText(nuevopres);
             jTextField1.setText(valu);
-              String preciovalu = "SELECT SUM(dv.cantidad*dv.precio) FROM dvalus WHERE mvalu_id="+valu+" AND "
-                      + "(mpre_id='"+pres+"' or mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+pres+"'))";
+            //TOTAL DE LA VALUACION
+              String preciovalu = "SELECT SUM(cantidad*precio) FROM dvalus WHERE mvalu_id="+valu+" AND "
+                      + "(mpre_id='"+mpres+"' or mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+mpres+"'))";
               Statement stvalu = (Statement) conex.createStatement();
               ResultSet rstvalu = stvalu.executeQuery(preciovalu);
               while(rstvalu.next()){
                   totalvalu=rstvalu.getFloat(1);
               }
               jTextField15.setText(String.valueOf(totalvalu));
-              String totalprecunit = "SELECT ";
+              //TOTAL DE LA RECONSIDERACION
+              String cargasinredondeo = "SELECT SUM(ROUND(IF(mppres.`precasu`=0,mppres.`precunit`,precasu)*cantidad,2)) "
+                + "FROM `winspapu`.`mppres` WHERE "
+                      + "mpre_id='"+codnuevopres+"' AND nrocuadro="+numcuadro+"";
+        System.out.println("totales cargartotal: "+cargasinredondeo);
+        double subtotal=0;
+            Statement st1 = (Statement) conex.createStatement();
+          
+            ResultSet rst1 = st1.executeQuery(cargasinredondeo);
+            
+            while (rst1.next()){
+                if(rst1.getObject(1)!=null) {
+                    subtotal = rst1.getDouble(1);
+                     System.out.println("subtotal bd: "+rst1.getDouble(1));
+                }
+            }
+              NumberFormat formatoNumero = NumberFormat.getNumberInstance();
+            formatoNumero.setMaximumFractionDigits(2);
+            formatoNumero.setMinimumFractionDigits(2);
+            jTextField14.setText(String.valueOf(formatoNumero.format(subtotal)));
+            jTextField15.setText(String.valueOf(formatoNumero.format(totalvalu)));
               
+          
         } catch (SQLException ex) {
             Logger.getLogger(reconsideraciones.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -178,6 +208,7 @@ public class reconsideraciones extends javax.swing.JDialog {
         jTextField14 = new javax.swing.JTextField();
         jLabel17 = new javax.swing.JLabel();
         jTextField15 = new javax.swing.JTextField();
+        jLabel18 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
 
@@ -379,6 +410,7 @@ public class reconsideraciones extends javax.swing.JDialog {
 
         jTextArea1.setColumns(20);
         jTextArea1.setEditable(false);
+        jTextArea1.setFont(new java.awt.Font("Monospaced", 0, 11)); // NOI18N
         jTextArea1.setLineWrap(true);
         jTextArea1.setRows(3);
         jTextArea1.setWrapStyleWord(true);
@@ -413,22 +445,6 @@ public class reconsideraciones extends javax.swing.JDialog {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 713, Short.MAX_VALUE)
-                            .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(84, 84, 84)
-                                .addComponent(jLabel3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 109, Short.MAX_VALUE)
-                                .addComponent(jLabel4)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                         .addGap(35, 35, 35)
                         .addComponent(jLabel5)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -440,7 +456,23 @@ public class reconsideraciones extends javax.swing.JDialog {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 86, Short.MAX_VALUE)
                         .addComponent(jLabel7)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 713, Short.MAX_VALUE)
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(84, 84, 84)
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 109, Short.MAX_VALUE)
+                                .addComponent(jLabel4)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
@@ -455,7 +487,7 @@ public class reconsideraciones extends javax.swing.JDialog {
                     .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(jLabel7)
@@ -464,7 +496,7 @@ public class reconsideraciones extends javax.swing.JDialog {
                     .addComponent(jLabel6)
                     .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5))
-                .addGap(5, 5, 5))
+                .addGap(11, 11, 11))
         );
 
         jPanel5.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, java.awt.Color.gray, java.awt.Color.darkGray, java.awt.Color.gray, java.awt.Color.darkGray));
@@ -574,11 +606,14 @@ public class reconsideraciones extends javax.swing.JDialog {
 
         jTextField15.setEditable(false);
 
+        jLabel18.setForeground(new java.awt.Color(102, 102, 102));
+        jLabel18.setText("(Montos Totales Sin Impuestos)");
+
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel5Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel5Layout.createSequentialGroup()
@@ -613,12 +648,15 @@ public class reconsideraciones extends javax.swing.JDialog {
                     .addComponent(jLabel17))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTextField15, javax.swing.GroupLayout.DEFAULT_SIZE, 168, Short.MAX_VALUE)
-                    .addComponent(jTextField14, javax.swing.GroupLayout.DEFAULT_SIZE, 168, Short.MAX_VALUE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 168, Short.MAX_VALUE)
-                    .addComponent(jTextField8, javax.swing.GroupLayout.DEFAULT_SIZE, 168, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jTextField15, javax.swing.GroupLayout.DEFAULT_SIZE, 168, Short.MAX_VALUE)
+                            .addComponent(jTextField14, javax.swing.GroupLayout.DEFAULT_SIZE, 168, Short.MAX_VALUE)
+                            .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 168, Short.MAX_VALUE)
+                            .addComponent(jTextField8, javax.swing.GroupLayout.DEFAULT_SIZE, 168, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel18))
                 .addContainerGap())
         );
         jPanel5Layout.setVerticalGroup(
@@ -657,7 +695,11 @@ public class reconsideraciones extends javax.swing.JDialog {
                         .addComponent(jLabel17))
                     .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jCheckBox1))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(20, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                .addContainerGap(128, Short.MAX_VALUE)
+                .addComponent(jLabel18)
+                .addContainerGap())
         );
 
         jTable1.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
@@ -693,7 +735,7 @@ public class reconsideraciones extends javax.swing.JDialog {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
@@ -752,14 +794,24 @@ public class reconsideraciones extends javax.swing.JDialog {
 
         jTextField9.setText("");
 
+       String deltas="IF((m.precunit-(SELECT mp.precunit FROM "
+                + "mppres as mp WHERE (mp.mpre_id='"+mpres+"' OR mp.mpre_id IN "
+                + " (SELECT id FROM mpres WHERE mpres_id='"+mpres+"')) AND mp.numero=m.mppre_id))<0,0,"
+                + "m.precunit-(SELECT mp.precunit FROM "
+                + "mppres as mp WHERE (mp.mpre_id='"+mpres+"' OR mp.mpre_id IN "
+                + " (SELECT id FROM mpres WHERE mpres_id='"+mpres+"')) AND mp.numero=m.mppre_id))";
        
         String sql = "SELECT m.id, m.numegrup, m.cantidad, m.precunit, (SELECT mp.precunit FROM "
                 + "mppres as mp WHERE (mp.mpre_id='"+mpres+"' OR mp.mpre_id IN "
                 + "(SELECT id FROM mpres WHERE mpres_id='"+mpres+"')) AND mp.numero=m.mppre_id) as precunitario,"
-                + "(SELECT mp.precunit FROM "
+                + "IF((m.precunit-(SELECT mp.precunit FROM "
                 + "mppres as mp WHERE (mp.mpre_id='"+mpres+"' OR mp.mpre_id IN "
-                + "(SELECT id FROM mpres WHERE mpres_id='"+mpres+"')) AND mp.numero=m.mppre_id) - m.precunit as delta"
-                + ", m.tiporec FROM "
+                + " (SELECT id FROM mpres WHERE mpres_id='"+mpres+"')) AND mp.numero=m.mppre_id))<0,0,"
+                + "m.precunit-(SELECT mp.precunit FROM "
+                + "mppres as mp WHERE (mp.mpre_id='"+mpres+"' OR mp.mpre_id IN "
+                + " (SELECT id FROM mpres WHERE mpres_id='"+mpres+"')) AND mp.numero=m.mppre_id)) as delta"
+                + ", m.tiporec,"
+                + ""+deltas+"*m.cantidad as total FROM "
                 + "mppres as m WHERE "
                 + "m.nrocuadro="+nrocuadro+" "
                 + "AND m.nrocuadro IS NOT NULL AND (m.mpre_id='"+mpres+"' OR m.mpre_id IN "
@@ -787,7 +839,7 @@ public class reconsideraciones extends javax.swing.JDialog {
                @Override
                 public Class getColumnClass(int columna)
            {
-                              if(columna==3 || columna==4 || columna==5){
+                              if(columna==3 || columna==4 || columna==5 || columna==7){
                         return Double.class;
                     }
                
@@ -808,8 +860,15 @@ public class reconsideraciones extends javax.swing.JDialog {
                     
                     Object[] filas = new Object[cantidadColumnas];
                    for (int i = 0; i < cantidadColumnas; i++) {
-                     
-                          filas[i]=rs.getObject(i+1);
+                     if(i==5){
+                         float delta=rs.getFloat(i+1);
+                         if(delta<0){
+                             delta=delta*(-1);
+                         }
+                          filas[i]=delta;
+                     }else{
+                         filas[i]=rs.getObject(i+1);
+                     }
                    }
                    metabs.addRow(filas);
                    
@@ -846,7 +905,9 @@ public class reconsideraciones extends javax.swing.JDialog {
         tc = tcm.getColumn(6); 
        tc.setHeaderValue("Tipo");
        tc.setPreferredWidth(20);
-     
+      tc = tcm.getColumn(7); 
+       tc.setHeaderValue("Total");
+       tc.setPreferredWidth(20);
        th.repaint(); 
     }
     
@@ -1625,6 +1686,7 @@ private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;

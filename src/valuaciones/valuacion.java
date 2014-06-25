@@ -33,7 +33,7 @@ public final class valuacion extends javax.swing.JDialog {
     float cantidad;
     int pierdefoco=0;
     public static final int RET_CANCEL = 0;
-    float estavalu, impu, acum, impuesto;
+    float estavalu=0, impu, acum, impuesto;
     int filapart = 0;
     int lapso=0;
     public static final int RET_OK = 1;
@@ -1423,7 +1423,7 @@ public void inserta(){
         }
         cambiarcabecera();
 
-        estavalu = (float) Math.rint((estavalu * 100) / 100);
+        estavalu = (float) Math.rint(estavalu * 100) / 100;
          NumberFormat formatoNumero = NumberFormat.getNumberInstance();
             formatoNumero.setMaximumFractionDigits(2);
             formatoNumero.setMinimumFractionDigits(2);

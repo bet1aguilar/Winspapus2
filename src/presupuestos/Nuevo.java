@@ -672,6 +672,7 @@ public class Nuevo extends javax.swing.JDialog {
         jComboBox2.setNextFocusableComponent(jTextField4);
 
         jTextArea1.setColumns(20);
+        jTextArea1.setLineWrap(true);
         jTextArea1.setRows(2);
         jTextArea1.setWrapStyleWord(true);
         jTextArea1.setNextFocusableComponent(jTextField3);

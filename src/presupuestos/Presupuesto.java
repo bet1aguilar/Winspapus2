@@ -600,7 +600,7 @@ public class Presupuesto extends javax.swing.JInternalFrame {
             .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
         );
 
-        jTable2.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        jTable2.setFont(new java.awt.Font("Tahoma", 0, 10));
         jTable2.setToolTipText("Haga Doble Click sobre Cualquier Partida para ver Detalle");
         jTable2.setDoubleBuffered(true);
         jTable2.setSelectionBackground(new java.awt.Color(255, 153, 51));
@@ -713,6 +713,7 @@ public class Presupuesto extends javax.swing.JInternalFrame {
         jTextArea2.setFont(new java.awt.Font("Monospaced", 0, 11)); // NOI18N
         jTextArea2.setLineWrap(true);
         jTextArea2.setRows(3);
+        jTextArea2.setWrapStyleWord(true);
         jTextArea2.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 jTextArea2KeyPressed(evt);
@@ -1633,7 +1634,7 @@ public class Presupuesto extends javax.swing.JInternalFrame {
         System.out.println("totales cargartotal: "+cargasinredondeo);
         try {
             Statement st1 = (Statement) conex.createStatement();
-            Statement st2 = (Statement) conex.createStatement();
+          
             ResultSet rst1 = st1.executeQuery(cargasinredondeo);
             
             while (rst1.next()){
@@ -3390,8 +3391,8 @@ public void agrega(){
         if(count1>0){
         reconsideraciones recon = new reconsideraciones(prin, true, id, conex, this,prin);
        int xi = (this.getWidth()/2)-800/2;
-        int yi = (this.getHeight()/2)-600/2;
-        recon.setBounds(xi, yi, 800, 600);
+        int yi = (this.getHeight()/2)-700/2;
+        recon.setBounds(xi, yi, 800, 700);
         recon.setVisible(true);
         try {
             buscapartida();
