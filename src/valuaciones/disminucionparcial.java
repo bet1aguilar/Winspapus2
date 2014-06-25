@@ -130,7 +130,15 @@ public class disminucionparcial extends javax.swing.JDialog {
              
              while (rs.next()) {
                 Object[] fila = new Object[cantidadColumnas];
-                Object obj = Boolean.valueOf(false);
+                Boolean enc=false;
+                    for(int j=0;j<auxcont;j++){
+                         if(rs.getObject(3).toString().equals(auxpart[j])){
+                                  enc=true;
+                         }
+                    }
+                Object obj = Boolean.valueOf(enc);
+           
+                
                 fila[0]= obj;
                 for (int i = 1; i < cantidadColumnas; i++) {
                    if(i<7){
@@ -488,7 +496,7 @@ public void verificarcheck() {
                 
                 String date = formato.format(fecha);
                 String insert = "INSERT INTO mvalus VALUES(0,'"+date+"', "
-                        + "'"+date+"', 0, '"+pres+"', 'Parcial')";
+                        + "'"+date+"', 0, '"+pres+"', 'Parcial',1)";
                 Statement inserta = (Statement) conex.createStatement();
                 inserta.execute(insert);
             }
@@ -713,7 +721,7 @@ public void busca(){
             auxpart[i] =String.valueOf( jTable1.getValueAt(i, 3));
         }
         auxcont = totalfilas;
-        busca();        // TODO add your handling code here:
+        cargapartidas();        // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_okButtonMouseClicked
@@ -764,7 +772,7 @@ private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
             auxpart[i] ="";
         }
         auxcont = 0;
-        busca();
+        cargapartidas();
     
     // TODO add your handling code here:
 }//GEN-LAST:event_jButton2ActionPerformed

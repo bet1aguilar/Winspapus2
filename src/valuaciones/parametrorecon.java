@@ -630,7 +630,7 @@ public class parametrorecon extends javax.swing.JDialog {
         
         String consultamano = "SELECT SUM(dm.cantidad) as cantidad, mm.bono, mm.subsid, "
                     + "SUM(mm.salario*dm.cantidad) as total FROM mmopres as mm, dmoppres as dm "
-                + "WHERE dm.numero ="+numeropartida+" AND (dm.mpre_id='"+pres+"' OR mpre_id IN "
+                + "WHERE dm.numero ="+numeropartida+" AND (dm.mpre_id='"+pres+"' OR dm.mpre_id IN "
                 + "(SELECT id FROM mpres WHERE mpres_id='"+pres+"')) AND dm.mmopre_id=mm.id AND dm.mpre_id = mm.mpre_id";
         try {
             Statement st = (Statement) conex.createStatement();

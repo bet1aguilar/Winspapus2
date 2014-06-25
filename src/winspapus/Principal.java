@@ -175,7 +175,7 @@ public class Principal extends javax.swing.JFrame {
         }
         try {          
             //
-            conexion = (Connection) DriverManager.getConnection("jdbc:mysql://localhost/winspapu", "root", "04160481070MSag");
+            conexion = (Connection) DriverManager.getConnection("jdbc:mysql://localhost/winspapu", "spapu01", "04160481070MSag");
             //establer seguridad local
             Statement seg = (Statement) conexion.createStatement();
             Statement esc = (Statement) conexion.createStatement();
@@ -240,9 +240,10 @@ public class Principal extends javax.swing.JFrame {
             //
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(this, "Error al Conectar con la Base de Datos, verifique que este ejecución el servicio MariaDB");
-            System.exit(0);
+          
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
             System.out.println("Error al conectar la bd");
+              System.exit(0);
             
         }
     }

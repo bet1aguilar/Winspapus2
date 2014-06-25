@@ -186,8 +186,10 @@ public class Partida extends javax.swing.JDialog {
         }
     }
     public final void llenavalores(){
-        String llena = "SELECT id, tipo, descri, nropresupuesto, porcutil, idband, IFNULL(precunit,0.00) as precunit,"
-                + " IFNULL(precasu,0.00) as precasu, redondeo, porcpre, porcgad, rendimi, IFNULL(cantidad,0.00), unidad,numero FROM mppres WHERE "
+        String llena = "SELECT id, tipo, descri, nropresupuesto, porcutil, idband, "
+                + "IFNULL(precunit,0.00) as precunit,"
+                + " IFNULL(precasu,0.00) as precasu, redondeo, porcpre, porcgad, "
+                + "rendimi, IFNULL(cantidad,0.00), unidad,numero, porcutil FROM mppres WHERE "
                 + "numegrup='"+numpartida+"'"
                 + " AND (mpre_id='"+presupuesto+"' OR mpre_id IN "
                 + "(SELECT id from mpres where mpres_id='"+presupuesto+"' GROUP BY id)) ";
@@ -216,11 +218,13 @@ public class Partida extends javax.swing.JDialog {
                 if(rsts.getObject(4)!=null) {
                     jTextField2.setText(rsts.getObject(4).toString());
                 }
-                
+                float presta=rsts.getFloat("porcpre");
+                float admin = rsts.getFloat("porcgad");
+                float utili = rsts.getFloat("porcutil");
              
-                jTextField5.setText(prest);
-                jTextField6.setText(util);
-                jTextField4.setText(adm);
+                jTextField5.setText(String.valueOf(presta));
+                jTextField6.setText(String.valueOf(utili));
+                jTextField4.setText(String.valueOf(admin));
                 mbdat = rsts.getObject(6).toString();
                 if(!mbdat.equals("")&&mbdat!=null){
                     jComboBox1.setSelectedIndex(Integer.parseInt(mbdat)-1);

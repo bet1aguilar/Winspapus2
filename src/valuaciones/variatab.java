@@ -296,7 +296,7 @@ public class variatab extends javax.swing.JDialog {
               copiapu apu = new copiapu(conex, mpres, jComboBox1.getSelectedItem().toString(), partida)  ;
               precunit = precasu = String.valueOf(apu.gettotalpartida());
             String update = "UPDATE mppres SET precunit="+precunit+", precasu = "+precasu+" WHERE numegrup="+partida+""
-                    + " AND id='"+codicove+"' AND mpre_id="+mpres+" OR mpre_id IN (SELECT id FROM mpres WHERE mpres_id="+mpres+")";
+                    + " AND id='"+codicove+"' AND mpre_id='"+mpres+"' OR mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+mpres+"')";
             Statement st = (Statement) conex.createStatement();
             st.execute(update);
             
