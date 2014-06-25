@@ -1300,9 +1300,7 @@ public class reconsideraciones extends javax.swing.JDialog {
 
         jButton4.setEnabled(true);
         buscapartida();
-        
-        jTextField7.setText(jTable1.getValueAt(filapart, 3).toString());
-        jTextField9.setText(jTable1.getValueAt(filapart, 4).toString());
+       
         jTextField7.setEnabled(true);
         jTextField9.setEnabled(true);
         jButton2.setEnabled(true);
