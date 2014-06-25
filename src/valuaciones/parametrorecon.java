@@ -152,6 +152,7 @@ public class parametrorecon extends javax.swing.JDialog {
         jTextField9 = new javax.swing.JTextField();
         jLabel14 = new javax.swing.JLabel();
         jTextField10 = new javax.swing.JTextField();
+        jCheckBox1 = new javax.swing.JCheckBox();
         jPanel6 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
@@ -362,15 +363,25 @@ public class parametrorecon extends javax.swing.JDialog {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        jCheckBox1.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        jCheckBox1.setText("Asignar Valores a todas las Partidas");
+
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                .addContainerGap(293, Short.MAX_VALUE)
+                .addComponent(jCheckBox1)
+                .addContainerGap())
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jCheckBox1))
         );
 
         jPanel6.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true), "Valuación a reconsiderar"));
@@ -465,16 +476,16 @@ public class parametrorecon extends javax.swing.JDialog {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap(362, Short.MAX_VALUE)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -485,7 +496,7 @@ public class parametrorecon extends javax.swing.JDialog {
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
@@ -546,6 +557,32 @@ public class parametrorecon extends javax.swing.JDialog {
         String codpres = pres+" VP-"+nrocuadro;
         float rendimi=0;
         String mvalu=jComboBox1.getSelectedItem().toString();
+        if(!jCheckBox1.isSelected()){
+            String select="SELECT porcgad, porcpre, porcutil FROM mppres WHERE numero="+numeropartida+" "
+                    + "AND (mpre_id='"+pres+"' OR mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+pres+"'))";
+            String porcgad=null, porcpre=null, porcutil=null;
+            try {
+                Statement str = (Statement) conex.createStatement();
+                ResultSet rstr = str.executeQuery(select);
+                while(rstr.next()){
+                    porcgad = rstr.getString(1);
+                    porcpre = rstr.getString(2);
+                    porcutil=rstr.getString(3);
+                }
+                if(porcgad!=null){
+                    admin=Float.valueOf(porcgad);
+                }
+                if(porcpre!=null){
+                    presta=Float.valueOf(porcpre);
+                }
+                if(porcutil!=null){
+                    util=Float.valueOf(porcutil);
+                }
+            } catch (SQLException ex) {
+                System.out.println("No se pudo consultar el porcentaje de las partidas en los parametros para la reconsideración");
+                Logger.getLogger(parametrorecon.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
         //CONSULTA RENDIMIENTO DE LA PARTIDA
         String selecrendimi = "SELECT rendimi FROM mppres WHERE numero="+numeropartida+" AND (mpre_id='"+pres+"' OR "
                 + "mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+pres+"'))";
@@ -665,7 +702,22 @@ public class parametrorecon extends javax.swing.JDialog {
                 }
                 cuenta();  
                 float precio=cambiapreciopartida(numero);
-                String insertpart = "INSERT INTO mppres (mpre_id, id, numero, numegrup, descri, "
+                String insertpart=null;
+                if(jCheckBox1.isSelected()){
+                    String gad = jTextField6.getText();
+                    String pre = jTextField5.getText();
+                    String uti = jTextField7.getText();
+                    insertpart = "INSERT INTO mppres (mpre_id, id, numero, numegrup, descri, "
+                    + " idband, porcgad, porcpre, porcutil, precasu, precunit, rendimi, "
+                    + "unidad, redondeo, status,"
+                    + "cantidad, tipo, nrocuadro, tiporec,mppre_id) "
+                        + "SELECT '"+codpres+"',id,"+nume+","+numegrupo+",descri,idband,"
+                        + ""+gad+", "+pre+", "+uti+", "+precio+", "+precio+", rendimi, unidad, "
+                        + "redondeo, 1, "+cantvalu+", 'VP', "+nrocuadro+",'VP-"+numero+"',"+numero+" "
+                        + "FROM mppres WHERE numero="+numero+" AND (mpre_id='"+pres+"' OR "
+                        + "mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+pres+"'))";
+                }else{
+                insertpart = "INSERT INTO mppres (mpre_id, id, numero, numegrup, descri, "
                     + " idband, porcgad, porcpre, porcutil, precasu, precunit, rendimi, "
                     + "unidad, redondeo, status,"
                     + "cantidad, tipo, nrocuadro, tiporec,mppre_id) "
@@ -674,6 +726,7 @@ public class parametrorecon extends javax.swing.JDialog {
                         + "redondeo, 1, "+cantvalu+", 'VP', "+nrocuadro+",'VP-"+numero+"',"+numero+" "
                         + "FROM mppres WHERE numero="+numero+" AND (mpre_id='"+pres+"' OR "
                         + "mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+pres+"'))";
+                }
                 Statement insertapart = (Statement) conex.createStatement();
                 insertapart.execute(insertpart);
                  insertamateriales(codpres,numero);
@@ -1001,6 +1054,7 @@ public void verificarcheck() {
     private javax.swing.JButton cancelButton;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JComboBox jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;

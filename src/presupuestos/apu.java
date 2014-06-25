@@ -147,6 +147,7 @@ public class apu extends javax.swing.JDialog {
         }
     }
     public final void buscapres(){
+        String admi=null,presta=null,utili=null;
         String sql = "SELECT porgam, porcfi, porimp, poripa, porpre, poruti FROM mpres WHERE id='"+pres+"'";
         try {
             Statement st = (Statement) conex.createStatement();
@@ -160,6 +161,26 @@ public class apu extends javax.swing.JDialog {
                 prest = rst.getObject(5).toString();
                 util = rst.getObject(6).toString();
             }
+            String datospart = "SELECT porcgad, porcpre,porcutil FROM mppres WHERE numero="+numero+" AND "
+                    + "(mpre_id = '"+pres+"' OR mpre_id IN (SELECT id FROM mpres WHERE mpres_id))";
+            Statement sts = (Statement) conex.createStatement();
+            ResultSet rsts = sts.executeQuery(datospart);
+            while(rsts.next()){
+                admi = rsts.getString("porcgad");
+                presta = rsts.getString("porcpre");
+                utili = rsts.getString("porcutil");
+            }
+            if(admi!=null){
+                adm=admi;
+            }
+            if(presta!=null)
+            {
+                prest=presta;
+            }
+            if(utili!=null)
+            {
+                util=utili;
+            }
             System.out.println("Adm "+adm+", "+fina+" "+imp+" "+impart+" "+prest+" "+util);
         } catch (SQLException ex) {
             Logger.getLogger(apu.class.getName()).log(Level.SEVERE, null, ex);
@@ -168,6 +189,7 @@ public class apu extends javax.swing.JDialog {
     public final void buscamat(){
         float valor=0;
         contmat =0;
+        float aux=0;
         System.out.println("cadena"+pres+" num"+numero);
         Statement part1=null;
         try {
@@ -222,10 +244,11 @@ public class apu extends javax.swing.JDialog {
                 mmtabs.addRow(fila);
                 
             }
-             contmat = (float) (Math.rint((contmat+0.000001)*100)/100);
+             aux = (float) (Math.rint((contmat+0.000001)*100)/100);
+        
                String esnan = String.valueOf(contmat);
                System.out.println("contmat "+esnan);
-                jTextField2.setText(String.valueOf(contmat));
+                jTextField2.setText(String.valueOf(aux));
         } catch (SQLException ex) {
             System.out.println("Noooo");
             Logger.getLogger(apu.class.getName()).log(Level.SEVERE, null, ex);
@@ -266,6 +289,7 @@ public class apu extends javax.swing.JDialog {
        
         public final void buscaequip(){
         float valor=0;
+         float aux =0;
         contequip=0;
         System.out.println("cadena"+pres+" num"+numero);
         Statement parti=null;
@@ -330,13 +354,13 @@ public class apu extends javax.swing.JDialog {
              if(rendimiento==0)
                  rendimiento=1;
              contequip = contequip/rendimiento;
-             contequip = (float) (Math.rint((contequip+0.000001)*100)/100);
+            aux = (float) (Math.rint((contequip+0.000001)*100)/100);
         } catch (SQLException ex) {
             System.out.println("Noooo");
             Logger.getLogger(apu.class.getName()).log(Level.SEVERE, null, ex);
         }
                 jTextField3.setText(String.valueOf(rendimiento));
-               jTextField4.setText(String.valueOf(contequip)); 
+               jTextField4.setText(String.valueOf(aux)); 
         cambiacabeceraequip();
     }
      
@@ -460,9 +484,10 @@ public class apu extends javax.swing.JDialog {
          if(rendimiento==0)
                  rendimiento=1;
         contmano = contmano / rendimiento;
-        contmano = (float) (Math.rint((contmano+0.000001)*100)/100);
+        
+        float aux= (float) (Math.rint((contmano+0.000001)*100)/100);
         jTextField5.setText(String.valueOf(rendimiento));
-        jTextField6.setText(String.valueOf(contmano));
+        jTextField6.setText(String.valueOf(aux));
         cambiacabeceramano();
     }
      
@@ -2013,7 +2038,7 @@ insertare=1;
         
         admini = auxcontotal * admini/100;
         System.out.println("admin "+admini);
-        utili = auxcontotal * utili/100;
+        utili = (auxcontotal+admini) * utili/100;
         System.out.println("util "+utili);
         auxcontotal = contototal + admini + utili;
         System.out.println("sumado "+auxcontotal);
@@ -2023,7 +2048,8 @@ insertare=1;
         System.out.println("impuesto "+impuesto);
         contototal = auxcontotal + impuesto + financiero;
         System.out.println("contotal impu fin "+contototal);
-        auxcontotal = (float) (Math.rint((contototal+0.000001)*100)/100);
+        auxcontotal = (float) (Math.rint((contototal+0.00001)*100)/100);
+        System.out.println("auxcontotalredondeado: "+auxcontotal);
         redondeado = (float) Math.rint(contototal+0.000001);
         
         NumberFormat formatoNumero = NumberFormat.getNumberInstance();

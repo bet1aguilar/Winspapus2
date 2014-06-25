@@ -67,6 +67,7 @@ public class Presupuesto extends javax.swing.JInternalFrame {
     String obradicional = "";
     int filapartida=0;
    DefaultTableModel mptabs;
+   float porcgad=0,porcpre=0,porcutil=0;
     int adicional=0;
     public float presta=0, admin=0, finan=0, impart=0, util=0, impgen=0;
      String id, nombre, partidanueva, tabu;
@@ -390,18 +391,18 @@ public class Presupuesto extends javax.swing.JInternalFrame {
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
             public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
             }
+            public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
+                formInternalFrameClosed(evt);
+            }
+            public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
+            }
             public void internalFrameDeactivated(javax.swing.event.InternalFrameEvent evt) {
             }
             public void internalFrameDeiconified(javax.swing.event.InternalFrameEvent evt) {
             }
             public void internalFrameIconified(javax.swing.event.InternalFrameEvent evt) {
             }
-            public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
-                formInternalFrameClosed(evt);
-            }
             public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
-            }
-            public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
             }
         });
 
@@ -709,7 +710,7 @@ public class Presupuesto extends javax.swing.JInternalFrame {
         jLabel22.setText("Cantidad:");
 
         jTextArea2.setColumns(20);
-        jTextArea2.setFont(new java.awt.Font("Monospaced", 0, 11));
+        jTextArea2.setFont(new java.awt.Font("Monospaced", 0, 11)); // NOI18N
         jTextArea2.setLineWrap(true);
         jTextArea2.setRows(3);
         jTextArea2.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -731,6 +732,11 @@ public class Presupuesto extends javax.swing.JInternalFrame {
             }
             public void focusLost(java.awt.event.FocusEvent evt) {
                 jTextField15FocusLost(evt);
+            }
+        });
+        jTextField15.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextField15KeyPressed(evt);
             }
         });
 
@@ -1514,7 +1520,7 @@ public class Presupuesto extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 228, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 224, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -1618,6 +1624,7 @@ public class Presupuesto extends javax.swing.JInternalFrame {
     }
     
     public void cargartotal(){
+        subtotal=0;
        jTextField11.setText("0.00");
        jTextField12.setText("0.00"); 
        jTextField13.setText("0.00");
@@ -2291,7 +2298,7 @@ public void agrega(){
                 }
                 insertar=1;
                 String selecciona = "SELECT descri, mbdat_id, rendimi, unidad, redondeo, status, mtabus_id "
-                        + ", numero, codicove FROM mptabs where numero='"+partidas[i]+"' AND mtabus_id='"+tabu+"'";
+                        + ", numero, codicove,porcpre,porcgad,porcutil FROM mptabs where numero='"+partidas[i]+"' AND mtabus_id='"+tabu+"'";
                 Statement stmt = (Statement) conex.createStatement();
                 ResultSet rstmt = stmt.executeQuery(selecciona);
                 
@@ -2304,6 +2311,9 @@ public void agrega(){
                     status = rstmt.getObject(6).toString();
                     numero = rstmt.getObject(8).toString();
                     codicoves = rstmt.getString(9);
+                    porcpre=rstmt.getFloat("porcpre");
+                    porcgad = rstmt.getFloat("porcgad");
+                    porcutil=rstmt.getFloat("porcutil");
                 }
                 
                 String existe = 
@@ -2324,7 +2334,8 @@ public void agrega(){
                         
                     
                         sql="INSERT INTO mppres (mpre_id, id, numero, numegrup, descri, idband, "
-                        + "rendimi, unidad, redondeo, status, cantidad, tipo, nropresupuesto)"
+                        + "rendimi, unidad, redondeo, status, cantidad, tipo, nropresupuesto,"
+                                + "porcpre,porcgad,porcutil)"
                         + "VALUES ('"+id+"', '"+codicoves+"', " + 
 
                                                             ""+nuevo+"," + 
@@ -2338,13 +2349,14 @@ public void agrega(){
                                                             "1, " +
                                                             "1, " +
                                                             "'Org',"+
-                                                            "0);";
+                                                            "0, "+porcpre+","
+                                + ""+porcgad+","+porcutil+")";
                     }else{
                         String codpres = id+tiponp+nropresupuesto;
                         id=codpres;
                        sql="INSERT INTO mppres (mpre_id, id, numero, numegrup, descri, idband, "
                         + "rendimi, unidad, redondeo, status, cantidad, tipo, nropresupuesto, "
-                               + "tiponp)"
+                               + "tiponp, porcpre,porcgad,porcutil)"
                         + "VALUES ('"+codpres+"', '"+codicoves+"', " + 
 
                                                             ""+nuevo+"," + 
@@ -2358,8 +2370,8 @@ public void agrega(){
                                                             "1, " +
                                                             "1, " +
                                                             "'NP',"+
-                                                            "'"+nropresupuesto+"','"+tiponp+"'"
-                               + ");";   
+                                                            "'"+nropresupuesto+"','"+tiponp+"', "+porcpre+","
+                                + ""+porcgad+","+porcutil+")";
                     }
                 try {
                     st.execute(sql);
@@ -2448,8 +2460,8 @@ public void agrega(){
         try {
             Statement stmt1 = (Statement) conex.createStatement();
             stmt1.execute(sql);
-            mp = new modificaparametro(conex, this, id, presta, admin, finan, util, impart, impgen);
-            mp.start();
+           /* mp = new modificaparametro(conex, this, id, presta, admin, finan, util, impart, impgen);
+            mp.start();*/
             id=auxid1;
             if(adicional==1) {
                 JOptionPane.showMessageDialog(this, "Se ha modificado el presupuesto adicional "+obradicional);
@@ -2556,13 +2568,17 @@ public void agrega(){
            if(cont1>0){
                int opi = JOptionPane.showConfirmDialog(null, "Partida Ya fue incluida en presupuesto, Desea Modificarla? Sí/No", "Partida ya Existe", JOptionPane.YES_NO_OPTION);
                if(opi==JOptionPane.YES_OPTION){
-                sql = "SELECT codicove, descri, unidad, precunit, precasu, redondeo, rendimi,status,mbdat_id, numero  FROM"
+                sql = "SELECT codicove, descri, unidad, precunit, precasu, redondeo, rendimi,status,mbdat_id, numero"
+                        + ",porcgad,porcpre,porcutil   FROM"
                 + " mptabs WHERE codicove='"+partidanueva+"' AND mtabus_id='"+jComboBox1.getSelectedItem().toString()+"'";
                 ResultSet rs ;
                 try {
                     rs = stmt.executeQuery(sql);
 
                     while(rs.next()){
+                        porcgad = rs.getFloat("porcgad");
+                         porcpre= rs.getFloat("porcpre");
+                         porcutil = rs.getFloat("porcutil");
                         jTextField15.setText(rs.getObject(1).toString());
                         jTextArea2.setText(rs.getObject(2).toString());
                         jTextField17.setText(rs.getObject(3).toString());
@@ -2638,13 +2654,18 @@ public void agrega(){
                 } catch (SQLException ex) {
                     Logger.getLogger(Presupuesto.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                   sql = "SELECT codicove, descri, unidad, precunit, precasu, redondeo, rendimi,status,mbdat_id, numero  FROM"
+                   sql = "SELECT codicove, descri, unidad, precunit, precasu, redondeo, rendimi,status,mbdat_id, numero "
+                           + ",porcgad,porcpre,porcutil "
+                           + " FROM"
                 + " mptabs WHERE codicove='"+partidanueva+"' AND mtabus_id='"+jComboBox1.getSelectedItem().toString()+"'";
                 ResultSet rs ;
                 try {
                     rs = stmt.executeQuery(sql);
                     
                     while(rs.next()){
+                         porcgad = rs.getFloat("porcgad");
+                         porcpre= rs.getFloat("porcpre");
+                         porcutil = rs.getFloat("porcutil");
                         jTextField15.setText(rs.getObject(1).toString());
                         jTextArea2.setText(rs.getObject(2).toString());
                         jTextField17.setText(rs.getObject(3).toString());
@@ -2861,20 +2882,20 @@ public void agrega(){
             sqlpartida = "INSERT INTO mppres "
                     + "(mpre_id, id, numero, numegrup, descri, idband,"
             + "rendimi, unidad, precasu, precunit, redondeo, status, cantidad, tipo, "
-            + "nropresupuesto,tiponp) VALUES ('"+codpres+"', '"+jTextField15.getText().toString() +"',"
+            + "nropresupuesto,tiponp, porcgad,porcpre,porcutil) VALUES ('"+codpres+"', '"+jTextField15.getText().toString() +"',"
             + ""+nuevo+","+nuevonumegrup+",'"+jTextArea2.getText().toString()+"',"
             + ""+mbdat+","+rendimi+", '"+unidad+"', "+precasu+", "+precunit+","
             + ""+redondeo+", '1', "+jTextField18.getText().toString()+", '"+tipo+"',"
-            + "'"+numpre+"','"+tiponp+"')";
+            + "'"+numpre+"','"+tiponp+"',"+porcgad+","+porcpre+","+porcutil+")";
             }else{
                 sqlpartida = "INSERT INTO mppres "
                     + "(mpre_id, id, numero, numegrup, descri, idband,"
             + "rendimi, unidad, precasu, precunit, redondeo, status, cantidad, tipo, "
-            + "nropresupuesto) VALUES ('"+id+"', '"+jTextField15.getText().toString() +"',"
+            + "nropresupuesto, porcgad,porcpre,porcutil) VALUES ('"+id+"', '"+jTextField15.getText().toString() +"',"
             + ""+nuevo+","+nuevonumegrup+",'"+jTextArea2.getText().toString()+"',"
             + ""+mbdat+","+rendimi+", '"+unidad+"', "+precasu+", "+precunit+","
             + ""+redondeo+", '1', "+jTextField18.getText().toString()+", '"+tipo+"',"
-            + "'"+numpre+"')";
+            + "'"+numpre+"',"+porcgad+","+porcpre+","+porcutil+")";
             }
         }else{
             if(tiponp==null){
@@ -3049,7 +3070,8 @@ public void agrega(){
                     Logger.getLogger(Presupuesto.class.getName()).log(Level.SEVERE, null, ex);
                 }
                
-                sql = "SELECT codicove, descri, unidad, IFNULL(precunit,0.00), IFNULL(precasu,0.00), redondeo, rendimi,status,mbdat_id, numero  FROM"
+                sql = "SELECT codicove, descri, unidad, IFNULL(precunit,0.00), IFNULL(precasu,0.00), redondeo, rendimi,"
+                        + "status,mbdat_id, numero,porcgad,porcpre,porcutil  FROM"
                 + " mptabs WHERE numegrup="+partidanueva+" AND mtabus_id='"+jComboBox1.getSelectedItem().toString()+"'";
                   Statement otro=null;
                 try {
@@ -3062,6 +3084,9 @@ public void agrega(){
                    ResultSet rs = otro.executeQuery(sql);
                     String covenin="";
                     while(rs.next()){
+                         porcgad = rs.getFloat("porcgad");
+                         porcpre= rs.getFloat("porcpre");
+                         porcutil = rs.getFloat("porcutil");
                         jTextField15.setText(rs.getObject(1).toString());
                         covenin=jTextField15.getText();
                         jTextArea2.setText(rs.getObject(2).toString());
@@ -3078,6 +3103,7 @@ public void agrega(){
                                 redondeo="1";
                             }
                         }
+                       
                         precasu = rs.getObject(5).toString();
                         precunit = rs.getObject(4).toString();
                         rendimi = rs.getObject(7).toString();
@@ -3328,11 +3354,26 @@ public void agrega(){
         }
         
         if(count==0){
+            String cuentavalu="SELECT COUNT(*) FROM dvalus WHERE mpre_id='"+id+"'";
+            int cuen=0;
+            try {
+                Statement sts = (Statement) conex.createStatement();
+                ResultSet rsts = sts.executeQuery(cuentavalu);
+                while(rsts.next()){
+                    cuen = rsts.getInt(1);
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(Presupuesto.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            if(cuen>0){
             parametrorecon para = new parametrorecon(prin, true, conex, id, "1");
             int xi = (this.getWidth()/2)-550/2;
         int yi = (this.getHeight()/2)-600/2;
         para.setBounds(xi, yi, 550, 600);
         para.setVisible(true);
+            }else{
+                JOptionPane.showMessageDialog(rootPane, "Debe hacer por lo menos una valuación para poder reconsiderarla");
+            }
         }
          String select1 = "SELECT count(*) FROM mppres WHERE tipo='VP' AND ("
                 + "mpre_id='"+id+"' OR mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+id+"'))";
@@ -4054,6 +4095,17 @@ private void jButton36ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
         jTextField1.setText("");
         busca();
 }//GEN-LAST:event_jButton36ActionPerformed
+
+    private void jTextField15KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField15KeyPressed
+ if (evt.getKeyCode() == KeyEvent.VK_TAB) {
+            if (evt.getModifiers() == KeyEvent.SHIFT_MASK) {
+                ((javax.swing.JTextArea) evt.getSource()).transferFocusBackward();
+            } else {
+                ((javax.swing.JTextArea) evt.getSource()).transferFocus();
+            }
+            evt.consume();
+        }        // TODO add your handling code here:        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField15KeyPressed
     public void vaciacampospres()
     {
         jTextField5.setText("");
@@ -4189,8 +4241,8 @@ private void jButton36ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
         
     public void calculapartida(String nume, String presupuesto, int edita){
         float auxcontotal;
-        float admini=Float.valueOf(jTextField6.getText().toString());
-        float utili=Float.valueOf(jTextField7.getText().toString());
+        float admini=porcgad;
+        float utili=porcutil;
         float financiero= Float.valueOf(jTextField8.getText().toString());
         float impuestos = Float.valueOf(jTextField9.getText().toString());
         float redondeado;
@@ -4201,7 +4253,7 @@ private void jButton36ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
         
         admini = auxcontotal * admini/100;
         System.out.println("admin "+admini);
-        utili = auxcontotal * utili/100;
+        utili = (auxcontotal+admini) * utili/100;
         System.out.println("util "+utili);
         auxcontotal = contototal + admini + utili;
         System.out.println("sumado "+auxcontotal);
@@ -4303,7 +4355,7 @@ private void jButton36ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
         public void agregamano (int edita){
            String cantidad, salario , bono ="", subsidi = "";
            int cuantos=0, cantidades=0;
-           float prestaciones = Float.valueOf(jTextField5.getText().toString());
+           float prestaciones = porcpre;
            float valor = 0, bonos , subsid;
            String codimano, mtabu = "", descri, deprecia = "";
            
@@ -4417,12 +4469,9 @@ private void jButton36ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
                jTextField15.setText(rst.getString(9)); //codicove
                 Statement inserta = (Statement) conex.createStatement();
                String sqlinsert;
-               if(Float.valueOf(desperdi)!=0){
-               valor += Float.valueOf(precio)* Float.valueOf(cantidad)* Float.valueOf(desperdi);
-               }else
-               {
-                   valor += Float.valueOf(precio)* Float.valueOf(cantidad);
-               }
+
+               valor += (Float.valueOf(precio)+(Float.valueOf(precio)* (Float.valueOf(desperdi)/100)))* Float.valueOf(cantidad);
+               
                if(insertar==1){
                if(edita==0) {
                     sqlinsert = "INSERT INTO dmpres (mpre_id, mppre_id, mmpre_id, numepart"

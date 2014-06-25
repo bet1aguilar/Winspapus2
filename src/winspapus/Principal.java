@@ -53,6 +53,7 @@ import presupuestos.manoobra.matrizmanopres;
 import presupuestos.memoria;
 import presupuestos.tabpresupuesto;
 import reportes.reportepresupuesto;
+import valuaciones.parametrorecon;
 /**
  *
  * @author Betmart
@@ -866,7 +867,7 @@ public class Principal extends javax.swing.JFrame {
         );
 
         jTable2.setAutoCreateRowSorter(true);
-        jTable2.setFont(new java.awt.Font("Tahoma", 0, 10));
+        jTable2.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         jTable2.setEditingColumn(0);
         jTable2.setEditingRow(0);
         jTable2.setName("mtabustable"); // NOI18N
@@ -1438,9 +1439,8 @@ public class Principal extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel25, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
-            .addGroup(jPanel12Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 381, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel12Layout.createSequentialGroup()
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 391, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel12Layout.setVerticalGroup(
@@ -2393,7 +2393,9 @@ public class Principal extends javax.swing.JFrame {
     public void buscapartida() throws SQLException{
         contmat=conteq=contmano=0;
         Statement st = (Statement) conexion.createStatement();
-        ResultSet rst = st.executeQuery("SELECT mb.descri, mp.unidad, mp.rendimi, mp.porcgad, mp.porcpre, mp.porcutil,mp.redondeo FROM mbdats mb, mptabs mp WHERE mp.mtabus_id='"+cadena+"' AND mp.numero="+num+" AND mp.mbdat_id=mb.id");
+        ResultSet rst = st.executeQuery("SELECT mb.descri, mp.unidad, mp.rendimi, mp.porcgad, mp.porcpre,"
+                + " mp.porcutil,mp.redondeo FROM mbdats mb, mptabs mp WHERE mp.mtabus_id='"+cadena+"'"
+                + " AND mp.numero="+num+" AND mp.mbdat_id=mb.id");
           
         
         while (rst.next()) {
@@ -2491,6 +2493,7 @@ public class Principal extends javax.swing.JFrame {
            impuesto = auxcontotal * impuesto;
            System.out.println("impuesto: "+impuesto);
            auxcontotal = auxcontotal + impuesto + financiero;
+           System.out.println("auxcontotal antes de redondear: "+auxcontotal);
            auxcontotal = (float) (Math.rint((auxcontotal+0.000001)*100)/100);
            contotal = auxcontotal;
            System.out.println("contotalsinredondeo: "+contotal);
@@ -3535,7 +3538,55 @@ recalcula();        // TODO add your handling code here:
     }//GEN-LAST:event_jMenuItem14ActionPerformed
 
     private void jMenuItem47ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem47ActionPerformed
-            reconsideraciones recon = new reconsideraciones(this, true, presup, conexion, presupuesto,this);
+String select = "SELECT count(*) FROM mppres WHERE tipo='VP' AND ("
+                + "mpre_id='"+presup+"' OR mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+presup+"'))";
+        int count=0;
+        try {
+            Statement sts = (Statement) conexion.createStatement();
+            ResultSet rsts = sts.executeQuery(select);
+            while(rsts.next()){
+                count=rsts.getInt(1);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Presupuesto.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        if(count==0){
+            String cuentavalu="SELECT COUNT(*) FROM dvalus WHERE mpre_id='"+presup+"'";
+            int cuen=0;
+            try {
+                Statement sts = (Statement) conexion.createStatement();
+                ResultSet rsts = sts.executeQuery(cuentavalu);
+                while(rsts.next()){
+                    cuen = rsts.getInt(1);
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(Presupuesto.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            if(cuen>0){
+            parametrorecon para = new parametrorecon(this, true, conexion, presup, "1");
+            int xi = (this.getWidth()/2)-550/2;
+        int yi = (this.getHeight()/2)-600/2;
+        para.setBounds(xi, yi, 550, 600);
+        para.setVisible(true);
+            }else{
+                JOptionPane.showMessageDialog(rootPane, "Debe hacer por lo menos una valuación para poder reconsiderarla");
+            }
+        }
+         String select1 = "SELECT count(*) FROM mppres WHERE tipo='VP' AND ("
+                + "mpre_id='"+presup+"' OR mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+presup+"'))";
+        int count1=0;
+        try {
+            Statement sts = (Statement) conexion.createStatement();
+            ResultSet rsts = sts.executeQuery(select1);
+            while(rsts.next()){
+                count1=rsts.getInt(1);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Presupuesto.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        if(count1>0){
+        reconsideraciones recon = new reconsideraciones(this, true, presup, conexion, presupuesto,this);
        int xi = (this.getWidth()/2)-800/2;
         int yi = (this.getHeight()/2)-600/2;
         recon.setBounds(xi, yi, 800, 600);
@@ -3544,7 +3595,12 @@ recalcula();        // TODO add your handling code here:
             presupuesto.buscapartida();
         } catch (SQLException ex) {
             Logger.getLogger(Presupuesto.class.getName()).log(Level.SEVERE, null, ex);
-        }   // TODO add your handling code here:
+        }
+        }else{
+            JOptionPane.showMessageDialog(null, "Debe agregar las partidas para abrir la reconsideración de precios");
+        }
+        
+        
     }//GEN-LAST:event_jMenuItem47ActionPerformed
 
     private void jMenuItem33ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem33ActionPerformed
