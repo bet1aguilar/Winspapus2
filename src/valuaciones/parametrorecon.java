@@ -56,11 +56,13 @@ public class parametrorecon extends javax.swing.JDialog {
     /** Creates new form parametrorecon */
     String nrocuadro=null;
     private boolean enc;
-    public parametrorecon(java.awt.Frame parent, boolean modal, Connection conex, String pres, String nrocuadro) {
+    String presrecon;
+    public parametrorecon(java.awt.Frame parent, boolean modal, Connection conex, String pres, String nrocuadro, String presrecon) {
         super(parent, modal);
         initComponents();
         this.conex = conex;
         this.pres = pres;
+        this.presrecon = presrecon;
         this.nrocuadro = nrocuadro;
         cargapres();
         modelovalu();
@@ -104,7 +106,9 @@ public class parametrorecon extends javax.swing.JDialog {
         }
     }
     public final void modelovalu(){
-        String selectvalu="SELECT id FROM mvalus WHERE mpre_id='"+pres+"'";
+        String selectvalu="SELECT id FROM mvalus WHERE mpre_id='"+pres+"' WHERE id NOT IN "
+                + "(SELECT valu FROM mpres WHERE mpres_id='"+pres+"')";
+        
         Statement st;
         try {
             st = (Statement) conex.createStatement();
@@ -195,18 +199,18 @@ public class parametrorecon extends javax.swing.JDialog {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap(52, Short.MAX_VALUE)
-                .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         getRootPane().setDefaultButton(okButton);
@@ -363,7 +367,7 @@ public class parametrorecon extends javax.swing.JDialog {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jCheckBox1.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        jCheckBox1.setFont(new java.awt.Font("Tahoma", 0, 10));
         jCheckBox1.setText("Asignar Valores a todas las Partidas");
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
@@ -429,10 +433,10 @@ public class parametrorecon extends javax.swing.JDialog {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2)
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2)))
         );
 
         jTable1.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
@@ -477,7 +481,7 @@ public class parametrorecon extends javax.swing.JDialog {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(362, Short.MAX_VALUE)
+                .addContainerGap(352, Short.MAX_VALUE)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
@@ -496,7 +500,7 @@ public class parametrorecon extends javax.swing.JDialog {
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
@@ -570,13 +574,13 @@ public class parametrorecon extends javax.swing.JDialog {
                     porcutil=rstr.getString(3);
                 }
                 if(porcgad!=null){
-                    admin=Float.valueOf(porcgad);
+                    admin=Float.valueOf(porcgad)/100;
                 }
                 if(porcpre!=null){
-                    presta=Float.valueOf(porcpre);
+                    presta=Float.valueOf(porcpre)/100;
                 }
                 if(porcutil!=null){
-                    util=Float.valueOf(porcutil);
+                    util=Float.valueOf(porcutil)/100;
                 }
             } catch (SQLException ex) {
                 System.out.println("No se pudo consultar el porcentaje de las partidas en los parametros para la reconsideración");
@@ -960,7 +964,7 @@ public void verificarcheck() {
         String partvalu = "SELECT mp.numegrup, mp.id, mp.descri, mp.precunit, "
                 + "dv.cantidad FROM mppres as mp, "
                 + "dvalus as dv WHERE dv.mvalu_id="+mvalu+" AND dv.numepart=mp.numero "
-                + "AND mp.numero NOT IN (SELECT numero FROM mppres WHERE mpre_id='"+codpres+"')";
+                + "AND mp.numero NOT IN (SELECT mppre_id FROM mppres WHERE mpre_id='"+codpres+"')";
         try {
             Statement st = (Statement) conex.createStatement();
             ResultSet rst = st.executeQuery(partvalu);

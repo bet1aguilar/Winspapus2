@@ -71,9 +71,9 @@
                       <Group type="102" alignment="0" attributes="0">
                           <Group type="103" groupAlignment="1" attributes="0">
                               <Group type="102" alignment="1" attributes="0">
-                                  <Component id="okButton" min="-2" pref="40" max="-2" attributes="0"/>
+                                  <Component id="okButton" min="-2" pref="45" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="cancelButton" min="-2" pref="40" max="-2" attributes="0"/>
+                                  <Component id="cancelButton" min="-2" pref="45" max="-2" attributes="0"/>
                               </Group>
                               <Component id="jTextField8" alignment="1" min="-2" pref="474" max="-2" attributes="0"/>
                           </Group>
@@ -89,8 +89,8 @@
                   <EmptySpace min="-2" pref="270" max="-2" attributes="0"/>
               </Group>
               <Group type="102" alignment="0" attributes="0">
-                  <Component id="jPanel2" pref="786" max="32767" attributes="0"/>
-                  <EmptySpace pref="98" max="32767" attributes="0"/>
+                  <Component id="jPanel2" min="-2" pref="698" max="-2" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -125,8 +125,8 @@
                   <Component id="jLabel20" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="37" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="okButton" min="-2" pref="40" max="-2" attributes="0"/>
-                      <Component id="cancelButton" alignment="0" min="-2" pref="40" max="-2" attributes="0"/>
+                      <Component id="okButton" min="-2" pref="45" max="-2" attributes="0"/>
+                      <Component id="cancelButton" alignment="0" min="-2" pref="45" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
               </Group>
@@ -149,16 +149,16 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jLabel1" pref="766" max="32767" attributes="0"/>
-                      <EmptySpace min="-2" max="-2" attributes="0"/>
+                      <Component id="jLabel1" pref="678" max="32767" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace max="32767" attributes="0"/>
-                      <Component id="jLabel1" min="-2" pref="14" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jLabel1" pref="14" max="32767" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>

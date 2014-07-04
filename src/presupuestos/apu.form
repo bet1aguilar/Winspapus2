@@ -1323,11 +1323,11 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="1" attributes="0">
                       <EmptySpace pref="84" max="32767" attributes="0"/>
-                      <Component id="okButton" min="-2" pref="40" max="-2" attributes="0"/>
+                      <Component id="okButton" min="-2" pref="45" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jButton4" min="-2" pref="43" max="-2" attributes="0"/>
+                      <Component id="jButton4" min="-2" pref="45" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="cancelButton" min="-2" pref="43" max="-2" attributes="0"/>
+                      <Component id="cancelButton" min="-2" pref="45" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -1336,9 +1336,9 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="cancelButton" min="-2" pref="39" max="-2" attributes="2"/>
-                          <Component id="jButton4" alignment="0" min="-2" pref="39" max="-2" attributes="0"/>
-                          <Component id="okButton" alignment="0" min="-2" pref="39" max="-2" attributes="2"/>
+                          <Component id="cancelButton" min="-2" pref="45" max="-2" attributes="2"/>
+                          <Component id="jButton4" alignment="0" min="-2" pref="45" max="-2" attributes="0"/>
+                          <Component id="okButton" alignment="0" min="-2" pref="45" max="-2" attributes="2"/>
                       </Group>
                       <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
                   </Group>

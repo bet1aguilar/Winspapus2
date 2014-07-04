@@ -157,25 +157,25 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="1" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jButton8" min="-2" pref="42" max="-2" attributes="0"/>
+                      <Component id="jButton8" min="-2" pref="45" max="-2" attributes="0"/>
                       <EmptySpace min="-2" max="-2" attributes="0"/>
-                      <Component id="jButton9" min="-2" pref="42" max="-2" attributes="0"/>
+                      <Component id="jButton9" min="-2" pref="45" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
-                      <Component id="jButton1" min="-2" pref="42" max="-2" attributes="0"/>
+                      <Component id="jButton1" min="-2" pref="45" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jButton7" min="-2" pref="42" max="-2" attributes="0"/>
+                      <Component id="jButton7" min="-2" pref="45" max="-2" attributes="0"/>
                       <EmptySpace min="-2" max="-2" attributes="0"/>
-                      <Component id="jButton6" min="-2" pref="42" max="-2" attributes="0"/>
+                      <Component id="jButton6" min="-2" pref="45" max="-2" attributes="0"/>
                       <EmptySpace min="-2" max="-2" attributes="0"/>
-                      <Component id="jButton5" min="-2" pref="42" max="-2" attributes="0"/>
+                      <Component id="jButton5" min="-2" pref="45" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jButton3" min="-2" pref="42" max="-2" attributes="0"/>
+                      <Component id="jButton3" min="-2" pref="45" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="okButton" min="-2" pref="42" max="-2" attributes="0"/>
+                      <Component id="okButton" min="-2" pref="45" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jButton4" min="-2" pref="42" max="-2" attributes="0"/>
+                      <Component id="jButton4" min="-2" pref="45" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="cancelButton" min="-2" pref="42" max="-2" attributes="0"/>
+                      <Component id="cancelButton" min="-2" pref="45" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -184,16 +184,16 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="1" attributes="0">
                       <Group type="103" groupAlignment="1" attributes="0">
-                          <Component id="cancelButton" alignment="0" pref="43" max="32767" attributes="1"/>
-                          <Component id="jButton3" alignment="0" pref="43" max="32767" attributes="0"/>
-                          <Component id="jButton4" alignment="0" pref="43" max="32767" attributes="1"/>
-                          <Component id="okButton" alignment="0" pref="43" max="32767" attributes="1"/>
-                          <Component id="jButton7" alignment="0" min="0" pref="43" max="32767" attributes="1"/>
-                          <Component id="jButton6" alignment="0" pref="43" max="32767" attributes="1"/>
-                          <Component id="jButton8" alignment="0" max="32767" attributes="0"/>
-                          <Component id="jButton5" alignment="0" pref="43" max="32767" attributes="0"/>
-                          <Component id="jButton9" alignment="0" pref="43" max="32767" attributes="0"/>
-                          <Component id="jButton1" alignment="0" pref="43" max="32767" attributes="0"/>
+                          <Component id="cancelButton" alignment="0" min="-2" pref="45" max="-2" attributes="1"/>
+                          <Component id="jButton3" alignment="0" min="-2" pref="45" max="-2" attributes="0"/>
+                          <Component id="jButton4" alignment="0" min="-2" pref="45" max="-2" attributes="1"/>
+                          <Component id="okButton" alignment="0" min="-2" pref="45" max="-2" attributes="1"/>
+                          <Component id="jButton7" alignment="0" min="-2" pref="45" max="-2" attributes="1"/>
+                          <Component id="jButton6" alignment="0" min="-2" pref="45" max="-2" attributes="1"/>
+                          <Component id="jButton8" alignment="0" min="-2" pref="45" max="-2" attributes="0"/>
+                          <Component id="jButton5" alignment="0" min="-2" pref="45" max="-2" attributes="0"/>
+                          <Component id="jButton9" alignment="0" min="-2" pref="45" max="-2" attributes="0"/>
+                          <Component id="jButton1" alignment="0" min="-2" pref="45" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" max="-2" attributes="0"/>
                   </Group>
@@ -745,6 +745,7 @@
                     <Property name="editable" type="boolean" value="false"/>
                     <Property name="lineWrap" type="boolean" value="true"/>
                     <Property name="rows" type="int" value="2"/>
+                    <Property name="wrapStyleWord" type="boolean" value="true"/>
                   </Properties>
                   <Events>
                     <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jTextArea2KeyPressed"/>

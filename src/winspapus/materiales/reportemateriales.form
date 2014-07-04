@@ -97,9 +97,9 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="1" attributes="0">
                       <EmptySpace max="32767" attributes="0"/>
-                      <Component id="okButton" min="-2" pref="43" max="-2" attributes="0"/>
+                      <Component id="okButton" min="-2" pref="45" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="cancelButton" min="-2" pref="44" max="-2" attributes="0"/>
+                      <Component id="cancelButton" min="-2" pref="45" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -109,8 +109,8 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                          <Component id="cancelButton" alignment="0" max="32767" attributes="1"/>
-                          <Component id="okButton" alignment="0" max="32767" attributes="1"/>
+                          <Component id="cancelButton" alignment="0" min="-2" pref="45" max="-2" attributes="1"/>
+                          <Component id="okButton" alignment="0" min="-2" pref="45" max="-2" attributes="1"/>
                       </Group>
                       <EmptySpace max="32767" attributes="0"/>
                   </Group>

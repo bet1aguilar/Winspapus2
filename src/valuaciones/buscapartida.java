@@ -4,6 +4,7 @@ package valuaciones;
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.ResultSetMetaData;
 import com.mysql.jdbc.Statement;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.sql.ResultSet;
@@ -37,18 +38,26 @@ public class buscapartida extends javax.swing.JDialog {
     private String[] partidas;
     private int contsel;
     Presupuesto pres;
-    public buscapartida(java.awt.Frame parent, boolean modal, String mpres, Connection conex, int cuadro, Presupuesto pres) {
+    String mvalu=null;
+    public buscapartida(java.awt.Frame parent, boolean modal, String mpres, Connection conex, int cuadro, Presupuesto pres, String mvalu) {
         super(parent, modal);
         initComponents();
         this.mpres = mpres;
         this.conex = conex;
         this.cuadro = cuadro;
         this.pres = pres;
+        this.mvalu = mvalu;
         try {
             cargapresupuesto();
         } catch (SQLException ex) {
             Logger.getLogger(buscapartida.class.getName()).log(Level.SEVERE, null, ex);
         }
+         jTable1.setOpaque(true);
+    jTable1.setShowHorizontalLines(true);
+    jTable1.setShowVerticalLines(false);
+    jTable1.getTableHeader().setSize(new Dimension(25,40));
+    jTable1.getTableHeader().setPreferredSize(new Dimension(30,40));
+    jTable1.setRowHeight(25);
         String cancelName = "cancel";
         InputMap inputMap = getRootPane().getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), cancelName);
@@ -60,10 +69,18 @@ public class buscapartida extends javax.swing.JDialog {
             }
         });
     }
-public final void cargapresupuesto() throws SQLException{
-    
+public final void cargapresupuesto() 
+        throws SQLException{
+    String codpres = mpres+" VP-"+cuadro;
         Statement st = (Statement) conex.createStatement();
-        ResultSet rs = st.executeQuery("SELECT numero, id, descri, tipo FROM mppres WHERE tipo!='VP' AND mpre_id='"+mpres+"' OR mpre_id IN (SELECT id from mpres where mpres_id ='"+mpres+"' GROUP BY id) ORDER BY numegrup");
+        String sqls="SELECT mp.numegrup, mp.id, mp.descri, mp.precunit, "
+                + "dv.cantidad FROM mppres as mp, "
+                + "dvalus as dv WHERE (mp.id LIKE '%"+jTextField1.getText()+"%' OR "
+                + "mp.numegrup LIKE '%"+jTextField1.getText()+"%' OR mp.descri LIKE '%"+jTextField1.getText()+"%')"
+                + "  AND dv.mvalu_id="+mvalu+" AND dv.numepart=mp.numero "
+                + "AND mp.numero NOT IN (SELECT mppre_id FROM mppres WHERE mpre_id='"+codpres+"')";
+        ResultSet rs = st.executeQuery(sqls);
+        jLabel3.setText(mvalu);
         ResultSetMetaData rsMd = (ResultSetMetaData) rs.getMetaData();
        
         DefaultTableModel metabs = new DefaultTableModel(){@Override
@@ -94,7 +111,13 @@ public final void cargapresupuesto() throws SQLException{
              while (rs.next()) {
                  
                  Object[] filas = new Object[cantidadColumnas];
-                  Object obj = Boolean.valueOf(false);
+                 Boolean enc=false;
+                   for(int j=0;j<auxcont;j++){
+                         if(rs.getObject(1).toString().equals(auxpart[j])){
+                                  enc=true;
+                         }
+                    }
+                  Object obj = Boolean.valueOf(enc);
                   filas[0]= obj;
                 for (int i = 1; i < cantidadColumnas; i++) {
                   
@@ -112,25 +135,28 @@ public final void cargapresupuesto() throws SQLException{
              cambiarcabecera();
     }
     public void cambiarcabecera(){
-         JTableHeader th = jTable1.getTableHeader();
-       TableColumnModel tcm = th.getColumnModel();
-       TableColumn tc = tcm.getColumn(0); 
-     
-       tc.setHeaderValue("");
+        JTableHeader th = jTable1.getTableHeader();
+        TableColumnModel tcm = th.getColumnModel();
+        TableColumn tc = tcm.getColumn(0); 
+    tc.setHeaderValue("");
+       tc.setPreferredWidth(10);
+   tc = tcm.getColumn(1); 
+       tc.setHeaderValue("Número");
+       tc.setPreferredWidth(10);
+       tc = tcm.getColumn(2); 
+       tc.setHeaderValue("Código");
+       tc.setPreferredWidth(10);
+       tc = tcm.getColumn(3); 
+       tc.setHeaderValue("Descripción");
+       tc.setPreferredWidth(150);
+       tc = tcm.getColumn(4); 
+       tc.setHeaderValue("Precio Unitario");
        tc.setPreferredWidth(20);
-       tc = tcm.getColumn(1); 
-        tc.setHeaderValue("Nro.");
-        tc.setPreferredWidth(20);
-        tc = tcm.getColumn(2); 
-        tc.setHeaderValue("Código");
-        tc.setPreferredWidth(50);
-        tc = tcm.getColumn(3); 
-        tc.setHeaderValue("Descripción");
-        tc.setPreferredWidth(250);
-        tc = tcm.getColumn(4); 
-        tc.setHeaderValue("Tipo");
-        tc.setPreferredWidth(20);
-        
+       tc = tcm.getColumn(5); 
+       tc.setHeaderValue("Cant. Valuada");
+       tc.setPreferredWidth(30);
+       
+     
        th.repaint(); 
     }
 
@@ -154,9 +180,7 @@ public final void cargapresupuesto() throws SQLException{
         jButton5 = new javax.swing.JButton();
         jButton12 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
-        jButton3 = new javax.swing.JButton();
         cancelButton = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
         okButton = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -169,7 +193,7 @@ public final void cargapresupuesto() throws SQLException{
 
         jPanel4.setBackground(new java.awt.Color(100, 100, 100));
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11));
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Partidas de la Valuación");
@@ -225,31 +249,11 @@ public final void cargapresupuesto() throws SQLException{
             }
         });
 
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/winspapus/imagenes/moneda.fw.png"))); // NOI18N
-        jButton3.setToolTipText("Variar por Tabulador");
-        jButton3.setEnabled(false);
-        jButton3.setPreferredSize(new java.awt.Dimension(65, 41));
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
-            }
-        });
-
         cancelButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/winspapus/imagenes/eliminar.png"))); // NOI18N
         cancelButton.setPreferredSize(new java.awt.Dimension(65, 41));
         cancelButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cancelButtonActionPerformed(evt);
-            }
-        });
-
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/winspapus/imagenes/listar1.png"))); // NOI18N
-        jButton2.setToolTipText("Variación Lineal");
-        jButton2.setEnabled(false);
-        jButton2.setPreferredSize(new java.awt.Dimension(65, 41));
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
             }
         });
 
@@ -259,31 +263,30 @@ public final void cargapresupuesto() throws SQLException{
                 okButtonMouseClicked(evt);
             }
         });
+        okButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                okButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(108, 108, 108)
                 .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, 41, Short.MAX_VALUE)
-                    .addComponent(cancelButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 41, Short.MAX_VALUE)
-                    .addComponent(okButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 41, Short.MAX_VALUE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -295,10 +298,7 @@ public final void cargapresupuesto() throws SQLException{
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 475, Short.MAX_VALUE)
@@ -322,25 +322,26 @@ public final void cargapresupuesto() throws SQLException{
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton12, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(176, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(281, Short.MAX_VALUE)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(7, 7, 7)
-                        .addComponent(jLabel4))
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(jButton12, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(jLabel3))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -350,7 +351,7 @@ public final void cargapresupuesto() throws SQLException{
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -363,7 +364,22 @@ public final void cargapresupuesto() throws SQLException{
     {
         String numero="", precio="";
         verificarcheck();
-        
+        String codpres = mpres+" VP-"+cuadro;
+        int conta=0;
+                String cuenta = "SELECT numero FROM mppres WHERE mpre_id='"+mpres+"' OR mpre_id IN "
+                        + "(SELECT id FROM mpres WHERE mpres_id='"+mpres+"') ORDER BY numero DESC LIMIT 1";
+                
+        try {
+            Statement contar;
+            contar = (Statement) conex.createStatement();
+             ResultSet rscontar = contar.executeQuery(cuenta);
+                while(rscontar.next()){
+                    conta = Integer.parseInt(rscontar.getObject(1).toString());
+                }
+        } catch (SQLException ex) {
+            Logger.getLogger(buscapartida.class.getName()).log(Level.SEVERE, null, ex);
+        }
+               
         for(int i=0; i<contsel;i++){
             String sql = "SELECT id, precunit FROM mppres where numero='"+partidas[i]+"' AND "
                     + "mpre_id='"+mpres+"' AND status=1";
@@ -380,19 +396,12 @@ public final void cargapresupuesto() throws SQLException{
                     
                 }
                 
-                int conta=0;
-                String cuenta = "SELECT numero FROM mppres WHERE mpre_id="+mpres+" OR mpre_id IN "
-                        + "(SELECT id FROM mpres WHERE mpres_id="+mpres+") ORDER BY numero DESC LIMIT 1";
-                Statement contar = (Statement) conex.createStatement();
-                ResultSet rscontar = contar.executeQuery(cuenta);
-                while(rscontar.next()){
-                    conta = Integer.parseInt(rscontar.getObject(1).toString());
-                }
+                
                 conta++;
                 String selectdatos = "SELECT id, numegrup, descri, idband, porcgad, porcpre, porcutil, precasu, precunit, rendimi, unidad"
                         + ", redondeo, status, cantidad, nropresupuesto FROM mppres WHERE numero="+partidas[i]+" "
-                        + "AND mpre_id = "+mpres+" OR "
-                        + "mpre_id IN (SELECT id FROM mpres WHERE mpres_id = "+mpres+")";
+                        + "AND mpre_id = '"+mpres+"' OR "
+                        + "mpre_id IN (SELECT id FROM mpres WHERE mpres_id = '"+mpres+"')";
                 Statement str = (Statement) conex.createStatement();
                 ResultSet rstr = str.executeQuery(selectdatos);
                 while(rstr.next()){
@@ -432,24 +441,195 @@ public final void cargapresupuesto() throws SQLException{
                         }
                     
                 }
+                float precios=cambiapreciopartida(partidas[i]);
                 String inserta = "INSERT into mppres (mpre_id,id, numero, numegrup, descri, idband, porcgad, porcpre,"
                         + "porcutil, precasu, precunit, rendimi, unidad, redondeo, status, cantidad, tipo, "
                         + "nropresupuesto, "
-                        + "nrocuadro, tiporec) "
-                        + "VALUES ('"+mpres+"','"+idmppre+"', "+conta+", "+conta+","
-                        + "'"+descri+"', "+idband+", "+porcgad+","+porcpre+","+porcutil+", "+precasu+", "+precunit+""
+                        + "nrocuadro, tiporec,mppre_id) "
+                        + "VALUES ('"+codpres+"','"+idmppre+"', "+conta+", "+conta+","
+                        + "'"+descri+"', "+idband+", "+porcgad+","+porcpre+","+porcutil+", "+precios+", "+precios+""
                         + ","+rendimi+",'"+unidad+"',"+redondeo+","+status+","+cantidad+","
-                        + "'VP',0, "+cuadro+", 'VP-"+partidas[i]+"')";
+                        + "'VP',0, "+cuadro+", 'VP-"+partidas[i]+"','"+partidas[i]+"')";
                 System.out.println("inserta "+inserta);
                  Statement stm = (Statement) conex.createStatement();
                  stm.execute(inserta);
-                
+                insertamateriales(codpres,partidas[i],conta);
+                insertaequipos(codpres, partidas[i],conta);
+                insertamano(codpres, partidas[i],conta);
             } catch (SQLException ex) {
                 Logger.getLogger(partidas.class.getName()).log(Level.SEVERE, null, ex);
             }
             
         }        
-    }    
+    }   
+    public void insertamateriales(String codpres, String numero,int conta){
+        try {
+            String selecmat = "INSERT INTO dmpres "
+                        + "SELECT '"+codpres+"', mppre_id, mmpre_id, "+conta+", cantidad, precio, status "
+                        + "FROM dmpres WHERE numepart="+numero+" AND (mpre_id='"+mpres+"' OR mpre_id IN "
+                        + "(SELECT id FROM mpres WHERE mpres_id='"+mpres+"')) AND numepart NOT IN "
+                    + "(SELECT numepart FROM dmpres WHERE mpre_id='"+codpres+"')";
+                Statement detmat = (Statement) conex.createStatement();
+                detmat.execute(selecmat);
+                String insertemat = "INSERT INTO mmpres "
+                            + "SELECT '"+codpres+"', id, descri,desperdi, precio, unidad, status "
+                            + "FROM mmpres WHERE (id IN (SELECT mmpre_id FROM "
+                        + "dmpres WHERE mpre_id='"+codpres+"')"
+                        + ") AND mpre_id='"+pres+"' AND id NOT IN (SELECT id FROM mmpres WHERE mpre_id='"+codpres+"') LIMIT 1";
+                    Statement insertar = (Statement) conex.createStatement();
+                    insertar.execute(insertemat);
+        } catch (SQLException ex) {
+            Logger.getLogger(parametrorecon.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
+    public void insertaequipos(String codpres, String numero, int nume)
+    {
+         try {
+            String seleceq = "INSERT INTO deppres "
+                        + "SELECT '"+codpres+"', mppre_id, mepre_id, "+nume+", cantidad, precio, status "
+                        + "FROM deppres WHERE numero="+numero+" AND (mpre_id='"+pres+"' OR mpre_id IN "
+                        + "(SELECT id FROM mpres WHERE mpres_id='"+pres+"')) AND numero NOT IN "
+                    + "(SELECT numero FROM deppres WHERE mpre_id='"+codpres+"')";
+                Statement deteq = (Statement) conex.createStatement();
+                deteq.execute(seleceq);
+                String inserteeq = "INSERT INTO mepres "
+                            + "SELECT '"+codpres+"', id, descri,deprecia, precio, status "
+                            + "FROM mepres WHERE (id IN (SELECT mepre_id FROM "
+                        + "deppres WHERE mpre_id='"+codpres+"')"
+                        + ") AND mpre_id='"+pres+"' AND id NOT IN (SELECT id FROM mepres WHERE mpre_id='"+codpres+"') LIMIT 1";
+                    Statement insertar = (Statement) conex.createStatement();
+                    insertar.execute(inserteeq);
+        } catch (SQLException ex) {
+            Logger.getLogger(parametrorecon.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    public void insertamano(String codpres, String numero, int nume)
+    {
+         try {
+            String selecmano = "INSERT INTO dmoppres "
+                        + "SELECT '"+codpres+"',mmopre_id , mppre_id, "+nume+", cantidad, bono, salario, subsidi, status "
+                        + "FROM dmoppres WHERE numero="+numero+" AND (mpre_id='"+pres+"' OR mpre_id IN "
+                        + "(SELECT id FROM mpres WHERE mpres_id='"+pres+"')) AND numero NOT IN "
+                    + "(SELECT numero FROM dmoppres WHERE mpre_id='"+codpres+"')";
+                Statement detmano = (Statement) conex.createStatement();
+                detmano.execute(selecmano);
+                String insertemano = "INSERT INTO mmopres "
+                            + "SELECT '"+codpres+"', id, descri,bono, salario, subsid, status "
+                            + "FROM mmopres WHERE (id IN (SELECT mmopre_id FROM "
+                        + "dmoppres WHERE mpre_id='"+codpres+"')"
+                        + ") AND mpre_id='"+pres+"' AND id NOT IN (SELECT id FROM mmopres WHERE mpre_id='"+codpres+"') LIMIT 1";
+                    Statement insertar = (Statement) conex.createStatement();
+                    insertar.execute(insertemano);
+        } catch (SQLException ex) {
+            Logger.getLogger(parametrorecon.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+      public float cambiapreciopartida(String numeropartida){
+        //AL CAMBIAR UN VALOR DE LOS PARAMETROS DEL PRESUPUESTO COMO LOS PORCENTAJES DE PRESTACIONES SOCIALES
+        // SE RECALCULA EL COSTO DE TODAS LAS PARTIDAS
+        float rendimi=0, totalmat=0,totaleq=0,totalmano=0,totalcantidad=0;
+        float bono=0, subsid=0;
+        float presta=0, admin=0,util=0, impart=0, finan=0;
+        String cod = mpres+" VP-"+cuadro;
+        // CONSULTA VALORES DEL PRESUPUESTO DE RECONSIDERACION
+        String presupuesto = "SELECT porcfi,poripa FROM mpres WHERE id='"+cod+"'";
+        try {
+            Statement stpres = (Statement) conex.createStatement();
+            ResultSet rstpres = stpres.executeQuery(presupuesto);
+            while(rstpres.next())
+            {
+                impart=rstpres.getFloat("poripa");
+                finan = rstpres.getFloat("porcfi");
+            }
+        } catch (SQLException ex) {
+            
+            Logger.getLogger(buscapartida.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        //CONSULTA RENDIMIENTO DE LA PARTIDA Y VALORES DE PARTIDA
+        String selecrendimi = "SELECT rendimi,porcgad,porcpre,porcutil FROM mppres WHERE numero="+numeropartida+" AND (mpre_id='"+mpres+"' OR "
+                + "mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+mpres+"'))";
+        try {
+            Statement sts = (Statement) conex.createStatement();
+            ResultSet rsts = sts.executeQuery(selecrendimi);
+            while(rsts.next()){
+                rendimi=rsts.getFloat(1);
+                admin= rsts.getFloat(2);
+                util=rsts.getFloat(4);
+                presta = rsts.getFloat(3);
+            }
+        } catch (SQLException ex) {
+            System.out.println("Error al consultar el rendimiento de la partida, cuando se va a insertar en una nueva reconsideración");
+            Logger.getLogger(parametrorecon.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        // SUMANDO TOTAL DE MATERIAL
+        String totalmaterial="SELECT SUM((mm.precio+(mm.precio*(mm.desperdi/100)))*dm.cantidad) as total "
+                + "FROM dmpres as dm, mmpres as mm WHERE dm.numepart="+numeropartida+" AND dm.mmpre_id=mm.id "
+                + "AND (dm.mpre_id='"+mpres+"' OR dm.mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+mpres+"'))"
+                + " AND dm.mpre_id = mm.mpre_id";
+        try {
+            Statement st = (Statement) conex.createStatement();
+            ResultSet rst = st.executeQuery(totalmaterial);
+            while(rst.next()){
+              totalmat = rst.getFloat("total");
+            }
+        } catch (SQLException ex) {
+            System.out.println("Error al Sumar materiales de la partida de la valuación para agregarla en reconsideración");
+            Logger.getLogger(parametrorecon.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        String totalequipo = "SELECT SUM(IF(me.deprecia=0, (de.cantidad*me.precio),(de.cantidad*me.deprecia*me.precio))) as total "
+                + "FROM mepres as me, deppres as de WHERE de.mepre_id=me.id AND de.numero="+numeropartida+" AND "
+                + "(de.mpre_id='"+mpres+"' AND de.mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+mpres+"')) "
+                + "AND de.mpre_id=me.mpre_id";
+        try {
+            Statement st= (Statement) conex.createStatement();
+            ResultSet rst = st.executeQuery(totalequipo);
+            while(rst.next()){
+                totaleq=rst.getFloat(1);
+            }
+        } catch (SQLException ex) {
+            System.out.println("Error al consultar el total en equipos para la inserción de partidas en la reconsideración");
+            Logger.getLogger(parametrorecon.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        String consultamano = "SELECT SUM(dm.cantidad) as cantidad, mm.bono, mm.subsid, "
+                    + "SUM(mm.salario*dm.cantidad) as total FROM mmopres as mm, dmoppres as dm "
+                + "WHERE dm.numero ="+numeropartida+" AND (dm.mpre_id='"+mpres+"' OR dm.mpre_id IN "
+                + "(SELECT id FROM mpres WHERE mpres_id='"+mpres+"')) AND dm.mmopre_id=mm.id AND dm.mpre_id = mm.mpre_id";
+        try {
+            Statement st = (Statement) conex.createStatement();
+            ResultSet rst = st.executeQuery(consultamano);
+            while(rst.next()){
+                totalmano = rst.getFloat("total");
+                totalcantidad = rst.getFloat("cantidad");
+                bono = rst.getFloat("mm.bono");
+                subsid = rst.getFloat("mm.subsid");
+            }
+        } catch (SQLException ex) {
+            System.out.println("Error al sumar la cantidad de mano de obra en la inserción de la reconsideración");
+            Logger.getLogger(parametrorecon.class.getName()).log(Level.SEVERE, null, ex);
+        }
+       
+        bono = totalcantidad*bono;
+        subsid = totalcantidad*subsid;
+        presta = totalmano*presta/100;
+        float auxcontmano = totalmano+bono+subsid+presta;
+        if(rendimi==0)
+            rendimi=1;
+        totalmano=auxcontmano/rendimi;
+        float total = totalmat+totaleq+totalmano;
+        float auxtotal=total;
+        admin = total*admin/100;
+        util=(auxtotal+admin)*util/100;
+        auxtotal=total+admin+util;
+        finan=auxtotal*finan/100;
+        impart=auxtotal*impart/100;
+        total=auxtotal+finan+impart;
+        return total;
+        
+    }
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
         doClose(RET_CANCEL);
     }//GEN-LAST:event_cancelButtonActionPerformed
@@ -537,12 +717,17 @@ public void busca(){
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-                 int totalfilas = jTable1.getRowCount();
+     int totalfilas = jTable1.getRowCount();
       // System.out.println("totalfilas: "+totalfilas);
         for(int i=0; i<totalfilas; i++){
-            auxpart[i] =(String) jTable1.getValueAt(i, 1);
+            auxpart[i] =jTable1.getValueAt(i, 1).toString();
         }
         auxcont = totalfilas;
+        try {
+            cargapresupuesto();
+        } catch (SQLException ex) {
+            Logger.getLogger(buscapartida.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton12ActionPerformed
@@ -552,7 +737,15 @@ public void busca(){
             auxpart[i] ="";
         }
         auxcont = 0;
-        busca();        // TODO add your handling code here:
+        try {
+            cargapresupuesto();
+        } catch (SQLException ex) {
+            Logger.getLogger(buscapartida.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+                
+        
+        // TODO add your handling code here:
     }//GEN-LAST:event_jButton12ActionPerformed
 
     
@@ -560,19 +753,6 @@ public void busca(){
         variacion=varia;
         tipovar = tipo;
     }
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-     variacion=0;
-     tipovar=0;
-      variacionlineal varia = new variacionlineal(null, true, mpres, conex, cuadro, this);
-      int xi = (pres.getWidth()/2)-400/2;
-      int yi = (pres.getHeight()/2)-300/2;
-      varia.setBounds(xi, yi, 400, 300);
-      varia.setVisible(true);
-      agrega();
-      doClose(RET_OK);
-      
-    }//GEN-LAST:event_jButton2ActionPerformed
-
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
         
     partida = jTable1.rowAtPoint(evt.getPoint());
@@ -584,8 +764,7 @@ public void busca(){
                     bol = (Boolean) obj;
                     if (bol.booleanValue()) {
                        // System.out.println("Selecciono este material");
-                        jButton2.setEnabled(true);
-                        jButton3.setEnabled(true);
+                       
                         auxpart[auxcont] = part;
                         auxcont++;
                     }else
@@ -602,16 +781,15 @@ public void busca(){
                 }        // TODO add your handling code here:
     }//GEN-LAST:event_jTable1MouseClicked
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        verificarcheck();
-        
-    }//GEN-LAST:event_jButton3ActionPerformed
-
     private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_okButtonMouseClicked
         agrega();
          JOptionPane.showMessageDialog(null, "Se han insertado las partidas modifique los valores necesarios");
         doClose(RET_OK);        // TODO add your handling code here:
     }//GEN-LAST:event_okButtonMouseClicked
+
+    private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_okButtonActionPerformed
     public void verificarcheck() {
 
         int registros = jTable1.getRowCount();
@@ -672,8 +850,6 @@ public void busca(){
     private javax.swing.JButton cancelButton;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton12;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
