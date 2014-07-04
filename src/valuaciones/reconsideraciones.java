@@ -25,8 +25,11 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
+import presupuesto.materiales.matrizmaterialespres;
 import presupuestos.Partida;
 import presupuestos.Presupuesto;
+import presupuestos.equipo.matrizequipospres;
+import presupuestos.manoobra.matrizmanopres;
 import winspapus.Principal;
 
 
@@ -312,12 +315,27 @@ public class reconsideraciones extends javax.swing.JDialog {
 
         jButton11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/winspapus/imagenes/materialbarra.png"))); // NOI18N
         jButton11.setToolTipText("Materiales");
+        jButton11.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton11ActionPerformed(evt);
+            }
+        });
 
         jButton12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/winspapus/imagenes/camion.fw.png"))); // NOI18N
         jButton12.setToolTipText("Equipos Reconsideración");
+        jButton12.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton12ActionPerformed(evt);
+            }
+        });
 
         jButton13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/winspapus/imagenes/barracasco.png"))); // NOI18N
         jButton13.setToolTipText("Mano de Obra Reconsideración");
+        jButton13.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton13ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -416,7 +434,7 @@ public class reconsideraciones extends javax.swing.JDialog {
 
         jTextArea1.setColumns(20);
         jTextArea1.setEditable(false);
-        jTextArea1.setFont(new java.awt.Font("Monospaced", 0, 11)); // NOI18N
+        jTextArea1.setFont(new java.awt.Font("Monospaced", 0, 11));
         jTextArea1.setLineWrap(true);
         jTextArea1.setRows(3);
         jTextArea1.setWrapStyleWord(true);
@@ -712,7 +730,7 @@ public class reconsideraciones extends javax.swing.JDialog {
                 .addContainerGap(6, Short.MAX_VALUE))
         );
 
-        jTable1.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        jTable1.setFont(new java.awt.Font("Tahoma", 0, 10));
         jTable1.setSelectionBackground(new java.awt.Color(255, 153, 51));
         jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -1516,11 +1534,16 @@ private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
             while(rstcuadro.next()){
                 cuadro =rstcuadro.getInt(1);
             }
+            cuadro++;
         } catch (SQLException ex) {
             Logger.getLogger(reconsideraciones.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        
+        String codpres=mpres+" VP-"+cuadro;
+        parametrorecon para = new parametrorecon(prin, true, conex, mpres, String.valueOf(cuadro), codpres);
+        int xi = (prin.getWidth()/2)-550/2;
+        int yi =(prin.getHeight()/2)-600/2;
+         para.setBounds(xi, yi, 550, 600);
+        para.setVisible(true);
         
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton6ActionPerformed
@@ -1649,6 +1672,40 @@ private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         cambiapreciopartida(numero);        
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton7ActionPerformed
+
+private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
+     codnuevopres= mpres+" VP-"+nrocuadro;       
+    matrizmaterialespres materiales = new matrizmaterialespres(prin, true, conex, codnuevopres,prin);
+        int xi = (prin.getWidth()/2)-700/2;
+        int yi = (prin.getHeight()/2)-500/2;
+        materiales.setBounds(xi, yi, 700, 500);
+        materiales.setVisible(true);
+    
+    // TODO add your handling code here:
+}//GEN-LAST:event_jButton11ActionPerformed
+
+private void jButton12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton12ActionPerformed
+
+     codnuevopres= mpres+" VP-"+nrocuadro;      
+    matrizequipospres equipos = new matrizequipospres(prin, true, conex, codnuevopres,prin);
+        int xi = (prin.getWidth()/2)-700/2;
+        int yi = (prin.getHeight()/2)-500/2;
+        equipos.setBounds(xi, yi, 700, 500);
+        equipos.setVisible(true);
+    
+    // TODO add your handling code here:
+}//GEN-LAST:event_jButton12ActionPerformed
+
+private void jButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton13ActionPerformed
+    codnuevopres= mpres+" VP-"+nrocuadro;              
+    matrizmanopres mano = new matrizmanopres(prin, true, conex, codnuevopres,prin);
+        int xi = (prin.getWidth()/2)-700/2;
+        int yi = (prin.getHeight()/2)-500/2;
+        mano.setBounds(xi, yi, 700, 500);
+        mano.setVisible(true);
+    
+    // TODO add your handling code here:
+}//GEN-LAST:event_jButton13ActionPerformed
      private void ver() 
      {
          String parti=jTable1.getValueAt(filapart, 1).toString();

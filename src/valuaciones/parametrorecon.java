@@ -31,6 +31,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
+import winspapus.Principal;
 
 
 /**
@@ -57,7 +58,7 @@ public class parametrorecon extends javax.swing.JDialog {
     String nrocuadro=null;
     private boolean enc;
     String presrecon;
-    public parametrorecon(java.awt.Frame parent, boolean modal, Connection conex, String pres, String nrocuadro, String presrecon) {
+    public parametrorecon(Principal parent, boolean modal, Connection conex, String pres, String nrocuadro, String presrecon) {
         super(parent, modal);
         initComponents();
         this.conex = conex;
@@ -106,19 +107,28 @@ public class parametrorecon extends javax.swing.JDialog {
         }
     }
     public final void modelovalu(){
-        String selectvalu="SELECT id FROM mvalus WHERE mpre_id='"+pres+"' WHERE id NOT IN "
+        String selectvalu="SELECT id FROM mvalus WHERE mpre_id='"+pres+"' AND id NOT IN "
                 + "(SELECT valu FROM mpres WHERE mpres_id='"+pres+"')";
-        
+        int cuenta=0;
         Statement st;
         try {
             st = (Statement) conex.createStatement();
             ResultSet rst = st.executeQuery(selectvalu);
             while(rst.next()){
                 jComboBox1.addItem(rst.getString("id"));
+                cuenta++;
             }
         } catch (SQLException ex) {
             Logger.getLogger(parametrorecon.class.getName()).log(Level.SEVERE, null, ex);
         }
+        if(cuenta==0){
+            JOptionPane.showMessageDialog(null, "No hay más valuaciones para reconsiderar");
+            
+            okButton.setEnabled(false);
+            setVisible(false);
+            dispose();
+        }
+                
         
     }
     /** @return the return status of this dialog - one of RET_OK or RET_CANCEL */

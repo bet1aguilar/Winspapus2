@@ -275,6 +275,9 @@
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" value="Materiales"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton11ActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="jButton12">
               <Properties>
@@ -283,6 +286,9 @@
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" value="Equipos Reconsideraci&#xf3;n"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton12ActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="jButton13">
               <Properties>
@@ -291,6 +297,9 @@
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" value="Mano de Obra Reconsideraci&#xf3;n"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton13ActionPerformed"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>

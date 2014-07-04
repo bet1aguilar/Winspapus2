@@ -1,7 +1,7 @@
 
 package presupuestos.manoobra;
 
-import winspapus.manos.*;
+
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.Statement;
 import java.awt.event.ActionEvent;
@@ -23,15 +23,15 @@ public class recalcula extends javax.swing.JDialog {
     public static final int RET_CANCEL = 0;
  
     public static final int RET_OK = 1;
-    String mtabu;
+    String mpres;
     Connection conex;
-    public recalcula(java.awt.Frame parent, boolean modal, String mtabu, Connection conex) {
+    public recalcula(java.awt.Frame parent, boolean modal, String mpres, Connection conex) {
         super(parent, modal);
         initComponents();
         jLabel5.setVisible(false);
         jLabel6.setVisible(false);
         this.conex = conex;
-        this.mtabu = mtabu;
+        this.mpres = mpres;
         String cancelName = "cancel";
         InputMap inputMap = getRootPane().getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), cancelName);
@@ -131,6 +131,11 @@ public class recalcula extends javax.swing.JDialog {
         okButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 okButtonMouseClicked(evt);
+            }
+        });
+        okButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                okButtonActionPerformed(evt);
             }
         });
 
@@ -297,7 +302,7 @@ public class recalcula extends javax.swing.JDialog {
                     try {
                         st = (Statement) conex.createStatement();
                         System.out.println("Porcentaje aumento");
-                        String sql="UPDATE mmotabs set bono=bono*"+bono+", salario=salario*"+salario+", subsid=subsid*"+subsid+" WHERE mtabus_id='"+mtabu+"'";
+                        String sql="UPDATE mmopres set bono=bono*"+bono+", salario=salario*"+salario+", subsid=subsid*"+subsid+" WHERE mpre_id='"+mpres+"'";
                         System.out.println(sql);  
                           st.execute(sql);
                     JOptionPane.showMessageDialog(null, "Se ha aumentado el precio de la mano de obra en un "+jTextField1.getText().toString()+"%");
@@ -315,7 +320,7 @@ public class recalcula extends javax.swing.JDialog {
                             Statement st;
                     try {
                         st = (Statement) conex.createStatement();
-                        String sql="UPDATE mmotabs set bono=bono-(bono*"+bono+")/100, salario=salario-(salario*"+salario+")/100, subsid=subsid-(subsid*"+subsid+")/100 WHERE mtabus_id='"+mtabu+"'";
+                        String sql="UPDATE mmopres set bono=bono-(bono*"+bono+")/100, salario=salario-(salario*"+salario+")/100, subsid=subsid-(subsid*"+subsid+")/100 WHERE mpre_id='"+mpres+"'";
                           st.execute(sql);
                     JOptionPane.showMessageDialog(null, "Se ha aumentado el precio de la mano de obra en un "+jTextField1.getText().toString()+"%");
                     } catch (SQLException ex) {
@@ -334,16 +339,16 @@ public class recalcula extends javax.swing.JDialog {
                     
                     try {
                         Statement st = (Statement) conex.createStatement();
-                        String sql="UPDATE mmotabs set bono="+bono+", salario="+salario+", subsid="+subsid+" WHERE mtabus_id='"+mtabu+"'";
+                        String sql="UPDATE mmopres set bono="+bono+", salario="+salario+", subsid="+subsid+" WHERE mpre_id='"+mpres+"'";
                         if(bono==0 && salario==0)
-                            sql="UPDATE mmotabs set salario="+salario+", subsid="+subsid+" WHERE mtabus_id='"+mtabu+"'";
+                            sql="UPDATE mmopres set salario="+salario+", subsid="+subsid+" WHERE mpre_id='"+mpres+"'";
                          
                         
                         if(salario==0 && subsid==0)
-                            sql="UPDATE mmotabs set bono="+bono+" WHERE mtabus_id='"+mtabu+"'";
+                            sql="UPDATE mmopres set bono="+bono+" WHERE mpre_id='"+mpres+"'";
                         
                         if(bono==0 && subsid==0)
-                            sql="UPDATE mmotabs set salario="+salario+" WHERE mtabus_id='"+mtabu+"'";
+                            sql="UPDATE mmopres set salario="+salario+" WHERE mpre_id='"+mpres+"'";
   
                         
                          st.execute(sql);
@@ -363,7 +368,7 @@ public class recalcula extends javax.swing.JDialog {
                         
                     try {
                          System.out.println("Variacion Aumento");
-                         String sql="UPDATE mmotabs set bono=bono+"+bono+", salario=salario+"+salario+", subsid= subsid+"+subsid+" WHERE mtabus_id='"+mtabu+"'";
+                         String sql="UPDATE mmopres set bono=bono+"+bono+", salario=salario+"+salario+", subsid= subsid+"+subsid+" WHERE mpre_id='"+mpres+"'";
                         System.out.println(sql);  
                         Statement st = (Statement) conex.createStatement();
                         
@@ -379,7 +384,7 @@ public class recalcula extends javax.swing.JDialog {
                         System.out.println("Variacion Disminucion");
                       try {
                         Statement st = (Statement) conex.createStatement();
-                        String sql="UPDATE mmotabs set bono=bono-"+bono+", salario=salario-"+salario+", subsid=subsid-"+subsid+" WHERE mtabus_id='"+mtabu+"'";
+                        String sql="UPDATE mmopres set bono=bono-"+bono+", salario=salario-"+salario+", subsid=subsid-"+subsid+" WHERE mpre_id='"+mpres+"'";
                           st.execute(sql);
                     JOptionPane.showMessageDialog(null, "Se ha aumentado el precio de la mano de obra en un "+jTextField1.getText().toString()+"");
                     } catch (SQLException ex) {
@@ -392,6 +397,10 @@ public class recalcula extends javax.swing.JDialog {
             }
                     // TODO add your handling code here:
     }//GEN-LAST:event_okButtonMouseClicked
+
+private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
+// TODO add your handling code here:
+}//GEN-LAST:event_okButtonActionPerformed
     
     private void doClose(int retStatus) {
         returnStatus = retStatus;

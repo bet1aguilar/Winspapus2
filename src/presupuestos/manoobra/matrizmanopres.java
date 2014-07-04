@@ -453,8 +453,8 @@ int op=JOptionPane.showConfirmDialog(rootPane, "Desea Eliminar el equipo?", "Eli
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
 recalcula nuevos = new recalcula(prin, true, pres, conex);
  int xi=  (prin.getWidth()/2)-350/2;
- int yi=(prin.getHeight()/2)-300/2;
- nuevos.setBounds(xi, yi, 350, 300);
+ int yi=(prin.getHeight()/2)-400/2;
+ nuevos.setBounds(xi, yi, 350, 400);
   nuevos.setVisible(true);
     cargamano();
         
