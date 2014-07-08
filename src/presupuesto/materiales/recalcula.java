@@ -249,7 +249,8 @@ public class recalcula extends javax.swing.JDialog {
                     Statement st = (Statement) conex.createStatement();
                     String sql="UPDATE mmpres set precio=precio*"+porcentaje+" WHERE mpre_id='"+pres+"'";
                     st.execute(sql);
-                    JOptionPane.showMessageDialog(null, "Se ha aumentado el precio de los materiales en un "+jTextField1.getText().toString()+"%");
+                    JOptionPane.showMessageDialog(null, "Se ha aumentado el precio de los materiales "
+                            + "en un "+jTextField1.getText().toString()+"%");
                 } catch (SQLException ex) {
                      JOptionPane.showMessageDialog(null, "No Se ha aumentado el precio de los materiales");
                     Logger.getLogger(recalcula.class.getName()).log(Level.SEVERE, null, ex);

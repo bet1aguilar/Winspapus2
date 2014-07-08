@@ -629,7 +629,7 @@ public class parametrorecon extends javax.swing.JDialog {
         
         String totalequipo = "SELECT SUM(IF(me.deprecia=0, (de.cantidad*me.precio),(de.cantidad*me.deprecia*me.precio))) as total "
                 + "FROM mepres as me, deppres as de WHERE de.mepre_id=me.id AND de.numero="+numeropartida+" AND "
-                + "(de.mpre_id='"+pres+"' AND de.mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+pres+"')) "
+                + "(de.mpre_id='"+pres+"' OR de.mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+pres+"')) "
                 + "AND de.mpre_id=me.mpre_id";
         try {
             Statement st= (Statement) conex.createStatement();
@@ -666,6 +666,7 @@ public class parametrorecon extends javax.swing.JDialog {
         if(rendimi==0)
             rendimi=1;
         totalmano=auxcontmano/rendimi;
+        totaleq=totaleq/rendimi;
         float total = totalmat+totaleq+totalmano;
         float auxtotal=total;
         admin = total*admin;

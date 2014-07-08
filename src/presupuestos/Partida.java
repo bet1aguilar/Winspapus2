@@ -1199,14 +1199,14 @@ float unitario = (float) totalprecunit;
     }//GEN-LAST:event_jCheckBox1KeyPressed
 
     private void jSpinner1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jSpinner1KeyTyped
-
-        
-               
+      
         int code = evt.getKeyCode();
         char car = evt.getKeyChar();
-        if ((car<'0' || car>'9')) {
+        if ((car<'0' || car>'9')) 
+        {
             evt.consume();
-        }// TODO add your handling code here:
+        }
+        
     }//GEN-LAST:event_jSpinner1KeyTyped
 
     private void jTextField5KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField5KeyTyped

@@ -454,12 +454,14 @@ private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
 }//GEN-LAST:event_jButton3ActionPerformed
 
 private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-recalcula nuevos = new recalcula(prin, true, pres, conex);
- int xi=  (prin.getWidth()/2)-350/2;
- int yi=(prin.getHeight()/2)-300/2;
- nuevos.setBounds(xi, yi, 350, 300);
-  nuevos.setVisible(true);
+    recalcula nuevos = new recalcula(prin, true, pres, conex);
+     int xi=  (prin.getWidth()/2)-350/2;
+     int yi=(prin.getHeight()/2)-300/2;
+     nuevos.setBounds(xi, yi, 350, 300);
+      nuevos.setVisible(true);
     cargamats();
+    
+    
     // TODO add your handling code here:
 }//GEN-LAST:event_jButton4ActionPerformed
     

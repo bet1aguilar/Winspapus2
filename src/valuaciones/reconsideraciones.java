@@ -689,23 +689,26 @@ public class reconsideraciones extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel9)
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                             .addComponent(jTextField11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel14)
                             .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel10))
                         .addGap(10, 10, 10)
-                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jTextField12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel8)
-                                .addComponent(jTextField14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                            .addComponent(jTextField12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel15)
                             .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel11)))
-                    .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGap(30, 30, 30)
+                        .addComponent(jTextField14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGap(33, 33, 33)
+                        .addComponent(jLabel8))
+                    .addComponent(jLabel9)
+                    .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(jTextField13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -727,7 +730,7 @@ public class reconsideraciones extends javax.swing.JDialog {
                             .addComponent(jLabel17))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel18)))
-                .addContainerGap(6, Short.MAX_VALUE))
+                .addContainerGap(12, Short.MAX_VALUE))
         );
 
         jTable1.setFont(new java.awt.Font("Tahoma", 0, 10));
@@ -765,7 +768,7 @@ public class reconsideraciones extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
-                .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, 143, Short.MAX_VALUE)
+                .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(0, 0, 0)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -1550,20 +1553,20 @@ private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
  public float cambiapreciopartida(String numeropartida){
         //AL CAMBIAR UN VALOR DE LOS PARAMETROS DEL PRESUPUESTO COMO LOS PORCENTAJES DE PRESTACIONES SOCIALES
         // SE RECALCULA EL COSTO DE TODAS LAS PARTIDAS
-        float presta = Float.valueOf(jTextField5.getText())/100;
-        float admin = Float.valueOf(jTextField6.getText())/100;
-        float util = Float.valueOf(jTextField7.getText())/100;
-        float finan = Float.valueOf(jTextField8.getText())/100;
-        float impart = Float.valueOf(jTextField9.getText())/100;
-        float impgen = Float.valueOf(jTextField10.getText())/100;
+        float presta = Float.valueOf(jTextField7.getText())/100;
+        float admin = Float.valueOf(jTextField9.getText())/100;
+        float util = Float.valueOf(jTextField10.getText())/100;
+        float finan = Float.valueOf(jTextField11.getText())/100;
+        float impart = Float.valueOf(jTextField12.getText())/100;
+        float impgen = Float.valueOf(jTextField13.getText())/100;
         float precio=0, totalmat=0, totaleq=0, totalmano=0, totalcantidad=0;
         float bono=0, subsid=0;
         String codpres = pres+" VP-"+nrocuadro;
         float rendimi=0;
         String mvalu=jTextField1.getText();
         if(!jCheckBox1.isSelected()){
-            String select="SELECT porcgad, porcpre, porcutil FROM mppres WHERE numero="+numeropartida+" "
-                    + "AND (mpre_id='"+pres+"' OR mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+pres+"'))";
+            String select="SELECT porcgad, porcpre, porcutil FROM mpp res WHERE numero="+numeropartida+" "
+                    + "AND (mpre_id='"+codpres+"')";
             String porcgad=null, porcpre=null, porcutil=null;
             try {
                 Statement str = (Statement) conex.createStatement();
@@ -1574,13 +1577,13 @@ private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
                     porcutil=rstr.getString(3);
                 }
                 if(porcgad!=null){
-                    admin=Float.valueOf(porcgad);
+                    admin=Float.valueOf(porcgad)/100;
                 }
                 if(porcpre!=null){
-                    presta=Float.valueOf(porcpre);
+                    presta=Float.valueOf(porcpre)/100;
                 }
                 if(porcutil!=null){
-                    util=Float.valueOf(porcutil);
+                    util=Float.valueOf(porcutil)/100;
                 }
             } catch (SQLException ex) {
                 System.out.println("No se pudo consultar el porcentaje de las partidas en los parametros para la reconsideración");
@@ -1588,8 +1591,7 @@ private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
             }
         }
         //CONSULTA RENDIMIENTO DE LA PARTIDA
-        String selecrendimi = "SELECT rendimi FROM mppres WHERE numero="+numeropartida+" AND (mpre_id='"+pres+"' OR "
-                + "mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+pres+"'))";
+        String selecrendimi = "SELECT rendimi FROM mppres WHERE numero="+numeropartida+" AND mpre_id='"+codpres+"'";
         try {
             Statement sts = (Statement) conex.createStatement();
             ResultSet rsts = sts.executeQuery(selecrendimi);
@@ -1603,8 +1605,8 @@ private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         
         // SUMANDO TOTAL DE MATERIAL
         String totalmaterial="SELECT SUM((mm.precio+(mm.precio*(mm.desperdi/100)))*dm.cantidad) as total "
-                + "FROM dmppres as dm, mmpres as mm WHERE dm.numepart="+numeropartida+" AND dm.mmpre_id=mm.id "
-                + "AND (dm.mpre_id='"+pres+"' OR dm.mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+pres+"'))"
+                + "FROM dmpres as dm, mmpres as mm WHERE dm.numepart="+numeropartida+" AND dm.mmpre_id=mm.id "
+                + "AND dm.mpre_id='"+codpres+"' "
                 + " AND dm.mpre_id = mm.mpre_id";
         try {
             Statement st = (Statement) conex.createStatement();
@@ -1619,7 +1621,7 @@ private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         
         String totalequipo = "SELECT SUM(IF(me.deprecia=0, (de.cantidad*me.precio),(de.cantidad*me.deprecia*me.precio))) as total "
                 + "FROM mepres as me, deppres as de WHERE de.mepre_id=me.id AND de.numero="+numeropartida+" AND "
-                + "(de.mpre_id='"+pres+"' AND de.mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+pres+"')) "
+                + "de.mpre_id='"+codpres+"' "
                 + "AND de.mpre_id=me.mpre_id";
         try {
             Statement st= (Statement) conex.createStatement();
@@ -1632,10 +1634,9 @@ private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
             Logger.getLogger(parametrorecon.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        String consultamano = "SELECT SUM(dm.cantidad) as cantidad, mm.bono, mm.subsid "
+        String consultamano = "SELECT SUM(dm.cantidad) as cantidad, mm.bono, mm.subsid, "
                     + "SUM(mm.salario*dm.cantidad) as total FROM mmopres as mm, dmoppres as dm "
-                + "WHERE dm.numero ="+numeropartida+" AND (dm.mpre_id='"+pres+"' OR mpre_id IN "
-                + "(SELECT id FROM mpres WHERE mpres_id='"+pres+"')) AND dm.mmopre_id=mm.id AND dm.mpre_id = mm.mpre_id";
+                + "WHERE dm.numero ="+numeropartida+" AND dm.mpre_id='"+codpres+"'  AND dm.mmopre_id=mm.id AND dm.mpre_id = mm.mpre_id";
         try {
             Statement st = (Statement) conex.createStatement();
             ResultSet rst = st.executeQuery(consultamano);
@@ -1646,6 +1647,7 @@ private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
                 subsid = rst.getFloat("mm.subsid");
             }
         } catch (SQLException ex) {
+            System.out.println("Error al sumar la cantidad de mano de obra en la inserción de la reconsideración");
             Logger.getLogger(parametrorecon.class.getName()).log(Level.SEVERE, null, ex);
         }
         bono = totalcantidad*bono;
@@ -1655,6 +1657,7 @@ private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         if(rendimi==0)
             rendimi=1;
         totalmano=auxcontmano/rendimi;
+        totaleq=totaleq/rendimi;
         float total = totalmat+totaleq+totalmano;
         float auxtotal=total;
         admin = total*admin;
@@ -1673,15 +1676,35 @@ private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton7ActionPerformed
 
+    
+    public void actualizapartidas(){
+     String consultapartidas="SELECT numero FROM mppres WHERE mpre_id='"+codnuevopres+"'";
+        try {
+            Statement st = (Statement) conex.createStatement();
+            ResultSet rst = st.executeQuery(consultapartidas);
+            
+            while(rst.next()){
+               numero = rst.getString(1); 
+               float precio=cambiapreciopartida(numero);
+               String partidas = "UPDATE mppres SET precunit="+precio+" WHERE mpre_id='"+codnuevopres+"' AND "
+                       + "numero="+numero+"";
+               Statement actualiza = (Statement) conex.createStatement();
+               actualiza.execute(partidas);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(reconsideraciones.class.getName()).log(Level.SEVERE, null, ex);
+        }
+}
 private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
-     codnuevopres= mpres+" VP-"+nrocuadro;       
+    codnuevopres= mpres+" VP-"+nrocuadro;       
     matrizmaterialespres materiales = new matrizmaterialespres(prin, true, conex, codnuevopres,prin);
         int xi = (prin.getWidth()/2)-700/2;
         int yi = (prin.getHeight()/2)-500/2;
         materiales.setBounds(xi, yi, 700, 500);
         materiales.setVisible(true);
-    
-    // TODO add your handling code here:
+        actualizapartidas();
+        buscacuadro();
+       
 }//GEN-LAST:event_jButton11ActionPerformed
 
 private void jButton12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton12ActionPerformed
@@ -1692,6 +1715,8 @@ private void jButton12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
         int yi = (prin.getHeight()/2)-500/2;
         equipos.setBounds(xi, yi, 700, 500);
         equipos.setVisible(true);
+        actualizapartidas();
+        buscacuadro();
     
     // TODO add your handling code here:
 }//GEN-LAST:event_jButton12ActionPerformed
@@ -1703,6 +1728,8 @@ private void jButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
         int yi = (prin.getHeight()/2)-500/2;
         mano.setBounds(xi, yi, 700, 500);
         mano.setVisible(true);
+        actualizapartidas();
+        buscacuadro();
     
     // TODO add your handling code here:
 }//GEN-LAST:event_jButton13ActionPerformed
