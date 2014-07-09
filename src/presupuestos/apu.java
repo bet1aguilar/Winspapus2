@@ -2271,7 +2271,7 @@ insertare=1;
         String bono = jTextField18.getText().toString();
         String salario = jTextField19.getText().toString();
         String descrip = jTextField16.getText().toUpperCase();
-        String sql = "UPDATE dmoppres SET cantidad="+cant+", salario="+salario+", bono="+bono+", subdidi="+jTextField21.getText()+" WHERE mmopre_id='"+man+"' AND mppre_id='"+partida+"' AND mpre_id='"+pres+"'";
+        String sql = "UPDATE dmoppres SET cantidad="+cant+", salario="+salario+", bono="+bono+", subdid="+jTextField21.getText()+" WHERE mmopre_id='"+man+"' AND mppre_id='"+partida+"' AND mpre_id='"+pres+"'";
        String actualizamano = "UPDATE mmopres SET descri='"+descrip+"', salario="+salario+", bono="+bono+", subsid="+jTextField21.getText()+" "
                + "WHERE mpre_id='"+pres+"' AND id='"+man+"'";
         

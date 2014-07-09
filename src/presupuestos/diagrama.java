@@ -317,7 +317,7 @@ public void mouseClicked(java.awt.event.MouseEvent e)
        scroll.setBorder(BorderFactory.createEtchedBorder(Color.lightGray, Color.gray));
        scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
        scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
-        scroll.setSize(jPanel7.getWidth(), jPanel7.getHeight());
+        scroll.setSize(jPanel7.getWidth()-10, jPanel7.getHeight()-20);
        // scroll.add(jTable1);
         scroll.setViewportView(tabla);
        jLabel10.add(scroll); 
@@ -1837,17 +1837,17 @@ public void mouseClicked(java.awt.event.MouseEvent e)
 
         jPanel3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 11));
         jLabel2.setText("Nro. Presupuesto:");
 
         jTextField1.setEditable(false);
 
-        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 11));
         jLabel3.setText("Nro. Partida:");
 
         jTextField2.setEditable(false);
 
-        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 11));
         jLabel4.setText("Código de Partida:");
 
         jLabel9.setFont(new java.awt.Font("Tahoma", 1, 11));
@@ -1862,7 +1862,7 @@ public void mouseClicked(java.awt.event.MouseEvent e)
 
         jTextArea1.setColumns(20);
         jTextArea1.setEditable(false);
-        jTextArea1.setFont(new java.awt.Font("Monospaced", 0, 11)); // NOI18N
+        jTextArea1.setFont(new java.awt.Font("Monospaced", 0, 11));
         jTextArea1.setLineWrap(true);
         jTextArea1.setRows(2);
         jScrollPane4.setViewportView(jTextArea1);
@@ -1913,7 +1913,7 @@ public void mouseClicked(java.awt.event.MouseEvent e)
         jTextField3.setEditable(false);
         jTextField3.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
 
-        jLabel19.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel19.setFont(new java.awt.Font("Tahoma", 1, 11));
         jLabel19.setText("No. de días por Partida:");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -2023,16 +2023,16 @@ public void mouseClicked(java.awt.event.MouseEvent e)
 
         jPanel5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        jLabel5.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel5.setFont(new java.awt.Font("Tahoma", 1, 11));
         jLabel5.setText("Partida:");
 
         jTextField4.setEditable(false);
         jTextField4.setToolTipText("Descripción");
 
-        jLabel6.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel6.setFont(new java.awt.Font("Tahoma", 1, 11));
         jLabel6.setText("Inicio:");
 
-        jLabel7.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel7.setFont(new java.awt.Font("Tahoma", 1, 11));
         jLabel7.setText("Terminado:");
 
         jDateChooser2.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -2088,8 +2088,8 @@ public void mouseClicked(java.awt.event.MouseEvent e)
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel7Layout.createSequentialGroup()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 352, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 352, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         jScrollPane1.addMouseWheelListener(new java.awt.event.MouseWheelListener() {
@@ -2177,7 +2177,7 @@ public void mouseClicked(java.awt.event.MouseEvent e)
         jTextField5.setEditable(false);
         jTextField5.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
 
-        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 11));
         jLabel8.setText("Costo:");
 
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/winspapus/imagenes/guardar1.fw.png"))); // NOI18N
@@ -2196,13 +2196,13 @@ public void mouseClicked(java.awt.event.MouseEvent e)
             }
         });
 
-        jLabel17.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel17.setFont(new java.awt.Font("Tahoma", 1, 11));
         jLabel17.setText("Costo por Lapso:");
 
         jTextField6.setEditable(false);
         jTextField6.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
 
-        jLabel18.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel18.setFont(new java.awt.Font("Tahoma", 1, 11));
         jLabel18.setText("Lapsos:");
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Días", "Semanas", "Meses", "Años" }));
@@ -2217,13 +2217,13 @@ public void mouseClicked(java.awt.event.MouseEvent e)
             }
         });
 
-        jLabel21.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel21.setFont(new java.awt.Font("Tahoma", 1, 11));
         jLabel21.setText("Días proyecto:");
 
         jTextField12.setEditable(false);
         jTextField12.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
 
-        jLabel22.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel22.setFont(new java.awt.Font("Tahoma", 1, 11));
         jLabel22.setText("Días del Cronograma:");
 
         jTextField13.setEditable(false);
