@@ -293,7 +293,8 @@ public class variatab extends javax.swing.JDialog {
                 Logger.getLogger(variatab.class.getName()).log(Level.SEVERE, null, ex);
             }
             
-            String selec = "SELECT precasu, precunit FROM mptabs WHERE codicove='"+codicove+"' AND mtabus_id='"+jComboBox1.getSelectedItem()+"'";
+            String selec = "SELECT precasu, precunit FROM mptabs WHERE codicove='"+codicove+"' AND "
+                    + "mtabus_id='"+jComboBox1.getSelectedItem()+"'";
             try {
                 Statement str = (Statement) conex.createStatement();
                 ResultSet rstr = str.executeQuery(selec);
