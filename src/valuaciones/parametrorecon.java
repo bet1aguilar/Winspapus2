@@ -108,7 +108,8 @@ public class parametrorecon extends javax.swing.JDialog {
     }
     public final void modelovalu(){
         String selectvalu="SELECT id FROM mvalus WHERE mpre_id='"+pres+"' AND id NOT IN "
-                + "(SELECT valu FROM mpres WHERE mpres_id='"+pres+"')";
+                + "(SELECT valu FROM mpres WHERE mpres_id='"+pres+"' AND valu IS NOT NULL)";
+        System.out.println("selectvalu "+selectvalu);
         int cuenta=0;
         Statement st;
         try {
@@ -126,7 +127,7 @@ public class parametrorecon extends javax.swing.JDialog {
             
             okButton.setEnabled(false);
             setVisible(false);
-            dispose();
+            this.dispose();
         }
                 
         

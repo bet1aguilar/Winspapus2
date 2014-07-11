@@ -2836,7 +2836,7 @@ public void agrega(){
 
         if(entra==1){
             entra=0;
-            id=numpre;
+            id=codpres;
         }
         try {
 
@@ -2884,7 +2884,8 @@ public void agrega(){
             sqlpartida = "INSERT INTO mppres "
                     + "(mpre_id, id, numero, numegrup, descri, idband,"
             + "rendimi, unidad, precasu, precunit, redondeo, status, cantidad, tipo, "
-            + "nropresupuesto,tiponp, porcgad,porcpre,porcutil) VALUES ('"+codpres+"', '"+jTextField15.getText().toString() +"',"
+            + "nropresupuesto,tiponp, porcgad,porcpre,porcutil) VALUES ('"+codpres+"', "
+                    + "'"+jTextField15.getText().toString() +"',"
             + ""+nuevo+","+nuevonumegrup+",'"+jTextArea2.getText().toString()+"',"
             + ""+mbdat+","+rendimi+", '"+unidad+"', "+precasu+", "+precunit+","
             + ""+redondeo+", '1', "+jTextField18.getText().toString()+", '"+tipo+"',"
@@ -4056,7 +4057,9 @@ private void jTextField18FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST
     }//GEN-LAST:event_jButton24ActionPerformed
 
 private void jButton25ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton25ActionPerformed
-        recalcula recal = new recalcula(prin, true, conex, id,this);
+     String numegrup = jTable2.getValueAt(filapartida, 0).toString();
+    String mpres = consultapresupuesto(numegrup);
+    recalcula recal = new recalcula(prin, true, conex, mpres,this);
        int xi = (this.getWidth()/2)-350/2;
        int yi = (this.getHeight()/2)-450/2;
        recal.setBounds(xi, yi, 370, 470);
@@ -4065,32 +4068,71 @@ private void jButton25ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
     // TODO add your handling code here:
 }//GEN-LAST:event_jButton25ActionPerformed
 
+public String consultapresupuesto(String numero){
+    String partidapres="Select mpre_id FROM mppres WHERE numegrup="+numero+" AND (mpre_id='"+id+"' OR mpre_id IN "
+            + "(SELECT id FROM mpres WHERE mpres_id='"+id+"'))";
+       String mpres=""; 
+        try {
+            Statement stpres = (Statement) conex.createStatement();
+            ResultSet rstpres = stpres.executeQuery(partidapres);
+            while(rstpres.next()){
+                mpres=rstpres.getString("mpre_id");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Presupuesto.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return mpres;
+}
 private void jButton33ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton33ActionPerformed
-        matrizmaterialespres materiales = new matrizmaterialespres(prin, true, conex, id,prin);
+    
+    String numegrup = jTable2.getValueAt(filapartida, 0).toString();
+    String mpres = consultapresupuesto(numegrup);
+    matrizmaterialespres materiales = new matrizmaterialespres(prin, true, conex, mpres,prin);
         int xi = (this.getWidth()/2)-700/2;
         int yi = (this.getHeight()/2)-500/2;
-        materiales.setBounds(xi, yi, 700, 500);
+        materiales.setBounds(xi, yi, 700, 500);       
         materiales.setVisible(true);
-    
+      try {
+            buscapartida();
+        } catch (SQLException ex) {
+            Logger.getLogger(Presupuesto.class.getName()).log(Level.SEVERE, null, ex);
+        }
+      cargartotal();
     // TODO add your handling code here:
 }//GEN-LAST:event_jButton33ActionPerformed
 
 private void jButton34ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton34ActionPerformed
-    matrizequipospres equipos = new matrizequipospres(prin, true, conex, id,prin);
+
+    String numegrup = jTable2.getValueAt(filapartida, 0).toString();
+    String mpres = consultapresupuesto(numegrup);
+    matrizequipospres equipos = new matrizequipospres(prin, true, conex, mpres,prin);
         int xi = (this.getWidth()/2)-700/2;
         int yi = (this.getHeight()/2)-500/2;
         equipos.setBounds(xi, yi, 700, 500);
         equipos.setVisible(true);
-    
+    try {
+            buscapartida();
+        } catch (SQLException ex) {
+            Logger.getLogger(Presupuesto.class.getName()).log(Level.SEVERE, null, ex);
+        }
+      cargartotal();
     // TODO add your handling code here:
 }//GEN-LAST:event_jButton34ActionPerformed
 
 private void jButton35ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton35ActionPerformed
-        matrizmanopres mano = new matrizmanopres(prin, true, conex, id,prin);
+String numegrup = jTable2.getValueAt(filapartida, 0).toString();
+    String mpres = consultapresupuesto(numegrup);
+    matrizmanopres mano = new matrizmanopres(prin, true, conex, mpres,prin);
         int xi = (this.getWidth()/2)-700/2;
         int yi = (this.getHeight()/2)-500/2;
         mano.setBounds(xi, yi, 700, 500);
         mano.setVisible(true);
+        try {
+            buscapartida();
+        } catch (SQLException ex) {
+            Logger.getLogger(Presupuesto.class.getName()).log(Level.SEVERE, null, ex);
+        }
+      cargartotal();
 }//GEN-LAST:event_jButton35ActionPerformed
 
 private void jButton36ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton36ActionPerformed

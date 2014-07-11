@@ -936,7 +936,8 @@ public void mouseClicked(java.awt.event.MouseEvent e)
             }
             calculasemanas();
             numsemanas = (int) (Math.ceil(dias)+1);
-           
+           if(numsemanas<0)
+               numsemanas=numsemanas*(-1);
             
             
             vecmes = new String[(int) meses];
@@ -2103,7 +2104,7 @@ public void mouseClicked(java.awt.event.MouseEvent e)
             }
         });
 
-        jTable1.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        jTable1.setFont(new java.awt.Font("Tahoma", 0, 10));
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
@@ -2373,7 +2374,8 @@ public void mouseClicked(java.awt.event.MouseEvent e)
     
     public void llenacampos(){
         String busca = "SELECT id, fechaini, fechafin, rango, lapso, precunit, precasu, redondeo, rendimi, cantidad"
-                + ",descri FROM mppres Where numegrup = '"+partidaselect+"' AND mpre_id='"+pres+"' AND cron=1";
+                + ",descri FROM mppres Where numegrup = '"+partidaselect+"' AND (mpre_id='"+pres+"' "
+                + "OR mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+pres+"')) AND cron=1";
         String id=null, descri="";        
         int redondeo=0, rango=0, lapsos=0;
         float precunit=0, precasu=0, rendimi=0, cantidad = 0;        
@@ -2430,9 +2432,26 @@ public void mouseClicked(java.awt.event.MouseEvent e)
              if(lapso==3){
                  calculaanio();
              }
-        
+        String select = "SELECT rango FROM mppres WHERE numegrup="+partidaselect+""
+                + " AND (mpre_id='"+pres+ "' OR mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+pres+"'))";
+        try {
+            int rangos1=0;
+            Statement sts = (Statement) conex.createStatement();
+            ResultSet rstss = sts.executeQuery(select);
+            while(rstss.next()){
+                rangos1 = rstss.getInt(1);
+            }
+            if(rangos1==0){
+                jButton2.setEnabled(true);
+            }else
+            {
+                jButton2.setEnabled(false);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(diagrama.class.getName()).log(Level.SEVERE, null, ex);
+        }
             jButton4.setEnabled(true);
-            jButton2.setEnabled(true);
+           
             
             jTextField6.setText(String.valueOf(costolapso));
         } catch (SQLException ex) {
@@ -2478,7 +2497,9 @@ public void mouseClicked(java.awt.event.MouseEvent e)
     partidaselect =tabla.getValueAt(filafase, 0).toString();
     Rectangle r = tabla.getCellRect(tabla.getSelectedRow(),tabla.getSelectedColumn(), false);
     tabla.scrollRectToVisible(r);
-        muevetabla();       
+    
+        muevetabla();     
+        jButton1.setEnabled(false);
     }//GEN-LAST:event_jTable1MouseClicked
 
     private void jSpinner1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSpinner1StateChanged
@@ -2573,7 +2594,7 @@ public void mouseClicked(java.awt.event.MouseEvent e)
         }
          rangos r=null;
          if(rango==0){
-        r= new rangos(prin, true, conex, pres, numero);
+             r= new rangos(prin, true, conex, pres, numero);
          }else{
              r= new rangos(prin, true, conex, pres, numero, 1);
          }
@@ -2722,7 +2743,7 @@ public void mouseClicked(java.awt.event.MouseEvent e)
             fecfin = format.format(fechafin);
             String sql = "UPDATE mppres SET fechaini='"+fecini+"', fechafin='"+fecfin+"', cron=1, lapso = "+lapso+", rango=0"
                     + " WHERE id='"+partida+"' AND "
-                    + "mpre_id='"+pres+"' AND numegrup='"+numpartida+"'";
+                    + " (mpre_id='"+pres+"' OR mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+pres+"')) AND numegrup='"+numpartida+"'";
             try {
                 Statement st = (Statement) conex.createStatement();
                 st.execute(sql);

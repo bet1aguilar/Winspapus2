@@ -448,7 +448,7 @@ Presupuesto objpres;
     public void recalcularprecapu(){
         
         String cambia = "SELECT numero, rendimi, porcgad, porcutil, porcpre"
-                + " FROM mppres WHERE mpre_id='"+pres+"'";
+                + " FROM mppres WHERE (mpre_id='"+pres+"' OR mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+pres+"'))";
         String datostab = "SELECT porimp, porcfi FROM mpres WHERE id='"+pres+"'";
         float impu=0, cosfin=0, rendimi, porcgad, porcutil, porcpre;
         int cuenta=0;

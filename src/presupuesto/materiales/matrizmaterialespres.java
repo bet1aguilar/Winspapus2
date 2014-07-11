@@ -30,6 +30,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
+import presupuestos.calculapartidas;
 import winspapus.Principal;
 
 /**
@@ -392,6 +393,21 @@ public class matrizmaterialespres extends javax.swing.JDialog {
     }//GEN-LAST:event_jTable1MouseClicked
 
 private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_okButtonMouseClicked
+       
+    String consultar="SELECT numero FROM mppres WHERE mpre_id='"+pres+"'";
+        String numero="";
+        try {
+            Statement stconsultar = (Statement) conex.createStatement();
+            ResultSet rstconsultar = stconsultar.executeQuery(consultar);
+            while(rstconsultar.next()){
+                numero=rstconsultar.getString("numero");
+                 calculapartidas calcula = new calculapartidas(conex, pres, numero);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(matrizmaterialespres.class.getName()).log(Level.SEVERE, null, ex);
+        }
+       
+        
         doClose(RET_OK);// TODO add your handling code here:
 }//GEN-LAST:event_okButtonMouseClicked
 

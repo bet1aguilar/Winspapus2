@@ -49,6 +49,7 @@ public class reconsideraciones extends javax.swing.JDialog {
    float cantidadrecon=0;
     String codnuevopres ;
    float nuevopreciasum=0;
+   float totalrecons=0;
    String nuevopres=null;
    String valu=null;
     public reconsideraciones(java.awt.Frame parent, boolean modal, String mpres, Connection conex, Presupuesto pres, Principal prin) {
@@ -58,9 +59,9 @@ public class reconsideraciones extends javax.swing.JDialog {
         this.prin = prin;
         this.mpres = mpres;
         this.pres = pres;
-        
+        buscapres();
        buscacuadro(); 
-       buscapres();
+       
        jTable1.setOpaque(true);
     jTable1.setShowHorizontalLines(true);
     jTable1.setShowVerticalLines(false);
@@ -165,7 +166,6 @@ public class reconsideraciones extends javax.swing.JDialog {
         cancelButton = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jButton8 = new javax.swing.JButton();
@@ -269,14 +269,6 @@ public class reconsideraciones extends javax.swing.JDialog {
             }
         });
 
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/winspapus/imagenes/moneda.png"))); // NOI18N
-        jButton2.setToolTipText("Variar Reconsideración Por Variacion Lineal");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
-
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/winspapus/imagenes/listar1.png"))); // NOI18N
         jButton3.setToolTipText("Variar Reconsideracion por tabulador");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -342,7 +334,7 @@ public class reconsideraciones extends javax.swing.JDialog {
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(139, Short.MAX_VALUE)
+                .addContainerGap(190, Short.MAX_VALUE)
                 .addComponent(jButton10, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton11, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -359,8 +351,6 @@ public class reconsideraciones extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -375,15 +365,14 @@ public class reconsideraciones extends javax.swing.JDialog {
                     .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton13, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton12, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton11, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton10, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jButton10, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -434,7 +423,7 @@ public class reconsideraciones extends javax.swing.JDialog {
 
         jTextArea1.setColumns(20);
         jTextArea1.setEditable(false);
-        jTextArea1.setFont(new java.awt.Font("Monospaced", 0, 11)); // NOI18N
+        jTextArea1.setFont(new java.awt.Font("Monospaced", 0, 11));
         jTextArea1.setLineWrap(true);
         jTextArea1.setRows(3);
         jTextArea1.setWrapStyleWord(true);
@@ -590,7 +579,7 @@ public class reconsideraciones extends javax.swing.JDialog {
             }
         });
 
-        jLabel15.setFont(new java.awt.Font("Tahoma", 0, 10));
+        jLabel15.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         jLabel15.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel15.setText("% Imp. Part.:");
 
@@ -814,7 +803,7 @@ public class reconsideraciones extends javax.swing.JDialog {
             nrocuadro = Integer.parseInt(jSpinner1.getValue().toString());
         }
         
-
+         totalrecons=0;
 
        String deltas="IF((m.precunit-(SELECT mp.precunit FROM "
                 + "mppres as mp WHERE (mp.mpre_id='"+mpres+"' OR mp.mpre_id IN "
@@ -882,7 +871,10 @@ public class reconsideraciones extends javax.swing.JDialog {
                     
                     Object[] filas = new Object[cantidadColumnas];
                    for (int i = 0; i < cantidadColumnas; i++) {
-                     if(i==5){
+                       if(i==7){
+                           totalrecons+=rs.getFloat(i+1);
+                       }
+                       if(i==5){
                          float delta=rs.getFloat(i+1);
                          if(delta<0){
                              delta=delta*(-1);
@@ -891,6 +883,7 @@ public class reconsideraciones extends javax.swing.JDialog {
                      }else{
                          filas[i]=rs.getObject(i+1);
                      }
+                     
                    }
                    metabs.addRow(filas);
                    
@@ -899,6 +892,10 @@ public class reconsideraciones extends javax.swing.JDialog {
             Logger.getLogger(valuacion.class.getName()).log(Level.SEVERE, null, ex);
         }
         cambiarcabecera();
+         NumberFormat formatoNumero = NumberFormat.getNumberInstance();
+            formatoNumero.setMaximumFractionDigits(2);
+            formatoNumero.setMinimumFractionDigits(2);
+            jTextField14.setText(String.valueOf(formatoNumero.format(totalrecons)));
     }
     
     public void cambiarcabecera(){
@@ -1326,7 +1323,6 @@ public class reconsideraciones extends javax.swing.JDialog {
        
         jTextField7.setEnabled(true);
         jTextField9.setEnabled(true);
-        jButton2.setEnabled(true);
         jButton3.setEnabled(true);
         jButton5.setEnabled(true);
         if(evt.getClickCount()==2){
@@ -1351,7 +1347,8 @@ public class reconsideraciones extends javax.swing.JDialog {
             } catch (SQLException ex) {
                 Logger.getLogger(reconsideraciones.class.getName()).log(Level.SEVERE, null, ex);
             }
-        int op=JOptionPane.showConfirmDialog(rootPane, "Desea Eliminar Esta Partida de la reconsideración de precios? "+codnuevopres,"Borrar de Reconsideración",JOptionPane.YES_NO_OPTION);
+        int op=JOptionPane.showConfirmDialog(rootPane, "Desea Eliminar Esta Partida de la reconsideración "
+                + "de precios? "+codnuevopres,"Borrar de Reconsideración",JOptionPane.YES_NO_OPTION);
        if(op==JOptionPane.YES_OPTION){
        
         String delete ="DELETE FROM mppres WHERE numegrup="+numegrup+" AND "
@@ -1372,16 +1369,6 @@ public class reconsideraciones extends javax.swing.JDialog {
         }
         }
     }//GEN-LAST:event_jButton5ActionPerformed
-
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        String partida = jTable1.getValueAt(filapart, 1).toString();
-        variacionlineal var = new variacionlineal(null, true, mpres, conex, nrocuadro, partida);
-        int xi = (pres.getWidth()/2)-400/2;
-        int yi = (pres.getHeight()/2)-300/2;
-        var.setBounds(xi, yi, 400, 300);
-        var.setVisible(true);
-        buscacuadro();
-    }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         String numepart=jTable1.getValueAt(filapart, 1).toString();        
@@ -1495,12 +1482,6 @@ public class reconsideraciones extends javax.swing.JDialog {
     private void jTextField8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField8ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField8ActionPerformed
-
-private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
-    
-    
-    // TODO add your handling code here:
-}//GEN-LAST:event_jButton9ActionPerformed
 
     private void jTextField7KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField7KeyTyped
 
@@ -1697,13 +1678,12 @@ private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         }
 }
 private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
-    codnuevopres= mpres+" VP-"+nrocuadro;       
-    matrizmaterialespres materiales = new matrizmaterialespres(prin, true, conex, codnuevopres,prin);
+        codnuevopres= mpres+" VP-"+nrocuadro;       
+        matrizmaterialespres materiales = new matrizmaterialespres(prin, true, conex, codnuevopres,prin);
         int xi = (prin.getWidth()/2)-700/2;
         int yi = (prin.getHeight()/2)-500/2;
         materiales.setBounds(xi, yi, 700, 500);
-        materiales.setVisible(true);
-        actualizapartidas();
+        materiales.setVisible(true);    
         buscacuadro();
        
 }//GEN-LAST:event_jButton11ActionPerformed
@@ -1716,7 +1696,7 @@ private void jButton12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
         int yi = (prin.getHeight()/2)-500/2;
         equipos.setBounds(xi, yi, 700, 500);
         equipos.setVisible(true);
-        actualizapartidas();
+  
         buscacuadro();
     
     // TODO add your handling code here:
@@ -1729,11 +1709,15 @@ private void jButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
         int yi = (prin.getHeight()/2)-500/2;
         mano.setBounds(xi, yi, 700, 500);
         mano.setVisible(true);
-        actualizapartidas();
+
         buscacuadro();
     
     // TODO add your handling code here:
 }//GEN-LAST:event_jButton13ActionPerformed
+
+    private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
+
+    }//GEN-LAST:event_jButton9ActionPerformed
      private void ver() 
      {
          String parti=jTable1.getValueAt(filapart, 1).toString();
@@ -1765,7 +1749,6 @@ private void jButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
     private javax.swing.JButton jButton11;
     private javax.swing.JButton jButton12;
     private javax.swing.JButton jButton13;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;

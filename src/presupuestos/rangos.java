@@ -83,10 +83,8 @@ public class rangos extends javax.swing.JDialog {
         this.conex = conex;
         this.pres=mpres;
         edita=1;
-        
+        this.edita=edita;
         this.partida=partida;
-        selec();
-        cargadatos();
         jTextField1.setText(numegrup);
         jLabel8.setVisible(false);
             jDateChooser5.setVisible(false);
@@ -100,6 +98,9 @@ public class rangos extends javax.swing.JDialog {
             jDateChooser9.setVisible(false);
             jLabel13.setVisible(false);
             jDateChooser10.setVisible(false);
+        selec();
+        cargadatos();
+        
         
         // Close the dialog when Esc is pressed
         String cancelName = "cancel";
@@ -156,22 +157,31 @@ public class rangos extends javax.swing.JDialog {
         jDateChooser4.setDate(fechfin[1]);
         if(num>2){
             jDateChooser5.setDate(fechini[2]);
+            jDateChooser5.setVisible(true);
+            jLabel9.setVisible(true);jLabel8.setVisible(true);
             jDateChooser6.setDate(fechfin[2]);
+            jDateChooser6.setVisible(true);
         }
         if(num>3){
             jDateChooser7.setDate(fechini[3]);
+            jDateChooser7.setVisible(true);
             jDateChooser8.setDate(fechfin[3]);
+            jDateChooser8.setVisible(true);
+             jLabel10.setVisible(true);jLabel11.setVisible(true);
         }
         if(num>4){
             jDateChooser9.setDate(fechini[4]);
+            jDateChooser9.setVisible(true);
             jDateChooser10.setDate(fechfin[4]);
+            jDateChooser10.setVisible(true);
+             jLabel12.setVisible(true);jLabel13.setVisible(true);
         }
         
     }
     public final void selec (){
         
         String select = "SELECT numegrup FROM mppres WHERE numero ="+partida+" AND "
-                        + "mpre_id='"+pres+"'";
+                        + "(mpre_id='"+pres+"' OR mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+pres+"'))";
         try {
             Statement str = (Statement) conex.createStatement();
             ResultSet rstr = str.executeQuery(select);
@@ -602,7 +612,7 @@ public class rangos extends javax.swing.JDialog {
             }else{
                  insert = "UPDATE rcppres Set fechaini='"+fecini[i]+"',"
                     + " fechafin='"+fecfin[i]+"' WHERE mppres_id="+partida+" "
-                         + "AND mpre_id='"+pres+"'";
+                         + "AND mpre_id='"+pres+"' AND id="+id+"";
             }
             try {
                 
