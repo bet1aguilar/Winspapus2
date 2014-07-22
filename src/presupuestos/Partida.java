@@ -346,8 +346,12 @@ public final void buscagrupo() throws SQLException{
     }
      public void cargartotal(){
         float subtotal1 = 0, subtotal2=0, subtotal,impuesto, total1;
-        String cargasinredondeo = "SELECT SUM(cantidad*precunit) FROM `winspapu`.`mppres` WHERE redondeo = 0 AND tipo='Org' AND mpre_id='"+presupuesto+"' OR mpre_id IN (SELECT id from mpres where mpres_id='"+presupuesto+"')";
-        String cargaconredondeo = "SELECT SUM(cantidad*precasu) FROM `winspapu`.`mppres` WHERE redondeo = 1 AND tipo='Org' AND mpre_id='"+presupuesto+"' OR mpre_id IN (SELECT id from mpres where mpres_id='"+presupuesto+"')";
+        String cargasinredondeo = "SELECT SUM(cantidad*precunit) FROM `winspapu`.`mppres` WHERE redondeo = 0"
+                + " AND tipo='Org' AND mpre_id='"+presupuesto+"' OR mpre_id IN (SELECT id from mpres where"
+                + " mpres_id='"+presupuesto+"')";
+        String cargaconredondeo = "SELECT SUM(cantidad*precasu) FROM `winspapu`.`mppres` WHERE redondeo = 1"
+                + " AND tipo='Org' AND mpre_id='"+presupuesto+"' OR mpre_id IN (SELECT id from mpres where"
+                + " mpres_id='"+presupuesto+"')";
         //System.out.println("idpres="+id);
         try {
             Statement st1 = (Statement) conex.createStatement();

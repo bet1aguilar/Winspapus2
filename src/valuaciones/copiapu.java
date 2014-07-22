@@ -97,8 +97,8 @@ public class copiapu {
                 }
                 
                 if(conta<=0){
-                    String inserta = "INSERT INTO dmpres (mpre_id, mppre_id, mmpre_id,numepart, cantidad, precio,status, mtabus_id)"
-                            + " VALUES ("+mpres+", '"+partida+"', '"+mmtab_id+"', "+numenpres+", "+cantidad+", "+precio+", 1, '"+mtabu+"')";
+                    String inserta = "INSERT INTO dmpres (mpre_id, mppre_id, mmpre_id,numepart, cantidad, precio,status)"
+                            + " VALUES ("+mpres+", '"+partida+"', '"+mmtab_id+"', "+numenpres+", "+cantidad+", "+precio+", 1)";
                     Statement insert = (Statement) conex.createStatement();
                     insert.execute(inserta);
                 }else{
@@ -118,7 +118,7 @@ public class copiapu {
                     conte = rscon.getInt(1);                  
                 }
                  String descri=null, desperdi=null, precios=null, unidad=null;
-                 String mptab = "SELECT descri, desperdi, precio, unidad FROM mptabs WHERE mtabus_id='"+mtabu+"' AND "
+                 String mptab = "SELECT descri, desperdi, precio, unidad FROM mptabs WHERE "
                             + "id='"+mmtab_id+"'";
                     Statement stm = (Statement) conex.createStatement();
                     ResultSet rstm = stm.executeQuery(mptab);
@@ -128,11 +128,10 @@ public class copiapu {
                         precios = rstm.getString(3);
                         unidad = rstm.getString(4);
                     }
-                if(conte==0){
-                   
-                    
-                    String inserta = "INSERT INTO mmpres (mpre_id, id, descri, desperdi, precio, unidad, status, mtabus_id)"
-                            + " VALUES ("+mpres+", "+mmtab_id+", "+descri+", "+desperdi+", "+precios+",'"+unidad+"', 1, '"+mtabu+")'";
+                if(conte==0)
+                {
+                    String inserta = "INSERT INTO mmpres (mpre_id, id, descri, desperdi, precio, unidad, status)"
+                            + " VALUES ("+mpres+", "+mmtab_id+", "+descri+", "+desperdi+", "+precios+",'"+unidad+"', 1)'";
                     Statement insert = (Statement) conex.createStatement();
                     insert.execute(inserta);
                 }  
@@ -154,8 +153,8 @@ public class copiapu {
     
     public final void cargaequip(){
         String metabs, cantidad, precios, deprecia;
-        String consulta = "SELECT metab_id, cantidad, precio FROM deptabs WHERE mtabus_id='"+mtabu+"' "
-                + "AND numero="+numero;
+        String consulta = "SELECT metab_id, cantidad, precio FROM deptabs WHERE  "
+                + "numero="+numero;
         try {
             Statement st = (Statement) conex.createStatement();
             ResultSet rst = st.executeQuery(consulta);
@@ -174,8 +173,8 @@ public class copiapu {
                 }
                 if(cuenta <=0){
                     
-               String inserta = "INSERT INTO deppres (mpre_id, mppre_id, mepre_id,numero, cantidad, precio,status, mtabus_id)"
-                            + " VALUES ("+mpres+", '"+partida+"', '"+metabs+"', "+numenpres+", "+cantidad+", "+precios+", 1, '"+mtabu+"')";
+               String inserta = "INSERT INTO deppres (mpre_id, mppre_id, mepre_id,numero, cantidad, precio,status)"
+                            + " VALUES ("+mpres+", '"+partida+"', '"+metabs+"', "+numenpres+", "+cantidad+", "+precios+", 1)";
                     Statement insert = (Statement) conex.createStatement();
                     insert.execute(inserta);
                 }else{
@@ -194,7 +193,7 @@ public class copiapu {
                     conte = rscon.getInt(1);                  
                 }
                  String descri=null, depreciar=null, unidad=null;
-                 String mptab = "SELECT descri, deprecia, precio FROM metabs WHERE mtabus_id='"+mtabu+"' AND "
+                 String mptab = "SELECT descri, deprecia, precio FROM metabs WHERE "
                             + "id='"+metabs+"'";
                     Statement stm = (Statement) conex.createStatement();
                     ResultSet rstm = stm.executeQuery(mptab);
@@ -206,8 +205,8 @@ public class copiapu {
                 if(conte==0){
                    
                     
-                    String inserta = "INSERT INTO mepres (mpre_id, id, descri, deprecia, precio, status, mtabus_id)"
-                            + " VALUES ("+mpres+", "+metabs+", "+descri+", "+depreciar+", "+precios+", 1, '"+mtabu+")'";
+                    String inserta = "INSERT INTO mepres (mpre_id, id, descri, deprecia, precio, status)"
+                            + " VALUES ("+mpres+", "+metabs+", "+descri+", "+depreciar+", "+precios+", 1)'";
                     Statement insert = (Statement) conex.createStatement();
                     insert.execute(inserta);
                 }  
@@ -229,8 +228,8 @@ public class copiapu {
     
     public final void cargamano(){
         String mmotabs, cantidad, bono = null,salario=null, subsid=null, deprecia=null;
-        String consulta = "SELECT mmotab_id, cantidad, salario, bono, subsidi FROM dmoptabs WHERE mtabus_id='"+mtabu+"' "
-                + "AND numero="+numero;
+        String consulta = "SELECT mmotab_id, cantidad, salario, bono, subsidi FROM dmoptabs WHERE "
+                + "numero="+numero;
         try {
             Statement st = (Statement) conex.createStatement();
             ResultSet rst = st.executeQuery(consulta);
@@ -251,9 +250,9 @@ public class copiapu {
                 }
                 if(cuenta <=0){
                     
-               String inserta = "INSERT INTO dmoppres (mpre_id, mppre_id, mepre_id,numero, cantidad, salario, bono, subsid,status, mtabus_id)"
+               String inserta = "INSERT INTO dmoppres (mpre_id, mppre_id, mepre_id,numero, cantidad, salario, bono, subsid,status)"
                             + " VALUES ("+mpres+", '"+partida+"', '"+mmotabs+"', "+numenpres+", "+cantidad+", "+salario+", "
-                       + ""+bono+","+subsid+",1, '"+mtabu+"')";
+                       + ""+bono+","+subsid+",1)";
                     Statement insert = (Statement) conex.createStatement();
                     insert.execute(inserta);
                 }else{
@@ -273,7 +272,7 @@ public class copiapu {
                     conte = rscon.getInt(1);                  
                 }
                  String descri=null, depreciar=null, unidad=null;
-                 String mptab = "SELECT descri, bono, salario, subsid FROM mmotabs WHERE mtabus_id='"+mtabu+"' AND "
+                 String mptab = "SELECT descri, bono, salario, subsid FROM mmotabs WHERE "
                             + "id='"+mmotabs+"'";
                     Statement stm = (Statement) conex.createStatement();
                     ResultSet rstm = stm.executeQuery(mptab);
@@ -286,9 +285,9 @@ public class copiapu {
                 if(conte==0){
                    
                     
-                    String inserta = "INSERT INTO mmopres (mpre_id, id, descri, salario, bono, subsid, status, mtabus_id)"
+                    String inserta = "INSERT INTO mmopres (mpre_id, id, descri, salario, bono, subsid, status)"
                             + " VALUES ("+mpres+", "+mmotabs+", "+descri+", "+salario+","+bono+","+subsid+","
-                            + " 1, '"+mtabu+")'";
+                            + " 1)";
                     Statement insert = (Statement) conex.createStatement();
                     insert.execute(inserta);
                 }  

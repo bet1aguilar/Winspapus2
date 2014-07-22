@@ -90,8 +90,7 @@ public class copia extends javax.swing.JDialog {
         ResultSet rst = st.executeQuery("SELECT vigencia, pprest, padyga, putild, pcosfin, pimpue FROM Mtabus WHERE id='"+mtabuid+"'");
         String vigencia="", adm="", prest="", util="", costo="", impu="";
         
-        
-        barra.setVisible(true);        
+           
         String sqls="";
         while (rst.next()) {
                  vigencia= rst.getObject(1).toString();
@@ -116,7 +115,7 @@ public class copia extends javax.swing.JDialog {
                                                         
                                                         ""+util+", " +
                 
-                                                        "1);";
+                                                        "1,0);";
         
         
         try {
@@ -129,19 +128,19 @@ public class copia extends javax.swing.JDialog {
         
         Statement mat = (Statement) conexion.createStatement();
          sqls = "INSERT INTO mmtabs (mtabus_id, id, descri, desperdi, precio, unidad, status)"+
-                 "SELECT tb.id as mtabus_id, mm.id as id, mm.descri as descri, mm.desperdi as desperdi,  "
+                 "SELECT DISTINCT tb.id as mtabus_id, mm.id as id, mm.descri as descri, mm.desperdi as desperdi,  "
                 + "mm.precio as precio, mm.unidad as unidad, mm.status as status FROM mtabus as tb, mmtabs as mm"
                 + " WHERE tb.id='"+tabnuevo+"'  AND mm.mtabus_id='"+mtabuid+"'";
          mat.execute(sqls);
         Statement eq = (Statement) conexion.createStatement();
        sqls = "INSERT INTO metabs (mtabus_id, id, descri, deprecia, precio, status)"
-               + "SELECT tb.id as mtabus_id, me.id as id, me.descri as descri, me.deprecia as deprecia,  "
+               + "SELECT DISTINCT tb.id as mtabus_id, me.id as id, me.descri as descri, me.deprecia as deprecia,  "
                + "me.precio as precio, me.status as status FROM mtabus as tb, metabs as me"
                + "  WHERE tb.id='"+tabnuevo+"'  AND me.mtabus_id='"+mtabuid+"'";
        eq.execute(sqls);
         Statement man = (Statement) conexion.createStatement();
        sqls="INSERT INTO mmotabs (mtabus_id, id, descri, bono, salario, subsid, status)"
-               + "SELECT tb.id as mtabus_id, mmo.id as id, mmo.descri as descri, mmo.bono as bono, "
+               + "SELECT DISTINCT tb.id as mtabus_id, mmo.id as id, mmo.descri as descri, mmo.bono as bono, "
                + " mmo.salario as salario, mmo.subsid as subsid, mmo.status as status FROM mtabus as tb, mmotabs as mmo"
                + "  WHERE tb.id='"+tabnuevo+"'  AND mmo.mtabus_id='"+mtabuid+"'";
        man.execute(sqls);

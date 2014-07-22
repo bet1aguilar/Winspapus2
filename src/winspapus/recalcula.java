@@ -38,13 +38,16 @@ public class recalcula extends javax.swing.JDialog {
     public static final int RET_OK = 1;
 Connection conex;
 float aumenta, dismi;
+int cuenta=0;
 String tabu;
     /** Creates new form recalcula */
     public recalcula(java.awt.Frame parent, boolean modal, Connection conex, String tabu) {
-        super(parent, modal);
+        super(parent, false);
         initComponents();
 this.conex = conex;
 this.tabu = tabu;
+jLabel4.setVisible(false);
+        jProgressBar1.setVisible(false);
 agrupa();
         // Close the dialog when Esc is pressed
         String cancelName = "cancel";
@@ -93,6 +96,9 @@ agrupa();
         jPanel1 = new javax.swing.JPanel();
         cancelButton = new javax.swing.JButton();
         okButton = new javax.swing.JButton();
+        jProgressBar1 = new javax.swing.JProgressBar();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
 
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
@@ -111,7 +117,7 @@ agrupa();
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 327, Short.MAX_VALUE)
+            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 329, Short.MAX_VALUE)
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -179,40 +185,39 @@ agrupa();
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(22, 22, 22)
+                .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(jRadioButton8)
-                        .addContainerGap())
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(jPanel4Layout.createSequentialGroup()
                             .addComponent(jRadioButton6)
-                            .addContainerGap())
-                        .addGroup(jPanel4Layout.createSequentialGroup()
-                            .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jRadioButton3)
-                                .addComponent(jRadioButton1)
-                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel4Layout.createSequentialGroup()
-                                        .addComponent(jRadioButton5)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 62, Short.MAX_VALUE)
-                                        .addComponent(jLabel3)
+                            .addGap(22, 22, 22))
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jRadioButton3)
+                            .addComponent(jRadioButton1)
+                            .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel4Layout.createSequentialGroup()
+                                    .addComponent(jRadioButton5)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 62, Short.MAX_VALUE)
+                                    .addComponent(jLabel3)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addGroup(jPanel4Layout.createSequentialGroup()
+                                        .addComponent(jRadioButton4)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jLabel2)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                        .addGroup(jPanel4Layout.createSequentialGroup()
-                                            .addComponent(jRadioButton4)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(jLabel2)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addComponent(jRadioButton2, javax.swing.GroupLayout.Alignment.LEADING))))
-                            .addContainerGap(20, Short.MAX_VALUE)))))
+                                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(jRadioButton2, javax.swing.GroupLayout.Alignment.LEADING))))))
+                .addGap(38, 38, 38))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addContainerGap(19, Short.MAX_VALUE)
+                .addContainerGap()
                 .addComponent(jRadioButton1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jRadioButton2)
@@ -231,7 +236,8 @@ agrupa();
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jRadioButton6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jRadioButton8))
+                .addComponent(jRadioButton8)
+                .addContainerGap(12, Short.MAX_VALUE))
         );
 
         cancelButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/winspapus/imagenes/eliminar.png"))); // NOI18N
@@ -285,7 +291,7 @@ agrupa();
                 .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(176, Short.MAX_VALUE)
+                .addContainerGap(178, Short.MAX_VALUE)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -299,15 +305,35 @@ agrupa();
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
+        jProgressBar1.setDoubleBuffered(true);
+
+        jLabel4.setText("Recalculando");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(50, 50, 50)
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel5)
+                    .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jProgressBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel5)
+                .addContainerGap(36, Short.MAX_VALUE))
         );
 
         pack();
@@ -372,12 +398,20 @@ agrupa();
                         + "AND numero="+numero+" AND status=1";
                 Statement stactuliza = (Statement) conex.createStatement();
                 stactuliza.execute(actualiza);
-            JOptionPane.showMessageDialog(rootPane, "Se han igualado los precios unitarios a los precios asumidos del listado de precios "+tabu);
+           
 
             }
+             JOptionPane.showMessageDialog(rootPane, "Se han igualado los precios unitarios a los precios asumidos del listado de precios "+tabu);
         } catch (SQLException ex) {
             Logger.getLogger(recalcula.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    public void setprogres(int valor){
+        jProgressBar1.setValue(valor);
+        int porcentaje = (valor*100)/cuenta;
+        String texto = valor+" partidas de "+cuenta;
+        jLabel5.setText(texto);
+        
     }
     public void porcaumenta(){  // SELECCIONA PRECIO UNITARIO DE LAS PARTIDAS, LE
                                 // AUMENTA UN PORCENTAJE Y LO IGUALA AL PRECIO ASUMIDO
@@ -400,8 +434,9 @@ agrupa();
                 String act = "UPDATE mptabs SET precasu ="+precasu+" WHERE numero="+numero+" AND mtabus_id='"+tabu+"' AND status=1";
                 Statement stact = (Statement) conex.createStatement();
                 stact.execute(act);
-                JOptionPane.showMessageDialog(rootPane, "Se ha aumentado un "+porcentaje+"% al precio unitario de las partidas y se ha igualado al precio asumido");
+               
             }
+             JOptionPane.showMessageDialog(rootPane, "Se ha aumentado un "+porcentaje+"% al precio unitario de las partidas y se ha igualado al precio asumido");
         } catch (SQLException ex) {
             Logger.getLogger(recalcula.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -428,8 +463,9 @@ agrupa();
                 String act = "UPDATE mptabs SET precasu ="+precasu+" WHERE numero="+numero+" AND mtabus_id='"+tabu+"' AND status=1";
                 Statement stact = (Statement) conex.createStatement();
                 stact.execute(act);
-                JOptionPane.showMessageDialog(rootPane, "Se ha disminuido un "+porcentaje+"% al precio unitario de las partidas y se ha igualado al precio asumido");
+               
             }
+             JOptionPane.showMessageDialog(rootPane, "Se ha disminuido un "+porcentaje+"% al precio unitario de las partidas y se ha igualado al precio asumido");
         } catch (SQLException ex) {
             Logger.getLogger(recalcula.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -437,97 +473,8 @@ agrupa();
     }
     public void recalcularprecapu(){
         
-        String cambia = "SELECT numero, rendimi, porcgad, porcutil, porcpre"
-                + " FROM mptabs WHERE mtabus_id='"+tabu+"'";
-        String datostab = "SELECT pimpue, pcosfin FROM mtabus WHERE id='"+tabu+"'";
-        float impu=0, cosfin=0, rendimi, porcgad, porcutil, porcpre;
-        int cuenta=0;
-        
-        String numero;
-        try {
-            
-            // DATOS TABULADOR
-            Statement stabu = (Statement) conex.createStatement();
-            ResultSet rstabu = stabu.executeQuery(datostab);
-            while(rstabu.next()){
-                impu = rstabu.getFloat(1);
-                cosfin = rstabu.getFloat(2);
-            }
-            
-            // CALCULO DE LA PARTIDA
-            Statement conteo = (Statement) conex.createStatement();
-            ResultSet rsconteo = conteo.executeQuery(cambia);
-            while(rsconteo.next()){
-                numero = rsconteo.getString(1);
-                rendimi = rsconteo.getFloat("rendimi");
-                porcgad = rsconteo.getFloat("porcgad");
-                porcutil = rsconteo.getFloat("porcutil");
-                porcpre = rsconteo.getFloat("porcpre");
-                float contmat = 0, contequipo =0, contmano = 0, cantmano=0, bono=0, subsid=0, precunitrecalculado=0;
-                float precunit;
-                
-                String consulta = "SELECT SUM(((mm.precio+(mm.precio*(mm.desperdi/100)))*dm.cantidad)) as total FROM "
-                        + "dmtabs as dm, mmtabs as mm "
-                        + " WHERE dm.mmtab_id=mm.id AND dm.mtabus_id=mm.mtabus_id AND mm.mtabus_id='"+tabu+"' AND "
-                        + "dm.numepart="+numero;
-                Statement mates = (Statement) conex.createStatement();
-                ResultSet rmates = mates.executeQuery(consulta);
-                while(rmates.next()){
-                    contmat = rmates.getFloat(1);
-                }
-                String consultaeq = "SELECT SUM(IF(me.deprecia=0,de.cantidad*me.precio, de.cantidad*me.deprecia*me.precio)) "
-                        + "as total FROM "
-                        + "deptabs as de, metabs as me WHERE me.id=de.metab_id AND me.mtabus_id=de.mtabus_id AND de.mtabus_id='"+tabu+"' AND de.numero="+numero+"";
-                Statement steq = (Statement) conex.createStatement();
-                ResultSet rsteq = steq.executeQuery(consultaeq);
-                while(rsteq.next()){
-                    contequipo = rsteq.getFloat(1);
-                }
-                if(rendimi>0){
-                contequipo = contequipo/rendimi;
-                }
-                String consultaman = "SELECT SUM(do.cant) as cantidad, mo.bono, mo.subsid, SUM(mo.salario*do*cantidad) as total"
-                        + " FROM mmotabs as mo,dmoptabs as do WHERE do.mmotab_id = mo.id AND do.mtabus_id= mo.mtabus_id"
-                        + " AND do.mtabus_id='"+tabu+"' AND do.numero = "+numero+"";
-                Statement stman = (Statement) conex.createStatement();
-                ResultSet rstman = stman.executeQuery(consultaman);
-                while(rstman.next()){
-                    contmano = rstman.getFloat("total");
-                    cantmano= rstman.getFloat("cantidad");
-                    bono = rstman.getFloat("mo.bono");
-                    subsid=rstman.getFloat("mo.subsid");                    
-                }
-                float presta = contmano*porcpre;
-                bono = cantmano*bono;
-                subsid = cantmano*subsid;
-                float auxmonto = contmano + presta + bono + subsid;
-                if(rendimi==0){
-                    rendimi=1;
-                }
-                contmano = auxmonto/rendimi;
-                
-                precunit = contmat + contequipo + contmano;
-                porcgad = precunit * (1+porcgad/100);
-                porcutil = porcgad * (1+porcutil/100);
-                if(impu==0){
-                    impu=1;
-                }
-                if(cosfin==0){
-                    cosfin=1;
-                }
-                impu = porcutil * impu/100;
-                cosfin = porcutil * cosfin/100;
-                porcutil = porcutil + impu +cosfin;
-                precunitrecalculado = porcutil;
-                String actualiza = "UPDATE mptabs SET precunit="+precunitrecalculado+" WHERE numero="+numero+" AND mtabus_id='"+tabu+"'";
-                Statement stact = (Statement) conex.createStatement();
-              stact.execute(actualiza);
-              
-            }
-           JOptionPane.showMessageDialog(rootPane, "Se han actualizado los precios unitarios de las partidas según el APU");
-        } catch (SQLException ex) {
-            Logger.getLogger(recalcula.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        recalculasegunapu recal = new recalculasegunapu(conex, tabu,this);
+        recal.start();
         
         
         
@@ -538,19 +485,16 @@ agrupa();
     public void borrarapus(){
         String numero;
        
-        try {
-           
-            
-                
-                String borradetmat = "DELETE FROM dmptabs WHERE AND mtabus_id='"+tabu+"'";
-                Statement borramat = (Statement) conex.createStatement();
-                borramat.execute(borradetmat);
-                String borradetequip = "DELETE FROM deptabs WHERE mtabus_id='"+tabu+"'";
-                Statement borraequip = (Statement) conex.createStatement();
-                borraequip.execute(borradetequip);
-                String borradetmano = "DELETE FROM dmoptabs WHERE mtabus_id='"+tabu+"'";
-                Statement borramano = (Statement) conex.createStatement();
-                borramano.execute(borradetmano);
+        try {                
+            String borradetmat = "DELETE FROM dmptabs WHERE AND mtabus_id='"+tabu+"'";
+            Statement borramat = (Statement) conex.createStatement();
+            borramat.execute(borradetmat);
+            String borradetequip = "DELETE FROM deptabs WHERE mtabus_id='"+tabu+"'";
+            Statement borraequip = (Statement) conex.createStatement();
+            borraequip.execute(borradetequip);
+            String borradetmano = "DELETE FROM dmoptabs WHERE mtabus_id='"+tabu+"'";
+            Statement borramano = (Statement) conex.createStatement();
+            borramano.execute(borradetmano);
           JOptionPane.showMessageDialog(rootPane, "Se han eliminado los ánalisis de precio unitario de las partidas del listado de precios "+tabu);
 
         } catch (SQLException ex) {
@@ -592,6 +536,23 @@ agrupa();
     }//GEN-LAST:event_jRadioButton8ActionPerformed
 
     private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_okButtonMouseClicked
+        jLabel4.setVisible(true);
+        
+        String contar = "SELECT COUNT(*) FROM mptabs WHERE mtabus_id='"+tabu+"'";
+        try {
+            Statement stcuenta = (Statement) conex.createStatement();
+            ResultSet rstcuenta = stcuenta.executeQuery(contar);
+            while(rstcuenta.next()){
+                cuenta=rstcuenta.getInt(1);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(recalcula.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+         if(!jRadioButton6.isSelected()){
+             jProgressBar1.setIndeterminate(true);
+         }
         if(jRadioButton1.isSelected()){
             borraprecasu();
         }
@@ -610,14 +571,20 @@ agrupa();
             porcdismi();
         }
         if(jRadioButton6.isSelected()){
+            jProgressBar1.setIndeterminate(false);
+            jProgressBar1.setMinimum(0);            
+            jProgressBar1.setMaximum(cuenta);
+            jProgressBar1.setVisible(true);
             recalcularprecapu();
         }
      
         if(jRadioButton8.isSelected()){
             borrarapus();
         }
-      
-        doClose(RET_OK);        // TODO add your handling code here:
+      if(!jRadioButton6.isSelected()){
+          
+        doClose(RET_OK); 
+      }// TODO add your handling code here:
     }//GEN-LAST:event_okButtonMouseClicked
 
 private void jTextField1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyTyped
@@ -633,7 +600,7 @@ private void jTextField1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
     // TODO add your handling code here:
 }//GEN-LAST:event_jTextField1KeyTyped
     
-    private void doClose(int retStatus) {
+    public void doClose(int retStatus) {
         returnStatus = retStatus;
         setVisible(false);
         dispose();
@@ -649,10 +616,13 @@ private void jTextField1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JProgressBar jProgressBar1;
     private javax.swing.JRadioButton jRadioButton1;
     private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JRadioButton jRadioButton3;

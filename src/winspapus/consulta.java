@@ -152,30 +152,42 @@ public class consulta extends Thread{
             Statement mano = (Statement) conex.createStatement();
             String sqlm = "INSERT INTO mptabs (codicove, numero, numegrup, descri, mbdat_id, porcgad, porcpre,porcutil, "
                         + "precasu, precunit, rendimi, unidad, status, mtabus_id, cantidad )"+
-                         "SELECT mp.codicove as codicove, mp.numero as numero, mp.numegrup as numegrup, mp.descri as descri, "
+                         "SELECT DISTINCT mp.codicove as codicove, mp.numero as numero, mp.numegrup as numegrup, mp.descri as descri, "
                         + "mp.mbdat_id as mbdat_id, mp.porcgad as porcgad, mp.porcpre as porcpre,"+
                          "mp.porcutil as porcutil, mp.precasu as precasu, mp.precunit as precunit, mp.rendimi as rendimi, mp.unidad as unidad, "
                         + "mp.status as status, tb.id as mtabus_id, mp.cantidad as cantidad "+
                          "FROM mptabs as mp, mtabus as tb WHERE tb.id='"+tabnuevo+"' AND mp.mtabus_id='"+mtabuid+"'";
+            System.out.println("+insertar partida en copiar tabulador "+sqlm);
             rst.execute(sqlm);
             
             sqlm="INSERT INTO dmtabs (mtabus_id, mptab_id, mmtab_id, numepart, cantidad, precio, status)"+
-                "SELECT tb.id as mtabus_id, mp.codicove as mptab_id, mm.mmtab_id as mmtab_id, mp.numero as numepart,"+
+                "SELECT DISTINCT tb.id as mtabus_id, mp.codicove as mptab_id, mm.mmtab_id as mmtab_id, mp.numero as numepart,"+
                 "mm.cantidad as cantidad, mm.precio as precio, mm.status as status FROM mtabus as tb, mptabs as mp,"
-                    + "dmtabs as mm WHERE tb.id='"+tabnuevo+"'  AND mm.mtabus_id=mp.mtabus_id AND mp.mtabus_id='"+mtabuid+"' AND mm.numepart=mp.numero";
+                    + "dmtabs as mm WHERE tb.id='"+tabnuevo+"'  AND mm.mtabus_id=mp.mtabus_id AND mp.mtabus_id='"+mtabuid+"' AND mm.numepart=mp.numero"
+                    + " GROUP BY tb.id, mp.codicove, mm.mmtab_id, mm.numepart";
+         System.out.println("+insertar detalle de material en copiar tabulador "+sqlm);
+         
             mat.execute(sqlm);
+             
             sqlm="INSERT INTO deptabs (mtabus_id, mptab_id, metab_id, numero, cantidad, precio, status)"
-                    + "SELECT tb.id as mtabus_id, mp.codicove as mptab_id, me.metab_id as metab_id, mp.numero as numero,"
+                    + "SELECT DISTINCT tb.id as mtabus_id, mp.codicove as mptab_id, me.metab_id as metab_id, mp.numero as numero,"
                     + "me.cantidad as cantidad, me.precio as precio, me.status as status FROM mtabus as tb, mptabs as mp, "
-                    + "deptabs as me WHERE tb.id='"+tabnuevo+"'  AND me.mtabus_id=mp.mtabus_id AND mp.mtabus_id='"+mtabuid+"' AND me.numero=mp.numero";
+                    + "deptabs as me WHERE tb.id='"+tabnuevo+"'  AND me.mtabus_id=mp.mtabus_id AND mp.mtabus_id='"+mtabuid+"' "
+                    + "AND me.numero=mp.numero"
+                    + " GROUP BY tb.id, mp.codicove, me.metab_id, mp.numero";
+             System.out.println("+insertar detalle de equipo en copiar tabulador "+sqlm);
             equip.execute(sqlm);
+            
             sqlm="INSERT INTO dmoptabs (mtabus_id, mptab_id, mmotab_id, numero, cantidad, bono, salario, subsidi, status)"
-                    + "SELECT tb.id as mtabus_id, mp.codicove as mptab_id, mmo.mmotab_id as mmotab_id, mp.numero as numero,"
+                    + "SELECT DISTINCT tb.id as mtabus_id, mp.codicove as mptab_id, mmo.mmotab_id as mmotab_id, mp.numero as numero,"
                     + "mmo.cantidad as cantidad, mmo.bono as bono,"
                     + "mmo.salario as salario, mmo.subsidi as subsidi, mmo.status as status "
                     + "FROM mtabus as tb, mptabs as mp, dmoptabs as mmo"
-                    + " WHERE tb.id='"+tabnuevo+"'  AND mmo.mtabus_id=mp.mtabus_id AND mp.mtabus_id='"+mtabuid+"' AND mmo.numero=mp.numero";
+                    + " WHERE tb.id='"+tabnuevo+"'  AND mmo.mtabus_id=mp.mtabus_id AND mp.mtabus_id='"+mtabuid+"' AND mmo.numero=mp.numero"
+                    + " GROUP BY tb.id, mp.codicove, mmo.mmotab_id, mp.numero";
+            System.out.println("+insertar detalle de mano de obra en copia tabulador "+sqlm);
             mano.execute(sqlm);
+            
             JOptionPane.showMessageDialog(null, "Se ha copiado el tabulador");
         } catch (SQLException ex) {
              JOptionPane.showMessageDialog(null, "No Se ha copiado el tabulador");

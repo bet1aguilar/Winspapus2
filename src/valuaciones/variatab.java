@@ -195,24 +195,22 @@ public class variatab extends javax.swing.JDialog {
 
         jPanel7.setBackground(new java.awt.Color(100, 100, 100));
 
-        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 11));
+        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel4.setText("Variar por Tabulador");
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
         jPanel7Layout.setHorizontalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
-                .addGap(151, 151, 151)
-                .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(164, 164, 164))
+            .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 431, Short.MAX_VALUE)
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel7Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel4)
+                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -293,7 +291,8 @@ public class variatab extends javax.swing.JDialog {
                 Logger.getLogger(variatab.class.getName()).log(Level.SEVERE, null, ex);
             }
             
-            String selec = "SELECT precasu, precunit FROM mptabs WHERE codicove='"+codicove+"' AND mtabus_id='"+jComboBox1.getSelectedItem()+"'";
+            String selec = "SELECT precasu, precunit FROM mptabs WHERE codicove='"+codicove+"' "
+                    + "AND mtabus_id='"+jComboBox1.getSelectedItem()+"'";
             try {
                 Statement str = (Statement) conex.createStatement();
                 ResultSet rstr = str.executeQuery(selec);
@@ -301,10 +300,12 @@ public class variatab extends javax.swing.JDialog {
                     precunit=rstr.getObject("precunit").toString();
                     precasu = rstr.getObject("precasu").toString();
                 }
-              copiapu apu = new copiapu(conex, mpres, jComboBox1.getSelectedItem().toString(), partida)  ;
+                
+              copiapu apu = new copiapu(conex, mpres, jComboBox1.getSelectedItem().toString(), codicove);
               precunit = precasu = String.valueOf(apu.gettotalpartida());
             String update = "UPDATE mppres SET precunit="+precunit+", precasu = "+precasu+" WHERE numegrup="+partida+""
-                    + " AND id='"+codicove+"' AND mpre_id='"+mpres+"' OR mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+mpres+"')";
+                    + " AND id='"+codicove+"' AND mpre_id='"+mpres+"' OR mpre_id IN (SELECT id FROM mpres"
+                    + " WHERE mpres_id='"+mpres+"')";
             Statement st = (Statement) conex.createStatement();
             st.execute(update);
             
@@ -327,7 +328,7 @@ public class variatab extends javax.swing.JDialog {
         if(indi==1){
             actualiza(partida);
         }
-        doClose(RET_OK);        // TODO add your handling code here:
+        doClose(RET_OK);      
     }//GEN-LAST:event_okButtonMouseClicked
 
     private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed

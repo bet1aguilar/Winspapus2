@@ -1958,10 +1958,11 @@ borrar();
         String mtabs = null, mpre = "", descri = null, unidad = null, cantidad = null, precuni = null, padyga = null, pcosfin = null, pimpue = null, pprest = null, putild = null, numegrup = null;       
         String numeropres = null,nrocuadro=null;
         String sql = "SELECT mpre_id, descri, unidad,cantidad, redondeo,"
-                + " ROUND(IFNULL(IF(precunit=0,precasu, precunit),0),2) as precunit, "
-                + "ROUND(cantidad*IFNULL(IF(precunit=0,precasu, precunit),0),2) "
+                + " ROUND(IFNULL(IF(precasu=0,precunit, precasu),0),2) as precunit, "
+                + "ROUND(cantidad*IFNULL(IF(precasu=0,precunit, precasu),0),2) "
                 + "as total,"
-                + "id,tiponp, tipo, idband, nropresupuesto,nrocuadro FROM mppres WHERE id='"+idpartida+"' AND numegrup="+numpartida+" AND "
+                + "id,tiponp, tipo, idband, nropresupuesto,nrocuadro FROM mppres "
+                + "WHERE id='"+idpartida+"' AND numegrup="+numpartida+" AND "
                 + "(mpre_id='"+id+"' OR "
                 + "mpre_id IN (SELECT id from mpres where mpres_id ='"+id+"' GROUP BY id))";
        
@@ -3026,7 +3027,8 @@ public void agrega(){
 
             partidanueva = jTextField14.getText().toString();
             
-            String siexiste = "SELECT count(codicove) FROM mptabs WHERE numegrup="+partidanueva+  " AND mtabus_id='"+jComboBox1.getSelectedItem().toString()+"'";
+            String siexiste = "SELECT count(codicove) FROM mptabs WHERE"
+                    + " numegrup="+partidanueva+  " AND mtabus_id='"+jComboBox1.getSelectedItem().toString()+"'";
             String verifica1 = "SELECT count(mp.id) FROM mppres mp, mptabs mt WHERE  mt.numegrup= "+partidanueva+" AND mp.id = mt.codicove AND mt.mtabus_id ='"+jComboBox1.getSelectedItem().toString()+"'";
             String verifica2 = "SELECT count(mp.id) FROM mppres mp, mptabs mt WHERE  mt.numegrup= "+partidanueva+" AND mp.id = mt.codicove";
             try {
