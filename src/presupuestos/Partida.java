@@ -977,21 +977,24 @@ public final void buscagrupo() throws SQLException{
     }//GEN-LAST:event_jCheckBox1StateChanged
 public void buscaapu(){
     String codicove, numero;
+    String mpres="";
         codicove = jTextField1.getText().toString();
         numero = String.valueOf(jSpinner1.getValue());
-        String sql = "SELECT numero FROM mppres WHERE numegrup="+numero+" AND mpre_id='"+presupuesto+"' ";
+        String sql = "SELECT numero,mpre_id FROM mppres WHERE numegrup="+numero+" AND (mpre_id='"+presupuesto+"' "
+                + "OR mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+presupuesto+"'))";
         try {
             Statement stme = (Statement) conex.createStatement();
             ResultSet rst = stme.executeQuery(sql);
             while(rst.next()){
                 numero = rst.getObject(1).toString();
+                mpres = rst.getString(2);
             }
         } catch (SQLException ex) {
             Logger.getLogger(Partida.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         
-        apu ap = new apu(null, true, conex, presupuesto,codicove, numero,p, jTextField13.getText().toString(),this);
+        apu ap = new apu(null, true, conex, mpres,codicove, numero,p, jTextField13.getText().toString(),this);
        int x = (p.getWidth()/2)-475;
        int y = (p.getHeight()/2)-330;
        ap.setBounds(x, y, 950, 660);

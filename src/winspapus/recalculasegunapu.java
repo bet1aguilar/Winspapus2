@@ -69,6 +69,7 @@ public class recalculasegunapu extends Thread{
                     contmat = rmates.getFloat(1);
                 }
                 System.out.println("contmat "+contmat);
+                 contmat = (float) (Math.rint((contmat+0.000001)*100)/100);
                 String consultaeq = "SELECT SUM(IF(me.deprecia=0,de.cantidad*me.precio, de.cantidad*me.deprecia*me.precio)) "
                         + "as total FROM "
                         + "deptabs as de, metabs as me WHERE me.id=de.metab_id AND me.mtabus_id=de.mtabus_id AND de.mtabus_id='"+tabu+"' AND de.numero="+numero+"";
@@ -81,6 +82,7 @@ public class recalculasegunapu extends Thread{
                 if(rendimi>0){
                 contequipo = contequipo/rendimi;
                 }
+                contequipo= (float) (Math.rint((contequipo+0.000001)*100)/100);
                 String consultaman = "SELECT SUM(do.cantidad) as cantidad, mo.bono, mo.subsid, SUM(mo.salario*do.cantidad) as total"
                         + " FROM mmotabs as mo,dmoptabs as do WHERE do.mmotab_id = mo.id AND do.mtabus_id= mo.mtabus_id"
                         + " AND do.mtabus_id='"+tabu+"' AND do.numero = "+numero+"";
@@ -125,6 +127,7 @@ public class recalculasegunapu extends Thread{
                 porcutil = porcutil + auximpu +auxcosfin;
                  System.out.println("porcutil porcutil + auximpu +auxcosfin "+porcutil);
                 precunitrecalculado = porcutil;
+                precunitrecalculado= (float) (Math.rint((precunitrecalculado+0.000001)*100)/100);
                 System.out.println("precunitrecalculado = porcutil "+precunitrecalculado);
                 String actualiza = "UPDATE mptabs SET precunit="+precunitrecalculado+" WHERE numero="+numero+" AND mtabus_id='"+tabu+"'";
                 Statement stact = (Statement) conex.createStatement();

@@ -450,7 +450,7 @@ public class parametrorecon extends javax.swing.JDialog {
                     .addComponent(jLabel2)))
         );
 
-        jTable1.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        jTable1.setFont(new java.awt.Font("Tahoma", 0, 10));
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 

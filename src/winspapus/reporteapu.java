@@ -96,6 +96,15 @@ public class reporteapu extends javax.swing.JDialog {
             JasperDesign design = JRXmlLoader.load(input); 
             JasperReport report = JasperCompileManager.compileReport(design);
             Map parameters = new HashMap();
+            if(jRadioButton2.isSelected())
+            {
+               
+                fecha="";
+            }
+            else{
+            
+              fecha=formato.format(jDateChooser1.getDate());
+            }
             parameters.put("mtabus", mtabus);
             parameters.put("numegrup", numero);
             parameters.put("fecha", fecha);
@@ -194,6 +203,11 @@ public class reporteapu extends javax.swing.JDialog {
         okButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 okButtonMouseClicked(evt);
+            }
+        });
+        okButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                okButtonActionPerformed(evt);
             }
         });
 
@@ -433,6 +447,10 @@ public class reporteapu extends javax.swing.JDialog {
         }
         // TODO add your handling code here:
     }//GEN-LAST:event_jRadioButton2ActionPerformed
+
+    private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_okButtonActionPerformed
     
     private void doClose(int retStatus) {
         returnStatus = retStatus;

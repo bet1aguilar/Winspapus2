@@ -55,7 +55,7 @@ public class apu extends javax.swing.JDialog {
     String prest="0", util="0", fina="0", adm="0", imp="0", impart="0";
     float rendimiento=0;
     int filamat;
-    int cantmano=0;
+    float cantmano=0;
     Principal prin;
     private float contototal;
     Partida part;
@@ -245,8 +245,8 @@ public class apu extends javax.swing.JDialog {
                 
             }
              aux = (float) (Math.rint((contmat+0.000001)*100)/100);
-        
-               String esnan = String.valueOf(contmat);
+        contmat=aux;
+               String esnan = String.valueOf(aux);
                System.out.println("contmat "+esnan);
                 jTextField2.setText(String.valueOf(aux));
         } catch (SQLException ex) {
@@ -355,6 +355,8 @@ public class apu extends javax.swing.JDialog {
                  rendimiento=1;
              contequip = contequip/rendimiento;
             aux = (float) (Math.rint((contequip+0.000001)*100)/100);
+            contequip=aux;
+            System.out.println("conteq "+aux);
         } catch (SQLException ex) {
             System.out.println("Noooo");
             Logger.getLogger(apu.class.getName()).log(Level.SEVERE, null, ex);
@@ -449,7 +451,7 @@ public class apu extends javax.swing.JDialog {
                            
                     }
                         if(i==2){
-                            cantmano += rs1.getInt(3);
+                            cantmano += rs1.getFloat(3);
                            
                         }
                        
@@ -471,13 +473,20 @@ public class apu extends javax.swing.JDialog {
         }
          
            
-          contmano = valor; 
+          contmano = (float) Math.rint(valor*100)/100; 
           System.out.println("contmano en apu "+contmano);
         presta = contmano* (Float.valueOf(prest)/100);
+        presta = (float) (Math.rint(Float.valueOf(presta)*100)/100);
          System.out.println("Presta "+presta);
+          System.out.println("Bono antes de multiplicar "+bono);
         bono = cantmano * bono;
+        bono = (float) (Math.rint(Float.valueOf(bono)*100)/100);
+         System.out.println("cantmano "+cantmano);
          System.out.println("Bono "+bono);
+         System.out.println("Subsid antes de multiplicar "+subsid);
         subsid = cantmano * subsid;
+       
+         subsid= (float) (Math.rint(Float.valueOf(subsid)*100)/100);
          System.out.println("subsidio "+subsid);
         contmano = contmano + presta +bono +subsid;
          System.out.println("contmano "+contmano);
@@ -486,6 +495,8 @@ public class apu extends javax.swing.JDialog {
         contmano = contmano / rendimiento;
         
         float aux= (float) (Math.rint((contmano+0.000001)*100)/100);
+        contmano=aux;
+        System.out.println("total mano/rendimi "+aux);
         jTextField5.setText(String.valueOf(rendimiento));
         jTextField6.setText(String.valueOf(aux));
         cambiacabeceramano();
@@ -2033,17 +2044,22 @@ insertare=1;
         float redondeado = 0;
         contototal=0;
         contototal = contmat+contequip+contmano;
-        System.out.println("contotal "+contototal);
-        auxcontotal = contototal;
         
+        auxcontotal = contototal;
+        auxcontotal = (float) Math.rint(auxcontotal*100)/100;
+        System.out.println("auxcontotal "+auxcontotal);
         admini = auxcontotal * admini/100;
+        admini = (float) Math.rint(admini*100)/100;
         System.out.println("admin "+admini);
         utili = (auxcontotal+admini) * utili/100;
+        utili = (float) Math.rint(utili*100)/100;
         System.out.println("util "+utili);
-        auxcontotal = contototal + admini + utili;
+        auxcontotal = auxcontotal + admini + utili;
         System.out.println("sumado "+auxcontotal);
         financiero = auxcontotal * financiero/100;
+        financiero = (float) Math.rint(financiero*100)/100;
         impuesto = auxcontotal * impuesto/100;
+        impuesto = (float) Math.rint(impuesto*100)/100;
         System.out.println("financiero "+financiero);
         System.out.println("impuesto "+impuesto);
         contototal = auxcontotal + impuesto + financiero;

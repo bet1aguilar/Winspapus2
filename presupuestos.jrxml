@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="presupuesto" language="groovy" pageWidth="612" pageHeight="792" whenNoDataType="BlankPage" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isFloatColumnFooter="true" uuid="783eb973-dc35-448c-ace7-a90426bbba54">
-	<property name="ireport.zoom" value="1.1586575189467514"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.zoom" value="2.732053821460284"/>
+	<property name="ireport.x" value="973"/>
+	<property name="ireport.y" value="384"/>
 	<parameter name="mpres" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
@@ -424,39 +424,39 @@ mpres.porimp/100 as porimp FROM      `mpres` mpres INNER JOIN `mppres` mppres ON
 		</band>
 	</detail>
 	<columnFooter>
-		<band height="3" splitType="Immediate">
+		<band height="1" splitType="Immediate">
 			<line>
 				<reportElement uuid="19ddc9cc-c44b-47ca-8e2f-3c69343247cc" x="0" y="0" width="570" height="1"/>
 			</line>
 		</band>
 	</columnFooter>
 	<pageFooter>
-		<band height="80" splitType="Stretch">
+		<band height="73" splitType="Stretch">
 			<rectangle>
-				<reportElement uuid="a4ba44d6-13e8-4e01-95b4-881624c25691" x="0" y="1" width="175" height="60"/>
+				<reportElement uuid="05b1e1f1-d082-4186-baa1-64dced143c5e" x="176" y="1" width="205" height="52"/>
 			</rectangle>
 			<rectangle>
-				<reportElement uuid="c5bf00d6-a71a-4d48-a09a-bf76c873f841" x="380" y="1" width="190" height="60"/>
+				<reportElement uuid="a4ba44d6-13e8-4e01-95b4-881624c25691" x="0" y="1" width="175" height="52"/>
 			</rectangle>
 			<rectangle>
-				<reportElement uuid="05b1e1f1-d082-4186-baa1-64dced143c5e" x="175" y="1" width="205" height="60"/>
+				<reportElement uuid="c5bf00d6-a71a-4d48-a09a-bf76c873f841" x="380" y="1" width="190" height="52"/>
 			</rectangle>
 			<staticText>
-				<reportElement uuid="04c3d8f0-a9bf-49c6-976b-1b9114f0689c" x="1" y="61" width="570" height="10"/>
+				<reportElement uuid="04c3d8f0-a9bf-49c6-976b-1b9114f0689c" x="2" y="53" width="570" height="10"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="6" isBold="true"/>
 				</textElement>
 				<text><![CDATA[SPAPU (Sistemas R.H. C.A.)  San Cristóbal Edo. Táchira, Barrio Obrero Carrera 18 Entre calles 8 y 9 Edf. Marcol's No. 8-23 ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="51eb12f4-b8a7-4061-9fbc-6a8949edecf1" x="0" y="70" width="571" height="10"/>
+				<reportElement uuid="51eb12f4-b8a7-4061-9fbc-6a8949edecf1" x="2" y="63" width="571" height="10"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="6" isBold="true"/>
 				</textElement>
 				<text><![CDATA[0276-3567564 / 0276-3553158 / 0276-3560071 / 0276-3579562 - www.spapu.com.ve / Facebook: Rhspapu / Twitter: @Spapu]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="f60729a2-1aa2-4743-b4ab-10c9fbd12d04" x="0" y="1" width="100" height="13"/>
+				<reportElement uuid="f60729a2-1aa2-4743-b4ab-10c9fbd12d04" x="0" y="1" width="64" height="13"/>
 				<box leftPadding="5"/>
 				<textElement verticalAlignment="Bottom">
 					<font size="8"/>
@@ -464,7 +464,7 @@ mpres.porimp/100 as porimp FROM      `mpres` mpres INNER JOIN `mppres` mppres ON
 				<text><![CDATA[CONTRATISTA:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="26f46ac7-c3af-4334-b7ea-06c72ef136b6" x="1" y="48" width="50" height="13"/>
+				<reportElement uuid="26f46ac7-c3af-4334-b7ea-06c72ef136b6" x="1" y="40" width="50" height="13"/>
 				<box rightPadding="5"/>
 				<textElement textAlignment="Right">
 					<font size="8"/>
@@ -479,7 +479,7 @@ mpres.porimp/100 as porimp FROM      `mpres` mpres INNER JOIN `mppres` mppres ON
 				<text><![CDATA[CONTRATISTA:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="8626e91b-503a-43cc-a7be-7fe894ec728b" x="176" y="1" width="100" height="13"/>
+				<reportElement uuid="8626e91b-503a-43cc-a7be-7fe894ec728b" x="176" y="1" width="78" height="13"/>
 				<box leftPadding="5"/>
 				<textElement verticalAlignment="Bottom">
 					<font size="8"/>
@@ -487,7 +487,7 @@ mpres.porimp/100 as porimp FROM      `mpres` mpres INNER JOIN `mppres` mppres ON
 				<text><![CDATA[ING. RESIDENTE:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="18030b39-9af2-44aa-acdc-80266b648fec" x="175" y="48" width="50" height="13"/>
+				<reportElement uuid="18030b39-9af2-44aa-acdc-80266b648fec" x="176" y="40" width="50" height="13"/>
 				<box rightPadding="5"/>
 				<textElement textAlignment="Right">
 					<font size="8"/>
@@ -495,7 +495,7 @@ mpres.porimp/100 as porimp FROM      `mpres` mpres INNER JOIN `mppres` mppres ON
 				<text><![CDATA[C.I.V.:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="8110a5ed-ccc1-4b9d-b362-6cefbf0b9a6b" x="175" y="35" width="50" height="13"/>
+				<reportElement uuid="8110a5ed-ccc1-4b9d-b362-6cefbf0b9a6b" x="176" y="27" width="50" height="13"/>
 				<box rightPadding="5"/>
 				<textElement textAlignment="Right">
 					<font size="8"/>
@@ -503,7 +503,7 @@ mpres.porimp/100 as porimp FROM      `mpres` mpres INNER JOIN `mppres` mppres ON
 				<text><![CDATA[C.I.:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="5212d828-ad9c-472d-93a0-1b1e21a4ae71" x="380" y="35" width="66" height="13"/>
+				<reportElement uuid="5212d828-ad9c-472d-93a0-1b1e21a4ae71" x="380" y="26" width="66" height="13"/>
 				<box leftPadding="5" rightPadding="5"/>
 				<textElement textAlignment="Right">
 					<font size="8"/>
@@ -511,7 +511,7 @@ mpres.porimp/100 as porimp FROM      `mpres` mpres INNER JOIN `mppres` mppres ON
 				<text><![CDATA[C.I.:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="c8bf919e-33af-4daf-a736-58039b579a5e" x="380" y="48" width="66" height="13"/>
+				<reportElement uuid="c8bf919e-33af-4daf-a736-58039b579a5e" x="380" y="39" width="66" height="13"/>
 				<box leftPadding="5" rightPadding="5"/>
 				<textElement textAlignment="Right">
 					<font size="8"/>
@@ -519,7 +519,7 @@ mpres.porimp/100 as porimp FROM      `mpres` mpres INNER JOIN `mppres` mppres ON
 				<text><![CDATA[C.I.V.:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="4609823e-4074-4254-bf79-84188b98fe40" x="380" y="1" width="191" height="13"/>
+				<reportElement uuid="4609823e-4074-4254-bf79-84188b98fe40" x="380" y="1" width="74" height="13"/>
 				<box leftPadding="5"/>
 				<textElement verticalAlignment="Bottom">
 					<font size="8"/>
@@ -527,59 +527,59 @@ mpres.porimp/100 as porimp FROM      `mpres` mpres INNER JOIN `mppres` mppres ON
 				<text><![CDATA[ING. INSPECTOR:]]></text>
 			</staticText>
 			<textField isStretchWithOverflow="true">
-				<reportElement uuid="d9b09c55-4450-4c2e-b74e-ac8b19b94596" x="0" y="13" width="174" height="13"/>
+				<reportElement uuid="d9b09c55-4450-4c2e-b74e-ac8b19b94596" x="64" y="1" width="111" height="13"/>
 				<box leftPadding="5"/>
-				<textElement>
+				<textElement verticalAlignment="Bottom">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{mconts_repleg}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="b5412f5c-38dc-4805-906e-062c62cf04be" x="53" y="48" width="100" height="13"/>
+				<reportElement uuid="b5412f5c-38dc-4805-906e-062c62cf04be" x="53" y="40" width="100" height="13"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{mconts_cedrep}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement uuid="b32cf650-c00d-4230-99f0-bcb36fd34b19" x="176" y="14" width="204" height="13"/>
+				<reportElement uuid="b32cf650-c00d-4230-99f0-bcb36fd34b19" x="254" y="1" width="125" height="13"/>
 				<box leftPadding="5"/>
-				<textElement>
+				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{mconts_ingres}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement uuid="9b2a32e6-763e-4b1a-82af-deb0367b7543" x="225" y="35" width="100" height="13"/>
+				<reportElement uuid="9b2a32e6-763e-4b1a-82af-deb0367b7543" x="226" y="27" width="100" height="13"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{mconts_cedres}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement uuid="f6e5b2bc-5c4e-49fe-9d27-346ab5dbc386" x="226" y="48" width="100" height="13"/>
+				<reportElement uuid="f6e5b2bc-5c4e-49fe-9d27-346ab5dbc386" x="226" y="40" width="100" height="13"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{mconts_civres}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement uuid="d0121978-78dd-415f-b51f-2eb8b9a99e45" x="380" y="14" width="190" height="13"/>
+				<reportElement uuid="d0121978-78dd-415f-b51f-2eb8b9a99e45" x="455" y="1" width="115" height="13"/>
 				<box leftPadding="5"/>
-				<textElement>
+				<textElement verticalAlignment="Bottom">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{mconts_ingins}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement uuid="62482dbb-e85a-4594-ad60-cc64e2c0f063" x="455" y="35" width="116" height="13"/>
+				<reportElement uuid="62482dbb-e85a-4594-ad60-cc64e2c0f063" x="454" y="26" width="116" height="13"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{mconts_cedins}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement uuid="e2cd3f11-8240-4010-b80e-81c8c16975f5" x="455" y="48" width="116" height="13"/>
+				<reportElement uuid="e2cd3f11-8240-4010-b80e-81c8c16975f5" x="455" y="39" width="116" height="13"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
@@ -588,7 +588,7 @@ mpres.porimp/100 as porimp FROM      `mpres` mpres INNER JOIN `mppres` mppres ON
 		</band>
 	</pageFooter>
 	<summary>
-		<band height="70" splitType="Immediate">
+		<band height="60" splitType="Immediate">
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement uuid="ef9448de-9a55-4e08-bed5-eef31cc003cd" stretchType="RelativeToTallestObject" x="464" y="0" width="106" height="15" isPrintWhenDetailOverflows="true"/>
 				<box topPadding="2" leftPadding="5" rightPadding="5">
@@ -691,7 +691,7 @@ mpres.porimp/100 as porimp FROM      `mpres` mpres INNER JOIN `mppres` mppres ON
 				<textFieldExpression><![CDATA[$V{total}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement uuid="bb696444-d5ee-43ad-bc9f-eea3722fb590" x="0" y="45" width="570" height="25" isRemoveLineWhenBlank="true"/>
+				<reportElement uuid="bb696444-d5ee-43ad-bc9f-eea3722fb590" x="0" y="45" width="570" height="14" isRemoveLineWhenBlank="true"/>
 				<box leftPadding="5">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>

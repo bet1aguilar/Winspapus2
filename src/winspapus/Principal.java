@@ -2366,10 +2366,13 @@ public class Principal extends javax.swing.JFrame {
         }
             float prestaciones = Float.valueOf(jLabel29.getText().toString())/100;
             auxcontmano = contmano;
+            System.out.println("auxcontmano "+auxcontmano);
             prestaciones = contmano * prestaciones;
+             System.out.println("prestaciones "+prestaciones);
             bono = cant * bono;
              subsid = cant * subsid;
              auxcontmano = contmano + prestaciones + bono + subsid;
+              System.out.println("auxcontmano+prestaciones+bono+subsid "+auxcontmano);
              float auxcont;
              float rendimi = Float.valueOf(jLabel23.getText().toString());
           if(rendimi==0)

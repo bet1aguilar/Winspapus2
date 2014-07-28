@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report2" language="groovy" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="cc1b8ae2-f7ca-41db-a004-b9de7407b6b8">
 	<property name="ireport.zoom" value="1.4641000000000013"/>
-	<property name="ireport.x" value="125"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.x" value="172"/>
+	<property name="ireport.y" value="211"/>
 	<style name="table">
 		<box>
 			<topPen lineWidth="1.0" lineColor="#000000"/>
@@ -183,7 +183,7 @@
 		</parameter>
 		<queryString>
 			<![CDATA[SELECT mm.id, mm.descri, mm.precio, dm.cantidad, mm.unidad, mm.desperdi, ROUND(IF(mm.desperdi>0,((mm.precio+(mm.precio*(mm.desperdi/100)))*dm.cantidad),(dm.cantidad*mm.precio)),2) as total FROM mmpres as mm, dmpres as dm, mppres as mp
- WHERE dm.mpre_id=$P{mpres} AND mm.mpre_id=dm.mpre_id AND dm.numepart=mp.numero AND mp.numero=$P{numegrup} AND dm.mmpre_id=mm.id GROUP BY mm.id]]>
+ WHERE dm.mpre_id=$P{mpres} AND mm.mpre_id=dm.mpre_id AND dm.numepart=mp.numero AND mp.numegrup=$P{numegrup} AND dm.mmpre_id=mm.id GROUP BY mm.id]]>
 		</queryString>
 		<field name="id" class="java.lang.String">
 			<fieldDescription><![CDATA[]]></fieldDescription>
@@ -203,7 +203,9 @@
 		<field name="desperdi" class="java.math.BigDecimal">
 			<fieldDescription><![CDATA[]]></fieldDescription>
 		</field>
-		<field name="total" class="java.math.BigDecimal"/>
+		<field name="total" class="java.math.BigDecimal">
+			<fieldDescription><![CDATA[]]></fieldDescription>
+		</field>
 		<variable name="totalmat" class="java.lang.Double" calculation="Sum">
 			<variableExpression><![CDATA[$F{total}]]></variableExpression>
 		</variable>
@@ -216,7 +218,8 @@
 			<defaultValueExpression><![CDATA[121]]></defaultValueExpression>
 		</parameter>
 		<queryString>
-			<![CDATA[SELECT mm.id, mm.descri, mm.precio, mm.deprecia, dm.cantidad, ROUND(dm.cantidad*mm.deprecia*mm.precio,2) as total FROM mepres as mm, deppres as dm WHERE dm.mpre_id=$P{mpres} AND dm.numero=$P{numegrup} AND dm.mepre_id=mm.id AND dm.mpre_id=mm.mpre_id GROUP BY mm.id]]>
+			<![CDATA[SELECT mm.id, mm.descri, mm.precio, mm.deprecia, dm.cantidad, ROUND(dm.cantidad*mm.deprecia*mm.precio,2) as total FROM mepres as mm, deppres as dm, mppres as mp WHERE dm.mpre_id=$P{mpres} AND dm.numero=mp.numero
+AND mp.numegrup=$P{numegrup} AND dm.mepre_id=mm.id AND dm.mpre_id=mm.mpre_id GROUP BY mm.id]]>
 		</queryString>
 		<field name="id" class="java.lang.String">
 			<fieldDescription><![CDATA[]]></fieldDescription>
@@ -243,7 +246,8 @@
 			<defaultValueExpression><![CDATA[$P{mpres}]]></defaultValueExpression>
 		</parameter>
 		<queryString>
-			<![CDATA[SELECT mm.id, mm.descri, dm.cantidad, mm.bono, mm.subsid, mm.salario, (mm.salario*dm.cantidad) as total FROM mmopres as mm, dmoppres as dm WHERE dm.mpre_id=$P{mpres} AND dm.numero=$P{numegrup} AND dm.mmopre_id=mm.id AND dm.mpre_id=mm.mpre_id GROUP BY mm.id]]>
+			<![CDATA[SELECT mm.id, mm.descri, dm.cantidad, mm.bono, mm.subsid, mm.salario, (mm.salario*dm.cantidad) as total FROM mmopres as mm, dmoppres as dm, mppres as mp WHERE dm.mpre_id=$P{mpres} AND dm.numero=mp.numero
+AND mp.numegrup=$P{numegrup} AND dm.mmopre_id=mm.id AND dm.mpre_id=mm.mpre_id GROUP BY mm.id]]>
 		</queryString>
 		<field name="id" class="java.lang.String">
 			<fieldDescription><![CDATA[]]></fieldDescription>
@@ -296,7 +300,7 @@
      mp.porpre as mpres_pprest,
      mp.`poruti` AS mppres_porcutil,
      mp.`porcfi` AS mpres_pcosfin,
-     mp.`porimp` AS mpres_pimpue,
+     mp.`poripa` AS mpres_pimpue,
      mppres.`precunit` AS mppres_precunit,
      mppres.`precasu` AS mppres_precasu,
      mppres.`unidad` AS mppres_unidad,
@@ -332,7 +336,7 @@ dmo.mmopre_id=mo.id AND mp.mpre_id = dmo.mpre_id AND mo.mpre_id=mp.mpre_id AND d
 IFNULL(ROUND((SELECT subsid FROM mmopres WHERE mpre_id=$P{mpres} LIMIT 1),2),0) as subsid,
 
 IFNULL(ROUND((SELECT SUM(dmo.cantidad)*mo.subsid FROM dmoppres as dmo, mmopres as mo, mppres as mp WHERE mp.mpre_id=$P{mpres}
-AND mp.mpre_id = dmo.mpre_id AND mo.mpre_id=mp.mpre_id AND dmo.numero = mp.numero AND mp.numegrup=$P{numegrup} ),2),0)  as montosubsid,
+AND mp.mpre_id = dmo.mpre_id AND dmo.mmopre_id=mo.id AND mo.mpre_id=mp.mpre_id AND dmo.numero = mp.numero AND mp.numegrup=$P{numegrup} ),2),0)  as montosubsid,
 
 IFNULL(ROUND((SELECT SUM(dmo.cantidad*mo.salario)+ SUM(dmo.cantidad*mo.salario)*(mt.porpre/100) + SUM(dmo.cantidad)*mo.bono +
 SUM(dmo.cantidad)*mo.subsid FROM dmoppres as dmo,
@@ -348,8 +352,8 @@ FROM
      `mpres` as mp, `mppres` as mppres, mconts as mc, mprops as mpr
 WHERE
      mppres.mpre_id =$P{mpres}
- AND mppres.numero = $P{numegrup}
-AND (mppres.mpre_id=mp.id OR mppres.mpre_id IN (SELECT id FROM mpres WHERE mpres_id=$P{mpres}))
+ AND mppres.numegrup = $P{numegrup}
+AND mppres.mpre_id=mp.id
 AND mp.codcon = mc.id AND mp.codpro = mpr.id]]>
 	</queryString>
 	<field name="mppres_codicove" class="java.lang.String"/>
@@ -429,16 +433,19 @@ AND mp.codcon = mc.id AND mp.codpro = mpr.id]]>
 	<variable name="matequip" class="java.lang.Double">
 		<variableExpression><![CDATA[$F{totalmat}+$F{totalequipo}]]></variableExpression>
 	</variable>
-	<variable name="porunidad" class="java.lang.Double">
+	<variable name="porunidad" class="java.math.BigDecimal">
 		<variableExpression><![CDATA[$F{totalmat}+$F{totalequipo}+$V{xunidad}]]></variableExpression>
 		<initialValueExpression><![CDATA[0]]></initialValueExpression>
 	</variable>
-	<variable name="admin1" class="java.lang.Double">
+	<variable name="admin1" class="java.math.BigDecimal">
 		<variableExpression><![CDATA[$V{porunidad}*($F{porcgad}/100)]]></variableExpression>
 		<initialValueExpression><![CDATA[0]]></initialValueExpression>
 	</variable>
-	<variable name="subtotaladm" class="java.lang.Double">
-		<variableExpression><![CDATA[$V{porunidad}+$V{admin1}]]></variableExpression>
+	<variable name="adminredon" class="java.lang.Double">
+		<variableExpression><![CDATA[Math.rint($V{admin1}*100)/100]]></variableExpression>
+	</variable>
+	<variable name="subtotaladm" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$V{porunidad}+$V{adminredon}]]></variableExpression>
 		<initialValueExpression><![CDATA[0]]></initialValueExpression>
 	</variable>
 	<variable name="util" class="java.lang.Double">
@@ -782,7 +789,7 @@ AND mp.codcon = mc.id AND mp.codpro = mpr.id]]>
 			<componentElement>
 				<reportElement uuid="f5c5bf7f-88ea-4407-adc0-3509d0cc2c7d" key="table 2" style="table 2_TD" mode="Transparent" x="0" y="14" width="571" height="12"/>
 				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" whenNoDataType="AllSectionsNoDetail">
-					<datasetRun subDataset="materiales" uuid="248e58e5-3f57-48c8-9ed1-d602976519ce">
+					<datasetRun subDataset="materiales" uuid="4f0c5658-07bf-4537-923c-bf0f5f2ba865">
 						<datasetParameter name="numegrup">
 							<datasetParameterExpression><![CDATA[$P{numegrup}]]></datasetParameterExpression>
 						</datasetParameter>
@@ -1304,7 +1311,7 @@ AND mp.codcon = mc.id AND mp.codpro = mpr.id]]>
 				</textElement>
 				<text><![CDATA[Total Mano de Obra:]]></text>
 			</staticText>
-			<textField pattern="#,##0.00">
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement uuid="2a78c79d-85a0-438a-8e7f-9ea8efe09948" x="480" y="0" width="90" height="11"/>
 				<box rightPadding="3"/>
 				<textElement textAlignment="Right">
@@ -1351,7 +1358,7 @@ AND mp.codcon = mc.id AND mp.codpro = mpr.id]]>
 				<text><![CDATA[Total Mano de Obra:]]></text>
 			</staticText>
 			<textField pattern="#,##0.00">
-				<reportElement uuid="403ee90e-528a-4c00-a715-ea2a31b4efd8" x="244" y="2" width="90" height="11"/>
+				<reportElement uuid="403ee90e-528a-4c00-a715-ea2a31b4efd8" x="245" y="2" width="90" height="11"/>
 				<textElement textAlignment="Right" verticalAlignment="Top">
 					<font size="7"/>
 				</textElement>
@@ -1569,7 +1576,7 @@ AND mp.codcon = mc.id AND mp.codpro = mpr.id]]>
 				<textElement textAlignment="Right">
 					<font size="7"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$V{admin1}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$V{admin1}+0.00001]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement uuid="4c951477-f9d3-40d5-b128-eee7d2cacc51" x="356" y="139" width="83" height="11"/>

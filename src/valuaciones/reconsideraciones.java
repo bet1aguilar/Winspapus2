@@ -1368,9 +1368,9 @@ public class reconsideraciones extends javax.swing.JDialog {
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        String numepart=jTable1.getValueAt(filapart, 1).toString();     
+         String numepart=jTable1.getValueAt(filapart, 1).toString();     
          codnuevopres = mpres+" VP-"+nrocuadro;    
-                
+         
         variatab var = new variatab(null, true, conex, codnuevopres, numepart);
         int xi = (pres.getWidth()/2)-500/2;
         int yi = (pres.getHeight()/2)-200/2;

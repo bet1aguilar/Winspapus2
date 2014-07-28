@@ -277,40 +277,43 @@ public class variatab extends javax.swing.JDialog {
         doClose(RET_CANCEL);
     }//GEN-LAST:event_closeDialog
 
-    public void actualiza(String partida){
-         String codicove = null, precunit=null, precasu=null;
-            String busca = "SELECT id FROM mppres WHERE numegrup="+partida+" AND mpre_id='"+mpres+"' "
-                    + "OR mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+mpres+"')";
+    public void actualiza(){
+         String codicove = null, precunit=null, precasu=null,numero=null;
+            String busca = "SELECT id, numero FROM mppres WHERE mpre_id='"+mpres+"' ";
             try {
                 Statement st = (Statement) conex.createStatement();
                 ResultSet rst = st.executeQuery(busca);
                 while(rst.next()){
                     codicove = rst.getObject("id").toString();
-                }
-            } catch (SQLException ex) {
-                Logger.getLogger(variatab.class.getName()).log(Level.SEVERE, null, ex);
-            }
+                    numero = rst.getString("numero");
             
 
             String selec = "SELECT precasu, precunit FROM mptabs WHERE codicove='"+codicove+"' AND "
                     + "mtabus_id='"+jComboBox1.getSelectedItem()+"'";
 
-            try {
+       
                 Statement str = (Statement) conex.createStatement();
                 ResultSet rstr = str.executeQuery(selec);
                 while(rstr.next()){
                     precunit=rstr.getObject("precunit").toString();
                     precasu = rstr.getObject("precasu").toString();
                 }
-                
-              copiapu apu = new copiapu(conex, mpres, jComboBox1.getSelectedItem().toString(), codicove);
-              precunit = precasu = String.valueOf(apu.gettotalpartida());
-            String update = "UPDATE mppres SET precunit="+precunit+", precasu = "+precasu+" WHERE numegrup="+partida+""
-                    + " AND id='"+codicove+"' AND mpre_id='"+mpres+"' OR mpre_id IN (SELECT id FROM mpres"
-                    + " WHERE mpres_id='"+mpres+"')";
-            Statement st = (Statement) conex.createStatement();
-            st.execute(update);
+                int select=0;
+                if(jCheckBox1.isSelected()){
+                    select=1;
+                }else{
+                    select=0;
+                }
+              copiapu apu = new copiapu(conex, mpres, jComboBox1.getSelectedItem().toString(), codicove,select,numero);
+              precunit  = String.valueOf(apu.gettotalpartida());
+              precasu="0";
+            String update = "UPDATE mppres SET precunit="+precunit+", precasu = "+precasu+" WHERE numero="+numero+""
+                    + " AND id='"+codicove+"' AND mpre_id='"+mpres+"'";
+            Statement sts = (Statement) conex.createStatement();
+            sts.execute(update);
             
+           
+            }
             } catch (SQLException ex) {
                 Logger.getLogger(variatab.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -320,16 +323,14 @@ public class variatab extends javax.swing.JDialog {
 }//GEN-LAST:event_cancelButtonActionPerformed
 
     private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_okButtonMouseClicked
-        if(indi==0){
-        int cant = partidas.length;
-        for(int i=0; i<cant;i++){
-           actualiza(partidas[i]);
-        }
+      
+       
+       
+   
+           actualiza();
+        
          JOptionPane.showMessageDialog(null, "Se han modificado las partidas");
-        }
-        if(indi==1){
-            actualiza(partida);
-        }
+       
         doClose(RET_OK);      
     }//GEN-LAST:event_okButtonMouseClicked
 
