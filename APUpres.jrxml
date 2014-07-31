@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report2" language="groovy" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="cc1b8ae2-f7ca-41db-a004-b9de7407b6b8">
 	<property name="ireport.zoom" value="1.4641000000000013"/>
-	<property name="ireport.x" value="172"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="211"/>
 	<style name="table">
 		<box>
@@ -284,7 +284,7 @@ AND mp.numegrup=$P{numegrup} AND dm.mmopre_id=mm.id AND dm.mpre_id=mm.mpre_id GR
 		<![CDATA[SELECT
      mppres.`id` AS mppres_codicove,
      mppres.`numegrup` AS mppres_numegrup,
-    mp.porgam as porcgad,
+    mppres.porcgad as porcgad,
      mppres.`cantidad` AS mppres_cantidad,
      mppres.rendimi as rendimi,
      mppres.descri as descri,
@@ -297,8 +297,8 @@ AND mp.numegrup=$P{numegrup} AND dm.mmopre_id=mm.id AND dm.mpre_id=mm.mpre_id GR
      mpr.logo as logoprop,
      mp.nombre as nombreobra,
      mp.ubicac as ubicacionobra,
-     mp.porpre as mpres_pprest,
-     mp.`poruti` AS mppres_porcutil,
+     mppres.porcpre as mpres_pprest,
+     mppres.`porcutil` AS mppres_porcutil,
      mp.`porcfi` AS mpres_pcosfin,
      mp.`poripa` AS mpres_pimpue,
      mppres.`precunit` AS mppres_precunit,
@@ -358,7 +358,9 @@ AND mp.codcon = mc.id AND mp.codpro = mpr.id]]>
 	</queryString>
 	<field name="mppres_codicove" class="java.lang.String"/>
 	<field name="mppres_numegrup" class="java.math.BigDecimal"/>
-	<field name="porcgad" class="java.math.BigDecimal"/>
+	<field name="porcgad" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
 	<field name="mppres_cantidad" class="java.math.BigDecimal"/>
 	<field name="rendimi" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[]]></fieldDescription>
@@ -449,23 +451,23 @@ AND mp.codcon = mc.id AND mp.codpro = mpr.id]]>
 		<initialValueExpression><![CDATA[0]]></initialValueExpression>
 	</variable>
 	<variable name="util" class="java.lang.Double">
-		<variableExpression><![CDATA[$V{subtotaladm}*($F{mppres_porcutil}/100)]]></variableExpression>
+		<variableExpression><![CDATA[Math.rint($V{subtotaladm}*($F{mppres_porcutil}/100)*100)/100]]></variableExpression>
 		<initialValueExpression><![CDATA[0]]></initialValueExpression>
 	</variable>
 	<variable name="subtotalutil" class="java.lang.Double">
-		<variableExpression><![CDATA[$V{subtotaladm}+$V{util}]]></variableExpression>
+		<variableExpression><![CDATA[Math.rint(($V{subtotaladm}+$V{util})*100)/100]]></variableExpression>
 		<initialValueExpression><![CDATA[0]]></initialValueExpression>
 	</variable>
 	<variable name="financiamiento" class="java.lang.Double">
-		<variableExpression><![CDATA[$V{subtotalutil}*($F{mpres_pcosfin}/100)]]></variableExpression>
+		<variableExpression><![CDATA[Math.rint(($V{subtotalutil}*($F{mpres_pcosfin}/100))*100)/100]]></variableExpression>
 		<initialValueExpression><![CDATA[0]]></initialValueExpression>
 	</variable>
 	<variable name="impuesto" class="java.lang.Double">
-		<variableExpression><![CDATA[$V{subtotalutil}*($F{mpres_pimpue}/100)]]></variableExpression>
+		<variableExpression><![CDATA[Math.rint(($V{subtotalutil}*($F{mpres_pimpue})/100)*100)/100]]></variableExpression>
 		<initialValueExpression><![CDATA[0]]></initialValueExpression>
 	</variable>
 	<variable name="preciounit" class="java.lang.Double">
-		<variableExpression><![CDATA[$V{subtotalutil}+$V{financiamiento}+$V{impuesto}]]></variableExpression>
+		<variableExpression><![CDATA[Math.rint(($V{subtotalutil}+$V{financiamiento}+$V{impuesto})*100)/100]]></variableExpression>
 		<initialValueExpression><![CDATA[0]]></initialValueExpression>
 	</variable>
 	<background>
@@ -1017,10 +1019,10 @@ AND mp.codcon = mc.id AND mp.codpro = mpr.id]]>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column width="320" uuid="130017ce-87e3-432f-a501-426b697ab77d">
+					<jr:column width="304" uuid="130017ce-87e3-432f-a501-426b697ab77d">
 						<jr:columnHeader style="table 4_CH" height="12" rowSpan="1">
 							<staticText>
-								<reportElement uuid="b509eeb8-f860-489f-864d-db83f0607212" mode="Opaque" x="0" y="0" width="320" height="11" backcolor="#CCCCCC"/>
+								<reportElement uuid="b509eeb8-f860-489f-864d-db83f0607212" mode="Opaque" x="0" y="0" width="304" height="11" backcolor="#CCCCCC"/>
 								<box leftPadding="5"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="8" isBold="true"/>
@@ -1030,7 +1032,7 @@ AND mp.codcon = mc.id AND mp.codpro = mpr.id]]>
 						</jr:columnHeader>
 						<jr:detailCell style="table 4_TD" height="11" rowSpan="1">
 							<textField isStretchWithOverflow="true" pattern="">
-								<reportElement uuid="79969f9e-5d81-443d-95e2-954488e36ceb" x="0" y="0" width="319" height="11"/>
+								<reportElement uuid="79969f9e-5d81-443d-95e2-954488e36ceb" x="0" y="0" width="304" height="11"/>
 								<box topPadding="2" leftPadding="5" bottomPadding="3" rightPadding="3"/>
 								<textElement verticalAlignment="Middle">
 									<font size="7"/>
@@ -1039,10 +1041,10 @@ AND mp.codcon = mc.id AND mp.codpro = mpr.id]]>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column width="50" uuid="1d08ad7a-4ec8-4f5a-9bb2-47c1d8c5b752">
+					<jr:column width="66" uuid="1d08ad7a-4ec8-4f5a-9bb2-47c1d8c5b752">
 						<jr:columnHeader style="table 4_CH" height="12" rowSpan="1">
 							<staticText>
-								<reportElement uuid="04c4386f-e139-47fa-813d-51c08c31c842" mode="Opaque" x="0" y="0" width="50" height="11" backcolor="#CCCCCC"/>
+								<reportElement uuid="04c4386f-e139-47fa-813d-51c08c31c842" mode="Opaque" x="0" y="0" width="66" height="11" backcolor="#CCCCCC"/>
 								<box leftPadding="5"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="8" isBold="true"/>
@@ -1052,7 +1054,7 @@ AND mp.codcon = mc.id AND mp.codpro = mpr.id]]>
 						</jr:columnHeader>
 						<jr:detailCell style="table 4_TD" height="11" rowSpan="1">
 							<textField isStretchWithOverflow="true" pattern="#,##0.00">
-								<reportElement uuid="318517aa-dadc-497b-b869-385d10a70632" stretchType="RelativeToTallestObject" x="0" y="0" width="44" height="11"/>
+								<reportElement uuid="318517aa-dadc-497b-b869-385d10a70632" stretchType="RelativeToTallestObject" x="0" y="0" width="66" height="11"/>
 								<box topPadding="2" leftPadding="5" bottomPadding="3" rightPadding="3"/>
 								<textElement textAlignment="Right" verticalAlignment="Middle">
 									<font size="7"/>

@@ -332,7 +332,7 @@ Presupuesto objpres;
                buttonGroup1.add(jRadioButton8);
     }
     public void borraprecasu(){
-        String borra = "UPDATE mppres SET precasu=0, redondeo=0 WHERE mtabus_id='"+pres+"' AND status=1";
+        String borra = "UPDATE mppres SET precasu=0, redondeo=0 WHERE mpre_id='"+pres+"' AND status=1";
         try {
             Statement str = (Statement) conex.createStatement();
             str.execute(borra);

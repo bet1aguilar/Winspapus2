@@ -14,6 +14,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -61,12 +62,13 @@ public class reportepresupuesto extends javax.swing.JDialog {
     Connection conex;
      String ruta;
     String mtabus, numero;
-   
+   String tiponp = "";
     String pres;
     SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
     String fecha;
     int cual=0;
     double totalpres;
+       public double subtotal1 = 0,  subtotal=0,impuesto=0, total=0;
     /**
      * Creates new form reportepresupuesto
      */
@@ -116,6 +118,8 @@ public class reportepresupuesto extends javax.swing.JDialog {
         jLabel5 = new javax.swing.JLabel();
         jTextField2 = new javax.swing.JTextField();
         jCheckBox4 = new javax.swing.JCheckBox();
+        jLabel7 = new javax.swing.JLabel();
+        jComboBox2 = new javax.swing.JComboBox();
         jPanel5 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         jCheckBox3 = new javax.swing.JCheckBox();
@@ -155,7 +159,7 @@ public class reportepresupuesto extends javax.swing.JDialog {
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 611, Short.MAX_VALUE)
+            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 615, Short.MAX_VALUE)
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -175,6 +179,11 @@ public class reportepresupuesto extends javax.swing.JDialog {
         jCheckBox4.setSelected(true);
         jCheckBox4.setText("Reflejar Impuestos");
 
+        jLabel7.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel7.setText("Tipo No Prevista:");
+
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "No Prevista", "Obra Extra", "Obra Adicional", "Obra C", "Todos" }));
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -183,19 +192,24 @@ public class reportepresupuesto extends javax.swing.JDialog {
                 .addGap(13, 13, 13)
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(46, 46, 46)
-                .addComponent(jCheckBox4)
-                .addContainerGap(86, Short.MAX_VALUE))
+                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel7)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jComboBox2, 0, 167, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jCheckBox4))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(jCheckBox4)
                     .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5))
+                    .addComponent(jLabel5)
+                    .addComponent(jCheckBox4)
+                    .addComponent(jLabel7)
+                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -212,7 +226,7 @@ public class reportepresupuesto extends javax.swing.JDialog {
             }
         });
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Presupuesto Original", "Presupuesto de Partidas no Previstas" }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Presupuesto Original", "Presupuesto de Partidas no Previstas", "Presupuesto Modificado" }));
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 11));
         jLabel2.setText("Tipo de Presupuesto:");
@@ -275,7 +289,7 @@ public class reportepresupuesto extends javax.swing.JDialog {
                         .addGap(93, 93, 93)
                         .addComponent(jLabel4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 447, Short.MAX_VALUE)))
+                        .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 451, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel5Layout.setVerticalGroup(
@@ -339,7 +353,7 @@ public class reportepresupuesto extends javax.swing.JDialog {
                 .addComponent(jCheckBox7)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jCheckBox8)
-                .addContainerGap(85, Short.MAX_VALUE))
+                .addContainerGap(89, Short.MAX_VALUE))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -412,7 +426,7 @@ public class reportepresupuesto extends javax.swing.JDialog {
                 .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(485, Short.MAX_VALUE)
+                .addContainerGap(489, Short.MAX_VALUE)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -446,6 +460,7 @@ public class reportepresupuesto extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 public void generareportepres(){
      JasperPrint print=null;
+      Map parameters = new HashMap();
          try {
              
               FileInputStream input=null;
@@ -458,48 +473,312 @@ public void generareportepres(){
                     }else{
                          input = new FileInputStream(new File("presupuestos.jrxml"));
                     }
-              
-               
+              String cargasinredondeo = "SELECT SUM(ROUND(IF(mppres.`precasu`=0,mppres.`precunit`,precasu)*cantidad,2)) "
+                + "FROM `winspapu`.`mppres` WHERE  tipo='Org' AND mpre_id='"+pres+"'";
+               try {
+            Statement st1 = (Statement) conex.createStatement();
+          
+            ResultSet rst1 = st1.executeQuery(cargasinredondeo);
+            
+            while (rst1.next()){
+                if(rst1.getObject(1)!=null) {
+                    subtotal = rst1.getDouble(1);
+                     System.out.println("subtotal bd: "+rst1.getDouble(1));
+                }
+            }
+              impuesto = 0;
+            String imp = "SELECT porimp FROM mpres WHERE id='"+pres+"'";
+            Statement simp = (Statement) conex.createStatement();
+            ResultSet rsimp = simp.executeQuery(imp);
+            while(rsimp.next()){
+                impuesto=rsimp.getFloat(1);
+            }
+           System.out.println("subtotal: "+subtotal);
+          
+            
+          
+            impuesto = subtotal*(impuesto/100);
+           
+            total = subtotal+impuesto;
+            totalpres=total;
+            
+          
+         
+           
+            
+         } catch (SQLException ex) {
+            Logger.getLogger(reportepresupuesto.class.getName()).log(Level.SEVERE, null, ex);
+        }
                }
                 if(cual==2){
-                    float impuesto=0;
-                    input = new FileInputStream(new File("noprevista.jrxml"));
-                    String select = "SELECT SUM(IF(precunit=0, precasu,precunit)*cantidad),mp.porimp as porimp FROM mppres, mpres as mp WHERE "
-                            + "(mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+pres+"')) AND mpre_id=mp.id AND mp.id='"+jTextField2.getText().toString()+"'";
+                    float impuestos=0;
+                    if(jCheckBox2.isSelected()){
+                          input = new FileInputStream(new File("noprevistasubtotal.jrxml"));
+                    }else{
+                         input = new FileInputStream(new File("noprevista.jrxml"));
+                    }
+                    if(jComboBox2.getSelectedIndex()==0){
+                        tiponp="NP";
+                    }
+                   if(jComboBox2.getSelectedIndex()==1){
+                        tiponp="OE";
+                    }
+                   if(jComboBox2.getSelectedIndex()==2){
+                        tiponp="OA";
+                    }
+                   if(jComboBox2.getSelectedIndex()==3){
+                        tiponp="OC";
+                    }
+                   if(jComboBox2.getSelectedIndex()==4){
+                        tiponp="";
+                    }
+                    String select = "SELECT SUM(IF(precasu=0, precunit,precasu)*cantidad),"
+                            + "mp.porimp as porimp FROM mppres, mpres as mp WHERE "
+                            + "(mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+pres+"')) "
+                            + "AND mpre_id=mp.id AND mppres.nropresupuesto='"+jTextField2.getText().toString()+"'"
+                            + " AND tipo='NP' AND tiponp LIKE ('%"+tiponp+"%')";
                     System.out.println("Consulta Nro. en Letra no prevista "+select);
                     try {
                         Statement ste = (Statement) conex.createStatement();
                         ResultSet rste = ste.executeQuery(select);
                         while(rste.next()){
                             totalpres = rste.getDouble(1);
-                           impuesto = rste.getFloat(2);
+                           impuestos = rste.getFloat(2);
                         }
-                        totalpres = totalpres+(totalpres*(impuesto/100));
+                        totalpres = totalpres+(totalpres*(impuestos/100));
                     } catch (SQLException ex) {
                         Logger.getLogger(reportepresupuesto.class.getName()).log(Level.SEVERE, null, ex);
                     }
                     
                 }
+                //----------------------MODIFICADO--------------------------------------------
                 if(cual==3){ 
-                    float impuesto = 0;
-                    input = new FileInputStream(new File("modificado.jrxml"));
-                  String select = "SELECT SUM(cantidad*precunit), IFNULL(IF(tipo!='VP',SUM(mp.cantidad+IFNULL((SELECT SUM(aumento) "
-                          + "FROM admppres WHERE numepart=mp.numero AND mpre_id='"+pres+"'),0)-"
-    +"IFNULL((SELECT SUM(disminucion) FROM admppres WHERE numepart=mp.numero AND mpre_id='"+pres+"'),0)),"
-                          + "mp.cantidad),0) as cantidad"
-        +", SUM(IF(mp.precasu=0,mp.precunit,mp.precasu)) as precunit, p.porimp "
-                          + "FROM mpres as p, mppres as mp "
-                          + "WHERE (mp.mpre_id ='"+pres+"' OR mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+pres+"')) "
-                          + "AND mp.mpre_id=p.id";
+                    float impuestos = 0;
+                    input = new FileInputStream(new File("modificado1.jrxml"));
+                    
+                    //-------------CONSULTA DE PARAMETROS---------------------------------------------
+                    String obra="",lugar="",partidapres="",nrocont="",cedres="";
+                    String porimp="", encabezado="";
+                    Blob logo1 = null,logo2=null;
+                    String contrepleg="",cedrep="",ingres="",civres="",ingins="",cedins="", civins="";
+                   Double porimp1=0.00;
+                    String parametros = "SELECT p.nombre as obra,"
+                            + "p.ubicac as lugar, p.partidapres as partidapres,"
+                            + "p.nrocon as nrocont, mc.cedres as cedres, CONCAT(p.porimp,'%') "
+                            + "as porimp, mc.encabe as encabezado,p.porimp as porimp1,"
+                            + "mc.logo as logo1, prop.logo as logo2, mc.repleg as contrepleg, mc.cedrep as cedrep,"
+                            + "mc.ingres as ingres, mc.civres as civres, mc.ingins as ingins,"
+                            + " mc.cedins as cedins, mc.civins as civins FROM mpres as p, mconts as mc, mprops as prop"
+                            + " WHERE p.codcon=mc.id AND p.codpro=prop.id AND p.id='"+pres+"'";
                     try {
-                        Statement ste = (Statement) conex.createStatement();
-                        ResultSet rste = ste.executeQuery(select);
-                        while(rste.next()){
-                            totalpres = rste.getDouble(1)*rste.getDouble(2);
-                           impuesto = rste.getFloat(3);
+                        Statement st = (Statement) conex.createStatement();
+                        ResultSet rst = st.executeQuery(parametros);
+                        while(rst.next()){
+                            obra = rst.getString("obra");
+                            lugar = rst.getString("lugar");
+                            partidapres = rst.getString("partidapres");
+                            nrocont = rst.getString("nrocont");
+                            cedres = rst.getString("cedres");
+                            porimp = rst.getString("porimp");
+                            encabezado = rst.getString("encabezado");
+                            porimp1 = rst.getDouble("porimp1");
+                            logo1 = rst.getBlob("logo1");
+                            logo2 = rst.getBlob("logo2");
+                            contrepleg = rst.getString("contrepleg");
+                            cedrep = rst.getString("cedrep");
+                            ingres = rst.getString("ingres");
+                            civres = rst.getString("civres");
+                            ingins = rst.getString("ingins");
+                            cedins = rst.getString("cedins");
+                            civins = rst.getString("civins");                            
                         }
-                        System.out.println("totalpres para ser impreso en letra "+totalpres);
-                        totalpres = totalpres+(totalpres*(impuesto/100));
+                      parameters.put("obra", obra);
+                      parameters.put("lugar", lugar);
+                      parameters.put("partidapres", partidapres);
+                      parameters.put("nrocont", nrocont);
+                      parameters.put("cedres", cedres);
+                      parameters.put("porimp", porimp);
+                      parameters.put("encabezado", encabezado);
+                      parameters.put("porimp1",porimp1);
+                      parameters.put("logo1", logo1);
+                      parameters.put("logo2", logo2);
+                      parameters.put("contrepleg", contrepleg);
+                      parameters.put("cedrep", cedrep);
+                      parameters.put("ingres", ingres);
+                      parameters.put("civres", civres);
+                      parameters.put("ingins", ingins);
+                      parameters.put("cedins", cedins);
+                      parameters.put("civins", civins);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(reportepresupuesto.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    
+                  String borra = "TRUNCATE TABLE reportemodificado";
+                    try {
+                        Statement truncate = (Statement) conex.createStatement();
+                        truncate.execute(borra);
+                        String originales = "INSERT INTO reportemodificado "
+                                + "SELECT numegrup as numero, id as codigo, descri, unidad,"
+                                + "IFNULL(mp.cantidad+IFNULL"
+                                + "((SELECT SUM(aumento) FROM admppres WHERE numepart=mp.numero AND mpre_id='"+pres+"'),0)-"
+                                + "IFNULL((SELECT SUM(disminucion) "
+                                + "FROM admppres WHERE numepart=mp.numero AND mpre_id='"+pres+"'),0),0) as cantidad, "
+                                + "IF(mp.precasu=0,mp.precunit,mp.precasu) as precunit,"
+                                + "cantidad*IF(mp.precasu=0,mp.precunit,"
+                                + "mp.precasu) as total FROM mppres as mp WHERE mpre_id='"+pres+"'";
+                        Statement stori = (Statement) conex.createStatement();
+                        stori.execute(originales);
+                        
+                        String consultamonto = " SELECT SUM(IFNULL(mp.cantidad+IFNULL"
+                                + "((SELECT SUM(aumento) FROM admppres WHERE numepart=mp.numero AND mpre_id='"+pres+"'),0)-"
+                                + "IFNULL((SELECT SUM(disminucion) "
+                                + "FROM admppres WHERE numepart=mp.numero AND mpre_id='"+pres+"'),0),0)) as cantidad, "
+                                + "SUM(cantidad*IF(mp.precasu=0,mp.precunit,mp.precasu)) as total"
+                                + " FROM mppres as mp WHERE mpre_id='"+pres+"'";
+                        Statement stmonto = (Statement) conex.createStatement();
+                        ResultSet rstmonto = stmonto.executeQuery(consultamonto);
+                        while(rstmonto.next()){
+                            totalpres+=rstmonto.getDouble("total");
+                        }
+                        int cont=0;
+                        String cuentanp = "SELECT COUNT(*) FROM mppres as mp "
+                                + "WHERE tipo='NP' AND tiponp='NP' AND (mpre_id = '"+pres+"' OR mpre_id "
+                                + "IN (SELECT id FROM mpres WHERE mpres_id='"+pres+"'))";
+                        Statement stnp = (Statement) conex.createStatement();
+                        ResultSet rstnp = stnp.executeQuery(cuentanp);
+                        while(rstnp.next()){
+                            cont = rstnp.getInt(1);
+                        }
+                        if(cont>0){
+                            String insertatit = "INSERT INTO reportemodificado (codigo,descri)"
+                                    + "VALUES ('','PARTIDAS NO PREVISTAS')";
+                            Statement ins = (Statement) conex.createStatement();
+                            ins.execute(insertatit);
+                             String insertanp = "INSERT INTO reportemodificado "
+                                    + "SELECT numegrup as numero, id as codigo, descri, unidad,"
+                                + "IFNULL(mp.cantidad+IFNULL"
+                                + "((SELECT SUM(aumento) FROM admppres WHERE numepart=mp.numero AND mpre_id='"+pres+"'),0)-"
+                                + "IFNULL((SELECT SUM(disminucion) "
+                                + "FROM admppres WHERE numepart=mp.numero AND mpre_id='"+pres+"'),0),0) as cantidad, "
+                                + "IF(mp.precasu=0,mp.precunit,mp.precasu) as precunit,"
+                                + "cantidad*IF(mp.precasu=0,mp.precunit,"
+                                + "mp.precasu) as total FROM mppres as mp WHERE (mpre_id='"+pres+"' "
+                                     + "OR mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+pres+"')) AND tipo = 'NP' AND "
+                                     + "tiponp='NP'";
+                             Statement inp = (Statement) conex.createStatement();
+                             inp.execute(insertanp);
+                            
+                        }
+                        cont=0;
+                        String cuentaoa = "SELECT COUNT(*) FROM mppres as mp "
+                                + "WHERE tipo='NP' AND tiponp='OA' AND (mpre_id = '"+pres+"' OR mpre_id "
+                                + "IN (SELECT id FROM mpres WHERE mpres_id='"+pres+"'))";
+                        Statement stoa = (Statement) conex.createStatement();
+                        ResultSet rstoa = stoa.executeQuery(cuentaoa);
+                        while(rstoa.next()){
+                            cont = rstoa.getInt(1);
+                        }
+                        if(cont>0){
+                            String insertatit = "INSERT INTO reportemodificado (codigo,descri)"
+                                    + "VALUES ('','PARTIDAS OBRAS ADICIONALES')";
+                            Statement ins = (Statement) conex.createStatement();
+                            ins.execute(insertatit);
+                            String insertanp = "INSERT INTO reportemodificado "
+                                    + "SELECT numegrup as numero, id as codigo, descri, unidad,"
+                                + "IFNULL(mp.cantidad+IFNULL"
+                                + "((SELECT SUM(aumento) FROM admppres WHERE numepart=mp.numero AND mpre_id='"+pres+"'),0)-"
+                                + "IFNULL((SELECT SUM(disminucion) "
+                                + "FROM admppres WHERE numepart=mp.numero AND mpre_id='"+pres+"'),0),0) as cantidad, "
+                                + "IF(mp.precasu=0,mp.precunit,mp.precasu) as precunit,"
+                                + "cantidad*IF(mp.precasu=0,mp.precunit,"
+                                + "mp.precasu) as total FROM mppres as mp WHERE (mpre_id='"+pres+"' "
+                                     + "OR mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+pres+"')) AND tipo = 'NP' AND "
+                                     + "tiponp='OA'";
+                             Statement inp = (Statement) conex.createStatement();
+                             inp.execute(insertanp);
+                        }
+                         cont=0;
+                        String cuentaoe = "SELECT COUNT(*) FROM mppres as mp "
+                                + "WHERE tipo='NP' AND tiponp='OE' AND (mpre_id = '"+pres+"' OR mpre_id "
+                                + "IN (SELECT id FROM mpres WHERE mpres_id='"+pres+"'))";
+                        Statement stoe = (Statement) conex.createStatement();
+                        ResultSet rstoe = stoe.executeQuery(cuentaoa);
+                        while(rstoe.next()){
+                            cont = rstoe.getInt(1);
+                        }
+                        if(cont>0){
+                            String insertatit = "INSERT INTO reportemodificado (codigo,descri)"
+                                    + "VALUES ('','PARTIDAS OBRAS EXTRAS')";
+                            Statement ins = (Statement) conex.createStatement();
+                            ins.execute(insertatit);
+                            String insertanp = "INSERT INTO reportemodificado "
+                                    + "SELECT numegrup as numero, id as codigo, descri, unidad,"
+                                + "IFNULL(mp.cantidad+IFNULL"
+                                + "((SELECT SUM(aumento) FROM admppres WHERE numepart=mp.numero AND mpre_id='"+pres+"'),0)-"
+                                + "IFNULL((SELECT SUM(disminucion) "
+                                + "FROM admppres WHERE numepart=mp.numero AND mpre_id='"+pres+"'),0),0) as cantidad, "
+                                + "IF(mp.precasu=0,mp.precunit,mp.precasu) as precunit,"
+                                + "cantidad*IF(mp.precasu=0,mp.precunit,"
+                                + "mp.precasu) as total FROM mppres as mp WHERE (mpre_id='"+pres+"' "
+                                     + "OR mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+pres+"')) AND tipo = 'NP' AND "
+                                     + "tiponp='OE'";
+                             Statement inp = (Statement) conex.createStatement();
+                             inp.execute(insertanp);
+                           
+                        }
+                         cont=0;
+                        String cuentaoc = "SELECT COUNT(*) FROM mppres as mp "
+                                + "WHERE tipo='NP' AND tiponp='OC' AND (mpre_id = '"+pres+"' OR mpre_id "
+                                + "IN (SELECT id FROM mpres WHERE mpres_id='"+pres+"'))";
+                        Statement stoc = (Statement) conex.createStatement();
+                        ResultSet rstoc = stoc.executeQuery(cuentaoa);
+                        while(rstoc.next()){
+                            cont = rstoc.getInt(1);
+                        }
+                        if(cont>0){
+                            String insertatit = "INSERT INTO reportemodificado (codigo,descri)"
+                                    + "VALUES ('','PARTIDAS OBRAS C')";
+                            Statement ins = (Statement) conex.createStatement();
+                            ins.execute(insertatit);
+                            String insertanp = "INSERT INTO reportemodificado "
+                                    + "SELECT numegrup as numero, id as codigo, descri, unidad,"
+                                + "IFNULL(mp.cantidad+IFNULL"
+                                + "((SELECT SUM(aumento) FROM admppres WHERE numepart=mp.numero AND mpre_id='"+pres+"'),0)-"
+                                + "IFNULL((SELECT SUM(disminucion) "
+                                + "FROM admppres WHERE numepart=mp.numero AND mpre_id='"+pres+"'),0),0) as cantidad, "
+                                + "IF(mp.precasu=0,mp.precunit,mp.precasu) as precunit,"
+                                + "cantidad*IF(mp.precasu=0,mp.precunit,"
+                                + "mp.precasu) as total FROM mppres as mp WHERE (mpre_id='"+pres+"' "
+                                     + "OR mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+pres+"')) AND tipo = 'NP' AND "
+                                     + "tiponp='OC'";
+                             Statement inp = (Statement) conex.createStatement();
+                             inp.execute(insertanp);
+                        }
+                        
+                        //---------------------------   CUENTA VARIACIONES DE PRECIO------------------------------
+                       cont=0;
+                       String cuentavp = "SELECT COUNT(*) FROM mppres WHERE (mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+pres+"')"
+                               + ") AND tipo='VP'";
+                        Statement stvp = (Statement) conex.createStatement();
+                        ResultSet rstvp = stvp.executeQuery(cuentavp);
+                        while(rstvp.next()){
+                            cont=rstvp.getInt(1);
+                        }
+                        if(cont>0)
+                        {
+                             String insertatit = "INSERT INTO reportemodificado (codigo,descri)"
+                                    + "VALUES ('','VARIACIONES DE PRECIO')";
+                            Statement ins = (Statement) conex.createStatement();
+                            ins.execute(insertatit);
+                            String inserta = "INSERT INTO reportemodificado"
+                                    + " SELECT IFNULL(mp.tiporec,numegrup) as numero,"
+                                    + "mp.id as codigo, descri, unidad, cantidad, IF(precasu=0,precunit,precasu), "
+                                    + "cantidad*IF(precasu=0,precunit,precasu) as total FROM mppres as mp WHERE "
+                                    + "(mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+pres+"'))"
+                                    + " AND tipo='VP'";
+                            Statement insert = (Statement) conex.createStatement();
+                            insert.execute(inserta);
+                        }
                     } catch (SQLException ex) {
                         Logger.getLogger(reportepresupuesto.class.getName()).log(Level.SEVERE, null, ex);
                     }
@@ -510,7 +789,7 @@ public void generareportepres(){
             }
             JasperDesign design = JRXmlLoader.load(input); 
             JasperReport report = JasperCompileManager.compileReport(design);
-            Map parameters = new HashMap();
+           
             denumeroaletra nume = new denumeroaletra();
           String letras="";
           int decimalPlaces = 2; 
@@ -524,18 +803,23 @@ public void generareportepres(){
           }else{
               letras="";
           }
-           if(cual==2){
+          parameters.put("fecha", fecha);
+            parameters.put("titulo",titulo);
+             parameters.put("totalenletra",letras);
+             if(cual==2){
                 parameters.put("presnoprevista", jTextField2.getText());
+                parameters.put("tiponp", tiponp);
            }
+           
            if(cual!=3){
            
             parameters.put("mpres", pres);
-            parameters.put("fecha", fecha);
-            parameters.put("titulo",titulo);
-             parameters.put("totalenletra",letras);
+            
           
-           print = JasperFillManager.fillReport(report, parameters, conex);
+          
              }
+              print = JasperFillManager.fillReport(report, parameters, conex);
+           
             FileOutputStream output=null;
             String auxruta=ruta;
             
@@ -673,6 +957,7 @@ private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     private javax.swing.JCheckBox jCheckBox7;
     private javax.swing.JCheckBox jCheckBox8;
     private javax.swing.JComboBox jComboBox1;
+    private javax.swing.JComboBox jComboBox2;
     private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -680,6 +965,7 @@ private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;

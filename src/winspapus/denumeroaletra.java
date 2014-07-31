@@ -14,7 +14,7 @@ public class denumeroaletra {
     
    private final String[] UNIDADES = {"", "un ", "dos ", "tres ", "cuatro ", "cinco ", "seis ", "siete ", "ocho ", "nueve "};
     private final String[] DECENAS = {"diez ", "once ", "doce ", "trece ", "catorce ", "quince ", "dieciseis ",
-        "diecisiete ", "dieciocho ", "diecinueve", "veinte ", "treinta ", "cuarenta ",
+        "diecisiete ", "dieciocho ", "diecinueve", "veinti", "treinta ", "cuarenta ",
         "cincuenta ", "sesenta ", "setenta ", "ochenta ", "noventa "};
     private final String[] CENTENAS = {"", "ciento ", "doscientos ", "trecientos ", "cuatrocientos ", "quinientos ", "seiscientos ",
         "setecientos ", "ochocientos ", "novecientos "};
@@ -88,11 +88,21 @@ private String getUnidades(String numero) {// 1 - 9
         if (n < 10) {//para casos como -> 01 - 09
             return getUnidades(num);
         } else if (n > 19) {//para 20...99
+            if(n<30){
+                if(n==20)
+                return "veinte";
+                else{
+                    String u = getUnidades(num);
+                    return "veinti"+u;
+                }
+            }else{
             String u = getUnidades(num);
+            
             if (u.equals("")) { //para 20,30,40,50,60,70,80,90
                 return DECENAS[Integer.parseInt(num.substring(0, 1)) + 8];
             } else {
                 return DECENAS[Integer.parseInt(num.substring(0, 1)) + 8] + "y " + u;
+            }
             }
         } else {//numeros entre 11 y 19
             return DECENAS[n - 10];

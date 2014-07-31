@@ -749,6 +749,11 @@ public final void buscagrupo() throws SQLException{
 
         jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/winspapus/imagenes/reporte.png"))); // NOI18N
         jButton6.setToolTipText("Reporte APU");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -1467,8 +1472,33 @@ private void jTextArea1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
                     evt.setKeyChar(Character.toUpperCase(c));
                 }// TODO add your handling code here:
 }//GEN-LAST:event_jTextArea1KeyTyped
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        String nume=jSpinner1.getValue().toString();
+        String presu="SELECT mpre_id FROM mppres WHERE (mpre_id='"+presupuesto+"' OR mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+presupuesto+"'))"
+                + " AND numegrup="+nume+"";
+        String mpres="";
+        try {
+            Statement st=(Statement) conex.createStatement();
+            ResultSet rst = st.executeQuery(presu);
+            while(rst.next()){
+                mpres=rst.getString(1);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Partida.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        this.setModal(false);
+        reporteapu apu = new reporteapu(p, false, conex, mpres, nume,this);
+        int xy = (p.getWidth()/2)-450/2;
+        int yy = (p.getHeight()/2)-300/2;
+        apu.setBounds(xy,yy, 450,300);
+        apu.setVisible(true);
+        doClose(RET_OK);
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton6ActionPerformed
     
-    private void doClose(int retStatus) {
+    public void doClose(int retStatus) {
         returnStatus = retStatus;
         setVisible(false);
         dispose();

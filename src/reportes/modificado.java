@@ -10,9 +10,10 @@ import java.awt.Image;
  *
  * @author Betmart
  */
+
 public class modificado {
     String encabezado, titulo, obra, lugar, partidapres,nrocon, fecha;
-    Image logo1,logo2;
+    Object logo1,logo2;
     String ubicacion, nro, descri, unidad;
     Double cantidad, precunit, total;
     String contrepleg, cedrep, ingres, cedres, civres, ingins, cedins, civins;
@@ -148,19 +149,19 @@ public class modificado {
         this.ingres = ingres;
     }
 
-    public Image getLogo1() {
+    public Object getLogo1() {
         return logo1;
     }
 
-    public void setLogo1(Image logo1) {
+    public void setLogo1(Object logo1) {
         this.logo1 = logo1;
     }
 
-    public Image getLogo2() {
+    public Object getLogo2() {
         return logo2;
     }
 
-    public void setLogo2(Image logo2) {
+    public void setLogo2(Object logo2) {
         this.logo2 = logo2;
     }
 

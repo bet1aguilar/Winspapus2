@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="presupuesto" language="groovy" pageWidth="612" pageHeight="792" whenNoDataType="BlankPage" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isFloatColumnFooter="true" uuid="783eb973-dc35-448c-ace7-a90426bbba54">
-	<property name="ireport.zoom" value="2.732053821460284"/>
-	<property name="ireport.x" value="973"/>
-	<property name="ireport.y" value="384"/>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="presupuesto" language="groovy" pageWidth="612" pageHeight="792" whenNoDataType="BlankPage" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isSummaryWithPageHeaderAndFooter="true" isFloatColumnFooter="true" uuid="783eb973-dc35-448c-ace7-a90426bbba54">
+	<property name="ireport.zoom" value="1.6963904734899402"/>
+	<property name="ireport.x" value="278"/>
+	<property name="ireport.y" value="121"/>
 	<parameter name="mpres" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
@@ -433,7 +433,7 @@ mpres.porimp/100 as porimp FROM      `mpres` mpres INNER JOIN `mppres` mppres ON
 	<pageFooter>
 		<band height="73" splitType="Stretch">
 			<rectangle>
-				<reportElement uuid="05b1e1f1-d082-4186-baa1-64dced143c5e" x="176" y="1" width="205" height="52"/>
+				<reportElement uuid="05b1e1f1-d082-4186-baa1-64dced143c5e" x="175" y="1" width="205" height="52"/>
 			</rectangle>
 			<rectangle>
 				<reportElement uuid="a4ba44d6-13e8-4e01-95b4-881624c25691" x="0" y="1" width="175" height="52"/>
@@ -588,7 +588,7 @@ mpres.porimp/100 as porimp FROM      `mpres` mpres INNER JOIN `mppres` mppres ON
 		</band>
 	</pageFooter>
 	<summary>
-		<band height="60" splitType="Immediate">
+		<band height="59" splitType="Immediate">
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement uuid="ef9448de-9a55-4e08-bed5-eef31cc003cd" stretchType="RelativeToTallestObject" x="464" y="0" width="106" height="15" isPrintWhenDetailOverflows="true"/>
 				<box topPadding="2" leftPadding="5" rightPadding="5">
@@ -633,7 +633,7 @@ mpres.porimp/100 as porimp FROM      `mpres` mpres INNER JOIN `mppres` mppres ON
 				<textFieldExpression><![CDATA[]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement uuid="5e275fa4-4bd3-4bff-a015-c910d972a5ad" x="0" y="0" width="571" height="1"/>
+				<reportElement uuid="5e275fa4-4bd3-4bff-a015-c910d972a5ad" x="0" y="0" width="570" height="1"/>
 			</line>
 			<staticText>
 				<reportElement uuid="9ed077cc-049c-4d5e-a2dd-fca436f8c2f8" x="338" y="1" width="126" height="15"/>
