@@ -844,7 +844,7 @@ public void generareportepres(){
             FileOutputStream output=null;
             String auxruta=ruta;
             
-            if(jCheckBox1.isSelected()){
+            if(jCheckBox7.isSelected()){
                 ruta= ruta+".pdf";
                 try {
                 output = new FileOutputStream(new File(ruta));
@@ -855,7 +855,7 @@ public void generareportepres(){
                 JasperExportManager.exportReportToPdfStream(print, output);
                 
             }
-            if(jCheckBox2.isSelected()){
+            if(jCheckBox8.isSelected()){
                  ruta= auxruta+".xls";
                   ByteArrayOutputStream outputByteArray = new ByteArrayOutputStream();
                 try {
@@ -953,8 +953,8 @@ private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         int seleccion = fileChooser.showSaveDialog(jTextField1);
         
         File fichero = fileChooser.getSelectedFile();
-        jTextField1.setText(fichero.getPath().toString());
-        ruta = jTextField1.getText().toString();
+        jTextField3.setText(fichero.getPath().toString());
+        ruta = jTextField3.getText().toString();
     
     // TODO add your handling code here:
 }//GEN-LAST:event_jButton1ActionPerformed
