@@ -960,13 +960,12 @@ public void verificarcheck() {
         }
         auxcont = 0;
         buscapartida();
-        
-        // TODO add your handling code here:
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_okButtonMouseClicked
         inserta();
         JOptionPane.showMessageDialog(null, "Se han insertado las partidas");
+        
          doClose(RET_OK);
         // TODO add your handling code here:
     }//GEN-LAST:event_okButtonMouseClicked
@@ -1018,7 +1017,7 @@ public void verificarcheck() {
                   filas[0]= obj;
                 for (int i = 1; i < cantidadColumnas; i++) {
                   
-                       filas[i]=rst.getObject(i);
+                       filas[i] = rst.getObject(i);
                 }
                 metabs.addRow(filas);
               

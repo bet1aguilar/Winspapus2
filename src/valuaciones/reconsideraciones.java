@@ -1507,6 +1507,7 @@ public class reconsideraciones extends javax.swing.JDialog {
 
     }//GEN-LAST:event_jTextField13KeyTyped
 
+    
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
        
         String consultacuadro = "SELECT nrocuadro FROM mppres WHERE (mpre_id='"+mpres+"' OR mpre_id "
@@ -1528,7 +1529,7 @@ public class reconsideraciones extends javax.swing.JDialog {
         int yi =(prin.getHeight()/2)-600/2;
          para.setBounds(xi, yi, 550, 600);
         para.setVisible(true);
-        
+        jSpinner1.setValue(cuadro);
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton6ActionPerformed
  public float cambiapreciopartida(String numeropartida){

@@ -14,11 +14,9 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -460,13 +458,27 @@ public class reportepresupuesto extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 public void generareportepres(){
      JasperPrint print=null;
+     totalpres=0;
       Map parameters = new HashMap();
+        impuesto = 0;
+            String imp = "SELECT porimp FROM mpres WHERE id='"+pres+"'";
+        try {
+            Statement simp = (Statement) conex.createStatement();
+            ResultSet rsimp = simp.executeQuery(imp);
+            while(rsimp.next()){
+                impuesto=rsimp.getFloat(1);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(reportepresupuesto.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            
          try {
+              
              
               FileInputStream input=null;
               String titulo = jTextField1.getText().toString();
             try {
-                
+              
                 if(cual==1){
                     if(jCheckBox2.isSelected()){
                          input = new FileInputStream(new File("presupuestosubtotal.jrxml"));
@@ -486,13 +498,7 @@ public void generareportepres(){
                      System.out.println("subtotal bd: "+rst1.getDouble(1));
                 }
             }
-              impuesto = 0;
-            String imp = "SELECT porimp FROM mpres WHERE id='"+pres+"'";
-            Statement simp = (Statement) conex.createStatement();
-            ResultSet rsimp = simp.executeQuery(imp);
-            while(rsimp.next()){
-                impuesto=rsimp.getFloat(1);
-            }
+             
            System.out.println("subtotal: "+subtotal);
           
             
@@ -559,7 +565,7 @@ public void generareportepres(){
                     //-------------CONSULTA DE PARAMETROS---------------------------------------------
                     String obra="",lugar="",partidapres="",nrocont="",cedres="";
                     String porimp="", encabezado="";
-                    Blob logo1 = null,logo2=null;
+                    Object logo1 = null,logo2=null;
                     String contrepleg="",cedrep="",ingres="",civres="",ingins="",cedins="", civins="";
                    Double porimp1=0.00;
                     String parametros = "SELECT p.nombre as obra,"
@@ -570,7 +576,8 @@ public void generareportepres(){
                             + "mc.ingres as ingres, mc.civres as civres, mc.ingins as ingins,"
                             + " mc.cedins as cedins, mc.civins as civins FROM mpres as p, mconts as mc, mprops as prop"
                             + " WHERE p.codcon=mc.id AND p.codpro=prop.id AND p.id='"+pres+"'";
-                    try {
+                    try { 
+                        
                         Statement st = (Statement) conex.createStatement();
                         ResultSet rst = st.executeQuery(parametros);
                         while(rst.next()){
@@ -582,8 +589,8 @@ public void generareportepres(){
                             porimp = rst.getString("porimp");
                             encabezado = rst.getString("encabezado");
                             porimp1 = rst.getDouble("porimp1");
-                            logo1 = rst.getBlob("logo1");
-                            logo2 = rst.getBlob("logo2");
+                            logo1 = rst.getObject("logo1");
+                            logo2 = rst.getObject("logo2");
                             contrepleg = rst.getString("contrepleg");
                             cedrep = rst.getString("cedrep");
                             ingres = rst.getString("ingres");
@@ -629,17 +636,7 @@ public void generareportepres(){
                         Statement stori = (Statement) conex.createStatement();
                         stori.execute(originales);
                         
-                        String consultamonto = " SELECT SUM(IFNULL(mp.cantidad+IFNULL"
-                                + "((SELECT SUM(aumento) FROM admppres WHERE numepart=mp.numero AND mpre_id='"+pres+"'),0)-"
-                                + "IFNULL((SELECT SUM(disminucion) "
-                                + "FROM admppres WHERE numepart=mp.numero AND mpre_id='"+pres+"'),0),0)) as cantidad, "
-                                + "SUM(cantidad*IF(mp.precasu=0,mp.precunit,mp.precasu)) as total"
-                                + " FROM mppres as mp WHERE mpre_id='"+pres+"'";
-                        Statement stmonto = (Statement) conex.createStatement();
-                        ResultSet rstmonto = stmonto.executeQuery(consultamonto);
-                        while(rstmonto.next()){
-                            totalpres+=rstmonto.getDouble("total");
-                        }
+                        
                         int cont=0;
                         String cuentanp = "SELECT COUNT(*) FROM mppres as mp "
                                 + "WHERE tipo='NP' AND tiponp='NP' AND (mpre_id = '"+pres+"' OR mpre_id "
@@ -667,7 +664,7 @@ public void generareportepres(){
                                      + "tiponp='NP'";
                              Statement inp = (Statement) conex.createStatement();
                              inp.execute(insertanp);
-                            
+                           
                         }
                         cont=0;
                         String cuentaoa = "SELECT COUNT(*) FROM mppres as mp "
@@ -702,7 +699,7 @@ public void generareportepres(){
                                 + "WHERE tipo='NP' AND tiponp='OE' AND (mpre_id = '"+pres+"' OR mpre_id "
                                 + "IN (SELECT id FROM mpres WHERE mpres_id='"+pres+"'))";
                         Statement stoe = (Statement) conex.createStatement();
-                        ResultSet rstoe = stoe.executeQuery(cuentaoa);
+                        ResultSet rstoe = stoe.executeQuery(cuentaoe);
                         while(rstoe.next()){
                             cont = rstoe.getInt(1);
                         }
@@ -731,7 +728,7 @@ public void generareportepres(){
                                 + "WHERE tipo='NP' AND tiponp='OC' AND (mpre_id = '"+pres+"' OR mpre_id "
                                 + "IN (SELECT id FROM mpres WHERE mpres_id='"+pres+"'))";
                         Statement stoc = (Statement) conex.createStatement();
-                        ResultSet rstoc = stoc.executeQuery(cuentaoa);
+                        ResultSet rstoc = stoc.executeQuery(cuentaoc);
                         while(rstoc.next()){
                             cont = rstoc.getInt(1);
                         }
@@ -770,15 +767,39 @@ public void generareportepres(){
                                     + "VALUES ('','VARIACIONES DE PRECIO')";
                             Statement ins = (Statement) conex.createStatement();
                             ins.execute(insertatit);
+                            String deltas="IF((m.precunit-(SELECT mp.precunit FROM "
+                + "mppres as mp WHERE (mp.mpre_id='"+pres+"' OR mp.mpre_id IN "
+                + " (SELECT id FROM mpres WHERE mpres_id='"+pres+"')) AND mp.numero=m.mppre_id))<0,0,"
+                + "m.precunit-(SELECT mp.precunit FROM "
+                + "mppres as mp WHERE (mp.mpre_id='"+pres+"' OR mp.mpre_id IN "
+                + " (SELECT id FROM mpres WHERE mpres_id='"+pres+"')) AND mp.numero=m.mppre_id))";
                             String inserta = "INSERT INTO reportemodificado"
-                                    + " SELECT IFNULL(mp.tiporec,numegrup) as numero,"
-                                    + "mp.id as codigo, descri, unidad, cantidad, IF(precasu=0,precunit,precasu), "
-                                    + "cantidad*IF(precasu=0,precunit,precasu) as total FROM mppres as mp WHERE "
+                                    + " SELECT IFNULL(m.tiporec,numegrup) as numero,"
+                                    + "m.id as codigo, descri, unidad, cantidad, "
+                                    + "IF((m.precunit-(SELECT mp.precunit FROM "
+                + "mppres as mp WHERE (mp.mpre_id='"+pres+"' OR mp.mpre_id IN "
+                + " (SELECT id FROM mpres WHERE mpres_id='"+pres+"')) AND mp.numero=m.mppre_id))<0,0,"
+                + "m.precunit-(SELECT mp.precunit FROM "
+                + "mppres as mp WHERE (mp.mpre_id='"+pres+"' OR mp.mpre_id IN "
+                + " (SELECT id FROM mpres WHERE mpres_id='"+pres+"')) AND mp.numero=m.mppre_id)) as precunit,"
+                                    + "cantidad*"+deltas+" as total FROM mppres as m WHERE "
                                     + "(mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+pres+"'))"
                                     + " AND tipo='VP'";
                             Statement insert = (Statement) conex.createStatement();
                             insert.execute(inserta);
                         }
+                        
+                        String consultamonto = " SELECT SUM(IFNULL(total,0)) as total "
+                                + " FROM reportemodificado";
+                        Statement stmonto = (Statement) conex.createStatement();
+                        ResultSet rstmonto = stmonto.executeQuery(consultamonto);
+                        while(rstmonto.next()){
+                            totalpres=rstmonto.getDouble("total");
+                        }
+                         impuesto = totalpres*(impuesto/100);
+           
+                            total = totalpres+impuesto;
+                            totalpres=total;
                     } catch (SQLException ex) {
                         Logger.getLogger(reportepresupuesto.class.getName()).log(Level.SEVERE, null, ex);
                     }

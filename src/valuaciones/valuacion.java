@@ -1275,7 +1275,8 @@ public void inserta(){
                 numero=rstconsulta.getString(1);
             }
             mvalu = jSpinner1.getValue().toString();
-            String select = "SELECT IF(precunit=0,precasu, precunit) FROM mppres where id='" + codigo + "' AND mpre_id='" + pres+"'";
+            String select = "SELECT IF(precunit=0,precasu, precunit) FROM mppres where id='" + codigo + "'"
+                    + " AND mpre_id='" + pres+"'";
             Statement st = conex.createStatement();
             ResultSet rst = st.executeQuery(select);
             while (rst.next()) {
@@ -1350,8 +1351,8 @@ public void inserta(){
         try {
             estavalu = 0;
             String sql = "SELECT dv.mppre_id, mp.numegrup, mp.descri, mp.cantidad, dv.numepart, "
-                    + "dv.cantidad,dv.precio, "
-                    + "ROUND(dv.cantidad*dv.precio,2) FROM dvalus as dv, mppres as mp"
+                    + "dv.cantidad,if(mp.precasu=0,mp.precunit,mp.precasu) as precio, "
+                    + "ROUND(dv.cantidad*if(mp.precasu=0,mp.precunit,mp.precasu),2) FROM dvalus as dv, mppres as mp"
                     + " WHERE mp.numero = dv.numepart AND "
                     + "dv.mvalu_id='" + mvalu + "' AND (dv.mpre_id='" + pres + "' "
                     + "OR dv.mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+pres+"'))"
@@ -1500,7 +1501,9 @@ public void inserta(){
 
     public void buscaacum() {
         acum=0;
-        String sql = "SELECT SUM(cantidad * precio) FROM dvalus as dv WHERE mpre_id='" + pres + "' OR mpre_id IN (SELECT id FROM mpres WHERE mpre_id='" + pres + "')";
+        String sql = "SELECT SUM(dv.cantidad * IF(mp.precasu=0,mp.precunit,mp.precasu)) FROM dvalus as dv, mppres as mp WHERE"
+                + " mp.mpre_id=dv.mpre_id AND mp.numero=dv.numepart"
+                + " AND (dv.mpre_id='" + pres + "' OR dv.mpre_id IN (SELECT id FROM mpres WHERE mpres_id='" + pres + "'))";
         try {
             Statement stmt = (Statement) conex.createStatement();
             ResultSet rste = stmt.executeQuery(sql);

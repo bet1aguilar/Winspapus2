@@ -144,7 +144,7 @@ private String getUnidades(String numero) {// 1 - 9
         //se obtiene los millones
         String millon = numero.substring(0, numero.length() - 6);
         String n = "";
-        if(millon.length()>1){
+        if(Integer.parseInt(millon) >1){
             n = getCentenas(millon) + "millones ";
         }else{
             n = getUnidades(millon) + "millon ";
