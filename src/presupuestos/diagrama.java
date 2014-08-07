@@ -875,10 +875,10 @@ public void mouseClicked(java.awt.event.MouseEvent e)
         };
         String select = "SELECT fechaini, fechafin, cron, lapso, rango, numegrup"
                 + " FROM mppres"
-                + " WHERE cron=1 AND (mpre_id='"+pres+"' OR (SELECT id FROM mpres WHERE mpres_id='"+pres+"')) "
+                + " WHERE cron=1 AND (mpre_id='"+pres+"' OR mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+pres+"')) "
                 + "ORDER BY fechaini";
         String selfin = "SELECT fechaini, fechafin FROM mppres WHERE cron=1 "
-                + "AND (mpre_id='"+pres+"' OR (SELECT id FROM mpres WHERE mpres_id='"+pres+"')) "
+                + "AND (mpre_id='"+pres+"' OR mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+pres+"')) "
                 + "ORDER BY fechafin";
         try {
             Statement st = (Statement) conex.createStatement();
@@ -1132,10 +1132,10 @@ public void mouseClicked(java.awt.event.MouseEvent e)
         };
         String select = "SELECT fechaini, fechafin, cron, lapso, rango, numegrup"
                 + " FROM mppres"
-                + " WHERE cron=1 AND (mpre_id='"+pres+"' OR (SELECT id FROM mpres WHERE mpres_id='"+pres+"')) "
+                + " WHERE cron=1 AND (mpre_id='"+pres+"' OR mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+pres+"')) "
                 + "ORDER BY fechaini";
         String selfin = "SELECT fechaini, fechafin FROM mppres WHERE cron=1 "
-                + "AND (mpre_id='"+pres+"' OR (SELECT id FROM mpres WHERE mpres_id='"+pres+"')) "
+                + "AND (mpre_id='"+pres+"' OR mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+pres+"')) "
                 + "ORDER BY fechafin";
         try {
             Statement st = (Statement) conex.createStatement();
@@ -1345,10 +1345,10 @@ public void mouseClicked(java.awt.event.MouseEvent e)
         };
         String select = "SELECT fechaini, fechafin, cron, lapso, rango, numegrup"
                 + " FROM mppres"
-                + " WHERE cron=1 AND (mpre_id='"+pres+"' OR (SELECT id FROM mpres WHERE mpres_id='"+pres+"')) "
+                + " WHERE cron=1 AND (mpre_id='"+pres+"' OR mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+pres+"')) "
                 + "ORDER BY fechaini";
         String selfin = "SELECT fechaini, fechafin FROM mppres WHERE cron=1 "
-                + "AND (mpre_id='"+pres+"' OR (SELECT id FROM mpres WHERE mpres_id='"+pres+"')) "
+                + "AND (mpre_id='"+pres+"' OR mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+pres+"')) "
                 + "ORDER BY fechafin";
         try {
             Statement st = (Statement) conex.createStatement();

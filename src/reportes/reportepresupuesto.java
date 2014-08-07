@@ -734,7 +734,7 @@ public void generareportepres(){
                         }
                         if(cont>0){
                             String insertatit = "INSERT INTO reportemodificado (codigo,descri)"
-                                    + "VALUES ('','PARTIDAS OBRAS C')";
+                                    + "VALUES ('','PARTIDAS OBRAS COMPLEMENTARIAS')";
                             Statement ins = (Statement) conex.createStatement();
                             ins.execute(insertatit);
                             String insertanp = "INSERT INTO reportemodificado "
