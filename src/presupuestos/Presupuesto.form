@@ -335,7 +335,7 @@
                   <Properties>
                     <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                       <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
-                        <LineBorder roundedCorners="true">
+                        <LineBorder>
                           <Color PropertyName="color" blue="66" green="66" red="66" type="rgb"/>
                         </LineBorder>
                       </Border>
@@ -891,7 +891,7 @@
                   <Properties>
                     <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                       <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
-                        <LineBorder roundedCorners="true">
+                        <LineBorder>
                           <Color PropertyName="color" blue="66" green="66" red="66" type="rgb"/>
                         </LineBorder>
                       </Border>

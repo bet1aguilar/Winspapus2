@@ -34,7 +34,8 @@ public final class valuacion extends javax.swing.JDialog {
     float cantidad;
     int pierdefoco=0;
     public static final int RET_CANCEL = 0;
-    float estavalu=0, impu, acum, impuesto;
+    double impu, acum, impuesto;
+    double estavalu=0;
     int filapart = 0;
     int lapso=0;
     public static final int RET_OK = 1;
@@ -838,7 +839,7 @@ public final class valuacion extends javax.swing.JDialog {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     public void nuevo(int nuevo) {
-
+//
         if (nuevo == 0) {
             int valor = Integer.parseInt(jSpinner1.getValue().toString()) + 1;
             jSpinner1.setValue(valor);
@@ -1406,6 +1407,9 @@ public void inserta(){
                 for (int i = 0; i < cantidadColumnas; i++) {
                     if (i == 7) {
                         estavalu += Float.valueOf(rs.getObject(i+1).toString());
+                        System.out.println("estavalusin sumar "+Float.valueOf(rs.getObject(i+1).toString()));
+                        System.out.println("estavalu "+estavalu);
+                        
                     }
                     if(i!=4){
                     filas[i] = rs.getObject(i + 1);
@@ -1430,7 +1434,8 @@ public void inserta(){
         }
         cambiarcabecera();
 
-        estavalu = (float) Math.rint(estavalu * 100) / 100;
+        estavalu = Math.rint(estavalu * 100) / 100;
+        System.out.println("despues de redondear "+estavalu);
          NumberFormat formatoNumero = NumberFormat.getNumberInstance();
             formatoNumero.setMaximumFractionDigits(2);
             formatoNumero.setMinimumFractionDigits(2);
@@ -1473,7 +1478,7 @@ public void inserta(){
     }
 
     public void buscapres() {
-        float subtotal, total;
+        double subtotal, total;
         String consulta = "SELECT porimp FROM mpres WHERE id='" + pres+"'";
         try {
             Statement stmt = (Statement) conex.createStatement();
@@ -1501,7 +1506,7 @@ public void inserta(){
 
     public void buscaacum() {
         acum=0;
-        String sql = "SELECT SUM(dv.cantidad * IF(mp.precasu=0,mp.precunit,mp.precasu)) FROM dvalus as dv, mppres as mp WHERE"
+        String sql = "SELECT dv.cantidad * IF(mp.precasu=0,mp.precunit,mp.precasu) FROM dvalus as dv, mppres as mp WHERE"
                 + " mp.mpre_id=dv.mpre_id AND mp.numero=dv.numepart"
                 + " AND (dv.mpre_id='" + pres + "' OR dv.mpre_id IN (SELECT id FROM mpres WHERE mpres_id='" + pres + "'))";
         try {
@@ -1514,7 +1519,8 @@ public void inserta(){
                 }
             }
 
-            acum = (float) Math.rint((acum * 100) / 100) * (1+impuesto / 100);
+            acum =  acum * (1+impuesto / 100);
+            acum = Math.rint((acum * 100))/100;
             NumberFormat formatoNumero = NumberFormat.getNumberInstance();
             formatoNumero.setMaximumFractionDigits(2);
             formatoNumero.setMinimumFractionDigits(2);

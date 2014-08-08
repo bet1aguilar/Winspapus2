@@ -393,20 +393,20 @@ public class Presupuesto extends javax.swing.JInternalFrame {
         setNextFocusableComponent(jTable2);
         setPreferredSize(new java.awt.Dimension(1100, 645));
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
+            public void internalFrameDeiconified(javax.swing.event.InternalFrameEvent evt) {
+            }
             public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
             }
             public void internalFrameDeactivated(javax.swing.event.InternalFrameEvent evt) {
             }
             public void internalFrameIconified(javax.swing.event.InternalFrameEvent evt) {
             }
-            public void internalFrameDeiconified(javax.swing.event.InternalFrameEvent evt) {
-            }
-            public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
-            }
             public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
             }
             public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
                 formInternalFrameClosed(evt);
+            }
+            public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
             }
         });
 
@@ -591,7 +591,7 @@ public class Presupuesto extends javax.swing.JInternalFrame {
 
         jPanel2.setPreferredSize(new java.awt.Dimension(950, 550));
 
-        jPanel3.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(102, 102, 102), 1, true));
+        jPanel3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 102, 102)));
 
         jPanel8.setBackground(new java.awt.Color(100, 100, 100));
         jPanel8.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(100, 100, 100)));
@@ -1014,7 +1014,7 @@ public class Presupuesto extends javax.swing.JInternalFrame {
                 .addContainerGap())
         );
 
-        jPanel5.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(102, 102, 102), 1, true));
+        jPanel5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 102, 102)));
 
         jPanel7.setBackground(new java.awt.Color(100, 100, 100));
         jPanel7.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(100, 100, 100)));
