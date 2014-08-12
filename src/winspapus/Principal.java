@@ -239,7 +239,7 @@ public class Principal extends javax.swing.JFrame {
             }
             //
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(this, "Error al Conectar con la Base de Datos, verifique que este ejecución el servicio MariaDB");
+            JOptionPane.showMessageDialog(this, "Error al Conectar con la Base de Datos, verifique que este ejecución el servicio de la Base de Datos");
           
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
             System.out.println("Error al conectar la bd");

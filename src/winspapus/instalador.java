@@ -172,6 +172,7 @@ public class instalador extends javax.swing.JDialog {
        
         String sql; 
         sql="select * from compra where serial='" + jTextField1.getText()  + "'";
+        Statement esc0 = (Statement) conexion.createStatement();
         Statement ser1 = null;
         try {
             ser1 = (Statement) conespapu.createStatement();
