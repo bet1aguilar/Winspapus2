@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="valuacion" language="groovy" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isSummaryWithPageHeaderAndFooter="true" isFloatColumnFooter="true" uuid="30b8a7ed-2b30-4555-b613-33b6e15790f5">
-	<property name="ireport.zoom" value="2.143588810000002"/>
-	<property name="ireport.x" value="39"/>
-	<property name="ireport.y" value="333"/>
+	<property name="ireport.zoom" value="1.2100000000000009"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="mvalu" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
@@ -13,52 +13,54 @@
 	<parameter name="titulo" class="java.lang.String"/>
 	<parameter name="enletra" class="java.lang.String"/>
 	<queryString>
-		<![CDATA[SELECT dv.mvalu_id, m.nrocon, m.nombre, DATE_FORMAT(mv.desde,'%d/%m/%Y') as desde,
-DATE_FORMAT(mv.hasta,'%d/%m/%Y') as hasta,DATE_FORMAT(m.feccon,'%d/%m/%Y') as feccon,pr.logo as logop, mc.logo as logoc, mc.encabe, mc.nombre,mc.ingres, m.porimp, CONCAT(m.porimp,'%') as conporc,
-mc.cedres,mc.civres,mc.ingins,mc.cedins,mc.civins,  CONCAT(dv.mppre_id,'\n',mp.descri) as codigo, mp.numegrup, dv.numepart, IFNULL((SELECT SUM(cantidad) as cantidades
-FROM dvalus WHERE numepart=mp.numero AND mpre_id=$P{mpres} AND mvalu_id<=$P{mvalu}),0) as cantidad,
-IFNULL((SELECT SUM(cantidad) as cantidades
-FROM dvalus WHERE numepart=mp.numero AND mpre_id=$P{mpres} AND mvalu_id<$P{mvalu}),0) as acum, IF(mp.precasu=0,mp.precunit,mp.precasu) as precio,
-mp.unidad, ROUND(IFNULL((SELECT SUM(cantidad) as cantidad
-FROM dvalus WHERE numepart=mp.numero AND mpre_id=$P{mpres} AND mvalu_id<=$P{mvalu})*IF(mp.precasu=0,mp.precunit,mp.precasu),0),2) as total
-FROM dvalus as dv, mppres as mp, mpres as m,mvalus as mv, mconts as mc, mprops as pr
- WHERE mp.numero = dv.numepart AND m.id=mp.mpre_id AND dv.mpre_id=mp.mpre_id AND
-dv.mvalu_id<=mv.id AND mv.id=$P{mvalu} AND m.codcon = mc.id AND m.codpro = pr.id AND (dv.mpre_id=$P{mpres}
-OR dv.mpre_id IN (SELECT id FROM mpres WHERE mpres_id=$P{mpres}))
- AND (mp.mpre_id=$P{mpres}
-OR mp.mpre_id IN (SELECT id FROM mpres WHERE mpres_id=$P{mpres}))
-GROUP BY dv.numepart ORDER BY mp.numegrup]]>
+		<![CDATA[SELECT
+    DATE_FORMAT(mvalus.desde,'%d/%m/%Y') AS desde,
+     DATE_FORMAT(mvalus.hasta,'%d/%m/%Y') AS hasta,
+     mpres.`nombre` AS nombre,
+     DATE_FORMAT(mpres.feccon,'%d/%m/%Y') AS feccon,
+     mpres.`porimp` AS porimp,
+     mconts_A.`ingres` AS ingres,
+     mconts_A.`cedres` AS cedres,
+     mconts_A.`civres` AS civres,
+     mconts_A.`ingins` AS ingins,
+     mconts_A.`cedins` AS cedins,
+     mconts_A.`civins` AS civins,
+     mconts_A.`logo` AS clogo,
+     mconts_A.`encabe` AS encabe,
+     mprops_A.`logo` AS plogo,
+     mpres.`nrocon` AS nrocon,
+     reportevaluacion.`nro` AS numero,
+     CONCAT(reportevaluacion.`codigo`,'\n',reportevaluacion.`descri`) AS codigo,
+
+     reportevaluacion.`unidad` AS unidad,
+     reportevaluacion.`cantidadanterior` AS cantidadanterior,
+     reportevaluacion.`cantidadactual` AS cantidadactual,
+     reportevaluacion.`preciounitario` AS precio,
+     reportevaluacion.`total` AS total
+FROM
+     `mpres` mpres INNER JOIN `mvalus` mvalus ON mpres.`id` = mvalus.`mpre_id`
+     INNER JOIN `mconts` mconts_A ON mpres.`codcon` = mconts_A.`id`
+     INNER JOIN `mprops` mprops_A ON mpres.`codpro` = mprops_A.`id`,
+     `reportevaluacion` reportevaluacion]]>
 	</queryString>
-	<field name="mvalu_id" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="nrocon" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="nombre" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
 	<field name="desde" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="hasta" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
+	<field name="nombre" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
 	<field name="feccon" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="logop" class="java.lang.Object"/>
-	<field name="logoc" class="java.lang.Object"/>
-	<field name="encabe" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="ingres" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="porimp" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="conporc" class="java.lang.String"/>
+	<field name="ingres" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
 	<field name="cedres" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
@@ -74,25 +76,28 @@ GROUP BY dv.numepart ORDER BY mp.numegrup]]>
 	<field name="civins" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
+	<field name="clogo" class="java.lang.Object"/>
+	<field name="encabe" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="plogo" class="java.lang.Object"/>
+	<field name="nrocon" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="numero" class="java.lang.Integer"/>
 	<field name="codigo" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="numegrup" class="java.math.BigDecimal">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="numepart" class="java.math.BigDecimal">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="cantidad" class="java.math.BigDecimal">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="acum" class="java.math.BigDecimal"/>
-	<field name="precio" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="unidad" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
+	<field name="cantidadanterior" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cantidadactual" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="precio" class="java.math.BigDecimal"/>
 	<field name="total" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
@@ -184,11 +189,11 @@ GROUP BY dv.numepart ORDER BY mp.numegrup]]>
 			</textField>
 			<image hAlign="Center" onErrorType="Blank">
 				<reportElement uuid="a1176f04-987d-484f-b6d3-e6cd84012612" x="0" y="25" width="67" height="65"/>
-				<imageExpression><![CDATA[JRImageRenderer.getInstance((byte []) $F{logop})]]></imageExpression>
+				<imageExpression><![CDATA[JRImageRenderer.getInstance((byte []) $F{plogo})]]></imageExpression>
 			</image>
 			<image hAlign="Center" onErrorType="Blank">
 				<reportElement uuid="a3afcfd4-eac3-48fd-83a5-2402eac63af4" x="505" y="25" width="67" height="65"/>
-				<imageExpression><![CDATA[JRImageRenderer.getInstance((byte []) $F{logoc})]]></imageExpression>
+				<imageExpression><![CDATA[JRImageRenderer.getInstance((byte []) $F{clogo})]]></imageExpression>
 			</image>
 			<staticText>
 				<reportElement uuid="61b9ef82-569b-493c-8c39-c55430dd72e0" x="0" y="91" width="256" height="15"/>
