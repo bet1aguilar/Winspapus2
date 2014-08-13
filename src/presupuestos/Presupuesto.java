@@ -4215,7 +4215,6 @@ String nume=jTable2.getValueAt(filapartida, 1).toString();
         int yi = (this.getHeight()/2)-450/2;
          report.setBounds(xi, yi, 700, 450);
         report.setVisible(true);
-        
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton37ActionPerformed
     public void vaciacampospres()
@@ -4229,7 +4228,6 @@ String nume=jTable2.getValueAt(filapartida, 1).toString();
     }
     
     public void ver(){
-        
         String cuenta = null ;
         int contar =0;
         String mpre=null;

@@ -4,11 +4,11 @@
  */
 package valuaciones;
 
+import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.ResultSetMetaData;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -47,7 +47,7 @@ public final class valuacion extends javax.swing.JDialog {
     String tipo;
 
     public valuacion(java.awt.Frame parent, boolean modal, Connection conex, String mpres) {
-        super(parent, modal);
+        super(parent,false);
         initComponents();
         buttonGroup1.add(jRadioButton1);
         buttonGroup1.add(jRadioButton2);
@@ -483,6 +483,11 @@ public final class valuacion extends javax.swing.JDialog {
         jButton7.setText("Liquidación");
 
         jButton8.setText("Valuación");
+        jButton8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton8ActionPerformed(evt);
+            }
+        });
 
         jButton9.setText("Inspección");
 
@@ -1247,6 +1252,18 @@ private void jTextField8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST
         
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
+        mvalu = jSpinner1.getValue().toString();
+        reporte rep = new reporte(null, true, conex, pres, mvalu);  
+        int x=  this.getX() + (this.getWidth() - 400) / 2;
+        int y = this.getY() + (this.getHeight() - 300) / 2;
+        rep.setBounds(x, y, 400, 300);
+        this.setModal(false);
+        rep.setVisible(true);
+        
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton8ActionPerformed
 public void modifica(String num){
         try {
             String actualiza = "UPDATE dvalus SET cantidad="+jTextField10.getText()+" WHERE numepart="+num+" AND ("
@@ -1351,9 +1368,17 @@ public void inserta(){
     public void buscapartida() {
         try {
             estavalu = 0;
+            String deltas="IF((mp.precunit-(SELECT m.precunit FROM "
+                    + "mppres as m WHERE (m.mpre_id='"+pres+"' OR m.mpre_id IN "
+                    + " (SELECT id FROM mpres WHERE mpres_id='"+pres+"')) AND m.numero=mp.mppre_id))<0,0,"
+                    + "mp.precunit-(SELECT m.precunit FROM "
+                    + "mppres as m WHERE (m.mpre_id='"+pres+"' OR m.mpre_id IN "
+                    + " (SELECT id FROM mpres WHERE mpres_id='"+pres+"')) AND m.numero=mp.mppre_id))";
+            
+            
             String sql = "SELECT dv.mppre_id, mp.numegrup, mp.descri, mp.cantidad, dv.numepart, "
-                    + "dv.cantidad,if(mp.precasu=0,mp.precunit,mp.precasu) as precio, "
-                    + "ROUND(dv.cantidad*if(mp.precasu=0,mp.precunit,mp.precasu),2) FROM dvalus as dv, mppres as mp"
+                    + "dv.cantidad,IF(mp.tipo!='VP',if(mp.precasu=0,mp.precunit,mp.precasu),"+deltas+") as precio, "
+                    + "ROUND(dv.cantidad*IF(mp.tipo!='VP',if(mp.precasu=0,mp.precunit,mp.precasu),"+deltas+"),2) FROM dvalus as dv, mppres as mp"
                     + " WHERE mp.numero = dv.numepart AND "
                     + "dv.mvalu_id='" + mvalu + "' AND (dv.mpre_id='" + pres + "' "
                     + "OR dv.mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+pres+"'))"
@@ -1506,9 +1531,18 @@ public void inserta(){
 
     public void buscaacum() {
         acum=0;
-        String sql = "SELECT dv.cantidad * IF(mp.precasu=0,mp.precunit,mp.precasu) FROM dvalus as dv, mppres as mp WHERE"
-                + " mp.mpre_id=dv.mpre_id AND mp.numero=dv.numepart"
-                + " AND (dv.mpre_id='" + pres + "' OR dv.mpre_id IN (SELECT id FROM mpres WHERE mpres_id='" + pres + "'))";
+        String deltas="IF((mp.precunit-(SELECT m.precunit FROM "
+                    + "mppres as m WHERE (m.mpre_id='"+pres+"' OR m.mpre_id IN "
+                    + " (SELECT id FROM mpres WHERE mpres_id='"+pres+"')) AND m.numero=mp.mppre_id))<0,0,"
+                    + "mp.precunit-(SELECT m.precunit FROM "
+                    + "mppres as m WHERE (m.mpre_id='"+pres+"' OR m.mpre_id IN "
+                    + " (SELECT id FROM mpres WHERE mpres_id='"+pres+"')) AND m.numero=mp.mppre_id))";
+        String sql = "SELECT dv.cantidad * IF(tipo!='VP',IF(mp.precasu=0,mp.precunit,mp.precasu),"+deltas+") "
+                + "FROM dvalus as dv, mppres as mp WHERE"
+                + " mp.numero=dv.numepart AND (dv.mpre_id='" + pres + "' "
+                    + "OR dv.mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+pres+"'))"
+                    + " AND (mp.mpre_id='" + pres + "' "
+                    + "OR mp.mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+pres+"'))";
         try {
             Statement stmt = (Statement) conex.createStatement();
             ResultSet rste = stmt.executeQuery(sql);

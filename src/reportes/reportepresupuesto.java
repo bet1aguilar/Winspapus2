@@ -177,7 +177,7 @@ public class reportepresupuesto extends javax.swing.JDialog {
         jCheckBox4.setSelected(true);
         jCheckBox4.setText("Reflejar Impuestos");
 
-        jLabel7.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel7.setFont(new java.awt.Font("Tahoma", 1, 11));
         jLabel7.setText("Tipo No Prevista:");
 
         jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "No Prevista", "Obra Extra", "Obra Adicional", "Obra C", "Todos" }));
@@ -372,7 +372,7 @@ public class reportepresupuesto extends javax.swing.JDialog {
             }
         });
 
-        okButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/winspapus/imagenes/ok.fw.png"))); // NOI18N
+        okButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/winspapus/imagenes/selecc.fw.png"))); // NOI18N
         okButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 okButtonMouseClicked(evt);
