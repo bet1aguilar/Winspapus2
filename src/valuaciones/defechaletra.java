@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package winspapus;
+package valuaciones;
 
 import java.util.regex.Pattern;
 
@@ -10,22 +10,22 @@ import java.util.regex.Pattern;
  *
  * @author Betmart
  */
-public class denumeroaletra {
+public class defechaletra {
     
-   private final String[] UNIDADES = {"", "un ", "dos ", "tres ", "cuatro ", "cinco ", "seis ", "siete ", "ocho ", "nueve "};
+   private final String[] UNIDADES = {"", "uno ", "dos ", "tres ", "cuatro ", "cinco ", "seis ", "siete ", "ocho ", "nueve "};
     private final String[] DECENAS = {"diez ", "once ", "doce ", "trece ", "catorce ", "quince ", "dieciseis ",
-        "diecisiete ", "dieciocho ", "diecinueve", "veinti", "treinta ", "cuarenta ",
-        "cincuenta ", "sesenta ", "setenta ", "ochenta ", "noventa "};
+        "diecisiete ", "dieciocho ", "diecinueve", "veinti", "treinta "};
     private final String[] CENTENAS = {"", "ciento ", "doscientos ", "trescientos ", "cuatrocientos ", "quinientos ", "seiscientos ",
         "setecientos ", "ochocientos ", "novecientos "};
     
-    public denumeroaletra(){
+    public defechaletra(){
         
     }
     
     public String Convertir(String numero, boolean mayusculas) {
         String literal = "";
         String parte_decimal;    
+        String auxnumero=numero;
         //si el numero utiliza (.) en lugar de (,) -> se reemplaza
         numero = numero.replace(".", ",");
         //si el numero no tiene parte decimal, se le agrega ,00
@@ -44,7 +44,12 @@ public class denumeroaletra {
             } else if (Integer.parseInt(Num[1]) > 9) {//si es decena
                 literal = getDecenas(Num[1]);
             } else {//sino unidades -> 9
+                if(Integer.parseInt(numero)==1)
+                {
+                   literal = "primero "; 
+                }else{
                 literal = getUnidades(Num[1]);
+                }
             }
              parte_decimal = literal + " CÉNTIMOS";
         //se valida formato de entrada -> 0,00 y 999 999 999,00
@@ -65,12 +70,17 @@ public class denumeroaletra {
             } else if (Integer.parseInt(Num[0]) > 9) {//si es decena
                 literal = getDecenas(Num[0]);
             } else {//sino unidades -> 9
+               if(Integer.parseInt(auxnumero)==1)
+                {
+                   literal = "primero "; 
+                }else{
                 literal = getUnidades(Num[0]);
+                }
             }
             
             //devuelve el resultado en mayusculas o minusculas
           
-                return (literal+" Bolivares con " + parte_decimal).toUpperCase();
+                return (literal).toUpperCase();
            
         } else {//error, no se puede convertir
             return literal = null;

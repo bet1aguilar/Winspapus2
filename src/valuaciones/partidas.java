@@ -24,7 +24,6 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
-import presupuestos.Presupuesto;
 import winspapus.Principal;
 
 
@@ -120,10 +119,10 @@ public final void cargapresupuesto() throws SQLException{
             int cantidadColumnas = rsMd.getColumnCount()+1;
             metabs.addColumn("");
             
-             for (int i = 2; i <= cantidadColumnas; i++) {
+             for (int x = 2; x <= cantidadColumnas; x++) {
                 // System.out.println("Entra a hacer columnas "+cantidadColumnas);
                  
-                 metabs.addColumn(rsMd.getColumnLabel(i-1));
+                 metabs.addColumn(rsMd.getColumnLabel(x-1));
             }
              
              while (rs.next()) {
@@ -131,9 +130,9 @@ public final void cargapresupuesto() throws SQLException{
                  Object[] filas = new Object[cantidadColumnas];
                   Object obj = Boolean.valueOf(false);
                   filas[0]= obj;
-                for (int i = 1; i < cantidadColumnas; i++) {
+                for (int y = 1; y < cantidadColumnas; y++) {
                   
-                       filas[i]=rs.getObject(i);
+                       filas[y]=rs.getObject(y);
                 }
                 metabs.addRow(filas);
                 
@@ -390,8 +389,9 @@ public final void cargapresupuesto() throws SQLException{
         String numero="", precio="";
         verificarcheck();
         
-        for(int i=0; i<contsel;i++){
-            String sql = "SELECT id, IF(precunit=0,precasu,precunit) FROM mppres where numero='"+partidas[i]+"' AND "
+        for(int y=0; y<contsel;y++){
+            String number="";
+            String sql = "SELECT id, IF(precunit=0,precasu,precunit),numero FROM mppres where numegrup='"+partidas[y]+"' AND "
                     + "(mpre_id='"+mpres+"' OR mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+mpres+"')) "
                     + "AND status=1";
             System.out.println("Quiero ver Precio: "+sql);
@@ -402,7 +402,7 @@ public final void cargapresupuesto() throws SQLException{
                 {
                     numero = rst.getObject(1).toString();
                     precio = rst.getObject(2).toString();
-                    
+                    number = rst.getString(3);
                 }
                 
                 int conta=0;
@@ -418,15 +418,15 @@ public final void cargapresupuesto() throws SQLException{
                     Statement stm = (Statement) conex.createStatement();
                     stm.execute(inserta);
                 }
-                if(cantidades[i]==0)
+                if(cantidades[y]==0)
                 {
-                    cantidades[i]=1;
+                    cantidades[y]=1;
                 }
                 float supera=0;
                         
              String acumulada = "SELECT SUM(cantidad) FROM dvalus WHERE (mpre_id='"+mpres+"' OR mpre_id "
             + "IN (SELECT id FROM mpres WHERE mpres_id='"+mpres+"'))"
-            + " AND numepart='"+partidas[i]+"' GROUP BY numepart";
+            + " AND numepart='"+partidas[y]+"' GROUP BY numepart";
                  Statement consulta = (Statement) conex.createStatement();
                  ResultSet rsconsulta = consulta.executeQuery(acumulada);
                  while(rsconsulta.next()){
@@ -435,7 +435,7 @@ public final void cargapresupuesto() throws SQLException{
                  
                 int cuantos=0;
                 String cuentas = "SELECT COUNT(*) as cuenta FROM dvalus WHERE mvalu_id="+mvalu+" AND mpre_id='"+mpres+"' "
-                        + "AND numepart="+partidas[i];
+                        + "AND numepart="+partidas[y];
                 Statement str = (Statement) conex.createStatement();
                 ResultSet rstr = str.executeQuery(cuentas);
                 while(rstr.next()){
@@ -444,7 +444,7 @@ public final void cargapresupuesto() throws SQLException{
                 if(cuantos==0){
                 String inserta = "INSERT into dvalus (mpre_id,mvalu_id, mppre_id, cantidad, precio, numepart, status) VALUES "
                         + "('"+mpres+"', '"+mvalu+"',"
-                        + "'"+numero+"', "+cantidades[i]+", "+precio+", "+partidas[i]+", 1)";
+                        + "'"+numero+"', "+cantidades[y]+", "+precio+", "+number+", 1)";
                 System.out.println("inserta "+inserta);
                  Statement stm = (Statement) conex.createStatement();
                  stm.execute(inserta);
@@ -452,7 +452,7 @@ public final void cargapresupuesto() throws SQLException{
                     int op=JOptionPane.showConfirmDialog(null, "Partida ya fue ingresada en valuación, "
                             + "¿Desea modificar las cantidades? Si/No", "Modificar Partida en Valución", JOptionPane.YES_NO_OPTION);
                     if(op==JOptionPane.YES_OPTION){
-                        String update = "UPDATE dvalus SET cantidad="+cantidades[i]+" WHERE numepart="+partidas[i]+" "
+                        String update = "UPDATE dvalus SET cantidad="+cantidades[y]+" WHERE numepart="+partidas[y]+" "
                                 + "AND mpre_id='"+mpres+"' AND mvalu_id="+mvalu;
                         Statement stactualiza = (Statement) conex.createStatement();
                         stactualiza.execute(update);
@@ -604,7 +604,7 @@ public final void cargapresupuesto() throws SQLException{
        
         try {
             Statement s = (Statement) conex.createStatement();
-            String sql="SELECT numegrup, id, descri, tipo,cantidad, numero, unidad "
+            String sql="SELECT numegrup, id, descri, IF(tipo='NP',tiponp,tipo) as tipo,cantidad, numero, unidad "
                     + "FROM mppres WHERE  (id LIKE'%"+busqueda+"%' || "
                     + "descri LIKE '%"+busqueda+"%' || numegrup LIKE '%"+busqueda+"%') "
                     + "AND (mpre_id='"+mpres+"' OR mpre_id IN (SELECT id from mpres "
@@ -675,14 +675,7 @@ public final void cargapresupuesto() throws SQLException{
         }
     // jTable1.getInputMap
             //   (JTable.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER,0), "selectNextColumnCell");
-         jTable1.getColumnModel().getColumn(4).setMaxWidth(0);
-
-             jTable1.getColumnModel().getColumn(4).setMinWidth(0);
-
-             jTable1.getTableHeader().getColumnModel().getColumn(4).setMaxWidth(0);
-
-             jTable1.getTableHeader().getColumnModel().getColumn(4).setMinWidth(0);
-             
+       
              
          int fila = jTable1.getRowCount();
              auxpart = new String[fila];

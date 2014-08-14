@@ -222,12 +222,12 @@ FROM
 				<text><![CDATA[Contrato:]]></text>
 			</staticText>
 			<image hAlign="Center" onErrorType="Blank">
-				<reportElement uuid="478f795c-b032-4054-9b02-132ebf1b1073" x="3" y="25" width="67" height="65"/>
-				<imageExpression><![CDATA[JRImageRenderer.getInstance((byte []) $P{logo1})]]></imageExpression>
+				<reportElement uuid="478f795c-b032-4054-9b02-132ebf1b1073" x="3" y="25" width="54" height="50"/>
+				<imageExpression><![CDATA[JRImageRenderer.getInstance((byte []) $P{logo2})]]></imageExpression>
 			</image>
 			<image hAlign="Center" onErrorType="Blank">
-				<reportElement uuid="a9395c8d-6b98-42e1-adab-5c016878b0dc" x="503" y="25" width="67" height="65"/>
-				<imageExpression><![CDATA[JRImageRenderer.getInstance((byte []) $P{logo2})]]></imageExpression>
+				<reportElement uuid="a9395c8d-6b98-42e1-adab-5c016878b0dc" x="516" y="25" width="54" height="50"/>
+				<imageExpression><![CDATA[JRImageRenderer.getInstance((byte []) $P{logo1})]]></imageExpression>
 			</image>
 		</band>
 	</pageHeader>
@@ -392,25 +392,25 @@ FROM
 	<columnFooter>
 		<band height="1" splitType="Stretch">
 			<line>
-				<reportElement uuid="ee3bb69f-f31b-4fec-933d-77f01e07548f" x="0" y="0" width="570" height="1"/>
+				<reportElement uuid="ee3bb69f-f31b-4fec-933d-77f01e07548f" x="0" y="0" width="572" height="1"/>
 			</line>
 		</band>
 	</columnFooter>
 	<pageFooter>
-		<band height="93" splitType="Stretch">
+		<band height="76" splitType="Stretch">
 			<staticText>
-				<reportElement uuid="fe8dc2c5-886c-4be6-9f0d-67a7074fa029" x="1" y="83" width="568" height="10"/>
+				<reportElement uuid="fe8dc2c5-886c-4be6-9f0d-67a7074fa029" x="1" y="66" width="568" height="10"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="6" isBold="true"/>
 				</textElement>
 				<text><![CDATA[0276-3567564 / 0276-3553158 / 0276-3560071 / 0276-3579562 - www.spapu.com.ve / Facebook: Rhspapu / Twitter: @Spapu]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="a96abeac-b01a-4859-8060-234076d7b103" x="1" y="73" width="568" height="10"/>
+				<reportElement uuid="a96abeac-b01a-4859-8060-234076d7b103" x="1" y="58" width="568" height="10"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="6" isBold="true"/>
 				</textElement>
-				<text><![CDATA[SPAPU (Sistemas R.H. C.A.)  San Cristóbal Edo. Táchira, Barrio Obrero Carrera 18 Entre calles 8 y 9 Edf. Marcol's No. 8-23 ]]></text>
+				<text><![CDATA[SPAPU (Sistemas R.H. C.A.) San Cristóbal-Táchira, Barrio Obrero Cra 18 Entre calles 8 y 9 Edf. Marcol's No. 8-23]]></text>
 			</staticText>
 			<textField>
 				<reportElement uuid="70646140-316e-48ea-a35b-3eee79e92037" x="370" y="14" width="100" height="15"/>
@@ -421,13 +421,13 @@ FROM
 				<textFieldExpression><![CDATA[$P{ingins}]]></textFieldExpression>
 			</textField>
 			<rectangle>
-				<reportElement uuid="c668fc5d-d148-4b91-877c-3d19fcabd5c4" x="0" y="0" width="571" height="73"/>
+				<reportElement uuid="c668fc5d-d148-4b91-877c-3d19fcabd5c4" x="0" y="0" width="571" height="58"/>
 			</rectangle>
 			<rectangle>
-				<reportElement uuid="ed79c580-2b60-481d-a9c2-4509c2da5154" x="0" y="0" width="164" height="73"/>
+				<reportElement uuid="ed79c580-2b60-481d-a9c2-4509c2da5154" x="0" y="0" width="164" height="59"/>
 			</rectangle>
 			<rectangle>
-				<reportElement uuid="4df09bf2-d59f-410f-b0cb-904e154b14a3" x="164" y="0" width="197" height="73"/>
+				<reportElement uuid="4df09bf2-d59f-410f-b0cb-904e154b14a3" x="164" y="0" width="197" height="59"/>
 			</rectangle>
 			<staticText>
 				<reportElement uuid="af09db7e-cb24-4318-8404-bf61b5489dba" x="175" y="44" width="30" height="15"/>

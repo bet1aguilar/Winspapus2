@@ -54,7 +54,7 @@ import winspapus.denumeroaletra1;
  *
  * @author Betmart
  */
-public class reporte extends javax.swing.JDialog {
+public class reporteinspeccion extends javax.swing.JDialog {
 
     /** A return status code - returned if Cancel button has been pressed */
     public static final int RET_CANCEL = 0;
@@ -70,7 +70,7 @@ public class reporte extends javax.swing.JDialog {
     String tipovalu;
      SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
     /** Creates new form reporte */
-    public reporte(java.awt.Frame parent, boolean modal, Connection conex, String mpres, String mvalu, String tipovalu) {
+    public reporteinspeccion(java.awt.Frame parent, boolean modal, Connection conex, String mpres, String mvalu, String tipovalu) {
         super(parent, false);
         initComponents();
         this.conex=conex;
@@ -99,45 +99,25 @@ public class reporte extends javax.swing.JDialog {
          
           Map parameters = new HashMap();
             try {
-                input = new FileInputStream(new File("valuacion.jrxml"));
-                 String borra = "TRUNCATE TABLE reportevaluacion";
+                input = new FileInputStream(new File("inspeccion.jrxml"));
+                 String borra = "TRUNCATE TABLE reporteinspeccion";
                   Statement truncate;
                 try {
                     truncate = (Statement) conex.createStatement();
                       truncate.execute(borra);
-                      String consultaoriginal= "INSERT INTO reportevaluacion "
-                              + "SELECT mp.numegrup as nro, mp.id as codigo, mp.descri as descri, mp.unidad as unidad,"
-                              + "IFNULL((SELECT SUM(cantidad) as cantidades "
-                              + "FROM dvalus WHERE numepart=mp.numero AND (mpre_id='"+mpres+"' OR mpre_id IN "
-                              + "(SELECT id FROM mpres WHERE mpres_id='"+mpres+"')) AND "
-                              + "mvalu_id<"+mvalu+"),0) as cantidadanterior,IFNULL((SELECT SUM(cantidad) as cantidades"
-                              + " FROM dvalus WHERE numepart=mp.numero AND (mpre_id='"+mpres+"' OR mpre_id IN "
-                              + "(SELECT id FROM mpres WHERE mpres_id='"+mpres+"')) AND "
-                              + "mvalu_id<="+mvalu+"),0) as cantidadactual, IF(mp.precasu=0,mp.precunit,mp.precasu)"
-                              + " as preciounitario,"
-                              + "ROUND(IFNULL((SELECT SUM(cantidad) as cantidad "
-                              + "FROM dvalus WHERE numepart=mp.numero AND mpre_id='"+mpres+"' AND "
-                              + "mvalu_id<="+mvalu+")*IF(mp.precasu=0,mp.precunit,mp.precasu),0),2) as total,"+mvalu+",'"+mpres+"'"
-                              + " FROM mppres as mp, dvalus as dv, mvalus as mv WHERE mp.tipo='Org' AND"
-                              + " mp.numero = dv.numepart AND dv.mpre_id=mp.mpre_id AND "
-                              + "dv.mvalu_id<=mv.id AND mv.id="+mvalu+" AND"
-                              + " (mv.mpre_id = '"+mpres+"' OR mv.mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+mpres+"')) "
-                              + "AND (dv.mpre_id='"+mpres+"' "
-                              + "OR dv.mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+mpres+"'))"
-                              + " AND (mp.mpre_id='"+mpres+"' "
-                              + "OR mp.mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+mpres+"')) "
-                              + "GROUP BY dv.numepart ORDER BY mp.numegrup";
+                      String consultaoriginal= "INSERT INTO reporteinspeccion "
+                              + "SELECT mp.numegrup as numero, mp.id as codigo, mp.descri as descri, "
+                              + "mp.unidad as unidad, dv.cantidad as cantidad, "+mvalu+", '"+mpres+"'"
+                              + " FROM mppres as mp, dvalus as dv WHERE mp.tipo='Org' AND mp.mpre_id='"+mpres+"' "
+                              + "AND mp.mpre_id=dv.mpre_id AND mp.numero=dv.numepart AND dv.mvalu_id="+mvalu+""
+                              + " ORDER BY mp.numegrup";
                       Statement original = (Statement) conex.createStatement();
                       original.execute(consultaoriginal);
                       
                       //------------NO Prevista------------------------------------------
-                      String cuenta = "SELECT COUNT(*) FROM mppres as mp, dvalus as dv, mvalus as mv "
-                              + "WHERE dv.mvalu_id<=mv.id AND mv.id = "+mvalu+" AND (mp.mpre_id='"+mpres+"' OR mp.mpre_id IN "
-                              + "(SELECT id FROM mpres WHERE mpres_id='"+mpres+"')) AND (dv.mpre_id ='"+mpres+"' OR "
-                              + "dv.mpre_id IN (SELECT id FROM mpres WHERE mpres_id = '"+mpres+"'))AND mp.numero = dv.numepart"
-                              + " AND (mv.mpre_id='"+mpres+"' "
-                              + "OR mv.mpre_id IN (SELECT id FROM mpres WHERE mpres_id ='"+mpres+"')) AND mp.tipo='NP' "
-                              + "AND mp.tiponp='NP'";
+                      String cuenta = "SELECT COUNT(*) FROM mppres as mp, dvalus as dv  WHERE dv.mpre_id='"+mpres+"' "
+                              + "AND (mp.mpre_id ='"+mpres+"' OR mp.mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+mpres+"'))"
+                              + " AND mp.numero=dv.numepart AND mp.tipo='NP' AND mp.tiponp='NP'";
                       Statement cuantosnp= (Statement) conex.createStatement();
                       ResultSet rscuantosnp = cuantosnp.executeQuery(cuenta);
                       int cuentas=0;
@@ -146,44 +126,26 @@ public class reporte extends javax.swing.JDialog {
                       }
                       if(cuentas>0)
                       {
-                          String insertatit = "INSERT INTO reportevaluacion (codigo,descri,mvalu,mpre)"
+                          String insertatit = "INSERT INTO reporteinspeccion (codigo,descri,valu,mpre)"
                                         + "VALUES ('','PARTIDAS NO PREVISTAS',"+mvalu+",'"+mpres+"')";
                                 Statement ins = (Statement) conex.createStatement();
                                 ins.execute(insertatit);
-                                String consultanp= "INSERT INTO reportevaluacion "
-                              + " SELECT mp.numegrup as nro, mp.id as codigo, mp.descri as descri, mp.unidad as unidad,"
-                              + " IFNULL((SELECT SUM(cantidad) as cantidades "
-                              + " FROM dvalus WHERE numepart=mp.numero AND (mpre_id='"+mpres+"' OR mpre_id IN "
-                              + "(SELECT id FROM mpres WHERE mpres_id='"+mpres+"')) AND "
-                              + " mvalu_id<"+mvalu+"),0) as cantidadanterior,IFNULL((SELECT SUM(cantidad) as cantidades"
-                              + " FROM dvalus WHERE numepart=mp.numero AND (mpre_id='"+mpres+"' OR mpre_id IN "
-                              + "(SELECT id FROM mpres WHERE mpres_id='"+mpres+"')) AND "
-                              + " mvalu_id<="+mvalu+"),0) as cantidadactual, IF(mp.precasu=0,mp.precunit,mp.precasu) as preciounitario,"
-                              + " ROUND(IFNULL((SELECT SUM(cantidad) as cantidad "
-                              + " FROM dvalus WHERE numepart=mp.numero AND mpre_id='"+mpres+"' AND "
-                              + " mvalu_id<="+mvalu+")*IF(mp.precasu=0,mp.precunit,mp.precasu),0),2) as total,"+mvalu+",'"+mpres+"'"
-                              + " FROM mppres as mp, dvalus as dv, mvalus as mv WHERE mp.tipo='NP' AND mp.tiponp='NP' AND"
-                              + " mp.numero = dv.numepart AND"
-                              + " dv.mvalu_id<=mv.id AND mv.id="+mvalu+" AND"
-                              + " (mv.mpre_id = '"+mpres+"' OR mv.mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+mpres+"')) "
-                              + " AND (dv.mpre_id='"+mpres+"'"
-                              + " OR dv.mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+mpres+"'))"
-                              + " AND (mp.mpre_id='"+mpres+"'"
-                              + " OR mp.mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+mpres+"'))"
-                              + " GROUP BY dv.numepart ORDER BY mp.numegrup";
-                                System.out.println("consultanp "+consultanp);
+                                String consultanp= "INSERT INTO reporteinspeccion "
+                              + "SELECT mp.numegrup as numero, mp.id as codigo, mp.descri as descri, "
+                              + "mp.unidad as unidad, dv.cantidad as cantidad, "+mvalu+", '"+mpres+"'"
+                              + " FROM mppres as mp, dvalus as dv WHERE dv.mpre_id='"+mpres+"' "
+                              + "AND (mp.mpre_id='"+mpres+"' OR mp.mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+mpres+"')) "
+                                        + "AND mp.numero=dv.numepart AND dv.mvalu_id="+mvalu+""
+                                        + " AND mp.tipo='NP' AND mp.tiponp='NP' "
+                              + " ORDER BY mp.numegrup";
                                 Statement noprevista = (Statement) conex.createStatement();
                                 noprevista.execute(consultanp);
                                 
                       }
                       //------------------Obras extras------------------
-                      String cuentaoe = "SELECT COUNT(*) FROM mppres as mp, dvalus as dv, mvalus as mv "
-                              + "WHERE dv.mvalu_id<=mv.id AND mv.id = "+mvalu+" AND (mp.mpre_id='"+mpres+"' OR mp.mpre_id IN "
-                              + "(SELECT id FROM mpres WHERE mpres_id='"+mpres+"')) AND (dv.mpre_id ='"+mpres+"' OR "
-                              + "dv.mpre_id IN (SELECT id FROM mpres WHERE mpres_id = '"+mpres+"'))AND mp.numero = dv.numepart"
-                              + " AND (mv.mpre_id='"+mpres+"' "
-                              + "OR mv.mpre_id IN (SELECT id FROM mpres WHERE mpres_id ='"+mpres+"')) AND mp.tipo='NP' "
-                              + "AND mp.tiponp='OE'";
+                      String cuentaoe = "SELECT COUNT(*) FROM mppres as mp, dvalus as dv  WHERE dv.mpre_id='"+mpres+"' "
+                              + "AND (mp.mpre_id ='"+mpres+"' OR mp.mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+mpres+"'))"
+                              + " AND mp.numero=dv.numepart AND mp.tipo='NP' AND mp.tiponp='OE'";
                        Statement cuantosoe= (Statement) conex.createStatement();
                       ResultSet rscuantosoe = cuantosoe.executeQuery(cuentaoe);
                       int cuentasoe=0;
@@ -191,42 +153,25 @@ public class reporte extends javax.swing.JDialog {
                           cuentasoe = rscuantosoe.getInt(1);
                       }
                       if(cuentasoe>0){
-                          String insertatit = "INSERT INTO reportevaluacion (codigo,descri,mvalu,mpre)"
+                          String insertatit = "INSERT INTO reporteinspeccion (codigo,descri,valu,mpre)"
                                         + "VALUES ('','OBRAS EXTRAS',"+mvalu+",'"+mpres+"')";
                                 Statement ins = (Statement) conex.createStatement();
                                 ins.execute(insertatit);
-                                String consultaoe= "INSERT INTO reportevaluacion "
-                              + " SELECT mp.numegrup as nro, mp.id as codigo, mp.descri as descri, mp.unidad as unidad,"
-                              + " IFNULL((SELECT SUM(cantidad) as cantidades "
-                              + " FROM dvalus WHERE numepart=mp.numero AND (mpre_id='"+mpres+"' OR mpre_id IN "
-                              + " (SELECT id FROM mpres WHERE mpres_id='"+mpres+"')) AND "
-                              + " mvalu_id<"+mvalu+"),0) as cantidadanterior,IFNULL((SELECT SUM(cantidad) as cantidades"
-                              + " FROM dvalus WHERE numepart=mp.numero AND (mpre_id='"+mpres+"' OR mpre_id IN "
-                              + " (SELECT id FROM mpres WHERE mpres_id='"+mpres+"')) AND "
-                              + " mvalu_id<="+mvalu+"),0) as cantidadactual, IF(mp.precasu=0,mp.precunit,mp.precasu) as preciounitario,"
-                              + " ROUND(IFNULL((SELECT SUM(cantidad) as cantidad "
-                              + " FROM dvalus WHERE numepart=mp.numero AND mpre_id='"+mpres+"' AND "
-                              + " mvalu_id<="+mvalu+")*IF(mp.precasu=0,mp.precunit,mp.precasu),0),2) as total,"+mvalu+",'"+mpres+"'"
-                              + " FROM mppres as mp, dvalus as dv, mvalus as mv WHERE mp.tipo='NP' AND mp.tiponp='OE' AND"
-                              + " mp.numero = dv.numepart AND "
-                              + " dv.mvalu_id<=mv.id AND mv.id="+mvalu+" AND"
-                              + " (mv.mpre_id = '"+mpres+"' OR mv.mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+mpres+"')) "
-                              + " AND (dv.mpre_id='"+mpres+"'"
-                              + " OR dv.mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+mpres+"'))"
-                              + " AND (mp.mpre_id='"+mpres+"'"
-                              + " OR mp.mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+mpres+"'))"
-                              + " GROUP BY dv.numepart ORDER BY mp.numegrup";
+                                String consultaoe= "INSERT INTO reporteinspeccion "
+                              + "SELECT mp.numegrup as numero, mp.id as codigo, mp.descri as descri, "
+                              + "mp.unidad as unidad, dv.cantidad as cantidad, "+mvalu+", '"+mpres+"'"
+                              + " FROM mppres as mp, dvalus as dv WHERE dv.mpre_id='"+mpres+"' "
+                              + "AND (mp.mpre_id='"+mpres+"' OR mp.mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+mpres+"')) "
+                                        + "AND mp.numero=dv.numepart AND dv.mvalu_id="+mvalu+""
+                                        + " AND mp.tipo='NP' AND mp.tiponp='OE' "
+                              + " ORDER BY mp.numegrup";
                                 Statement obraextra= (Statement) conex.createStatement();
                                 obraextra.execute(consultaoe);
                       }
                       //------------Obras Adicionales--------------------------------------------------------
-                      String cuentaoa = "SELECT COUNT(*) FROM mppres as mp, dvalus as dv, mvalus as mv "
-                              + "WHERE dv.mvalu_id<=mv.id AND mv.id = "+mvalu+" AND (mp.mpre_id='"+mpres+"' OR mp.mpre_id IN "
-                              + "(SELECT id FROM mpres WHERE mpres_id='"+mpres+"')) AND (dv.mpre_id ='"+mpres+"' OR "
-                              + "dv.mpre_id IN (SELECT id FROM mpres WHERE mpres_id = '"+mpres+"'))AND mp.numero = dv.numepart"
-                              + " AND (mv.mpre_id='"+mpres+"' "
-                              + "OR mv.mpre_id IN (SELECT id FROM mpres WHERE mpres_id ='"+mpres+"')) AND mp.tipo='NP' "
-                              + "AND mp.tiponp='OA'";
+                      String cuentaoa = "SELECT COUNT(*) FROM mppres as mp, dvalus as dv  WHERE dv.mpre_id='"+mpres+"' "
+                              + "AND (mp.mpre_id ='"+mpres+"' OR mp.mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+mpres+"'))"
+                              + " AND mp.numero=dv.numepart AND mp.tipo='NP' AND mp.tiponp='OA'";
                        Statement cuantosoa= (Statement) conex.createStatement();
                       ResultSet rscuantosoa = cuantosoa.executeQuery(cuentaoa);
                       int cuentasoa=0;
@@ -234,42 +179,25 @@ public class reporte extends javax.swing.JDialog {
                           cuentasoa = rscuantosoa.getInt(1);
                       }
                       if(cuentasoa>0){
-                          String insertatit = "INSERT INTO reportevaluacion (codigo,descri,mvalu,mpre)"
+                          String insertatit = "INSERT INTO reporteinspeccion (codigo,descri,valu,mpre)"
                                         + "VALUES ('','OBRAS ADICIONALES',"+mvalu+",'"+mpres+"')";
                                 Statement ins = (Statement) conex.createStatement();
                                 ins.execute(insertatit);
-                                String consultaAD= "INSERT INTO reportevaluacion "
-                              + " SELECT mp.numegrup as nro, mp.id as codigo, mp.descri as descri, mp.unidad as unidad,"
-                              + " IFNULL((SELECT SUM(cantidad) as cantidades "
-                              + " FROM dvalus WHERE numepart=mp.numero AND (mpre_id='"+mpres+"' OR mpre_id IN "
-                              + " (SELECT id FROM mpres WHERE mpres_id='"+mpres+"')) AND "
-                              + " mvalu_id<"+mvalu+"),0) as cantidadanterior,IFNULL((SELECT SUM(cantidad) as cantidades"
-                              + " FROM dvalus WHERE numepart=mp.numero AND (mpre_id='"+mpres+"' OR mpre_id IN "
-                              + " (SELECT id FROM mpres WHERE mpres_id='"+mpres+"')) AND "
-                              + " mvalu_id<="+mvalu+"),0) as cantidadactual, IF(mp.precasu=0,mp.precunit,mp.precasu) as preciounitario,"
-                              + " ROUND(IFNULL((SELECT SUM(cantidad) as cantidad "
-                              + " FROM dvalus WHERE numepart=mp.numero AND mpre_id='"+mpres+"' AND "
-                              + " mvalu_id<="+mvalu+")*IF(mp.precasu=0,mp.precunit,mp.precasu),0),2) as total,"+mvalu+",'"+mpres+"'"
-                              + " FROM mppres as mp, dvalus as dv, mvalus as mv WHERE mp.tipo='NP' AND mp.tiponp='OA' AND"
-                              + " mp.numero = dv.numepart AND "
-                              + " dv.mvalu_id<=mv.id AND mv.id="+mvalu+" AND"
-                              + " (mv.mpre_id = '"+mpres+"' OR mv.mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+mpres+"')) "
-                              + " AND (dv.mpre_id='"+mpres+"'"
-                              + " OR dv.mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+mpres+"'))"
-                              + " AND (mp.mpre_id='"+mpres+"'"
-                              + " OR mp.mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+mpres+"'))"
-                              + " GROUP BY dv.numepart ORDER BY mp.numegrup";
+                               String consultaAD= "INSERT INTO reporteinspeccion "
+                              + "SELECT mp.numegrup as numero, mp.id as codigo, mp.descri as descri, "
+                              + "mp.unidad as unidad, dv.cantidad as cantidad, "+mvalu+", '"+mpres+"'"
+                              + " FROM mppres as mp, dvalus as dv WHERE dv.mpre_id='"+mpres+"' "
+                              + "AND (mp.mpre_id='"+mpres+"' OR mp.mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+mpres+"')) "
+                                        + "AND mp.numero=dv.numepart AND dv.mvalu_id="+mvalu+""
+                                        + " AND mp.tipo='NP' AND mp.tiponp='OA' "
+                              + " ORDER BY mp.numegrup";
                                 Statement obraAD= (Statement) conex.createStatement();
                                 obraAD.execute(consultaAD);
                       }
                       //------------Obras COMPLEMENTARIAS--------------------------------------------------------
-                      String cuentaoc = "SELECT COUNT(*) FROM mppres as mp, dvalus as dv, mvalus as mv "
-                              + "WHERE dv.mvalu_id<=mv.id AND mv.id = "+mvalu+" AND (mp.mpre_id='"+mpres+"' OR mp.mpre_id IN "
-                              + "(SELECT id FROM mpres WHERE mpres_id='"+mpres+"')) AND (dv.mpre_id ='"+mpres+"' OR "
-                              + "dv.mpre_id IN (SELECT id FROM mpres WHERE mpres_id = '"+mpres+"'))AND mp.numero = dv.numepart"
-                              + " AND (mv.mpre_id='"+mpres+"' "
-                              + "OR mv.mpre_id IN (SELECT id FROM mpres WHERE mpres_id ='"+mpres+"')) AND mp.tipo='NP' "
-                              + "AND mp.tiponp='OC'";
+                       String cuentaoc = "SELECT COUNT(*) FROM mppres as mp, dvalus as dv  WHERE dv.mpre_id='"+mpres+"' "
+                              + "AND (mp.mpre_id ='"+mpres+"' OR mp.mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+mpres+"'))"
+                              + " AND mp.numero=dv.numepart AND mp.tipo='NP' AND mp.tiponp='OC'";
                        Statement cuantosoc= (Statement) conex.createStatement();
                       ResultSet rscuantosoc = cuantosoc.executeQuery(cuentaoc);
                       int cuentasoc=0;
@@ -277,43 +205,31 @@ public class reporte extends javax.swing.JDialog {
                           cuentasoc = rscuantosoc.getInt(1);
                       }
                       if(cuentasoc>0){
-                          String insertatit = "INSERT INTO reportevaluacion (codigo,descri,mvalu,mpre)"
+                          String insertatit = "INSERT INTO reporteinspeccion (codigo,descri,valu,mpre)"
                                         + "VALUES ('','OBRAS COMPLEMENTARIAS',"+mvalu+",'"+mpres+"'))";
                                 Statement ins = (Statement) conex.createStatement();
                                 ins.execute(insertatit);
-                                String consultaoc= "INSERT INTO reportevaluacion "
-                              + " SELECT mp.numegrup as nro, mp.id as codigo, mp.descri as descri, mp.unidad as unidad,"
-                              + " IFNULL((SELECT SUM(cantidad) as cantidades "
-                              + " FROM dvalus WHERE numepart=mp.numero AND (mpre_id='"+mpres+"' OR mpre_id IN "
-                              + "(SELECT id FROM mpres WHERE mpres_id='"+mpres+"')) AND "
-                              + " mvalu_id<"+mvalu+"),0) as cantidadanterior,IFNULL((SELECT SUM(cantidad) as cantidades"
-                              + " FROM dvalus WHERE numepart=mp.numero AND (mpre_id='"+mpres+"' OR mpre_id IN "
-                              + " (SELECT id FROM mpres WHERE mpres_id='"+mpres+"')) AND "
-                              + " mvalu_id<="+mvalu+"),0) as cantidadactual, IF(mp.precasu=0,mp.precunit,mp.precasu) as preciounitario,"
-                              + " ROUND(IFNULL((SELECT SUM(cantidad) as cantidad "
-                              + " FROM dvalus WHERE numepart=mp.numero AND mpre_id='"+mpres+"' AND "
-                              + " mvalu_id<="+mvalu+")*IF(mp.precasu=0,mp.precunit,mp.precasu),0),2) as total,"+mvalu+",'"+mpres+"'"
-                              + " FROM mppres as mp, dvalus as dv, mvalus as mv WHERE mp.tipo='NP' AND mp.tiponp='OC' AND"
-                              + " mp.numero = dv.numepart AND "
-                              + " dv.mvalu_id<=mv.id AND mv.id="+mvalu+" AND"
-                              + " (mv.mpre_id = '"+mpres+"' OR mv.mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+mpres+"')) "
-                              + " AND (dv.mpre_id='"+mpres+"'"
-                              + " OR dv.mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+mpres+"'))"
-                              + " AND (mp.mpre_id='"+mpres+"'"
-                              + " OR mp.mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+mpres+"'))"
-                              + " GROUP BY dv.numepart ORDER BY mp.numegrup";
+                               String consultaoc = "INSERT INTO reporteinspeccion "
+                              + "SELECT mp.numegrup as numero, mp.id as codigo, mp.descri as descri, "
+                              + "mp.unidad as unidad, dv.cantidad as cantidad, "+mvalu+", '"+mpres+"'"
+                              + " FROM mppres as mp, dvalus as dv WHERE mp.tipo='Org' AND dv.mpre_id='"+mpres+"' "
+                              + "AND (mp.mpre_id='"+mpres+"' OR mp.mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+mpres+"')) "
+                                        + "AND mp.numero=dv.numepart AND dv.mvalu_id="+mvalu+""
+                                        + " AND mp.tipo='NP' AND mp.tiponp='OA' "
+                              + " ORDER BY mp.numegrup";
                                 Statement obraoc= (Statement) conex.createStatement();
                                 obraoc.execute(consultaoc);
                       }
                       
                       //-----------VARIACIÓN DE PRECIOS----------------------------------------------
                       String cuentavp = "SELECT COUNT(*) FROM mppres as mp, dvalus as dv, mvalus as mv "
-                              + "WHERE dv.mvalu_id<=mv.id AND mv.id = "+mvalu+" AND"
+                              + "WHERE dv.mvalu_id=mv.id AND mv.id = "+mvalu+" AND"
                               + " (mp.mpre_id='"+mpres+"' OR mp.mpre_id IN "
                               + "(SELECT id FROM mpres WHERE mpres_id='"+mpres+"')) AND (dv.mpre_id ='"+mpres+"' OR "
                               + "dv.mpre_id IN (SELECT id FROM mpres WHERE mpres_id = '"+mpres+"'))AND mp.numero = dv.numepart"
                               + " AND (mv.mpre_id='"+mpres+"' "
                               + "OR mv.mpre_id IN (SELECT id FROM mpres WHERE mpres_id ='"+mpres+"')) AND mp.tipo='VP'";
+                      System.out.println("cuentavp "+cuentavp);
                        Statement cuantosvp= (Statement) conex.createStatement();
                       ResultSet rscuantosvp = cuantosvp.executeQuery(cuentavp);
                       int cuentasvp=0;
@@ -321,68 +237,76 @@ public class reporte extends javax.swing.JDialog {
                           cuentasvp= rscuantosvp.getInt(1);
                       }
                       if(cuentasvp>0){
-                           String deltas="IF((mp.precunit-(SELECT m.precunit FROM "
-                    + "mppres as m WHERE (m.mpre_id='"+mpres+"' OR m.mpre_id IN "
-                    + " (SELECT id FROM mpres WHERE mpres_id='"+mpres+"')) AND m.numero=mp.mppre_id))<0,0,"
-                    + "mp.precunit-(SELECT m.precunit FROM "
-                    + "mppres as m WHERE (m.mpre_id='"+mpres+"' OR m.mpre_id IN "
-                    + " (SELECT id FROM mpres WHERE mpres_id='"+mpres+"')) AND m.numero=mp.mppre_id))";
-                          String insertatit = "INSERT INTO reportevaluacion (codigo,descri,mvalu,mpre)"
+                         
+                          String insertatit = "INSERT INTO reporteinspeccion (codigo,descri,valu,mpre)"
                                         + "VALUES ('','VARIACIONES DE PRECIO',"+mvalu+",'"+mpres+"')";
                                 Statement ins = (Statement) conex.createStatement();
                                 ins.execute(insertatit);
-                                String consultavp= "INSERT INTO reportevaluacion "
-                              + " SELECT mp.numegrup as nro, mp.id as codigo, mp.descri as descri, mp.unidad as unidad,"
-                              + " IFNULL((SELECT SUM(cantidad) as cantidades "
-                              + " FROM dvalus WHERE numepart=mp.numero AND (mpre_id='"+mpres+"' OR mpre_id IN "
-                              + " (SELECT id FROM mpres WHERE mpres_id='"+mpres+"')) AND "
-                              + " mvalu_id<"+mvalu+"),0) as cantidadanterior,IFNULL((SELECT SUM(cantidad) as cantidades"
-                              + " FROM dvalus WHERE numepart=mp.numero AND (mpre_id='"+mpres+"' OR mpre_id IN "
-                              + " (SELECT id FROM mpres WHERE mpres_id='"+mpres+"')) AND "
-                              + " mvalu_id<="+mvalu+"),0) as cantidadactual, "
-                                        + ""+deltas+" as preciounitario,"
-                              + " ROUND(IFNULL((SELECT SUM(cantidad) as cantidad "
-                              + " FROM dvalus WHERE numepart=mp.numero AND mpre_id='"+mpres+"' AND "
-                              + " mvalu_id<="+mvalu+")*"+deltas+",0),2) as total,"+mvalu+",'"+mpres+"'"
-                              + " FROM mppres as mp, dvalus as dv, mvalus as mv WHERE mp.tipo='VP' AND"
-                              + " mp.numero = dv.numepart AND"
-                              + " dv.mvalu_id<=mv.id AND mv.id="+mvalu+" AND"
-                              + " (mv.mpre_id = '"+mpres+"' OR mv.mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+mpres+"')) "
-                              + " AND (dv.mpre_id='"+mpres+"' "
-                              + " OR dv.mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+mpres+"'))"
-                              + " AND (mp.mpre_id='"+mpres+"' "
-                              + " OR mp.mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+mpres+"')) "
-                              + " GROUP BY dv.numepart ORDER BY mp.numegrup";
+                                String consultavp= "INSERT INTO reporteinspeccion "
+                              + "SELECT mp.numegrup as numero, mp.id as codigo, mp.descri as descri, "
+                              + "mp.unidad as unidad, dv.cantidad as cantidad, "+mvalu+", '"+mpres+"'"
+                              + " FROM mppres as mp, dvalus as dv WHERE dv.mpre_id='"+mpres+"' "
+                              + "AND (mp.mpre_id='"+mpres+"' OR mp.mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+mpres+"')) "
+                                        + "AND mp.numero=dv.numepart AND dv.mvalu_id="+mvalu+""
+                                        + " AND mp.tipo='VP'"
+                              + " ORDER BY mp.numegrup";
                                 System.out.println("consulta vp "+consultavp);
                                 Statement obraoc= (Statement) conex.createStatement();
                                 obraoc.execute(consultavp);
                       }
                 } catch (SQLException ex) {
-                    Logger.getLogger(reporte.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(reporteinspeccion.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 
                           
             } catch (FileNotFoundException ex) {
                 JOptionPane.showMessageDialog(null, "No se encuentra el archivo del reporte "+ex.getMessage());
-                Logger.getLogger(reporte.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(reporteinspeccion.class.getName()).log(Level.SEVERE, null, ex);
             }
             JasperDesign design = JRXmlLoader.load(input); 
                 JasperReport report = JasperCompileManager.compileReport(design);
                
+               
                 denumeroaletra1 nume = new denumeroaletra1();
               String letras="";
-              int decimalPlaces = 2; 
-              BigDecimal bd = new BigDecimal(mvalu); 
-              bd = bd.setScale(decimalPlaces, BigDecimal.ROUND_HALF_EVEN); 
+               letras="("+nume.Convertir(String.valueOf(mvalu), true)+")";
+               String desde="", hasta="";
+              String selectfechavalu = "SELECT DATE_FORMAT(desde,'%d/%m/%Y') as desde, "
+                      + "DATE_FORMAT(hasta,'%d/%m/%Y') as hasta FROM mvalus WHERE id="+mvalu+" AND mpre_id='"+mpres+"'";
+            try {
+                Statement stvalu = (Statement) conex.createStatement();
+                ResultSet rstvalu = stvalu.executeQuery(selectfechavalu);
+                while(rstvalu.next()){
+                    desde = rstvalu.getString(1);
+                    hasta = rstvalu.getString(2);
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(reporteinspeccion.class.getName()).log(Level.SEVERE, null, ex);
+            }
+              
+              String[] fechaseparada = desde.split("/"); 
+              String dia = fechaseparada[0];
+              defechaletra fech = new defechaletra();
+              String diafecha = fech.Convertir(dia, true);
+              String meses[] = {"ENERO","FEBRERO","MARZO","ABRIL","MAYO","JUNIO","JULIO","AGOSTO","SEPTIEMBRE","OCTUBRE"
+                                ,"NOVIEMBRE","DICIEMBRE"};
+              String mesfecha = meses[Integer.valueOf(fechaseparada[1])-1];
+              String tmvalu = "PERIODO DEL "+diafecha+" DE "+mesfecha+" DEL AÑO "+fechaseparada[2];
+              String[] fechaseparada1= hasta.split("/");
+              dia = fechaseparada1[0];
+              diafecha=fech.Convertir(dia, true);
+              mesfecha = meses[Integer.valueOf(fechaseparada1[1])-1];
+              tmvalu = tmvalu+" AL "+diafecha+" DE "+mesfecha+" DEL AÑO "+fechaseparada1[2];
               String titulo = jTextField1.getText();
             
-              letras="("+nume.Convertir(String.valueOf(mvalu), true)+")";
+             
               if(!tipovalu.equals("VALUACIÓN UNICA")){
                   tipovalu = tipovalu+" "+letras;
               }
               
               parameters.put("mpres", mpres);
               parameters.put("mvalu", mvalu);
+              parameters.put("fechaletra", tmvalu);
               parameters.put("tmvalu", tipovalu);
               parameters.put("enletra", letras);
               parameters.put("titulo", titulo);
@@ -398,7 +322,7 @@ public class reporte extends javax.swing.JDialog {
                 output = new FileOutputStream(new File(ruta));
             } catch (FileNotFoundException ex) {
                 JOptionPane.showMessageDialog(null, "No se genero el reporte en pdf "+ex.getMessage());
-                Logger.getLogger(reporte.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(reporteinspeccion.class.getName()).log(Level.SEVERE, null, ex);
             }
                 JasperExportManager.exportReportToPdfStream(print, output);
                 
@@ -424,12 +348,12 @@ public class reporte extends javax.swing.JDialog {
                 try {
                     output.write(outputByteArray.toByteArray());
                 } catch (IOException ex) {
-                    Logger.getLogger(reporte.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(reporteinspeccion.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
             JasperViewer.viewReport(print, false);
         } catch (JRException ex) {
-            Logger.getLogger(reporte.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(reporteinspeccion.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -496,7 +420,7 @@ public class reporte extends javax.swing.JDialog {
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11));
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Reporte Valuación");
+        jLabel1.setText("Reporte Inspección");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -514,7 +438,7 @@ public class reporte extends javax.swing.JDialog {
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Datos para Reporte", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 11))); // NOI18N
 
-        jTextField1.setText("VALUACIÓN");
+        jTextField1.setText("INFORME DE INSPECCIÓN");
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField1ActionPerformed(evt);

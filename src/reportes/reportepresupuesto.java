@@ -507,10 +507,7 @@ public void generareportepres(){
            
             total = subtotal+impuesto;
             totalpres=total;
-            
-          
-         
-           
+                      
             
          } catch (SQLException ex) {
             Logger.getLogger(reportepresupuesto.class.getName()).log(Level.SEVERE, null, ex);
@@ -624,6 +621,9 @@ public void generareportepres(){
                     try {
                         Statement truncate = (Statement) conex.createStatement();
                         truncate.execute(borra);
+                        String cantidad = "IFNULL(mp.cantidad+IFNULL((SELECT SUM(aumento) FROM admppres WHERE numepart=mp.numero AND mpre_id='"+pres+"'),0)-"
+                                + "IFNULL((SELECT SUM(disminucion) "
+                                + "FROM admppres WHERE numepart=mp.numero AND mpre_id='"+pres+"'),0),0)";
                         String originales = "INSERT INTO reportemodificado "
                                 + "SELECT numegrup as numero, id as codigo, descri, unidad,"
                                 + "IFNULL(mp.cantidad+IFNULL"
@@ -631,7 +631,7 @@ public void generareportepres(){
                                 + "IFNULL((SELECT SUM(disminucion) "
                                 + "FROM admppres WHERE numepart=mp.numero AND mpre_id='"+pres+"'),0),0) as cantidad, "
                                 + "IF(mp.precasu=0,mp.precunit,mp.precasu) as precunit,"
-                                + "cantidad*IF(mp.precasu=0,mp.precunit,"
+                                + ""+cantidad+"*IF(mp.precasu=0,mp.precunit,"
                                 + "mp.precasu) as total FROM mppres as mp WHERE mpre_id='"+pres+"'";
                         Statement stori = (Statement) conex.createStatement();
                         stori.execute(originales);
@@ -647,6 +647,10 @@ public void generareportepres(){
                             cont = rstnp.getInt(1);
                         }
                         if(cont>0){
+                            cantidad = "IFNULL(mp.cantidad+IFNULL"
+                                + "((SELECT SUM(aumento) FROM admppres WHERE numepart=mp.numero AND mpre_id='"+pres+"'),0)-"
+                                + "IFNULL((SELECT SUM(disminucion) "
+                                + "FROM admppres WHERE numepart=mp.numero AND mpre_id='"+pres+"'),0),0)";
                             String insertatit = "INSERT INTO reportemodificado (codigo,descri)"
                                     + "VALUES ('','PARTIDAS NO PREVISTAS')";
                             Statement ins = (Statement) conex.createStatement();
@@ -658,7 +662,7 @@ public void generareportepres(){
                                 + "IFNULL((SELECT SUM(disminucion) "
                                 + "FROM admppres WHERE numepart=mp.numero AND mpre_id='"+pres+"'),0),0) as cantidad, "
                                 + "IF(mp.precasu=0,mp.precunit,mp.precasu) as precunit,"
-                                + "cantidad*IF(mp.precasu=0,mp.precunit,"
+                                + ""+cantidad+"*IF(mp.precasu=0,mp.precunit,"
                                 + "mp.precasu) as total FROM mppres as mp WHERE (mpre_id='"+pres+"' "
                                      + "OR mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+pres+"')) AND tipo = 'NP' AND "
                                      + "tiponp='NP'";
@@ -687,7 +691,7 @@ public void generareportepres(){
                                 + "IFNULL((SELECT SUM(disminucion) "
                                 + "FROM admppres WHERE numepart=mp.numero AND mpre_id='"+pres+"'),0),0) as cantidad, "
                                 + "IF(mp.precasu=0,mp.precunit,mp.precasu) as precunit,"
-                                + "cantidad*IF(mp.precasu=0,mp.precunit,"
+                                + ""+cantidad+"*IF(mp.precasu=0,mp.precunit,"
                                 + "mp.precasu) as total FROM mppres as mp WHERE (mpre_id='"+pres+"' "
                                      + "OR mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+pres+"')) AND tipo = 'NP' AND "
                                      + "tiponp='OA'";
@@ -715,7 +719,7 @@ public void generareportepres(){
                                 + "IFNULL((SELECT SUM(disminucion) "
                                 + "FROM admppres WHERE numepart=mp.numero AND mpre_id='"+pres+"'),0),0) as cantidad, "
                                 + "IF(mp.precasu=0,mp.precunit,mp.precasu) as precunit,"
-                                + "cantidad*IF(mp.precasu=0,mp.precunit,"
+                                + ""+cantidad+"*IF(mp.precasu=0,mp.precunit,"
                                 + "mp.precasu) as total FROM mppres as mp WHERE (mpre_id='"+pres+"' "
                                      + "OR mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+pres+"')) AND tipo = 'NP' AND "
                                      + "tiponp='OE'";
@@ -744,7 +748,7 @@ public void generareportepres(){
                                 + "IFNULL((SELECT SUM(disminucion) "
                                 + "FROM admppres WHERE numepart=mp.numero AND mpre_id='"+pres+"'),0),0) as cantidad, "
                                 + "IF(mp.precasu=0,mp.precunit,mp.precasu) as precunit,"
-                                + "cantidad*IF(mp.precasu=0,mp.precunit,"
+                                + ""+cantidad+"*IF(mp.precasu=0,mp.precunit,"
                                 + "mp.precasu) as total FROM mppres as mp WHERE (mpre_id='"+pres+"' "
                                      + "OR mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+pres+"')) AND tipo = 'NP' AND "
                                      + "tiponp='OC'";

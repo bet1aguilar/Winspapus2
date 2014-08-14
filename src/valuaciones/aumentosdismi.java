@@ -57,7 +57,7 @@ public class aumentosdismi extends javax.swing.JDialog {
    Principal p; 
     public aumentosdismi(java.awt.Frame parent, boolean modal, String pres, Connection conex, float total) 
     {
-        super(parent, modal);
+        super(parent, false);
         initComponents();
         this.pres = pres;
         this.totalpres = total;
@@ -141,7 +141,8 @@ public class aumentosdismi extends javax.swing.JDialog {
                 + " (mpre_id='"+pres+"' OR mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+pres+"')) GROUP BY numepart";
         try {
             float precunit=0, precasu=0;
-            //Falta agregarle los precios de las valuaciones restar el delta de la reconsideracion, multiplicar por el nuevo precio la cantidad del delta y por el precio viejo el restante
+            //Falta agregarle los precios de las valuaciones restar el delta de 
+            //la reconsideracion, multiplicar por el nuevo precio la cantidad del delta y por el precio viejo el restante
             Statement saumenta = (Statement) conex.createStatement();
             ResultSet rsaumenta = saumenta.executeQuery(aumenta);
             while(rsaumenta.next()){
@@ -171,21 +172,27 @@ public class aumentosdismi extends javax.swing.JDialog {
             
             //******************VP*******************************
             
-            String vp = "SELECT IF(precasu=0,precunit, precasu) as precunit,cantidad FROM mppres WHERE "
-                        + "(mpre_id='"+pres+"' OR mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+pres+"')) "
-                    + "AND tipo='VP'";
+            String vp = "SELECT IF(mp.precasu=0,mp.precunit, mp.precasu)-(SELECT IF(m.precasu=0,m.precunit,m.precasu)"
+                    + " FROM mppres as m WHERE m.numero=mp.mppre_id AND (m.mpre_id='"+pres+"' OR m.mpre_id IN "
+                    + "(SELECT id FROM mpres WHERE mpres_id='"+pres+"')))"
+                    + " as precunit,mp.cantidad FROM mppres as mp WHERE "
+                        + "(mp.mpre_id='"+pres+"' OR mp.mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+pres+"')) "
+                    + "AND mp.tipo='VP'";
             Statement st = (Statement) conex.createStatement();
             ResultSet rst = st.executeQuery(vp);
             float sumtotal=0;
             while(rst.next()){
                 sumtotal += rst.getFloat(1)*rst.getFloat(2);
+                
             }
-            
+            if(sumtotal<0){
+                sumtotal=0;
+            }
             jTextField22.setText(String.valueOf(formatoNumero.format(sumtotal)));
            
             //---------------PNP
             String pnp="SELECT SUM(IF(precasu=0,precunit*cantidad,precasu*cantidad)) as suma FROM mppres WHERE "
-                    + "tipo='NP' AND mpre_id='"+pres+"'";
+                    + "tipo='NP' AND (mpre_id='"+pres+"' OR mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+pres+"'))";
             Statement stpnp = (Statement) conex.createStatement();
             ResultSet rstpnp = stpnp.executeQuery(pnp);
             while(rstpnp.next()){
@@ -226,8 +233,8 @@ public class aumentosdismi extends javax.swing.JDialog {
             while(rsconsulpres.next()){
                 impuesto = rsconsulpres.getFloat(1);
             }
-            float impeste = totalesto*impuesto;
-            float imporig = totalpres*impuesto;
+            float impeste = totalesto*impuesto/100;
+            float imporig = totalpres*impuesto/100;
             float difimp = impeste-imporig;
             jTextField15.setText(String.valueOf(formatoNumero.format(difimp)));
             float modificado = totalesto - difimp;

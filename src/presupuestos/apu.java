@@ -162,7 +162,7 @@ public class apu extends javax.swing.JDialog {
                 util = rst.getObject(6).toString();
             }
             String datospart = "SELECT porcgad, porcpre,porcutil FROM mppres WHERE numero="+numero+" AND "
-                    + "(mpre_id = '"+pres+"' OR mpre_id IN (SELECT id FROM mpres WHERE mpres_id))";
+                    + "(mpre_id = '"+pres+"' OR mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+pres+"'))";
             Statement sts = (Statement) conex.createStatement();
             ResultSet rsts = sts.executeQuery(datospart);
             while(rsts.next()){
@@ -315,7 +315,7 @@ public class apu extends javax.swing.JDialog {
                     + "mm.deprecia, (mm.deprecia*dm.cantidad*mm.precio) as total "
                     + "FROM mepres as mm, deppres as dm WHERE "
                    + "(dm.mpre_id='"+pres+"' OR dm.mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+pres+"'))"
-                   + "AND"
+                   + " AND"
                     + " dm.numero='"+numero+"' AND dm.mepre_id=mm.id AND "
                    + "dm.mpre_id=mm.mpre_id GROUP BY mm.id";
             ResultSet rs1 = s1.executeQuery(consulta);
@@ -423,7 +423,7 @@ public class apu extends javax.swing.JDialog {
                     + " (dm.cantidad*mm.salario) as total "
                    + "FROM mmopres as mm, dmoppres as dm "
                     + " WHERE (dm.mpre_id='"+pres+"' OR dm.mpre_id IN "
-                   + "(SELECT id FROM mpres WHERE mpres_id='"+pres+"'))"
+                   + "(SELECT id FROM mpres WHERE mpres_id='"+pres+"')) "
                    + "AND dm.numero='"+numero+"' "
                     + " AND dm.mmopre_id=mm.id AND dm.mpre_id=mm.mpre_id "
                     + "GROUP BY mm.id";
@@ -1713,7 +1713,8 @@ public class apu extends javax.swing.JDialog {
        
         
         String contar = "SELECT count(mppre_id) FROM dmpres WHERE mmpre_id='"+jTextField24.getText().toString()+"' AND"
-                + " mppre_id='"+partida+"' AND mpre_id='"+pres+"'";
+                + " mppre_id='"+partida+"' AND (mpre_id='"+pres+"' OR mpre_id IN (SELECT "
+                + "id FROM mpres WHERE mpres_id='"+pres+"'))";
        
         
         
@@ -1735,7 +1736,9 @@ public class apu extends javax.swing.JDialog {
             st.execute(sql);
             JOptionPane.showMessageDialog(null, "Se ha insertado el material");
             
-            String cuenta = "SELECT count(id) FROM mmpres WHERE id='"+jTextField24.getText().toString()+"' AND mpre_id='"+pres+"'";
+            String cuenta = "SELECT count(id) FROM mmpres WHERE "
+                    + "id='"+jTextField24.getText().toString()+"' AND (mpre_id='"+pres+"' OR mpre_id IN (SELECT id FROM mpres "
+                    + "WHERE mpres_id='"+pres+"'))";
             Statement ste = (Statement) conex.createStatement();
             ResultSet rste = ste.executeQuery(cuenta);
             while(rste.next()){
@@ -1818,7 +1821,7 @@ public class apu extends javax.swing.JDialog {
         
        int cuanto=0;
         String contar = "SELECT count(mppre_id) FROM deppres WHERE mepre_id='"+jTextField25.getText().toString()+"' AND"
-                + " mppre_id='"+partida+"' AND mpre_id='"+pres+"'";
+                + " mppre_id='"+partida+"' AND (mpre_id='"+pres+"' OR mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+pres+"'))";
        
         
         
@@ -1841,7 +1844,8 @@ public class apu extends javax.swing.JDialog {
             st.execute(sql);
             JOptionPane.showMessageDialog(null, "Se ha insertado el material");
             
-            String cuenta = "SELECT count(id) FROM mepres WHERE id='"+jTextField25.getText().toString()+"' AND mpre_id='"+pres+"'";
+            String cuenta = "SELECT count(id) FROM mepres WHERE id='"+jTextField25.getText().toString()+"' "
+                    + "AND (mpre_id='"+pres+"' OR mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+pres+"'))";
             Statement ste = (Statement) conex.createStatement();
             ResultSet rste = ste.executeQuery(cuenta);
             while(rste.next()){
@@ -1863,7 +1867,8 @@ public class apu extends javax.swing.JDialog {
                     cuentabu=rstabus.getInt(1);
                 }
                 if(cuentabu>0){
-                    String select= "SELECT count(*) FROM metabs WHERE id='"+jTextField24.getText()+"' AND mtabus_id='ESTUDIO'";
+                    String select= "SELECT count(*) FROM metabs WHERE id='"+jTextField24.getText()+"'"
+                            + " AND mtabus_id='ESTUDIO'";
                     Statement stselect = (Statement) conex.createStatement();
                     ResultSet rstselect = stselect.executeQuery(select);
                     while(rstselect.next()){
@@ -1891,7 +1896,8 @@ public class apu extends javax.swing.JDialog {
                     if(op==JOptionPane.YES_OPTION){
                         
                         String insertmat = "INSERT INTO metabs (mtabus_id,id, descri, deprecia, precio, status)"
-                                + " VALUES ('ESTUDIO', '"+jTextField25.getText()+"', '"+jTextField12.getText()+"', "+jTextField15.getText()+","
+                                + " VALUES ('ESTUDIO', '"+jTextField25.getText()+"',"
+                                + " '"+jTextField12.getText()+"', "+jTextField15.getText()+","
                                 + "'"+jTextField14.getText()+"',1)";
                         Statement insertamat = (Statement) conex.createStatement();
                         insertamat.execute(insertmat);

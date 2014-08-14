@@ -124,7 +124,7 @@
                   <Color blue="ff" green="ff" red="ff" type="rgb"/>
                 </Property>
                 <Property name="horizontalAlignment" type="int" value="0"/>
-                <Property name="text" type="java.lang.String" value="Reporte Valuaci&#xf3;n"/>
+                <Property name="text" type="java.lang.String" value="Reporte Inspecci&#xf3;n"/>
               </Properties>
             </Component>
           </SubComponents>
@@ -215,7 +215,7 @@
             </Component>
             <Component class="javax.swing.JTextField" name="jTextField1">
               <Properties>
-                <Property name="text" type="java.lang.String" value="VALUACI&#xd3;N"/>
+                <Property name="text" type="java.lang.String" value="INFORME DE INSPECCI&#xd3;N"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jTextField1ActionPerformed"/>

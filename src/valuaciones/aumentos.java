@@ -123,8 +123,7 @@ public class aumentos extends javax.swing.JDialog {
                 + "WHERE mp.cantidad+IFNULL((SELECT SUM(aumento) FROM admppres WHERE numepart=mp.numero AND mpre_id='"+pres+"'),0)"
                 + "<(SELECT SUM(cantidad) FROM dvalus WHERE mpre_id='"+pres+"' AND mvalu_id<="+mvalu+" AND numepart=mp.numero GROUP BY numepart)"
                 + " AND mp.numero=dv.numepart"
-                + " AND (dv.mpre_id=mp.mpre_id"
-                + " OR dv.mpre_id IN (SELECT id FROM mpres WHERE mpres_id = dv.mpre_id))"
+                + " AND (dv.mpre_id='"+pres+"')"
                 + " AND (mp.mpre_id='"+pres+"'"
                 + " OR mp.mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+pres+"')) "
                 + " AND dv.mvalu_id="+mvalu+" "
@@ -553,7 +552,8 @@ public void verificarcheck() {
                     if (bol.booleanValue()) {
                         
                         partidas[contsel] =  jTable1.getValueAt(i, 1).toString();
-                        String consult = "SELECT numero FROM mppres WHERE numegrup="+partidas[contsel]+" AND mpre_id='"+pres+"'";
+                        String consult = "SELECT numero FROM mppres WHERE numegrup="+partidas[contsel]+" AND (mpre_id='"+pres+"' OR mpre_id "
+                                + "IN (SELECT id FROM mpres WHERE mpres_id='"+pres+"'))";
                         try {
                             Statement st = (Statement) conex.createStatement();
                             ResultSet rst = st.executeQuery(consult);

@@ -53,7 +53,7 @@ public class reconsideraciones extends javax.swing.JDialog {
    String nuevopres=null;
    String valu=null;
     public reconsideraciones(java.awt.Frame parent, boolean modal, String mpres, Connection conex, Presupuesto pres, Principal prin) {
-        super(parent, modal);
+        super(parent,false);
         initComponents();
         this.conex = conex;
         this.prin = prin;
@@ -225,7 +225,7 @@ public class reconsideraciones extends javax.swing.JDialog {
 
         jPanel2.setBackground(new java.awt.Color(100, 100, 100));
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11));
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Reconsideración de Precios");
@@ -420,7 +420,7 @@ public class reconsideraciones extends javax.swing.JDialog {
 
         jTextArea1.setColumns(20);
         jTextArea1.setEditable(false);
-        jTextArea1.setFont(new java.awt.Font("Monospaced", 0, 11)); // NOI18N
+        jTextArea1.setFont(new java.awt.Font("Monospaced", 0, 11));
         jTextArea1.setLineWrap(true);
         jTextArea1.setRows(3);
         jTextArea1.setWrapStyleWord(true);
@@ -441,7 +441,7 @@ public class reconsideraciones extends javax.swing.JDialog {
         jTextField4.setEditable(false);
         jTextField4.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
 
-        jSpinner1.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(1), null, null, Integer.valueOf(1)));
+        jSpinner1.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(1), Integer.valueOf(1), null, Integer.valueOf(1)));
         jSpinner1.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 jSpinner1StateChanged(evt);
@@ -554,7 +554,7 @@ public class reconsideraciones extends javax.swing.JDialog {
             }
         });
 
-        jLabel13.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        jLabel13.setFont(new java.awt.Font("Tahoma", 0, 10));
         jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel13.setText("% Utilidad.:");
 
@@ -576,7 +576,7 @@ public class reconsideraciones extends javax.swing.JDialog {
             }
         });
 
-        jLabel15.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        jLabel15.setFont(new java.awt.Font("Tahoma", 0, 10));
         jLabel15.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel15.setText("% Imp. Part.:");
 
@@ -587,7 +587,7 @@ public class reconsideraciones extends javax.swing.JDialog {
             }
         });
 
-        jLabel16.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        jLabel16.setFont(new java.awt.Font("Tahoma", 0, 10));
         jLabel16.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel16.setText("%Imp. Gen.:");
 
@@ -1391,7 +1391,23 @@ public class reconsideraciones extends javax.swing.JDialog {
     }//GEN-LAST:event_jTextArea1KeyPressed
 
     private void jSpinner1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSpinner1StateChanged
- buscacuadro();        // TODO add your handling code here:
+ buscacuadro();    
+ 
+ String buscapres = "SELECT mpre_id FROM mppres WHERE nrocuadro="+jSpinner1.getValue()+" "
+                    + " AND (mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+mpres+"'))";
+ System.out.println("buscapres "+buscapres);
+ String presu="";
+        try {
+            Statement st = (Statement) conex.createStatement();
+            ResultSet rst = st.executeQuery(buscapres);
+            while(rst.next()){
+                presu=rst.getString(1);
+            }
+            jTextField8.setText(presu);
+        } catch (SQLException ex) {
+            Logger.getLogger(reconsideraciones.class.getName()).log(Level.SEVERE, null, ex);
+        }
+ // TODO add your handling code here:
     }//GEN-LAST:event_jSpinner1StateChanged
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
