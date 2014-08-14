@@ -1676,7 +1676,7 @@ public class Presupuesto extends javax.swing.JInternalFrame {
             impuesto = subtotal*(impuesto/100);
            
             total = subtotal+impuesto;
-            
+            System.out.println("total pres "+total);
             
           
          
@@ -1686,6 +1686,7 @@ public class Presupuesto extends javax.swing.JInternalFrame {
             jTextField11.setText(String.valueOf(formatoNumero.format(subtotal)));
             jTextField12.setText(String.valueOf(formatoNumero.format(impuesto)));
             jTextField13.setText(String.valueOf(formatoNumero.format(total))); 
+            total = Math.rint(total*100)/100;
          } catch (SQLException ex) {
             Logger.getLogger(Presupuesto.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -3262,8 +3263,8 @@ public void agrega(){
         return total;
     }
     private void jButton16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton16ActionPerformed
-        float total1 = (float) total;
-        aumentosdismi aumento = new aumentosdismi(prin, closable, id, conex,total1);
+
+        aumentosdismi aumento = new aumentosdismi(prin, closable, id, conex, total);
         int xi = (this.getWidth()/2)-1200/2;
         int yi = (this.getHeight()/2)-650/2;
         aumento.setBounds(xi, yi, 1250, 700);

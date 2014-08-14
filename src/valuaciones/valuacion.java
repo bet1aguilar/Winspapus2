@@ -480,6 +480,8 @@ public final class valuacion extends javax.swing.JDialog {
         });
         jScrollPane2.setViewportView(jTable1);
 
+        jDateChooser3.setDateFormatString("dd/MM/yyyy");
+
         jLabel12.setText("Fecha:");
 
         jButton7.setText("Liquidación");

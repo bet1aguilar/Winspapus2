@@ -53,9 +53,9 @@ public class aumentosdismi extends javax.swing.JDialog {
     private Integer entero;
     private DefaultTableModel mptabs;
    int filapart=0;
-   float totalpres;
+   double totalpres;
    Principal p; 
-    public aumentosdismi(java.awt.Frame parent, boolean modal, String pres, Connection conex, float total) 
+    public aumentosdismi(java.awt.Frame parent, boolean modal, String pres, Connection conex, double total) 
     {
         super(parent, false);
         initComponents();
@@ -199,7 +199,7 @@ public class aumentosdismi extends javax.swing.JDialog {
                 np=rstpnp.getFloat(1);
             }
             jTextField17.setText(String.valueOf(formatoNumero.format(np)));    
-            float totaleste = totalpres+np+aumentos+sumtotal;
+            double totaleste = totalpres+np+aumentos+sumtotal;
             //----------------------DISMI
             
             String dismi = "SELECT SUM(disminucion), numepart FROM admppres WHERE  "
@@ -225,7 +225,7 @@ public class aumentosdismi extends javax.swing.JDialog {
                 disminucion +=cantdismi*precunit;
             }
             jTextField16.setText(String.valueOf(formatoNumero.format(disminucion)));
-            float totalesto = totaleste-disminucion;
+            double totalesto = totaleste-disminucion;
             float impuesto=0;
             String consulpres = "SELECT porimp FROM mpres WHERE id='"+pres+"'";
             Statement sconsulpres = (Statement) conex.createStatement();
@@ -233,13 +233,13 @@ public class aumentosdismi extends javax.swing.JDialog {
             while(rsconsulpres.next()){
                 impuesto = rsconsulpres.getFloat(1);
             }
-            float impeste = totalesto*impuesto/100;
-            float imporig = totalpres*impuesto/100;
-            float difimp = impeste-imporig;
+            double impeste = totalesto*impuesto/100;
+            double imporig = totalpres*impuesto/100;
+            double difimp = impeste-imporig;
             jTextField15.setText(String.valueOf(formatoNumero.format(difimp)));
-            float modificado = totalesto - difimp;
+            double modificado = totalesto - difimp;
             jTextField14.setText(String.valueOf(formatoNumero.format(modificado)));
-            float diferencia = modificado-totalpres;
+            double diferencia = modificado-totalpres;
             jTextField13.setText(String.valueOf(formatoNumero.format(diferencia)));
         } catch (SQLException ex) {
             Logger.getLogger(aumentosdismi.class.getName()).log(Level.SEVERE, null, ex);

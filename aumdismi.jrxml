@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="presupuesto" language="groovy" pageWidth="612" pageHeight="792" whenNoDataType="BlankPage" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isSummaryWithPageHeaderAndFooter="true" isFloatColumnFooter="true" uuid="783eb973-dc35-448c-ace7-a90426bbba54">
-	<property name="ireport.zoom" value="1.6963904734899402"/>
-	<property name="ireport.x" value="278"/>
-	<property name="ireport.y" value="121"/>
+	<property name="ireport.zoom" value="1.1586575189467523"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="mpres" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
@@ -232,11 +232,11 @@ mpres.porimp/100 as porimp FROM      `mpres` mpres INNER JOIN `mppres` mppres ON
 				<textFieldExpression><![CDATA[$F{mconts_encabe}]]></textFieldExpression>
 			</textField>
 			<image onErrorType="Blank">
-				<reportElement uuid="ac8d3050-513a-4ce8-96ed-375b517834f0" x="0" y="22" width="75" height="66" isRemoveLineWhenBlank="true"/>
+				<reportElement uuid="ac8d3050-513a-4ce8-96ed-375b517834f0" x="0" y="22" width="54" height="50" isRemoveLineWhenBlank="true"/>
 				<imageExpression><![CDATA[JRImageRenderer.getInstance((byte []) $F{mconts_logo})]]></imageExpression>
 			</image>
 			<image hAlign="Right" onErrorType="Blank">
-				<reportElement uuid="c9ca5357-49ea-4e2f-a284-77294fe9376a" x="481" y="22" width="89" height="66" isRemoveLineWhenBlank="true"/>
+				<reportElement uuid="c9ca5357-49ea-4e2f-a284-77294fe9376a" x="516" y="22" width="54" height="50" isRemoveLineWhenBlank="true"/>
 				<imageExpression><![CDATA[JRImageRenderer.getInstance((byte []) $F{mprops_logo})]]></imageExpression>
 			</image>
 			<textField>

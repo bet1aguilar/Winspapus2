@@ -49,7 +49,7 @@ public class reconsideraciones extends javax.swing.JDialog {
    float cantidadrecon=0;
     String codnuevopres ;
    float nuevopreciasum=0;
-   float totalrecons=0;
+   double totalrecons=0;
    String nuevopres=null;
    String valu=null;
     public reconsideraciones(java.awt.Frame parent, boolean modal, String mpres, Connection conex, Presupuesto pres, Principal prin) {
@@ -869,10 +869,10 @@ public class reconsideraciones extends javax.swing.JDialog {
                     Object[] filas = new Object[cantidadColumnas];
                    for (int i = 0; i < cantidadColumnas; i++) {
                        if(i==7){
-                           totalrecons+=rs.getFloat(i+1);
+                           totalrecons+=rs.getDouble(i+1);
                        }
                        if(i==5){
-                         float delta=rs.getFloat(i+1);
+                         double delta=rs.getDouble(i+1);
                          if(delta<0){
                              delta=delta*(-1);
                          }
