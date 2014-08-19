@@ -12,6 +12,8 @@ package winspapus;
 
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.Statement;
+import com.sun.org.apache.xml.internal.security.exceptions.Base64DecodingException;
+import com.sun.org.apache.xml.internal.security.utils.Base64;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.sql.ResultSet;
@@ -22,6 +24,7 @@ import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
+import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
 /**
@@ -35,13 +38,14 @@ public class instalador extends javax.swing.JDialog {
     /** A return status code - returned if OK button has been pressed */
     public static final int RET_OK = 1;
     Principal prin;
-    Connection conespapu;
+    Connection conespapu, conex;
     /** Creates new form instalador */
-    public instalador(java.awt.Frame parent, boolean modal, Connection conespapu, Principal prin) {
+    public instalador(java.awt.Frame parent, boolean modal, Connection conespapu, Principal prin, Connection conex) {
         super(parent, modal);
         initComponents();
         this.prin=prin; 
         this.conespapu=conespapu;
+        this.conex=conex;
         // Close the dialog when Esc is pressed
         String cancelName = "cancel";
         InputMap inputMap = getRootPane().getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
@@ -172,20 +176,61 @@ public class instalador extends javax.swing.JDialog {
        
         String sql; 
         sql="select * from compra where serial='" + jTextField1.getText()  + "'";
-        Statement esc0 = (Statement) conexion.createStatement();
+        
         Statement ser1 = null;
-        try {
+        try {    
+           /* String key="9";
+            String result="",decode = null;
+            try {
+                byte[] decodificado=Base64.decode(jTextField1.getText());
+                decode= new String(decodificado);
+                
+            } catch (Base64DecodingException ex) {
+                Logger.getLogger(instalador.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            for(int i=0;i<decode.length();i++)
+            {
+                String uno=decode.substring(i,1),dos=key.substring((i % key.length())-1,1);              
+                uno=String.valueOf(uno.codePointAt(0)-dos.codePointAt(0));
+                result+=uno;
+            }*/ 
+               
+            
             ser1 = (Statement) conespapu.createStatement();
             ResultSet resg = null;
             resg = ser1.executeQuery(sql);
+            String idcompra = null,idusuario = null;
             while (resg.next())
+            {                
+                idcompra=resg.getString("id");
+                idusuario=resg.getString("usuario_id");                    
+            }
+            Statement verc=(Statement) conespapu.createStatement();
+            sql="select count(*) from version_compra where compra_id='"+ idcompra + "' and instalacion=0";
+            ResultSet rvcom= verc.executeQuery(sql);
+            int cuenta = 0;
+            while (rvcom.next())
             {
-                System.out.println(resg.getString("nombre"));
+                cuenta=rvcom.getInt(1);
+                
+            }
+            if (cuenta>0)
+            {
+              Versiones version=new Versiones(prin, true, conespapu, jTextField1.getText(), idcompra, idusuario,conex,prin);
+              int x=(prin.getWidth()/2)-600/2;
+              int y=(prin.getHeight()/2)-300/2;
+              version.setBounds(x, y, 600, 300);
+              version.setVisible(true);
+            }    
+            else
+            {
+                JOptionPane.showMessageDialog(rootPane, "No Tiene Instalaciones Disponibles Contacte con Sistemas RH C.A. soporte_tecnico@spapu.com.ve");
+                System.exit(0);
             }
         } catch (SQLException ex) {
             Logger.getLogger(instalador.class.getName()).log(Level.SEVERE, null, ex);
         }
-        prin.sinst=1;        
+        //       
         doClose(RET_OK);
     }//GEN-LAST:event_okButtonActionPerformed
     

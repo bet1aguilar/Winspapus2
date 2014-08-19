@@ -183,28 +183,20 @@ public class Principal extends javax.swing.JFrame {
             String sql;            
 
  
-            sql="select * from mpresadm";
+            sql="select * from mpresadm where status='1'";
+            Serialdd  obj2=new Serialdd();
+              String dd=obj2.getSerialNumber("C");
             ResultSet rst = seg.executeQuery(sql);             
             rst.last();
             int regis = rst.getRow();                
-            Serialtm obj1=new Serialtm();
-            String tm=obj1.getMotherboardSN();
-            Serialdd  obj2=new Serialdd();
-            String dd=obj2.getSerialNumber("C");
+            
             if (regis==0){
                 int opc;
                 opc=JOptionPane.showConfirmDialog(null, "Atención el Sistema se va a Ejecutar por primero vez, Desea Continuar?","INICIAR DE SISTEMA",JOptionPane.YES_NO_OPTION);
                 if ((opc==1)||(opc==2)){
                    System.exit(0);
                 } 
-                Date hoy = new Date();
-                String fecha1;                                  
-                SimpleDateFormat formatofecha=new SimpleDateFormat("yyyy-MM-dd");
-                fecha1=formatofecha.format(hoy);    
-                sql="insert into mpresadm"
-                        + " values ('"+fecha1+"','"+dd+"','"+tm+"','1111-2222-3333-4444','1')";
-                System.out.println(sql);
-                esc.execute(sql); 
+               
                   //establecer seguridad remota
                 String sSistemaOperativo = System.getProperty("os.name");
                 System.out.println(sSistemaOperativo);
@@ -213,9 +205,9 @@ public class Principal extends javax.swing.JFrame {
                    esc.execute("delete from mpresadm");                      
                    System.exit(0);
                 }     
-                conespapu = (Connection) DriverManager.getConnection("jdbc:mysql://spapu.db.11811826.hostedresource.com/spapu", "spapu", "Rahp81261!");
+                conespapu = (Connection) DriverManager.getConnection("jdbc:mysql://spapu2.db.11811826.hostedresource.com/spapu2", "spapu2", "Rahp81261!");
 
-                instalador instalar=new instalador(this, true,conespapu, this);
+                instalador instalar=new instalador(this, true,conespapu, this, conexion);
                 int xi=(this.getWidth()/2)-350/2;
                 int yi=(this.getHeight()/2)-100/2;
                 instalar.setBounds(xi, yi, 350, 150);
