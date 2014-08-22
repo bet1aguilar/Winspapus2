@@ -285,6 +285,8 @@ public class reporteapu1 extends javax.swing.JDialog {
             }
         });
 
+        jDateChooser1.setDateFormatString("dd-MM-yyyy");
+
         jLabel3.setText("Seleccione Fecha:");
 
         jRadioButton1.setSelected(true);
