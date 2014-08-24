@@ -12,8 +12,6 @@ package winspapus;
 
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.Statement;
-import com.sun.org.apache.xml.internal.security.exceptions.Base64DecodingException;
-import com.sun.org.apache.xml.internal.security.utils.Base64;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.sql.ResultSet;
@@ -53,6 +51,7 @@ public class instalador extends javax.swing.JDialog {
         ActionMap actionMap = getRootPane().getActionMap();
         actionMap.put(cancelName, new AbstractAction() {
 
+            @Override
             public void actionPerformed(ActionEvent e) {
                 doClose(RET_CANCEL);
             }

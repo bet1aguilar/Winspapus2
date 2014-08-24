@@ -210,7 +210,7 @@ public class Principal extends javax.swing.JFrame {
                 instalador instalar=new instalador(this, true,conespapu, this, conexion);
                 int xi=(this.getWidth()/2)-350/2;
                 int yi=(this.getHeight()/2)-100/2;
-                instalar.setBounds(xi, yi, 350, 150);
+                instalar.setBounds(xi, yi, 350, 200);
                 instalar.setVisible(true);
                 if (sinst==0) {
                    esc.execute("delete from mpresadm");                      
