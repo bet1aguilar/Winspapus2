@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="presupuesto" language="groovy" pageWidth="612" pageHeight="792" whenNoDataType="BlankPage" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isSummaryWithPageHeaderAndFooter="true" isFloatColumnFooter="true" uuid="783eb973-dc35-448c-ace7-a90426bbba54">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="presupuesto" language="groovy" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isSummaryWithPageHeaderAndFooter="true" isFloatColumnFooter="true" uuid="783eb973-dc35-448c-ace7-a90426bbba54">
 	<property name="ireport.zoom" value="1.5"/>
-	<property name="ireport.x" value="195"/>
-	<property name="ireport.y" value="44"/>
+	<property name="ireport.x" value="193"/>
+	<property name="ireport.y" value="43"/>
 	<parameter name="mpres" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
@@ -604,7 +604,7 @@ AND admppres.disminucion>0]]>
 			<staticText>
 				<reportElement uuid="9ed077cc-049c-4d5e-a2dd-fca436f8c2f8" stretchType="RelativeToBandHeight" x="0" y="1" width="464" height="15" isRemoveLineWhenBlank="true"/>
 				<box rightPadding="5">
-					<topPen lineWidth="1.0"/>
+					<topPen lineWidth="0.0"/>
 					<leftPen lineWidth="1.0"/>
 					<bottomPen lineWidth="0.0"/>
 					<rightPen lineWidth="1.0"/>
@@ -617,7 +617,7 @@ AND admppres.disminucion>0]]>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement uuid="5384255d-49f2-44bc-8d5a-293390e39d8e" stretchType="RelativeToBandHeight" x="465" y="1" width="105" height="15" isRemoveLineWhenBlank="true"/>
 				<box rightPadding="5">
-					<topPen lineWidth="1.0"/>
+					<topPen lineWidth="0.0"/>
 					<bottomPen lineWidth="0.0"/>
 					<rightPen lineWidth="1.0"/>
 				</box>

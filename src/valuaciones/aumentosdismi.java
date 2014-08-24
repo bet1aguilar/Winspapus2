@@ -533,6 +533,11 @@ public class aumentosdismi extends javax.swing.JDialog {
 
         jButton8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/winspapus/imagenes/memo.fw.png"))); // NOI18N
         jButton8.setToolTipText("Vista Previa del Presupuesto");
+        jButton8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton8ActionPerformed(evt);
+            }
+        });
 
         jButton9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/winspapus/imagenes/borra.png"))); // NOI18N
         jButton9.setToolTipText("Borrar Partida");
@@ -1975,6 +1980,15 @@ private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField6FocusLost
+
+    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
+        reporteaumdismi report = new reporteaumdismi(p, false, conex, pres, jSpinner3.getValue().toString());
+        int x = (p.getWidth()/2)-450/2;
+        int y = (p.getHeight()/2)-400/2;
+        report.setBounds(x, y, 450, 400);
+        report.setVisible(true);
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton8ActionPerformed
     
     private void doClose(int retStatus) {
         returnStatus = retStatus;
