@@ -2307,7 +2307,8 @@ public void agrega(){
             
             for(int i=0; i<contsel;i++){
                 String sqlnumero = "SELECT numero FROM mppres where mpre_id='"+id+"' "
-                        + "OR mpre_id IN (SELECT id from mpres where mpres_id ='"+id+"' GROUP BY id) ORDER BY numero DESC LIMIT 1";
+                        + "OR mpre_id IN (SELECT id from mpres where mpres_id ='"+id+"' GROUP BY id) "
+                        + "ORDER BY numero DESC LIMIT 1";
                
                 ResultSet rst = st.executeQuery(sqlnumero);
                 while(rst.next()){
@@ -2418,10 +2419,7 @@ public void agrega(){
                 agregamano(0);
                 id=auxid;
                 calculapartida(String.valueOf(nuevo), id, 0);
-                cargartotal();
-                buscapartida();
-               
-                cargapresupuesto();
+                
                 
             }else{
                     entrar=1;
@@ -2430,6 +2428,17 @@ public void agrega(){
                 }
             }
             contsel=0;
+        } catch (SQLException ex) {
+            Logger.getLogger(Presupuesto.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            cargartotal();
+        try {
+            buscapartida();
+        } catch (SQLException ex) {
+            Logger.getLogger(Presupuesto.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            cargapresupuesto();
         } catch (SQLException ex) {
             Logger.getLogger(Presupuesto.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="presupuesto" language="groovy" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isSummaryWithPageHeaderAndFooter="true" isFloatColumnFooter="true" uuid="783eb973-dc35-448c-ace7-a90426bbba54">
-	<property name="ireport.zoom" value="1.8150000000000004"/>
-	<property name="ireport.x" value="314"/>
-	<property name="ireport.y" value="133"/>
+	<property name="ireport.zoom" value="1.2396694214876034"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="mpres" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
@@ -10,13 +10,18 @@
 	<parameter name="fecha" class="java.lang.String"/>
 	<parameter name="titulo" class="java.lang.String"/>
 	<parameter name="logocont" class="java.lang.String"/>
-	<parameter name="presaumdis" class="java.lang.String"/>
+	<parameter name="nrocuadro" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
 	<parameter name="tituloimp" class="java.lang.String"/>
 	<parameter name="imp" class="java.lang.Double"/>
 	<parameter name="titulototal" class="java.lang.String"/>
 	<parameter name="totaltotal" class="java.lang.Double"/>
 	<parameter name="ajustetitulo" class="java.lang.String"/>
 	<parameter name="ajuste" class="java.lang.Double"/>
+	<parameter name="cuadro" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
 	<queryString>
 		<![CDATA[SELECT
      mpres.`nombre` AS mpres_nombre,
@@ -36,21 +41,38 @@
      mconts.`logo` AS mconts_logo,
      mconts.`encabe` AS mconts_encabe,
      mprops.`logo` AS mprops_logo,
-     admppres.`aumento` AS mppres_cantidad,
+     mppres.`cantidad` AS mppres_cantidad,
      mppres.`numegrup` AS mppres_numegrup,
      CONCAT(mppres.id,'\n',mppres.`descri`) AS mppres_descri,
-     IF(mppres.precasu=0,mppres.`precunit`,mppres.precasu) AS mppres_precunit,
-     IF(mppres.precasu=0,mppres.`precunit`,mppres.precasu)*admppres.`aumento` as total,
+
+    (SELECT IF(mp.precasu=0,mp.precunit, mp.precasu) as precio FROM mppres as mp WHERE
+numero=mppres.mppre_id AND (mp.mpre_id=$P{mpres} OR mp.mpre_id IN (SELECT id FROM mpres WHERE mpres_id=$P{mpres}))) as mppres_precunit,
+
+     IF(mppres.precasu=0,mppres.`precunit`,mppres.precasu) AS mppres_propuesto,
+
+    IF(IF(mppres.precasu=0,mppres.`precunit`,mppres.precasu)-(SELECT IF(mp.precasu=0,mp.precunit, mp.precasu) as precio FROM mppres as mp WHERE
+numero=mppres.mppre_id AND (mp.mpre_id=$P{mpres} OR mp.mpre_id IN (SELECT id FROM mpres WHERE mpres_id=$P{mpres})))<0,
+(SELECT IF(mp.precasu=0,mp.precunit, mp.precasu) as precio FROM mppres as mp WHERE
+numero=mppres.mppre_id AND (mp.mpre_id=$P{mpres} OR mp.mpre_id IN (SELECT id FROM mpres WHERE mpres_id=$P{mpres})))-IF(mppres.precasu=0,mppres.`precunit`,mppres.precasu),
+IF(mppres.precasu=0,mppres.`precunit`,mppres.precasu)-(SELECT IF(mp.precasu=0,mp.precunit, mp.precasu) as precio FROM mppres as mp WHERE
+numero=mppres.mppre_id AND (mp.mpre_id=$P{mpres} OR mp.mpre_id IN (SELECT id FROM mpres WHERE mpres_id=$P{mpres})))) as diferencia,
+
+     IF(IF(mppres.precasu=0,mppres.`precunit`,mppres.precasu)-(SELECT IF(mp.precasu=0,mp.precunit, mp.precasu) as precio FROM mppres as mp WHERE
+numero=mppres.mppre_id AND (mp.mpre_id=$P{mpres} OR mp.mpre_id IN (SELECT id FROM mpres WHERE mpres_id=$P{mpres})))<0,
+(SELECT IF(mp.precasu=0,mp.precunit, mp.precasu) as precio FROM mppres as mp WHERE
+numero=mppres.mppre_id AND (mp.mpre_id=$P{mpres} OR mp.mpre_id IN (SELECT id FROM mpres WHERE mpres_id=$P{mpres})))-IF(mppres.precasu=0,mppres.`precunit`,mppres.precasu),
+IF(mppres.precasu=0,mppres.`precunit`,mppres.precasu)-(SELECT IF(mp.precasu=0,mp.precunit, mp.precasu) as precio FROM mppres as mp WHERE
+numero=mppres.mppre_id AND (mp.mpre_id=$P{mpres} OR mp.mpre_id IN (SELECT id FROM mpres WHERE mpres_id=$P{mpres}))))*mppres.cantidad as total,
+
+
      mppres.`unidad` AS mppres_unidad,
      mppres.`id` AS mppres_id
-FROM
+FROM mppres,
      `mconts` mconts INNER JOIN `mpres` mpres ON mconts.`id` = mpres.`codcon`
      INNER JOIN `mprops` mprops ON mpres.`codpro` = mprops.`id`
-     INNER JOIN `admppres` admppres ON mpres.`id` = admppres.`mpre_id`
-     INNER JOIN `mppres` mppres ON admppres.`numepart` = mppres.`numero`
-WHERE mpres.id=$P{mpres} AND admppres.payd_id=$P{presaumdis}
+WHERE mpres.id=$P{mpres}
 AND (mppres.mpre_id=mpres.id OR mppres.mpre_id IN (SELECT id FROM mpres WHERE mpres_id=$P{mpres}))
-AND admppres.aumento>0]]>
+AND mppres.tipo='VP' AND mppres.nrocuadro=$P{cuadro}]]>
 	</queryString>
 	<field name="mpres_nombre" class="java.lang.String"/>
 	<field name="mpres_nrocon" class="java.lang.String"/>
@@ -71,11 +93,13 @@ AND admppres.aumento>0]]>
 	<field name="mconts_logo" class="java.lang.Object"/>
 	<field name="mconts_encabe" class="java.lang.String"/>
 	<field name="mprops_logo" class="java.lang.Object"/>
-	<field name="mppres_cantidad" class="java.lang.Float"/>
+	<field name="mppres_cantidad" class="java.math.BigDecimal"/>
 	<field name="mppres_numegrup" class="java.math.BigDecimal"/>
 	<field name="mppres_descri" class="java.lang.String"/>
 	<field name="mppres_precunit" class="java.math.BigDecimal"/>
-	<field name="total" class="java.lang.Double">
+	<field name="mppres_propuesto" class="java.math.BigDecimal"/>
+	<field name="diferencia" class="java.math.BigDecimal"/>
+	<field name="total" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="mppres_unidad" class="java.lang.String"/>
@@ -276,9 +300,9 @@ AND admppres.aumento>0]]>
 		</band>
 	</pageHeader>
 	<columnHeader>
-		<band height="20" splitType="Stretch">
+		<band height="51" splitType="Stretch">
 			<staticText>
-				<reportElement uuid="f8dcc2d1-1efd-40a4-83cc-65497e015550" x="0" y="0" width="47" height="20"/>
+				<reportElement uuid="f8dcc2d1-1efd-40a4-83cc-65497e015550" x="0" y="0" width="36" height="51"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -292,7 +316,7 @@ AND admppres.aumento>0]]>
 				<text><![CDATA[Nro.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="b0a54bc6-cff0-4b5b-9ee2-6e4bdf975ab1" x="46" y="0" width="209" height="20"/>
+				<reportElement uuid="b0a54bc6-cff0-4b5b-9ee2-6e4bdf975ab1" x="36" y="0" width="163" height="51"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -306,7 +330,7 @@ AND admppres.aumento>0]]>
 				<text><![CDATA[Código y Descripción]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="4c9cdff4-2374-4450-b9b3-192446dc249c" x="254" y="0" width="47" height="20"/>
+				<reportElement uuid="4c9cdff4-2374-4450-b9b3-192446dc249c" x="199" y="0" width="47" height="51"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -320,8 +344,8 @@ AND admppres.aumento>0]]>
 				<text><![CDATA[Unidad]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="515ad54c-3572-477d-9985-725e7a77356a" x="301" y="0" width="73" height="20"/>
-				<box>
+				<reportElement uuid="515ad54c-3572-477d-9985-725e7a77356a" x="246" y="0" width="73" height="51"/>
+				<box leftPadding="3" rightPadding="3">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -329,12 +353,12 @@ AND admppres.aumento>0]]>
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font isBold="true"/>
+					<font size="9" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Cantidad]]></text>
+				<text><![CDATA[Canti. de obra a Recons.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="facdae28-b597-4194-8aad-e3f318654aba" x="374" y="0" width="90" height="20"/>
+				<reportElement uuid="facdae28-b597-4194-8aad-e3f318654aba" x="319" y="0" width="127" height="17"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -348,7 +372,21 @@ AND admppres.aumento>0]]>
 				<text><![CDATA[Prec. Unit.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="3579d4f7-ac52-4ce4-8173-1ea547786217" x="464" y="0" width="106" height="20"/>
+				<reportElement uuid="3579d4f7-ac52-4ce4-8173-1ea547786217" x="498" y="0" width="72" height="51"/>
+				<box leftPadding="3" rightPadding="3">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Monto Total de la obra a rec. (Incremento)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="b4748aad-7205-4bd1-8e01-dada82f31a52" x="320" y="17" width="60" height="34"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -357,9 +395,37 @@ AND admppres.aumento>0]]>
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[P.U. Contrato Original]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="021d0d96-2a24-463d-8657-c865bcda9403" x="379" y="17" width="67" height="34"/>
+				<box leftPadding="2" rightPadding="0">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Precio Propuesto]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="33da752b-2075-4e15-b122-b94f2d64aede" x="446" y="0" width="52" height="51"/>
+				<box leftPadding="3" rightPadding="3">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
-				<text><![CDATA[Total]]></text>
+				<text><![CDATA[Difer.]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
@@ -367,7 +433,7 @@ AND admppres.aumento>0]]>
 		<band height="20" splitType="Prevent">
 			<elementGroup/>
 			<textField>
-				<reportElement uuid="ea74348d-1079-4bd4-a297-8bfb73dc1634" stretchType="RelativeToTallestObject" x="0" y="0" width="47" height="20"/>
+				<reportElement uuid="ea74348d-1079-4bd4-a297-8bfb73dc1634" stretchType="RelativeToTallestObject" x="0" y="0" width="36" height="20"/>
 				<box topPadding="5" leftPadding="5" bottomPadding="5" rightPadding="5">
 					<leftPen lineWidth="1.0"/>
 					<rightPen lineWidth="1.0"/>
@@ -378,7 +444,7 @@ AND admppres.aumento>0]]>
 				<textFieldExpression><![CDATA[$F{mppres_numegrup}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement uuid="e63b6104-b628-47ea-a60a-15cf671155dd" stretchType="RelativeToTallestObject" x="47" y="0" width="208" height="20"/>
+				<reportElement uuid="e63b6104-b628-47ea-a60a-15cf671155dd" stretchType="RelativeToTallestObject" x="36" y="0" width="163" height="20"/>
 				<box topPadding="5" leftPadding="5" bottomPadding="5" rightPadding="5">
 					<leftPen lineWidth="1.0"/>
 					<rightPen lineWidth="1.0"/>
@@ -389,7 +455,7 @@ AND admppres.aumento>0]]>
 				<textFieldExpression><![CDATA[$F{mppres_descri}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="110819d1-e284-492f-b050-ecadb1e49ad1" stretchType="RelativeToTallestObject" x="255" y="0" width="46" height="20"/>
+				<reportElement uuid="110819d1-e284-492f-b050-ecadb1e49ad1" stretchType="RelativeToTallestObject" x="199" y="0" width="47" height="20"/>
 				<box topPadding="5" leftPadding="5" bottomPadding="5" rightPadding="5">
 					<leftPen lineWidth="1.0"/>
 					<rightPen lineWidth="1.0"/>
@@ -400,7 +466,7 @@ AND admppres.aumento>0]]>
 				<textFieldExpression><![CDATA[$F{mppres_unidad}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement uuid="1af59d99-e240-497d-bab6-cd8bd90cd96e" stretchType="RelativeToTallestObject" x="301" y="0" width="73" height="20"/>
+				<reportElement uuid="1af59d99-e240-497d-bab6-cd8bd90cd96e" stretchType="RelativeToTallestObject" x="246" y="0" width="73" height="20"/>
 				<box topPadding="5" leftPadding="5" bottomPadding="5" rightPadding="5">
 					<leftPen lineWidth="1.0"/>
 					<rightPen lineWidth="1.0"/>
@@ -411,7 +477,7 @@ AND admppres.aumento>0]]>
 				<textFieldExpression><![CDATA[$F{mppres_cantidad}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement uuid="ac3401b0-ef85-43d9-a1aa-61a3a4e3e901" stretchType="RelativeToTallestObject" x="374" y="0" width="90" height="20"/>
+				<reportElement uuid="ac3401b0-ef85-43d9-a1aa-61a3a4e3e901" stretchType="RelativeToTallestObject" x="319" y="0" width="61" height="20"/>
 				<box topPadding="5" leftPadding="5" bottomPadding="5" rightPadding="5">
 					<leftPen lineWidth="1.0"/>
 					<rightPen lineWidth="1.0"/>
@@ -421,8 +487,8 @@ AND admppres.aumento>0]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{mppres_precunit}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0.00">
-				<reportElement uuid="f6adab72-5824-48eb-a24b-52cb22862ccb" stretchType="RelativeToTallestObject" x="464" y="0" width="106" height="20"/>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="f6adab72-5824-48eb-a24b-52cb22862ccb" stretchType="RelativeToTallestObject" x="498" y="0" width="72" height="20"/>
 				<box topPadding="5" leftPadding="5" bottomPadding="5" rightPadding="5">
 					<leftPen lineWidth="1.0"/>
 					<rightPen lineWidth="1.0"/>
@@ -431,6 +497,28 @@ AND admppres.aumento>0]]>
 					<font size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="5fdc0584-d762-476f-b723-10f6edaeb560" stretchType="RelativeToTallestObject" x="380" y="0" width="66" height="20"/>
+				<box topPadding="5" leftPadding="5" bottomPadding="5" rightPadding="5">
+					<leftPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{mppres_propuesto}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="e57f6a79-ebd4-4c3d-99b1-b862b0d4acfa" stretchType="RelativeToTallestObject" x="446" y="0" width="52" height="20"/>
+				<box topPadding="5" leftPadding="5" bottomPadding="5" rightPadding="5">
+					<leftPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{diferencia}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

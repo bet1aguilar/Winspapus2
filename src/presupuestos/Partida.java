@@ -54,7 +54,7 @@ public class Partida extends javax.swing.JDialog {
     String total;
     private String util;
     public Partida(java.awt.Frame parent, boolean modal, Connection conex, String pres, Principal prin, Presupuesto pre, String total) {
-        super(parent, modal);
+        super(parent, false);
         initComponents();
         jLabel13.setVisible(false);
         jTextField2.setVisible(false);
@@ -102,7 +102,7 @@ public class Partida extends javax.swing.JDialog {
 //*********************************EDITAAAAAAAAAAAAAA*******************************************/
     public Partida(java.awt.Frame parent, boolean modal, Connection conex, String pres, Principal prin, int edita, int contar, String codicove, String partida, Presupuesto pre, String total) {
        
-         super(parent, modal);
+         super(parent, false);
         initComponents();
          this.edita = edita;
           this.pres= pre;
@@ -189,7 +189,7 @@ public class Partida extends javax.swing.JDialog {
         String llena = "SELECT id, tipo, descri, nropresupuesto, porcutil, idband, "
                 + "IFNULL(precunit,0.00) as precunit,"
                 + " IFNULL(precasu,0.00) as precasu, redondeo, porcpre, porcgad, "
-                + "rendimi, IFNULL(cantidad,0.00), unidad,numero, porcutil FROM mppres WHERE "
+                + "rendimi, IFNULL(cantidad,0.00), unidad,numero, porcutil,tiponp FROM mppres WHERE "
                 + "numegrup='"+numpartida+"'"
                 + " AND (mpre_id='"+presupuesto+"' OR mpre_id IN "
                 + "(SELECT id from mpres where mpres_id='"+presupuesto+"' GROUP BY id)) ";
@@ -209,6 +209,7 @@ public class Partida extends javax.swing.JDialog {
                     jComboBox2.setSelectedItem("Original");
                 }
                 if(tipo.equals("NP")){
+                    
                     jComboBox2.setSelectedItem("No Prevista");
                 }
                 if(tipo.equals("VP")){
@@ -522,7 +523,7 @@ public final void buscagrupo() throws SQLException{
 
         jLabel5.setText("Tipo:");
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Original", "No Prevista", "Obra Extra", "Obra Adicional", "Obra C", "Variación de Precio" }));
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Original", "No Prevista", "Obra Extra", "Obra Adicional", "Obra Complementaria", "Variación de Precio" }));
         jComboBox2.setNextFocusableComponent(jTextArea1);
         jComboBox2.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -637,24 +638,9 @@ public final void buscagrupo() throws SQLException{
 
         jCheckBox1.setText("Redondeo");
         jCheckBox1.setNextFocusableComponent(jTextField7);
-        jCheckBox1.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                jCheckBox1StateChanged(evt);
-            }
-        });
-        jCheckBox1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBox1ActionPerformed(evt);
-            }
-        });
-        jCheckBox1.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                jCheckBox1FocusLost(evt);
-            }
-        });
-        jCheckBox1.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                jCheckBox1KeyPressed(evt);
+        jCheckBox1.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jCheckBox1ItemStateChanged(evt);
             }
         });
 
@@ -974,13 +960,7 @@ public final void buscagrupo() throws SQLException{
     public void settotalpartida(String total){
         jTextField8.setText(total);
     }
-    
-    private void jCheckBox1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jCheckBox1StateChanged
-        
-        
-        
-    }//GEN-LAST:event_jCheckBox1StateChanged
-public void buscaapu(){
+    public void buscaapu(){
     String codicove, numero;
     String mpres="";
         codicove = jTextField1.getText().toString();
@@ -1109,7 +1089,7 @@ public void validafloat( java.awt.event.KeyEvent evt,String valor){
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jComboBox2ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox2ItemStateChanged
-        if(jComboBox2.getSelectedItem().equals("No Prevista")){
+        if(jComboBox2.getSelectedItem().equals("No Prevista") || jComboBox2.getSelectedIndex()==2|| jComboBox2.getSelectedIndex()==3|| jComboBox2.getSelectedIndex()==4){
             jLabel13.setVisible(true);
             jTextField2.setVisible(true);
         }else{
@@ -1131,21 +1111,6 @@ public void validafloat( java.awt.event.KeyEvent evt,String valor){
         
     }//GEN-LAST:event_jButton4ActionPerformed
 
-    private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1ActionPerformed
-float unitario = (float) totalprecunit;
-        float redondeado = (float) Math.rint(unitario);
-        float cantidad = (float) totalcantidad;
-        
-        if(jCheckBox1.isSelected()){
-            jTextField15.setText(String.valueOf(redondeado));
-            jTextField8.setText(String.valueOf(cantidad*redondeado));
-        }
-        else {
-            jTextField15.setText("0.00");
-            jTextField8.setText(String.valueOf(cantidad*unitario));
-        }
-    }//GEN-LAST:event_jCheckBox1ActionPerformed
-
     private void jTextArea1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextArea1KeyPressed
 
         if (evt.getKeyCode() == KeyEvent.VK_TAB) {
@@ -1159,11 +1124,6 @@ float unitario = (float) totalprecunit;
         
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextArea1KeyPressed
-
-    private void jCheckBox1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jCheckBox1FocusLost
-     // TODO add your handling code here:
-        jTextField6.gotFocus(null, evt);
-    }//GEN-LAST:event_jCheckBox1FocusLost
 
     private void jTextField6FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField6FocusLost
       
@@ -1205,10 +1165,6 @@ float unitario = (float) totalprecunit;
       totaltotal=total1;
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField7FocusLost
-
-    private void jCheckBox1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jCheckBox1KeyPressed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jCheckBox1KeyPressed
 
     private void jSpinner1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jSpinner1KeyTyped
       
@@ -1298,7 +1254,7 @@ private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:ev
             tipos = "NP";
             tiponp = "OA";
         }
-        if(jComboBox2.getSelectedItem().equals("Obra C")) {
+        if(jComboBox2.getSelectedItem().equals("Obra Complementaria")) {
             tipos = "NP";
             tiponp = "OC";
         }
@@ -1410,7 +1366,7 @@ private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:ev
                   String insertapart = "INSERT INTO mptabs (codicove,numero,numegrup,descri, mbdat_id,porcgad, porcpre, porcutil, "
                           + "precasu, precunit, rendimi, unidad, redondeo, status, mtabus_id, cantidad,capitulo)"
                           + " SELECT id, numero, numegrup, descri,idband, porcgad, porcpre, porcutil, precasu, precunit, rendimi, "
-                          + "unidad, redondeo, 1, 'ESTUDIO', cantidad, ctabs_id FROM mppres WHERE numero="+numero+" AND"
+                          + "unidad, redondeo, 1, 'ESTUDIO', cantidad, capitulo FROM mppres WHERE numero="+numero+" AND"
                           + " (mpre_id='"+mpre_id+"' OR mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+mpre_id+"'))";
                   Statement stinserta = (Statement) conex.createStatement();
                   stinserta.execute(insertapart);
@@ -1497,6 +1453,21 @@ private void jTextArea1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
         doClose(RET_OK);
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void jCheckBox1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jCheckBox1ItemStateChanged
+float unitario = (float) totalprecunit;
+        float redondeado = (float) Math.rint(unitario);
+        float cantidad = (float) totalcantidad;
+        
+        if(jCheckBox1.isSelected()){
+            jTextField15.setText(String.valueOf(redondeado));
+            jTextField8.setText(String.valueOf(cantidad*redondeado));
+        }
+        else {
+            jTextField15.setText("0.00");
+            jTextField8.setText(String.valueOf(cantidad*unitario));
+        }             // TODO add your handling code here:
+    }//GEN-LAST:event_jCheckBox1ItemStateChanged
     
     public void doClose(int retStatus) {
         returnStatus = retStatus;

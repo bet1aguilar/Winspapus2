@@ -11,8 +11,10 @@
 package presupuestos;
 
 
+import java.sql.SQLException;
 import winspapus.*;
 import com.mysql.jdbc.Connection;
+import com.mysql.jdbc.Statement;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.ByteArrayOutputStream;
@@ -21,6 +23,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -108,9 +112,30 @@ public class reporteapu1 extends javax.swing.JDialog {
             
               fecha=formato.format(jDateChooser1.getDate());
             }
+            double totalpres=0.00;
+            String consulta = "SELECT IF(precasu=0,precunit,precasu) as precio FROM mppres WHERE (mpre_id='"+mpres+"' OR"
+                    + " mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+mpres+"')) AND numegrup='"+numero+"'";
+            try {
+                Statement sconsulta = (Statement) conex.createStatement();
+                ResultSet rsconlta = sconsulta.executeQuery(consulta);
+                while(rsconlta.next()){
+                    totalpres=rsconlta.getDouble(1);
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(reporteapu1.class.getName()).log(Level.SEVERE, null, ex);
+            }
+              denumeroaletra nume = new denumeroaletra();
+              String letras="";
+             int decimalPlaces = 2; 
+          BigDecimal bd = new BigDecimal(totalpres); 
+          bd = bd.setScale(decimalPlaces, BigDecimal.ROUND_HALF_EVEN); 
+
+        
+          letras=nume.Convertir(String.valueOf(bd), true);
             parameters.put("mpres", mpres);
             parameters.put("numegrup", numero);
             parameters.put("fecha", fecha);
+            parameters.put("nroenletra",letras);
             JasperPrint print = JasperFillManager.fillReport(report, parameters, conex);
             FileOutputStream output=null;
             String auxruta=ruta;
