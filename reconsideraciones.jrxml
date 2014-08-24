@@ -10,13 +10,18 @@
 	<parameter name="fecha" class="java.lang.String"/>
 	<parameter name="titulo" class="java.lang.String"/>
 	<parameter name="logocont" class="java.lang.String"/>
-	<parameter name="presaumdis" class="java.lang.String"/>
+	<parameter name="nrocuadro" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
 	<parameter name="tituloimp" class="java.lang.String"/>
 	<parameter name="imp" class="java.lang.Double"/>
 	<parameter name="titulototal" class="java.lang.String"/>
 	<parameter name="totaltotal" class="java.lang.Double"/>
 	<parameter name="ajustetitulo" class="java.lang.String"/>
 	<parameter name="ajuste" class="java.lang.Double"/>
+	<parameter name="cuadro" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
 	<queryString>
 		<![CDATA[SELECT
      mpres.`nombre` AS mpres_nombre,
@@ -36,21 +41,38 @@
      mconts.`logo` AS mconts_logo,
      mconts.`encabe` AS mconts_encabe,
      mprops.`logo` AS mprops_logo,
-     admppres.`aumento` AS mppres_cantidad,
+     mppres.`cantidad` AS mppres_cantidad,
      mppres.`numegrup` AS mppres_numegrup,
      CONCAT(mppres.id,'\n',mppres.`descri`) AS mppres_descri,
-     IF(mppres.precasu=0,mppres.`precunit`,mppres.precasu) AS mppres_precunit,
-     IF(mppres.precasu=0,mppres.`precunit`,mppres.precasu)*admppres.`aumento` as total,
+
+    (SELECT IF(mp.precasu=0,mp.precunit, mp.precasu) as precio FROM mppres as mp WHERE
+numero=mppres.mppre_id AND (mp.mpre_id=$P{mpres} OR mp.mpre_id IN (SELECT id FROM mpres WHERE mpres_id=$P{mpres}))) as mppres_precunit,
+
+     IF(mppres.precasu=0,mppres.`precunit`,mppres.precasu) AS mppres_propuesto,
+
+    IF(IF(mppres.precasu=0,mppres.`precunit`,mppres.precasu)-(SELECT IF(mp.precasu=0,mp.precunit, mp.precasu) as precio FROM mppres as mp WHERE
+numero=mppres.mppre_id AND (mp.mpre_id=$P{mpres} OR mp.mpre_id IN (SELECT id FROM mpres WHERE mpres_id=$P{mpres})))<0,
+(SELECT IF(mp.precasu=0,mp.precunit, mp.precasu) as precio FROM mppres as mp WHERE
+numero=mppres.mppre_id AND (mp.mpre_id=$P{mpres} OR mp.mpre_id IN (SELECT id FROM mpres WHERE mpres_id=$P{mpres})))-IF(mppres.precasu=0,mppres.`precunit`,mppres.precasu),
+IF(mppres.precasu=0,mppres.`precunit`,mppres.precasu)-(SELECT IF(mp.precasu=0,mp.precunit, mp.precasu) as precio FROM mppres as mp WHERE
+numero=mppres.mppre_id AND (mp.mpre_id=$P{mpres} OR mp.mpre_id IN (SELECT id FROM mpres WHERE mpres_id=$P{mpres})))) as diferencia,
+
+     IF(IF(mppres.precasu=0,mppres.`precunit`,mppres.precasu)-(SELECT IF(mp.precasu=0,mp.precunit, mp.precasu) as precio FROM mppres as mp WHERE
+numero=mppres.mppre_id AND (mp.mpre_id=$P{mpres} OR mp.mpre_id IN (SELECT id FROM mpres WHERE mpres_id=$P{mpres})))<0,
+(SELECT IF(mp.precasu=0,mp.precunit, mp.precasu) as precio FROM mppres as mp WHERE
+numero=mppres.mppre_id AND (mp.mpre_id=$P{mpres} OR mp.mpre_id IN (SELECT id FROM mpres WHERE mpres_id=$P{mpres})))-IF(mppres.precasu=0,mppres.`precunit`,mppres.precasu),
+IF(mppres.precasu=0,mppres.`precunit`,mppres.precasu)-(SELECT IF(mp.precasu=0,mp.precunit, mp.precasu) as precio FROM mppres as mp WHERE
+numero=mppres.mppre_id AND (mp.mpre_id=$P{mpres} OR mp.mpre_id IN (SELECT id FROM mpres WHERE mpres_id=$P{mpres}))))*mppres.cantidad as total,
+
+
      mppres.`unidad` AS mppres_unidad,
      mppres.`id` AS mppres_id
-FROM
+FROM mppres,
      `mconts` mconts INNER JOIN `mpres` mpres ON mconts.`id` = mpres.`codcon`
      INNER JOIN `mprops` mprops ON mpres.`codpro` = mprops.`id`
-     INNER JOIN `admppres` admppres ON mpres.`id` = admppres.`mpre_id`
-     INNER JOIN `mppres` mppres ON admppres.`numepart` = mppres.`numero`
-WHERE mpres.id=$P{mpres} AND admppres.payd_id=$P{presaumdis}
+WHERE mpres.id=$P{mpres}
 AND (mppres.mpre_id=mpres.id OR mppres.mpre_id IN (SELECT id FROM mpres WHERE mpres_id=$P{mpres}))
-AND admppres.aumento>0]]>
+AND mppres.tipo='VP' AND mppres.nrocuadro=$P{cuadro}]]>
 	</queryString>
 	<field name="mpres_nombre" class="java.lang.String"/>
 	<field name="mpres_nrocon" class="java.lang.String"/>
@@ -71,11 +93,13 @@ AND admppres.aumento>0]]>
 	<field name="mconts_logo" class="java.lang.Object"/>
 	<field name="mconts_encabe" class="java.lang.String"/>
 	<field name="mprops_logo" class="java.lang.Object"/>
-	<field name="mppres_cantidad" class="java.lang.Float"/>
+	<field name="mppres_cantidad" class="java.math.BigDecimal"/>
 	<field name="mppres_numegrup" class="java.math.BigDecimal"/>
 	<field name="mppres_descri" class="java.lang.String"/>
 	<field name="mppres_precunit" class="java.math.BigDecimal"/>
-	<field name="total" class="java.lang.Double">
+	<field name="mppres_propuesto" class="java.math.BigDecimal"/>
+	<field name="diferencia" class="java.math.BigDecimal"/>
+	<field name="total" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="mppres_unidad" class="java.lang.String"/>
@@ -329,7 +353,7 @@ AND admppres.aumento>0]]>
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font isBold="true"/>
+					<font size="9" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Canti. de obra a Recons.]]></text>
 			</staticText>
@@ -463,7 +487,7 @@ AND admppres.aumento>0]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{mppres_precunit}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0.00">
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement uuid="f6adab72-5824-48eb-a24b-52cb22862ccb" stretchType="RelativeToTallestObject" x="498" y="0" width="72" height="20"/>
 				<box topPadding="5" leftPadding="5" bottomPadding="5" rightPadding="5">
 					<leftPen lineWidth="1.0"/>
@@ -483,7 +507,7 @@ AND admppres.aumento>0]]>
 				<textElement textAlignment="Right" verticalAlignment="Top">
 					<font size="7"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{mppres_precunit}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{mppres_propuesto}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement uuid="e57f6a79-ebd4-4c3d-99b1-b862b0d4acfa" stretchType="RelativeToTallestObject" x="446" y="0" width="52" height="20"/>
@@ -494,7 +518,7 @@ AND admppres.aumento>0]]>
 				<textElement textAlignment="Right" verticalAlignment="Top">
 					<font size="7"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{mppres_precunit}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{diferencia}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

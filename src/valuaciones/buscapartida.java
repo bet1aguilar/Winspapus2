@@ -212,7 +212,7 @@ public final void cargapresupuesto()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jTable1.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        jTable1.setFont(new java.awt.Font("Tahoma", 0, 10));
         jTable1.setToolTipText("Seleccione las Partidas del Presupuesto a las cuales desea variarles el precio");
         jTable1.setSelectionBackground(new java.awt.Color(255, 153, 51));
         jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -441,15 +441,23 @@ public final void cargapresupuesto()
                         }
                     
                 }
+                String nume="";
                 float precios=cambiapreciopartida(partidas[i]);
+                String numegrupo = "SELECT numegrup FROM mppres Where numero='"+partidas[i]+"' AND (mpre_id='"+mpres+"' OR "
+                        + "mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+mpres+"'))";
+                Statement stnume=(Statement) conex.createStatement();
+                ResultSet rstnume = stnume.executeQuery(numegrupo);
+                while(rstnume.next()){
+                    nume=rstnume.getString(1);
+                }
                 String inserta = "INSERT into mppres (mpre_id,id, numero, numegrup, descri, idband, porcgad, porcpre,"
-                        + "porcutil, precasu, precunit, rendimi, unidad, redondeo, status, cantidad, tipo, "
-                        + "nropresupuesto, "
-                        + "nrocuadro, tiporec,mppre_id) "
-                        + "VALUES ('"+codpres+"','"+idmppre+"', "+conta+", "+conta+","
-                        + "'"+descri+"', "+idband+", "+porcgad+","+porcpre+","+porcutil+", "+precios+", "+precios+""
-                        + ","+rendimi+",'"+unidad+"',"+redondeo+","+status+","+cantidad+","
-                        + "'VP',0, "+cuadro+", 'VP-"+partidas[i]+"','"+partidas[i]+"')";
+                                + "porcutil, precasu, precunit, rendimi, unidad, redondeo, status, cantidad, tipo, "
+                                + "nropresupuesto, "
+                                + "nrocuadro, tiporec,mppre_id) "
+                                + "VALUES ('"+codpres+"','"+idmppre+"', "+conta+", "+conta+","
+                                + "'"+descri+"', "+idband+", "+porcgad+","+porcpre+","+porcutil+", "+precios+", "+precios+""
+                                + ","+rendimi+",'"+unidad+"',"+redondeo+","+status+","+cantidad+","
+                                + "'VP',0, "+cuadro+", 'VP-"+nume+"','"+partidas[i]+"')";
                 System.out.println("inserta "+inserta);
                  Statement stm = (Statement) conex.createStatement();
                  stm.execute(inserta);
