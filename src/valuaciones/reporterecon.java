@@ -49,13 +49,12 @@ import net.sf.jasperreports.engine.xml.JRXmlLoader;
 import net.sf.jasperreports.view.JasperViewer;
 import reportes.reportepresupuesto;
 import winspapus.denumeroaletra;
-import winspapus.denumeroaletra1;
 
 /**
  *
  * @author Betmart
  */
-public class reporteaumdismi extends javax.swing.JDialog {
+public class reporterecon extends javax.swing.JDialog {
 
     /** A return status code - returned if Cancel button has been pressed */
     public static final int RET_CANCEL = 0;
@@ -65,20 +64,18 @@ public class reporteaumdismi extends javax.swing.JDialog {
     private FileInputStream input;
     private Connection conex;
     String mpres;
+    int nrocuadro=0;
     Date date=new Date();
     String fecha;
-    String numpres;
      SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
     /** Creates new form reporte */
-    public reporteaumdismi(java.awt.Frame parent, boolean modal, Connection conex, String mpres, String numpres) {
+    public reporterecon(java.awt.Frame parent, boolean modal, Connection conex, String mpres, int nrocuadro) {
         super(parent, false);
         initComponents();
+        this.nrocuadro=nrocuadro;
         this.conex=conex;
-        this.numpres=numpres;
         this.mpres = mpres;
         jDateChooser1.setDate(date);
-        buttonGroup1.add(jRadioButton1);
-        buttonGroup1.add(jRadioButton2);
         // Close the dialog when Esc is pressed
         String cancelName = "cancel";
         InputMap inputMap = getRootPane().getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
@@ -101,12 +98,20 @@ public class reporteaumdismi extends javax.swing.JDialog {
          
           Map parameters = new HashMap();
             try {
-                if(jRadioButton1.isSelected()){
-                input = new FileInputStream(new File("aumento.jrxml"));
-                   String subtotal = "SELECT (if(mp.precasu=0,mp.precunit,mp.precasu)*aum.aumento) AS cantidad "
-                           + "FROM mppres as mp, admppres as aum WHERE aum.mpre_id='"+mpres+"' AND (mp.mpre_id='"+mpres+"' "
-                           + "OR mp.mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+mpres+"'))"
-                           + " AND aum.payd_id='"+numpres+"'";      
+               
+                input = new FileInputStream(new File("reconsideraciones.jrxml"));
+                   String subtotal = "SELECT IF(IF(mppres.precasu=0,mppres.precunit,mppres.precasu)-"
+                           + "(SELECT IF(mp.precasu=0,mp.precunit, mp.precasu) as precio FROM mppres as mp WHERE"
+                           + " numero=mppres.mppre_id AND (mp.mpre_id='"+mpres+"' OR mp.mpre_id IN "
+                           + " (SELECT id FROM mpres WHERE mpres_id='"+mpres+"')))<0,"
+                           + " 0,"
+                           + "IF(mppres.precasu=0,mppres.`precunit`,mppres.precasu)-"
+                           + "(SELECT IF(mp.precasu=0,mp.precunit, mp.precasu) as precio FROM mppres as mp WHERE "
+                           + "numero=mppres.mppre_id AND (mp.mpre_id='"+mpres+"' OR mp.mpre_id IN (SELECT id FROM mpres "
+                           + "WHERE mpres_id='"+mpres+"'))))*mppres.cantidad as total "
+                           + "FROM mppres WHERE (mppres.mpre_id='"+mpres+"' OR mppres.mpre_id IN "
+                           + "(SELECT id FROM mpres WHERE mpres_id='"+mpres+"'))"
+                           + " AND mppres.tipo='VP' AND mppres.nrocuadro="+nrocuadro+"";      
                     try {
                         Statement st = (Statement) conex.createStatement();
                         ResultSet rst = st.executeQuery(subtotal);
@@ -115,29 +120,14 @@ public class reporteaumdismi extends javax.swing.JDialog {
                             totalpres += rst.getDouble(1);
                         }
                     } catch (SQLException ex) {
-                        Logger.getLogger(reporteaumdismi.class.getName()).log(Level.SEVERE, null, ex);
+                        Logger.getLogger(reporterecon.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                }
-                if(jRadioButton2.isSelected()){
-                     input = new FileInputStream(new File("dismi.jrxml"));
-                     String subtotal = "SELECT (if(mp.precasu=0,mp.precunit,mp.precasu)*aum.disminucion) AS cantidad "
-                           + "FROM mppres as mp, admppres as aum WHERE aum.mpre_id='"+mpres+"' AND (mp.mpre_id='"+mpres+"' "
-                           + "OR mp.mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+mpres+"'))"
-                           + " AND aum.payd_id='"+numpres+"'";      
-                    try {
-                        Statement st = (Statement) conex.createStatement();
-                        ResultSet rst = st.executeQuery(subtotal);
-                        while(rst.next())
-                        {
-                            totalpres += rst.getDouble(1);
-                        }
-                    } catch (SQLException ex) {
-                        Logger.getLogger(reporteaumdismi.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }
+               
+                    
+                
             } catch (FileNotFoundException ex) {
                 JOptionPane.showMessageDialog(null, "No se encuentra el archivo del reporte "+ex.getMessage());
-                Logger.getLogger(reporteaumdismi.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(reporterecon.class.getName()).log(Level.SEVERE, null, ex);
             }
             String porcentaje = "SELECT porimp FROM mpres WHERE id='"+mpres+"'";
             Double porimp=0.00;
@@ -148,14 +138,14 @@ public class reporteaumdismi extends javax.swing.JDialog {
                     porimp=rstp.getDouble(1);
                 }
             } catch (SQLException ex) {
-                Logger.getLogger(reporteaumdismi.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(reporterecon.class.getName()).log(Level.SEVERE, null, ex);
             }
             
             JasperDesign design = JRXmlLoader.load(input); 
                 JasperReport report = JasperCompileManager.compileReport(design);
                
              
-              String titulo = jTextField1.getText().toString()+" N° "+numpres;
+              String titulo = jTextField1.getText().toString()+" N° "+nrocuadro;
             
              
              String timpuesto="Impuesto:";
@@ -193,10 +183,10 @@ public class reporteaumdismi extends javax.swing.JDialog {
                   letras="";
               }
               parameters.put("mpres", mpres);
-              parameters.put("presaumdis", numpres);
               parameters.put("totalenletra", letras);
               parameters.put("titulo", titulo);
               parameters.put("fecha", fecha);
+              parameters.put("cuadro",nrocuadro);
               print = JasperFillManager.fillReport(report, parameters, conex);
            
             FileOutputStream output=null;
@@ -208,7 +198,7 @@ public class reporteaumdismi extends javax.swing.JDialog {
                 output = new FileOutputStream(new File(ruta));
             } catch (FileNotFoundException ex) {
                 JOptionPane.showMessageDialog(null, "No se genero el reporte en pdf "+ex.getMessage());
-                Logger.getLogger(reporteaumdismi.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(reporterecon.class.getName()).log(Level.SEVERE, null, ex);
             }
                 JasperExportManager.exportReportToPdfStream(print, output);
                 
@@ -234,12 +224,12 @@ public class reporteaumdismi extends javax.swing.JDialog {
                 try {
                     output.write(outputByteArray.toByteArray());
                 } catch (IOException ex) {
-                    Logger.getLogger(reporteaumdismi.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(reporterecon.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
             JasperViewer.viewReport(print, false);
         } catch (JRException ex) {
-            Logger.getLogger(reporteaumdismi.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(reporterecon.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -278,8 +268,6 @@ public class reporteaumdismi extends javax.swing.JDialog {
         jCheckBox5 = new javax.swing.JCheckBox();
         jLabel5 = new javax.swing.JLabel();
         jTextField3 = new javax.swing.JTextField();
-        jRadioButton1 = new javax.swing.JRadioButton();
-        jRadioButton2 = new javax.swing.JRadioButton();
         jCheckBox6 = new javax.swing.JCheckBox();
 
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -314,13 +302,13 @@ public class reporteaumdismi extends javax.swing.JDialog {
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11));
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Reporte de Aumentos y Disminución");
+        jLabel1.setText("Cuadro demostrativo para reconsideraciones");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 401, Short.MAX_VALUE)
+            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 485, Short.MAX_VALUE)
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -332,7 +320,8 @@ public class reporteaumdismi extends javax.swing.JDialog {
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Datos para Reporte", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 11))); // NOI18N
 
-        jTextField1.setText("PRESUPUESTO DE AUMENTO");
+        jTextField1.setText("CUADRO DEMOSTRATIVO PARA RECONSIDERACIONES DE PRECIOS UNITARIOS");
+        jTextField1.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField1ActionPerformed(evt);
@@ -385,21 +374,6 @@ public class reporteaumdismi extends javax.swing.JDialog {
 
         jTextField3.setText("0.00");
 
-        jRadioButton1.setSelected(true);
-        jRadioButton1.setText("Aumento");
-        jRadioButton1.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                jRadioButton1StateChanged(evt);
-            }
-        });
-
-        jRadioButton2.setText("Disminución");
-        jRadioButton2.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                jRadioButton2StateChanged(evt);
-            }
-        });
-
         jCheckBox6.setText("Total en Letras");
         jCheckBox6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -422,17 +396,13 @@ public class reporteaumdismi extends javax.swing.JDialog {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addComponent(jCheckBox1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jCheckBox2))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jRadioButton1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jRadioButton2)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
+                            .addComponent(jDateChooser1, javax.swing.GroupLayout.DEFAULT_SIZE, 277, Short.MAX_VALUE)
+                            .addComponent(jTextField3, javax.swing.GroupLayout.DEFAULT_SIZE, 277, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jCheckBox5)
                             .addComponent(jCheckBox3))
@@ -443,13 +413,13 @@ public class reporteaumdismi extends javax.swing.JDialog {
                         .addComponent(jCheckBox6)
                         .addContainerGap())
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, 238, Short.MAX_VALUE)
+                        .addComponent(jTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, 322, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton1)
-                        .addGap(53, 53, 53))))
+                        .addGap(53, 53, 53))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 416, Short.MAX_VALUE)
+                        .addContainerGap())))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -458,11 +428,7 @@ public class reporteaumdismi extends javax.swing.JDialog {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jRadioButton1)
-                    .addComponent(jRadioButton2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2)
@@ -494,7 +460,7 @@ public class reporteaumdismi extends javax.swing.JDialog {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(295, Short.MAX_VALUE)
+                .addContainerGap(379, Short.MAX_VALUE)
                 .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -506,7 +472,7 @@ public class reporteaumdismi extends javax.swing.JDialog {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -524,7 +490,7 @@ public class reporteaumdismi extends javax.swing.JDialog {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
@@ -583,22 +549,6 @@ public class reporteaumdismi extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_jCheckBox5ActionPerformed
 
-    private void jRadioButton2StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jRadioButton2StateChanged
-        if(jRadioButton2.isSelected()){
-            jTextField1.setText("PRESUPUESTO DE DISMINUCIÓN");
-        }
-        
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jRadioButton2StateChanged
-
-    private void jRadioButton1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jRadioButton1StateChanged
-        if(jRadioButton1.isSelected()){
-            jTextField1.setText("PRESUPUESTO DE AUMENTO");
-        }
-        
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jRadioButton1StateChanged
-
     private void jCheckBox6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox6ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jCheckBox6ActionPerformed
@@ -632,8 +582,6 @@ public class reporteaumdismi extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JRadioButton jRadioButton1;
-    private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
