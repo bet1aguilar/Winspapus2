@@ -44,7 +44,7 @@ String pres;
 Date fecha = new Date();
     /** Creates new form memoria */
     public memoria(java.awt.Frame parent, boolean modal, Connection conex, String pres) {
-        super(parent, modal);
+        super(parent, false);
         initComponents();
         this.conex=conex;
         this.pres=pres;
