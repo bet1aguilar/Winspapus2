@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="presupuesto" language="groovy" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isSummaryWithPageHeaderAndFooter="true" isFloatColumnFooter="true" uuid="783eb973-dc35-448c-ace7-a90426bbba54">
 	<property name="ireport.zoom" value="1.2396694214876034"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="3"/>
 	<parameter name="mpres" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
@@ -52,15 +52,13 @@ numero=mppres.mppre_id AND (mp.mpre_id=$P{mpres} OR mp.mpre_id IN (SELECT id FRO
 
     IF(IF(mppres.precasu=0,mppres.`precunit`,mppres.precasu)-(SELECT IF(mp.precasu=0,mp.precunit, mp.precasu) as precio FROM mppres as mp WHERE
 numero=mppres.mppre_id AND (mp.mpre_id=$P{mpres} OR mp.mpre_id IN (SELECT id FROM mpres WHERE mpres_id=$P{mpres})))<0,
-(SELECT IF(mp.precasu=0,mp.precunit, mp.precasu) as precio FROM mppres as mp WHERE
-numero=mppres.mppre_id AND (mp.mpre_id=$P{mpres} OR mp.mpre_id IN (SELECT id FROM mpres WHERE mpres_id=$P{mpres})))-IF(mppres.precasu=0,mppres.`precunit`,mppres.precasu),
+0,
 IF(mppres.precasu=0,mppres.`precunit`,mppres.precasu)-(SELECT IF(mp.precasu=0,mp.precunit, mp.precasu) as precio FROM mppres as mp WHERE
 numero=mppres.mppre_id AND (mp.mpre_id=$P{mpres} OR mp.mpre_id IN (SELECT id FROM mpres WHERE mpres_id=$P{mpres})))) as diferencia,
 
      IF(IF(mppres.precasu=0,mppres.`precunit`,mppres.precasu)-(SELECT IF(mp.precasu=0,mp.precunit, mp.precasu) as precio FROM mppres as mp WHERE
 numero=mppres.mppre_id AND (mp.mpre_id=$P{mpres} OR mp.mpre_id IN (SELECT id FROM mpres WHERE mpres_id=$P{mpres})))<0,
-(SELECT IF(mp.precasu=0,mp.precunit, mp.precasu) as precio FROM mppres as mp WHERE
-numero=mppres.mppre_id AND (mp.mpre_id=$P{mpres} OR mp.mpre_id IN (SELECT id FROM mpres WHERE mpres_id=$P{mpres})))-IF(mppres.precasu=0,mppres.`precunit`,mppres.precasu),
+0,
 IF(mppres.precasu=0,mppres.`precunit`,mppres.precasu)-(SELECT IF(mp.precasu=0,mp.precunit, mp.precasu) as precio FROM mppres as mp WHERE
 numero=mppres.mppre_id AND (mp.mpre_id=$P{mpres} OR mp.mpre_id IN (SELECT id FROM mpres WHERE mpres_id=$P{mpres}))))*mppres.cantidad as total,
 

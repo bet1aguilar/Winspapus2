@@ -92,6 +92,7 @@ public class Presupuesto extends javax.swing.JInternalFrame {
         }
         jTable1.setOpaque(true);
     jTable1.setShowHorizontalLines(true);
+    jButton24.setVisible(false);
     jTable1.setShowVerticalLines(false);
     jTable1.getTableHeader().setSize(new Dimension(25,40));
     jTable1.getTableHeader().setPreferredSize(new Dimension(30,40));
@@ -337,7 +338,6 @@ public class Presupuesto extends javax.swing.JInternalFrame {
         jButton7 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
-        jButton13 = new javax.swing.JButton();
         jButton20 = new javax.swing.JButton();
         jButton24 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -393,18 +393,18 @@ public class Presupuesto extends javax.swing.JInternalFrame {
         setNextFocusableComponent(jTable2);
         setPreferredSize(new java.awt.Dimension(1100, 645));
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
-            public void internalFrameDeiconified(javax.swing.event.InternalFrameEvent evt) {
-            }
             public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
-            }
-            public void internalFrameDeactivated(javax.swing.event.InternalFrameEvent evt) {
-            }
-            public void internalFrameIconified(javax.swing.event.InternalFrameEvent evt) {
-            }
-            public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
             }
             public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
                 formInternalFrameClosed(evt);
+            }
+            public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeactivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeiconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameIconified(javax.swing.event.InternalFrameEvent evt) {
             }
             public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
             }
@@ -1069,14 +1069,6 @@ public class Presupuesto extends javax.swing.JInternalFrame {
             }
         });
 
-        jButton13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/winspapus/imagenes/prorroga.fw.png"))); // NOI18N
-        jButton13.setToolTipText("Prorroga");
-        jButton13.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton13ActionPerformed(evt);
-            }
-        });
-
         jButton20.setIcon(new javax.swing.ImageIcon(getClass().getResource("/winspapus/imagenes/borra1.fw.png"))); // NOI18N
         jButton20.setToolTipText("Borrar Presupuesto");
         jButton20.addActionListener(new java.awt.event.ActionListener() {
@@ -1098,10 +1090,8 @@ public class Presupuesto extends javax.swing.JInternalFrame {
         jPanel12Layout.setHorizontalGroup(
             jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel12Layout.createSequentialGroup()
-                .addContainerGap(206, Short.MAX_VALUE)
+                .addContainerGap(242, Short.MAX_VALUE)
                 .addComponent(jButton20, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton13, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -1124,7 +1114,6 @@ public class Presupuesto extends javax.swing.JInternalFrame {
                     .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton13, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton20, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
@@ -1547,7 +1536,7 @@ public class Presupuesto extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 224, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 220, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -3602,11 +3591,6 @@ String tipo ="",nro ="";
         // TODO add your handling code here:
     }//GEN-LAST:event_jTable2KeyReleased
 
-    private void jButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton13ActionPerformed
-      /*  Object[] row = {"","","","",""};
-        mptabs.addRow(row);*/
-    }//GEN-LAST:event_jButton13ActionPerformed
-
     private void jButton18ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton18ActionPerformed
        float total1 = Float.valueOf(contototal);
         diagrama cron = new diagrama(prin, true,conex,id,total1);
@@ -4637,7 +4621,6 @@ String nume=jTable2.getValueAt(filapartida, 1).toString();
     private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton11;
     private javax.swing.JButton jButton12;
-    private javax.swing.JButton jButton13;
     private javax.swing.JButton jButton14;
     private javax.swing.JButton jButton15;
     private javax.swing.JButton jButton16;

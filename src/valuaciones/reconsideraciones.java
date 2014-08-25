@@ -285,6 +285,11 @@ public class reconsideraciones extends javax.swing.JDialog {
 
         jButton8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/winspapus/imagenes/reportes1.fw.png"))); // NOI18N
         jButton8.setToolTipText("Reporte de Reconsideración de Precios");
+        jButton8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton8ActionPerformed(evt);
+            }
+        });
 
         jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/winspapus/imagenes/anade.fw.png"))); // NOI18N
         jButton6.setToolTipText("Nueva Reconsideración");
@@ -724,7 +729,7 @@ public class reconsideraciones extends javax.swing.JDialog {
                 .addContainerGap(6, Short.MAX_VALUE))
         );
 
-        jTable1.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        jTable1.setFont(new java.awt.Font("Tahoma", 0, 10));
         jTable1.setSelectionBackground(new java.awt.Color(255, 153, 51));
         jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -802,20 +807,20 @@ public class reconsideraciones extends javax.swing.JDialog {
         
          totalrecons=0;
 
-       String deltas="IF((m.precunit-(SELECT mp.precunit FROM "
+       String deltas="IF((IF(m.precasu=0,m.precunit,m.precasu)-(SELECT mp.precunit FROM "
                 + "mppres as mp WHERE (mp.mpre_id='"+mpres+"' OR mp.mpre_id IN "
                 + " (SELECT id FROM mpres WHERE mpres_id='"+mpres+"')) AND mp.numero=m.mppre_id))<0,0,"
-                + "m.precunit-(SELECT mp.precunit FROM "
+                + "IF(m.precasu=0,m.precunit,m.precasu)-(SELECT mp.precunit FROM "
                 + "mppres as mp WHERE (mp.mpre_id='"+mpres+"' OR mp.mpre_id IN "
                 + " (SELECT id FROM mpres WHERE mpres_id='"+mpres+"')) AND mp.numero=m.mppre_id))";
        
-        String sql = "SELECT m.id, m.numegrup, m.cantidad, m.precunit, (SELECT mp.precunit FROM "
+        String sql = "SELECT m.id, m.numegrup, m.cantidad, IF(m.precasu=0,m.precunit,m.precasu), (SELECT mp.precunit FROM "
                 + "mppres as mp WHERE (mp.mpre_id='"+mpres+"' OR mp.mpre_id IN "
                 + "(SELECT id FROM mpres WHERE mpres_id='"+mpres+"')) AND mp.numero=m.mppre_id) as precunitario,"
-                + "IF((m.precunit-(SELECT mp.precunit FROM "
+                + "IF((IF(m.precasu=0,m.precunit,m.precasu)-(SELECT mp.precunit FROM "
                 + "mppres as mp WHERE (mp.mpre_id='"+mpres+"' OR mp.mpre_id IN "
                 + " (SELECT id FROM mpres WHERE mpres_id='"+mpres+"')) AND mp.numero=m.mppre_id))<0,0,"
-                + "m.precunit-(SELECT mp.precunit FROM "
+                + "IF(m.precasu=0,m.precunit,m.precasu)-(SELECT mp.precunit FROM "
                 + "mppres as mp WHERE (mp.mpre_id='"+mpres+"' OR mp.mpre_id IN "
                 + " (SELECT id FROM mpres WHERE mpres_id='"+mpres+"')) AND mp.numero=m.mppre_id)) as delta"
                 + ", m.tiporec,"
@@ -1734,6 +1739,16 @@ private void jButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
 
     }//GEN-LAST:event_jButton9ActionPerformed
+
+    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
+        reporterecon recon = new reporterecon(prin, false, conex, mpres, nrocuadro);
+         int xi = (prin.getWidth()/2)-500/2;
+        int yi = (prin.getHeight()/2)-400/2;
+        recon.setBounds(xi, yi, 500, 400);
+        recon.setVisible(true);
+        
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton8ActionPerformed
      private void ver() 
      {
          String parti=jTable1.getValueAt(filapart, 1).toString();
