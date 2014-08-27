@@ -43,9 +43,11 @@ reportecuadrocierre.`porcmodificado` AS reportecuadrocierre_porcmodificado,
      mconts.`civins` AS mconts_civins,
      mconts.`repleg` AS mconts_repleg,
      mconts.`cedrep` AS mconts_cedrep,
-     mconts.`logo` AS mconts_logo,
-     mconts.`encabe` AS mconts_encabe,
-     mprops.`logo` AS mprops_logo
+IFNULL(mconts.`logo`,"") AS mconts_logo,
+IFNULL(mprops.`logo`,"") AS mprops_logo,
+
+     mconts.`encabe` AS mconts_encabe
+
 FROM
      `mconts` mconts INNER JOIN `mpres` mpres ON mconts.`id` = mpres.`codcon`
      INNER JOIN `mprops` mprops ON mpres.`codpro` = mprops.`id`
@@ -86,8 +88,8 @@ WHERE mpres.id = $P{mpres}]]>
 	<field name="mconts_repleg" class="java.lang.String"/>
 	<field name="mconts_cedrep" class="java.lang.String"/>
 	<field name="mconts_logo" class="java.lang.Object"/>
-	<field name="mconts_encabe" class="java.lang.String"/>
 	<field name="mprops_logo" class="java.lang.Object"/>
+	<field name="mconts_encabe" class="java.lang.String"/>
 	<variable name="totalorig" class="java.lang.Double" resetType="Page" calculation="Sum">
 		<variableExpression><![CDATA[$F{reportecuadrocierre_origmonto}]]></variableExpression>
 		<initialValueExpression><![CDATA[0]]></initialValueExpression>
@@ -195,7 +197,7 @@ WHERE mpres.id = $P{mpres}]]>
 				<textFieldExpression><![CDATA[$F{mconts_encabe}]]></textFieldExpression>
 			</textField>
 			<image hAlign="Center" onErrorType="Blank">
-				<reportElement uuid="71d6acf9-9f26-40e9-85b9-8164a6f3b277" x="0" y="28" width="54" height="50"/>
+				<reportElement uuid="71d6acf9-9f26-40e9-85b9-8164a6f3b277" x="0" y="28" width="54" height="50" isRemoveLineWhenBlank="true"/>
 				<imageExpression><![CDATA[JRImageRenderer.getInstance((byte []) $F{mconts_logo})]]></imageExpression>
 			</image>
 			<image hAlign="Center" onErrorType="Blank">

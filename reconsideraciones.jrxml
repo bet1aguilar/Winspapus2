@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="presupuesto" language="groovy" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isSummaryWithPageHeaderAndFooter="true" isFloatColumnFooter="true" uuid="783eb973-dc35-448c-ace7-a90426bbba54">
 	<property name="ireport.zoom" value="1.2396694214876034"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="3"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="mpres" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
@@ -38,9 +38,9 @@
      mconts.`civins` AS mconts_civins,
      mconts.`repleg` AS mconts_repleg,
      mconts.`cedrep` AS mconts_cedrep,
-     mconts.`logo` AS mconts_logo,
+    IFNULL(mconts.`logo`,"") AS mconts_logo,
+IFNULL(mprops.`logo`,"") AS mprops_logo,
      mconts.`encabe` AS mconts_encabe,
-     mprops.`logo` AS mprops_logo,
      mppres.`cantidad` AS mppres_cantidad,
      mppres.`numegrup` AS mppres_numegrup,
      CONCAT(mppres.id,'\n',mppres.`descri`) AS mppres_descri,
@@ -89,8 +89,8 @@ AND mppres.tipo='VP' AND mppres.nrocuadro=$P{cuadro}]]>
 	<field name="mconts_repleg" class="java.lang.String"/>
 	<field name="mconts_cedrep" class="java.lang.String"/>
 	<field name="mconts_logo" class="java.lang.Object"/>
-	<field name="mconts_encabe" class="java.lang.String"/>
 	<field name="mprops_logo" class="java.lang.Object"/>
+	<field name="mconts_encabe" class="java.lang.String"/>
 	<field name="mppres_cantidad" class="java.math.BigDecimal"/>
 	<field name="mppres_numegrup" class="java.math.BigDecimal"/>
 	<field name="mppres_descri" class="java.lang.String"/>

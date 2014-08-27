@@ -569,7 +569,8 @@ public void generareportepres(){
                             + "p.ubicac as lugar, p.partidapres as partidapres,"
                             + "p.nrocon as nrocont, mc.cedres as cedres, CONCAT(p.porimp,'%') "
                             + "as porimp, mc.encabe as encabezado,p.porimp as porimp1,"
-                            + "mc.logo as logo1, prop.logo as logo2, mc.repleg as contrepleg, mc.cedrep as cedrep,"
+                            + "IFNULL(mc.logo,'') as logo1, IFNULL(prop.logo,'') as logo2, mc.repleg as contrepleg,"
+                            + " mc.cedrep as cedrep,"
                             + "mc.ingres as ingres, mc.civres as civres, mc.ingins as ingins,"
                             + " mc.cedins as cedins, mc.civins as civins FROM mpres as p, mconts as mc, mprops as prop"
                             + " WHERE p.codcon=mc.id AND p.codpro=prop.id AND p.id='"+pres+"'";

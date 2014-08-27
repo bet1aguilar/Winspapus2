@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report2" language="groovy" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="cc1b8ae2-f7ca-41db-a004-b9de7407b6b8">
-	<property name="ireport.zoom" value="1.4641000000000013"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="211"/>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report2" language="groovy" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isSummaryWithPageHeaderAndFooter="true" isFloatColumnFooter="true" whenResourceMissingType="Empty" uuid="cc1b8ae2-f7ca-41db-a004-b9de7407b6b8">
+	<property name="ireport.zoom" value="1.331000000000001"/>
+	<property name="ireport.x" value="1"/>
+	<property name="ireport.y" value="0"/>
 	<style name="table">
 		<box>
 			<topPen lineWidth="1.0" lineColor="#000000"/>
@@ -215,7 +215,7 @@
 			<defaultValueExpression><![CDATA[$P{mpres}]]></defaultValueExpression>
 		</parameter>
 		<parameter name="numegrup" class="java.lang.String">
-			<defaultValueExpression><![CDATA[121]]></defaultValueExpression>
+			<defaultValueExpression><![CDATA[$P{numegrup}]]></defaultValueExpression>
 		</parameter>
 		<queryString>
 			<![CDATA[SELECT mm.id, mm.descri, mm.precio, mm.deprecia, dm.cantidad, ROUND(dm.cantidad*mm.deprecia*mm.precio,2) as total FROM mepres as mm, deppres as dm, mppres as mp WHERE dm.mpre_id=$P{mpres} AND dm.numero=mp.numero
@@ -290,11 +290,11 @@ AND mp.numegrup=$P{numegrup} AND dm.mmopre_id=mm.id AND dm.mpre_id=mm.mpre_id GR
      mppres.descri as descri,
      mc.nombre as contratista,
      mc.encabe as encabezado,
-     mc.logo as logocont,
+    IFNULL(mc.`logo`,"") AS logocont,
+IFNULL(mpr.`logo`,"") AS logoprop,
      mc.ingres as nombres,
      mc.civres as civres,
      mpr.nombre as propietario,
-     mpr.logo as logoprop,
      mp.nombre as nombreobra,
      mp.ubicac as ubicacionobra,
      mppres.porcpre as mpres_pprest,
@@ -371,12 +371,12 @@ AND mp.codcon = mc.id AND mp.codpro = mpr.id]]>
 	<field name="contratista" class="java.lang.String"/>
 	<field name="encabezado" class="java.lang.String"/>
 	<field name="logocont" class="java.lang.Object"/>
+	<field name="logoprop" class="java.lang.Object"/>
 	<field name="nombres" class="java.lang.String"/>
 	<field name="civres" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="propietario" class="java.lang.String"/>
-	<field name="logoprop" class="java.lang.Object"/>
 	<field name="nombreobra" class="java.lang.String"/>
 	<field name="ubicacionobra" class="java.lang.String"/>
 	<field name="mpres_pprest" class="java.math.BigDecimal"/>
@@ -636,12 +636,12 @@ AND mp.codcon = mc.id AND mp.codpro = mpr.id]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{descri}]]></textFieldExpression>
 			</textField>
-			<image>
-				<reportElement uuid="10dae668-4d61-4c45-b015-8cc2a0febc96" x="0" y="2" width="54" height="50"/>
+			<image isUsingCache="true" onErrorType="Blank">
+				<reportElement uuid="10dae668-4d61-4c45-b015-8cc2a0febc96" x="2" y="2" width="130" height="50" isRemoveLineWhenBlank="true"/>
 				<imageExpression><![CDATA[JRImageRenderer.getInstance((byte []) $F{logocont})]]></imageExpression>
 			</image>
-			<image hAlign="Right">
-				<reportElement uuid="34cae204-5bf2-479d-b3f7-aff5cc4b2253" x="515" y="0" width="56" height="52"/>
+			<image hAlign="Right" isUsingCache="true" onErrorType="Blank">
+				<reportElement uuid="34cae204-5bf2-479d-b3f7-aff5cc4b2253" x="426" y="0" width="145" height="52" isRemoveLineWhenBlank="true"/>
 				<imageExpression><![CDATA[JRImageRenderer.getInstance((byte []) $F{logoprop})]]></imageExpression>
 			</image>
 			<textField>
@@ -651,7 +651,7 @@ AND mp.codcon = mc.id AND mp.codpro = mpr.id]]>
 				</textElement>
 				<textFieldExpression><![CDATA["Pág. "+$V{PAGE_NUMBER}+" de "]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" evaluationTime="Report">
+			<textField isStretchWithOverflow="true" evaluationTime="Report" isBlankWhenNull="true">
 				<reportElement uuid="be6b0399-11ae-4cb2-95ec-b151e60106a7" x="562" y="63" width="9" height="11"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="7"/>
@@ -763,8 +763,8 @@ AND mp.codcon = mc.id AND mp.codpro = mpr.id]]>
 				</textElement>
 				<text><![CDATA[Partida]]></text>
 			</staticText>
-			<textField>
-				<reportElement uuid="5182c448-52f5-43b3-9dbd-80f8a7fc13f0" x="54" y="0" width="461" height="52"/>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="5182c448-52f5-43b3-9dbd-80f8a7fc13f0" x="132" y="0" width="294" height="52"/>
 				<textElement textAlignment="Center">
 					<font size="7"/>
 				</textElement>
@@ -791,7 +791,7 @@ AND mp.codcon = mc.id AND mp.codpro = mpr.id]]>
 			<componentElement>
 				<reportElement uuid="f5c5bf7f-88ea-4407-adc0-3509d0cc2c7d" key="table 2" style="table 2_TD" mode="Transparent" x="0" y="14" width="571" height="12"/>
 				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" whenNoDataType="AllSectionsNoDetail">
-					<datasetRun subDataset="materiales" uuid="4f0c5658-07bf-4537-923c-bf0f5f2ba865">
+					<datasetRun subDataset="materiales" uuid="0a1eda5d-bcdc-4d5e-8a3f-ec7c24afa1e0">
 						<datasetParameter name="numegrup">
 							<datasetParameterExpression><![CDATA[$P{numegrup}]]></datasetParameterExpression>
 						</datasetParameter>
@@ -988,7 +988,7 @@ AND mp.codcon = mc.id AND mp.codpro = mpr.id]]>
 			<componentElement>
 				<reportElement uuid="8a797224-95d2-412e-b8d1-9630345b4a75" key="table 4" style="table 4_TD" mode="Transparent" x="0" y="14" width="571" height="12"/>
 				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" whenNoDataType="AllSectionsNoDetail">
-					<datasetRun subDataset="equipos" uuid="85db3259-3d91-4570-8a6a-3e8b2df07461">
+					<datasetRun subDataset="equipos" uuid="f8e65454-b4a8-4f49-8f08-112389bb2c7b">
 						<datasetParameter name="numegrup">
 							<datasetParameterExpression><![CDATA[$P{numegrup}]]></datasetParameterExpression>
 						</datasetParameter>
@@ -1185,7 +1185,7 @@ AND mp.codcon = mc.id AND mp.codpro = mpr.id]]>
 			<componentElement>
 				<reportElement uuid="b4d2f7dd-45e6-4204-9bc5-4300c2fa51cc" key="table 5" style="table 5_TD" mode="Opaque" x="0" y="13" width="571" height="15" backcolor="#CCCCCC"/>
 				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" whenNoDataType="AllSectionsNoDetail">
-					<datasetRun subDataset="manoobra" uuid="16cc9ed8-960f-4a19-b3c4-cd6803bbbece">
+					<datasetRun subDataset="manoobra" uuid="fcc1a680-b990-462e-bd00-877a8888d9ed">
 						<datasetParameter name="numegrup">
 							<datasetParameterExpression><![CDATA[$P{numegrup}]]></datasetParameterExpression>
 						</datasetParameter>
@@ -1396,7 +1396,7 @@ AND mp.codcon = mc.id AND mp.codpro = mpr.id]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{montosubsid}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0.00">
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement uuid="bbc1c11d-547b-48af-bfd0-a020ff230003" x="482" y="2" width="90" height="11"/>
 				<box rightPadding="3"/>
 				<textElement textAlignment="Right">
@@ -1578,7 +1578,7 @@ AND mp.codcon = mc.id AND mp.codpro = mpr.id]]>
 				<textElement textAlignment="Right">
 					<font size="7"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$V{admin1}+0.00001]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$V{admin1}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement uuid="4c951477-f9d3-40d5-b128-eee7d2cacc51" x="356" y="139" width="83" height="11"/>

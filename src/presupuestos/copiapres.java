@@ -64,7 +64,7 @@ public class copiapres extends javax.swing.JDialog {
             String partidas = "INSERT INTO mppres "
                     + "SELECT '"+nombre+"',id,numero,numegrup,descri,idband,porcgad,porcpre,porcutil,precasu,precunit,rendimi,"
                     + "unidad, redondeo, status, cantidad, tipo, nropresupuesto, nrocuadro, mppre_id, tiporec, refere, "
-                    + "fechaini, fechafin, cron, rango, lapso, ctabs_id FROM mppres WHERE mpre_id= '"+pres+"' OR "
+                    + "fechaini, fechafin, cron, rango, lapso, capitulo,tiponp FROM mppres WHERE mpre_id= '"+pres+"' OR "
                     + "mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+pres+"')";
             stpart.execute(partidas);
             String mepres = "INSERT INTO mepres "
@@ -104,7 +104,9 @@ public class copiapres extends javax.swing.JDialog {
                     + " FROM admppres WHERE mpre_id = '"+pres+"'";
             Statement sadmppres = (Statement) conex.createStatement();
             sadmppres.execute(admppres);
-            String cmpres = "INSERT INTO cmpres SELECT id, descri, cmpres_id, codigo,  '"+nombre+"' "
+            String cmpres = "INSERT INTO cmpres "
+                    + "(id,descri, cmpres_id, codigo, mpre_id) "
+                    + "SELECT id, descri, cmpres_id, codigo,  '"+nombre+"' "
                     + "FROM cmpres WHERE mpre_id='"+pres+"'";
             Statement scmpres = (Statement) conex.createStatement();
             scmpres.execute(cmpres);
@@ -127,8 +129,9 @@ public class copiapres extends javax.swing.JDialog {
         String nombre = jTextField1.getText();
         try {
             Statement ste = (Statement) conex.createStatement();
-            String sql = "INSERT INTO mpres (id,nomabr,nombre,ubicac,fecini,fecfin,feccon,fecimp,porcgam,porcfin,porimp"
-                    + ", poripa,porpre,poruti,codpro,codcon,parpre,nrocon,nroctr,fecapr,nrolic,status,mpres_id,memo,fecmemo,seleccionado,"
+            String sql = "INSERT INTO mpres (id,nomabr,nombre,ubicac,fecini,fecfin,feccon,fecimp,porgam,porcfi,porimp"
+                    + ", poripa,porpre,poruti,codpro,codcon,parpre,nrocon,nroctr,fecapr,nrolic,status,mpres_id,memo,"
+                    + "timemo,fecmemo,seleccionado,"
                     + "fecharegistro)"
                     + "SELECT '"+nombre+"', nomabr, nombre, ubicac, fecini, fecfin,"
                     + "feccon, fecimp, "

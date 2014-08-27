@@ -15,9 +15,10 @@
      mpres.`memo` AS mpres_memo,
      mpres.`timemo` AS mpres_timemo,
      mpres.`fecmemo` AS mpres_fecmemo,
-     mprops.`logo` AS mprops_logo,
+
+     IFNULL(mprops.`logo`,"") AS mprops_logo,
      mconts.`nombre` AS mconts_nombre,
-     mconts.`logo` AS mconts_logo,
+     IFNULL(mconts.`logo`,"") AS mconts_logo,
      mconts.`encabe` AS mconts_encabe
 FROM
      `mconts` mconts INNER JOIN `mpres` mpres ON mconts.`id` = mpres.`codcon`

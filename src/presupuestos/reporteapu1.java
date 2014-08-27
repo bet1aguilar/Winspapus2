@@ -66,7 +66,7 @@ public class reporteapu1 extends javax.swing.JDialog {
      SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
 
     public reporteapu1(java.awt.Frame parent, boolean modal, Connection conex, String mtabus, String num) {
-        super(parent, modal);
+        super(parent, false);
         initComponents();
         this.conex = conex;
         this.mpres = mtabus;
@@ -444,7 +444,7 @@ public class reporteapu1 extends javax.swing.JDialog {
 
     private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_okButtonMouseClicked
 
-        generareporte();
+       generareporte();
         doClose(RET_OK);
         
                 // TODO add your handling code here:
