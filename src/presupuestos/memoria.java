@@ -322,7 +322,10 @@ Date fecha = new Date();
 
 private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
     guarda();
-    memoriad memo= new memoriad(pres, conex);
+     SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+    String fechas = formato.format(jDateChooser1.getDate());
+    
+    memoriad memo= new memoriad(pres, conex,fechas);
     
     
     

@@ -1349,7 +1349,7 @@ private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:ev
                   if(si==0){
                 int op =JOptionPane.showConfirmDialog(null, "¿Desea Agregar esta partida en Tabulador de Prueba?", "Tabulador", JOptionPane.YES_NO_OPTION);
                 if(op==JOptionPane.YES_OPTION){
-                    String selectcount = "SELECT count(*) FROM mtabus WHERE id='ESTUDIO'";
+                    String selectcount = "SELECT count(*) FROM mtabus WHERE id='PRUEBA'";
                     Statement stcount = (Statement) conex.createStatement();
                     ResultSet rst = stcount.executeQuery(selectcount);
                     int cuenta =0;
@@ -1358,7 +1358,7 @@ private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:ev
                     }
                     if(cuenta==0){
                         String inserta = "INSERT INTO mtabus (id, descri, vigencia, status) VALUES "
-                                + "('ESTUDIO', 'PARTIDAS A SER INSERTADAS EN SIGUIENTES TABULADORES', NOW(), 1)";
+                                + "('PRUEBA', 'PARTIDAS A SER INSERTADAS EN SIGUIENTES TABULADORES', NOW(), 1)";
                         Statement stinsert = (Statement) conex.createStatement();
                         stinsert.execute(inserta);
                         JOptionPane.showMessageDialog(rootPane, "Tabulador de prueba agregado, modifique los valores necesarios");
@@ -1366,7 +1366,7 @@ private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:ev
                   String insertapart = "INSERT INTO mptabs (codicove,numero,numegrup,descri, mbdat_id,porcgad, porcpre, porcutil, "
                           + "precasu, precunit, rendimi, unidad, redondeo, status, mtabus_id, cantidad,capitulo)"
                           + " SELECT id, numero, numegrup, descri,idband, porcgad, porcpre, porcutil, precasu, precunit, rendimi, "
-                          + "unidad, redondeo, 1, 'ESTUDIO', cantidad, capitulo FROM mppres WHERE numero="+numero+" AND"
+                          + "unidad, redondeo, 1, 'PRUEBA', cantidad, capitulo FROM mppres WHERE numero="+numero+" AND"
                           + " (mpre_id='"+mpre_id+"' OR mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+mpre_id+"'))";
                   Statement stinserta = (Statement) conex.createStatement();
                   stinserta.execute(insertapart);

@@ -120,20 +120,6 @@ mpres.porimp/100 as porimp FROM      `mpres` mpres INNER JOIN `mppres` mppres ON
 				<textFieldExpression><![CDATA[$F{mpres_nombre}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement uuid="1b19c267-4103-410c-8503-e414a2f881ed" x="-422" y="86" width="42" height="17"/>
-				<textElement verticalAlignment="Middle">
-					<font size="12" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Obra:]]></text>
-			</staticText>
-			<staticText>
-				<reportElement uuid="7ae1808b-9d04-4d50-b3ea-755c4b331038" x="-422" y="86" width="42" height="17"/>
-				<textElement verticalAlignment="Middle">
-					<font size="12" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Obra:]]></text>
-			</staticText>
-			<staticText>
 				<reportElement uuid="97fa041b-642a-4592-bd8c-be629b01b746" x="255" y="89" width="315" height="15"/>
 				<box>
 					<pen lineWidth="1.0"/>
@@ -161,13 +147,6 @@ mpres.porimp/100 as porimp FROM      `mpres` mpres INNER JOIN `mppres` mppres ON
 				</textElement>
 				<textFieldExpression><![CDATA[$F{mpres_ubicac}]]></textFieldExpression>
 			</textField>
-			<staticText>
-				<reportElement uuid="121eed6d-7bb1-48bd-9b28-b5bab014c144" x="-421" y="103" width="41" height="17"/>
-				<textElement verticalAlignment="Middle">
-					<font size="9" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Lugar:]]></text>
-			</staticText>
 			<staticText>
 				<reportElement uuid="312b357e-129d-4006-afe9-4c0696c16c44" positionType="Float" x="255" y="127" width="47" height="17"/>
 				<box leftPadding="5">
@@ -281,7 +260,7 @@ mpres.porimp/100 as porimp FROM      `mpres` mpres INNER JOIN `mppres` mppres ON
 				<text><![CDATA[Nro.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="b0a54bc6-cff0-4b5b-9ee2-6e4bdf975ab1" x="46" y="0" width="209" height="20"/>
+				<reportElement uuid="b0a54bc6-cff0-4b5b-9ee2-6e4bdf975ab1" x="45" y="0" width="209" height="20"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -354,7 +333,6 @@ mpres.porimp/100 as porimp FROM      `mpres` mpres INNER JOIN `mppres` mppres ON
 	</columnHeader>
 	<detail>
 		<band height="20" splitType="Prevent">
-			<elementGroup/>
 			<textField>
 				<reportElement uuid="ea74348d-1079-4bd4-a297-8bfb73dc1634" stretchType="RelativeToTallestObject" x="0" y="0" width="47" height="20"/>
 				<box topPadding="5" leftPadding="5" bottomPadding="5" rightPadding="5">
@@ -470,13 +448,6 @@ mpres.porimp/100 as porimp FROM      `mpres` mpres INNER JOIN `mppres` mppres ON
 					<font size="8"/>
 				</textElement>
 				<text><![CDATA[C.I:]]></text>
-			</staticText>
-			<staticText>
-				<reportElement uuid="6bcd6493-d5e5-490b-8818-de28b49b6011" x="-422" y="10" width="63" height="13"/>
-				<textElement>
-					<font size="8"/>
-				</textElement>
-				<text><![CDATA[CONTRATISTA:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement uuid="8626e91b-503a-43cc-a7be-7fe894ec728b" x="176" y="1" width="78" height="13"/>

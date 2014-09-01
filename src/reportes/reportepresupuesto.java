@@ -232,6 +232,7 @@ public class reportepresupuesto extends javax.swing.JDialog {
         jCheckBox2.setText("Con Totales");
 
         jCheckBox1.setText("Con Capítulos");
+        jCheckBox1.setEnabled(false);
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 11));
         jLabel3.setText("Fecha:");

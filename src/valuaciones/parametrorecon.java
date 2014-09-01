@@ -975,7 +975,10 @@ public void verificarcheck() {
         String partvalu = "SELECT mp.numegrup, mp.id, mp.descri, mp.precunit, "
                 + "dv.cantidad FROM mppres as mp, "
                 + "dvalus as dv WHERE dv.mvalu_id="+mvalu+" AND dv.numepart=mp.numero "
-                + "AND mp.numero NOT IN (SELECT mppre_id FROM mppres WHERE mpre_id='"+codpres+"')";
+                + " AND (mp.mpre_id ='"+pres+"' "
+                + "OR mp.mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+pres+"')) And dv.mpre_id='"+pres+"' "
+                + "AND mp.numero NOT IN"
+                + " (SELECT mppre_id FROM mppres WHERE mpre_id='"+codpres+"')";
         try {
             Statement st = (Statement) conex.createStatement();
             ResultSet rst = st.executeQuery(partvalu);
