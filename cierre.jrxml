@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="cierre" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isSummaryWithPageHeaderAndFooter="true" isFloatColumnFooter="true" uuid="50c5a276-112d-47ea-b3d6-f16f59a37d76">
-	<property name="ireport.zoom" value="1.0000000000000004"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.zoom" value="1.9487171000000019"/>
+	<property name="ireport.x" value="631"/>
+	<property name="ireport.y" value="358"/>
 	<parameter name="titulo" class="java.lang.String"/>
 	<parameter name="fecha" class="java.lang.String"/>
 	<parameter name="modioavance" class="java.lang.String"/>
@@ -45,7 +45,7 @@ reportecuadrocierre.`porcmodificado` AS reportecuadrocierre_porcmodificado,
      mconts.`cedrep` AS mconts_cedrep,
 IFNULL(mconts.`logo`,"") AS mconts_logo,
 IFNULL(mprops.`logo`,"") AS mprops_logo,
-
+      mpres.partidapres as mpres_partidapres,
      mconts.`encabe` AS mconts_encabe
 
 FROM
@@ -89,6 +89,7 @@ WHERE mpres.id = $P{mpres}]]>
 	<field name="mconts_cedrep" class="java.lang.String"/>
 	<field name="mconts_logo" class="java.lang.Object"/>
 	<field name="mprops_logo" class="java.lang.Object"/>
+	<field name="mpres_partidapres" class="java.lang.String"/>
 	<field name="mconts_encabe" class="java.lang.String"/>
 	<variable name="totalorig" class="java.lang.Double" resetType="Page" calculation="Sum">
 		<variableExpression><![CDATA[$F{reportecuadrocierre_origmonto}]]></variableExpression>
@@ -479,7 +480,7 @@ WHERE mpres.id = $P{mpres}]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="7" isBold="true"/>
 				</textElement>
-				<text><![CDATA[$P{modioavance}]]></text>
+				<text><![CDATA[Modificado]]></text>
 			</staticText>
 			<staticText>
 				<reportElement uuid="abc672f7-77f9-4a21-aebb-1b83140107ab" x="698" y="14" width="33" height="16"/>
@@ -506,139 +507,139 @@ WHERE mpres.id = $P{mpres}]]>
 	</columnHeader>
 	<detail>
 		<band height="20" splitType="Prevent">
-			<textField isBlankWhenNull="true">
-				<reportElement uuid="c20ee6af-3d45-445f-989b-4a847a4e7e45" x="0" y="0" width="30" height="20"/>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="c20ee6af-3d45-445f-989b-4a847a4e7e45" stretchType="RelativeToTallestObject" x="0" y="0" width="30" height="20"/>
 				<box topPadding="3"/>
 				<textElement textAlignment="Center">
-					<font size="7"/>
+					<font size="5"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{reportecuadrocierre_nro}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement uuid="0a58ea3d-d2c1-48b9-915c-132e50391c95" x="29" y="0" width="153" height="20"/>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="0a58ea3d-d2c1-48b9-915c-132e50391c95" stretchType="RelativeToTallestObject" x="29" y="0" width="153" height="20"/>
 				<box topPadding="3" leftPadding="5" rightPadding="3"/>
 				<textElement>
-					<font size="7"/>
+					<font size="5"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{reportecuadrocierre_codigo}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement uuid="c56b9f77-4d1a-4937-9832-10fb6abd2939" x="181" y="0" width="33" height="20"/>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="c56b9f77-4d1a-4937-9832-10fb6abd2939" stretchType="RelativeToTallestObject" x="181" y="0" width="33" height="20"/>
 				<box topPadding="3"/>
 				<textElement textAlignment="Center">
-					<font size="7"/>
+					<font size="5"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{reportecuadrocierre_unidad}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement uuid="00477b4b-cfd2-44a9-9524-bc6e359b90b6" x="214" y="0" width="43" height="20"/>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="00477b4b-cfd2-44a9-9524-bc6e359b90b6" stretchType="RelativeToTallestObject" x="214" y="0" width="43" height="20"/>
 				<box topPadding="3" rightPadding="3"/>
 				<textElement textAlignment="Right">
-					<font size="7"/>
+					<font size="5"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{reportecuadrocierre_precio}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement uuid="04f5629a-b3ef-4b02-b368-17b8286fc85a" x="332" y="0" width="34" height="20"/>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="04f5629a-b3ef-4b02-b368-17b8286fc85a" stretchType="RelativeToTallestObject" x="332" y="0" width="34" height="20"/>
 				<box topPadding="3"/>
 				<textElement textAlignment="Right">
-					<font size="7"/>
+					<font size="5"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{reportecuadrocierre_npcantidad}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement uuid="67bae885-4d55-4781-8085-85bd41f49d65" x="408" y="0" width="32" height="20"/>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="67bae885-4d55-4781-8085-85bd41f49d65" stretchType="RelativeToTallestObject" x="408" y="0" width="32" height="20"/>
 				<box topPadding="3" rightPadding="3"/>
 				<textElement textAlignment="Right">
-					<font size="7"/>
+					<font size="5"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{reportecuadrocierre_vpcantidad}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement uuid="6b2fb628-d4a8-4227-8d03-e02f6aaa0b25" x="287" y="0" width="45" height="20"/>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="6b2fb628-d4a8-4227-8d03-e02f6aaa0b25" stretchType="RelativeToTallestObject" x="287" y="0" width="45" height="20"/>
 				<box topPadding="3" rightPadding="3"/>
 				<textElement textAlignment="Right" verticalAlignment="Top">
-					<font size="7"/>
+					<font size="5"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{reportecuadrocierre_origmonto}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement uuid="5a2f74f3-66f1-4157-8344-987386231582" x="439" y="0" width="48" height="20"/>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="5a2f74f3-66f1-4157-8344-987386231582" stretchType="RelativeToTallestObject" x="439" y="0" width="48" height="20"/>
 				<box topPadding="3" rightPadding="3"/>
 				<textElement textAlignment="Right">
-					<font size="7"/>
+					<font size="5"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{reportecuadrocierre_vpmonto}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement uuid="4b90ff2c-0468-4f9c-95d3-3d4d8b2dd42e" x="256" y="0" width="31" height="20"/>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="4b90ff2c-0468-4f9c-95d3-3d4d8b2dd42e" stretchType="RelativeToTallestObject" x="256" y="0" width="31" height="20"/>
 				<box topPadding="3" rightPadding="3"/>
 				<textElement textAlignment="Right">
-					<font size="7"/>
+					<font size="5"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{reportecuadrocierre_origcant}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement uuid="a8250c8f-f2ff-4e7f-a155-3704cfbb3dac" x="366" y="0" width="43" height="20"/>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="a8250c8f-f2ff-4e7f-a155-3704cfbb3dac" stretchType="RelativeToTallestObject" x="366" y="0" width="43" height="20"/>
 				<box topPadding="3" rightPadding="3"/>
 				<textElement textAlignment="Right">
-					<font size="7"/>
+					<font size="5"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{reportecuadrocierre_npmonto}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement uuid="7add71f4-9376-4cc4-9131-8a170b5307f8" x="487" y="0" width="45" height="20"/>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="7add71f4-9376-4cc4-9131-8a170b5307f8" stretchType="RelativeToTallestObject" x="487" y="0" width="45" height="20"/>
 				<box topPadding="3" rightPadding="3"/>
 				<textElement textAlignment="Right">
-					<font size="7"/>
+					<font size="5"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{reportecuadrocierre_aumcantidad}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement uuid="1ab14153-7006-46d1-a3a5-fa38b946f453" x="531" y="0" width="56" height="20"/>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="1ab14153-7006-46d1-a3a5-fa38b946f453" stretchType="RelativeToTallestObject" x="531" y="0" width="56" height="20"/>
 				<box topPadding="3" rightPadding="3"/>
 				<textElement textAlignment="Right">
-					<font size="7"/>
+					<font size="5"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{reportecuadrocierre_aummonto}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement uuid="ef254194-c405-4dad-8ec0-51009f00a568" x="586" y="0" width="33" height="20"/>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="ef254194-c405-4dad-8ec0-51009f00a568" stretchType="RelativeToTallestObject" x="586" y="0" width="33" height="20"/>
 				<box topPadding="3" rightPadding="3"/>
 				<textElement textAlignment="Right">
-					<font size="7"/>
+					<font size="5"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{reportecuadrocierre_discantidad}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement uuid="ef5784b5-5c84-4785-94fd-2beb7f0c5a90" x="618" y="0" width="49" height="20"/>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="ef5784b5-5c84-4785-94fd-2beb7f0c5a90" stretchType="RelativeToTallestObject" x="618" y="0" width="49" height="20"/>
 				<box topPadding="3" rightPadding="3"/>
 				<textElement textAlignment="Right">
-					<font size="7"/>
+					<font size="5"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{reportecuadrocierre_dismonto}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement uuid="a4edc78d-810d-4a00-87c9-a7b2ffe323ee" x="666" y="0" width="33" height="20"/>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="a4edc78d-810d-4a00-87c9-a7b2ffe323ee" stretchType="RelativeToTallestObject" x="666" y="0" width="33" height="20"/>
 				<box topPadding="3" rightPadding="3"/>
 				<textElement textAlignment="Right">
-					<font size="7"/>
+					<font size="5"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{reportecuadrocierre_discantidad}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement uuid="42e6815b-f97d-4bfd-855f-5996ea572418" x="698" y="0" width="33" height="20"/>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="42e6815b-f97d-4bfd-855f-5996ea572418" stretchType="RelativeToTallestObject" x="698" y="0" width="33" height="20"/>
 				<box topPadding="3" rightPadding="3"/>
 				<textElement textAlignment="Right">
-					<font size="7"/>
+					<font size="5"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{reportecuadrocierre_dismonto}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement uuid="17c327a2-893c-4ac0-9294-65ca232876ee" x="731" y="0" width="21" height="20"/>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="17c327a2-893c-4ac0-9294-65ca232876ee" stretchType="RelativeToTallestObject" x="731" y="0" width="21" height="20"/>
 				<box topPadding="3" rightPadding="3"/>
 				<textElement textAlignment="Right">
-					<font size="6"/>
+					<font size="4"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{reportecuadrocierre_porcmodificado}]]></textFieldExpression>
 			</textField>
@@ -689,7 +690,7 @@ WHERE mpres.id = $P{mpres}]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{totalvp}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement uuid="d3d119bb-8207-4884-9be5-97b9e8eb71e4" x="530" y="0" width="56" height="15"/>
 				<box topPadding="3" rightPadding="3"/>
 				<textElement textAlignment="Right">
@@ -697,7 +698,7 @@ WHERE mpres.id = $P{mpres}]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{totalaum}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement uuid="3c5cdf97-61f8-46c3-9ff4-e10358044a62" x="610" y="0" width="56" height="15"/>
 				<box topPadding="3" rightPadding="3"/>
 				<textElement textAlignment="Right">
@@ -745,7 +746,7 @@ WHERE mpres.id = $P{mpres}]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{acumdismi}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement uuid="c58c8ae6-ea3e-4bbc-9b60-956c112e8b80" x="675" y="0" width="56" height="15"/>
 				<box topPadding="3" rightPadding="3"/>
 				<textElement textAlignment="Right">
@@ -1099,7 +1100,7 @@ WHERE mpres.id = $P{mpres}]]>
 				<textElement textAlignment="Right">
 					<font size="7"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$V{orgimp}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$V{origimp}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement uuid="1794130a-c7dd-4b21-a4b3-a8ce055c8d17" x="364" y="18" width="53" height="15"/>
