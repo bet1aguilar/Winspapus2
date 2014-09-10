@@ -148,10 +148,12 @@ public class reportepresupuesto extends javax.swing.JDialog {
 
         jPanel3.setBackground(new java.awt.Color(100, 100, 100));
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11));
+        jLabel1.setBackground(new java.awt.Color(91, 91, 95));
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Reporte Presupuesto");
+        jLabel1.setOpaque(true);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -161,10 +163,7 @@ public class reportepresupuesto extends javax.swing.JDialog {
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1)
-                .addContainerGap(12, Short.MAX_VALUE))
+            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 45, Short.MAX_VALUE)
         );
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Partidas no Previstas", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 11))); // NOI18N
@@ -232,7 +231,6 @@ public class reportepresupuesto extends javax.swing.JDialog {
         jCheckBox2.setText("Con Totales");
 
         jCheckBox1.setText("Con Capítulos");
-        jCheckBox1.setEnabled(false);
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 11));
         jLabel3.setText("Fecha:");
@@ -481,6 +479,7 @@ public void generareportepres(){
             try {
               
                 if(cual==1){
+                    if(!jCheckBox1.isSelected()){
                     if(jCheckBox2.isSelected()){
                          input = new FileInputStream(new File("presupuestosubtotal.jrxml"));
                     }else{
@@ -514,6 +513,39 @@ public void generareportepres(){
             Logger.getLogger(reportepresupuesto.class.getName()).log(Level.SEVERE, null, ex);
         }
                }
+                }else{
+                    if(jCheckBox1.isSelected()){
+                         input = new FileInputStream(new File("modificado.jrxml"));
+                         String consultacapitulos = "SELECT id,codigo, descri WHERE mpre_id='"+pres+"' "
+                                 + "AND cmpres_id IS NULL";
+                        try {
+                            Statement stcapitulos = (Statement) conex.createStatement();
+                            ResultSet rstcapitulos = stcapitulos.executeQuery(consultacapitulos);
+                            String idcap="", codigo="", descri="";
+                            while(rstcapitulos.next()){
+                                idcap = rstcapitulos.getString(1);
+                                codigo = rstcapitulos.getString(2);
+                                descri = rstcapitulos.getString(3);
+                                int cuenta = 0;
+                                String select = "SELECT count(*) FROM cmpres WHERE mpre_id='"+pres+"'"
+                                        + " AND cmpres_id="+idcap+"";
+                                Statement sts = (Statement) conex.createStatement();
+                                ResultSet rsts = sts.executeQuery(select);
+                                while(rsts.next()){
+                                    cuenta = rsts.getInt(1);
+                                }
+                                if(cuenta>0){
+                                    
+                                }else{
+                                    
+                                }
+                            }
+                        } catch (SQLException ex) {
+                            Logger.getLogger(reportepresupuesto.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                                 
+                   }
+                }
                 if(cual==2){
                     float impuestos=0;
                     if(jCheckBox2.isSelected()){

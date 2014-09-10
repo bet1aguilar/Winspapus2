@@ -99,6 +99,7 @@ public class reportecuadrocierre extends javax.swing.JDialog {
         jTextField2 = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         jDateChooser1 = new com.toedter.calendar.JDateChooser();
+        jCheckBox1 = new javax.swing.JCheckBox();
 
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
@@ -134,6 +135,9 @@ public class reportecuadrocierre extends javax.swing.JDialog {
 
         jLabel3.setText("Fecha:");
 
+        jCheckBox1.setSelected(true);
+        jCheckBox1.setText("Con fecha");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -153,9 +157,12 @@ public class reportecuadrocierre extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 327, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(jDateChooser1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jTextField2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 165, Short.MAX_VALUE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jDateChooser1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jTextField2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 165, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jCheckBox1)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -166,13 +173,16 @@ public class reportecuadrocierre extends javax.swing.JDialog {
                     .addComponent(jLabel1)
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel3)
-                    .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel2)
+                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel3)
+                            .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jCheckBox1))
                 .addGap(21, 21, 21)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(cancelButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -210,26 +220,26 @@ public class reportecuadrocierre extends javax.swing.JDialog {
             try {
                 truncate = (Statement) conex.createStatement();
                  truncate.execute(borra);
-                 String original= "INSERT INTO reportecuadrocierre (nro, codigo, descri, unidad, precio, origcant, origmonto,"
-                         + "aumcantidad, aummonto,discantidad,dismonto,mpres,cantmodificado,montomodificado)"
-                         + " SELECT mp.numegrup, mp.id, mp.descri, mp.unidad, IF(mp.precasu=0,mp.precunit, mp.precasu) as precio, "
+                 String completa="(SELECT mp.numegrup, mp.id, mp.descri, mp.unidad, IF(mp.precasu=0,mp.precunit, mp.precasu) as precio, "
                          + "mp.cantidad,IF(mp.precasu=0,mp.precunit, mp.precasu)*mp.cantidad, "
-                         + "(SELECT aumento FROM admppres WHERE numepart=mp.numero AND mpre_id='"+pres+"') as aumcantidad, "
-                         + "(SELECT aumento FROM admppres WHERE numepart=mp.numero AND mpre_id='"+pres+"')*"
+                         + "IFNULL((SELECT aumento FROM admppres WHERE numepart=mp.numero AND mpre_id='"+pres+"'),0) as aumcantidad, "
+                         + "IFNULL((SELECT aumento FROM admppres WHERE numepart=mp.numero AND mpre_id='"+pres+"'),0)*"
                          + "IF(mp.precasu=0,mp.precunit, mp.precasu) as aummonto,"
-                          + "(SELECT disminucion FROM admppres WHERE numepart=mp.numero AND mpre_id='"+pres+"')"
+                          + "IFNULL((SELECT disminucion FROM admppres WHERE numepart=mp.numero AND mpre_id='"+pres+"'),0)"
                          + " as dismicantidad, "
-                          + "(SELECT disminucion FROM admppres WHERE numepart=mp.numero AND mpre_id='"+pres+"')*"
+                          + "IFNULL((SELECT disminucion FROM admppres WHERE numepart=mp.numero AND mpre_id='"+pres+"'),0)*"
                          + "IF(mp.precasu=0,mp.precunit, mp.precasu) as dismonto, "
-                         + "'"+pres+"',"
                          + "mp.cantidad+IFNULL((SELECT aumento FROM admppres WHERE numepart=mp.numero AND mpre_id='"+pres+"'),0)-"
-                         + "IFNULL((SELECT disminucion FROM admppres WHERE numepart=mp.numero AND mpre_id='"+pres+"'),0)"
+                         + "IFNULL((SELECT disminucion FROM admppres WHERE numepart=mp.numero AND mpre_id='"+pres+"'),0) as cantmodificado"
                          
                          + ", (mp.cantidad+IFNULL((SELECT aumento FROM admppres WHERE numepart=mp.numero AND mpre_id='"+pres+"'),0)-"
                          + "IFNULL((SELECT disminucion FROM admppres WHERE numepart=mp.numero AND mpre_id='"+pres+"'),0))"
                          + "*IF(mp.precasu=0,mp.precunit, mp.precasu)"
-                         + " as montomodificado "
-                         + "FROM mppres AS mp WHERE mpre_id='"+pres+"' AND tipo ='Org'";
+                         + " as montomodificado, '"+pres+"'"
+                         + "FROM mppres AS mp WHERE mpre_id='"+pres+"' AND tipo ='Org')";
+                 String original= "INSERT INTO reportecuadrocierre (nro, codigo, descri, unidad, precio, origcant, origmonto,"
+                         + "aumcantidad, aummonto,discantidad,dismonto,cantmodificado,montomodificado,mpres)"
+                         + completa;
                  Statement insertori = (Statement) conex.createStatement();
                  insertori.execute(original);
                  //-----------------------------------NP
@@ -245,7 +255,7 @@ public class reportecuadrocierre extends javax.swing.JDialog {
                  if(cuenta>0)
                  {
                      String titulos = "INSERT INTO reportecuadrocierre (codigo,descri, mpres) "
-                             + "VALUES ('\n','Partidas No Previstas','"+pres+"')";
+                             + "VALUES ('','PARTIDAS NO PREVISTAS','"+pres+"')";
                      Statement sts = (Statement) conex.createStatement();
                      sts.execute(titulos);
                      String agrega = "INSERT INTO reportecuadrocierre (nro, codigo, descri,unidad,precio,npcantidad,npmonto,"
@@ -296,7 +306,7 @@ public class reportecuadrocierre extends javax.swing.JDialog {
                  if(cuentaoex>0)
                  {
                      String titulos = "INSERT INTO reportecuadrocierre (codigo,descri, mpres) "
-                             + "VALUES ('\n','Partidas Obras Extras','"+pres+"')";
+                             + "VALUES ('','PARTIDAS OBRAS EXTRAS','"+pres+"')";
                      Statement sts = (Statement) conex.createStatement();
                      sts.execute(titulos);
                      String agrega = "INSERT INTO reportecuadrocierre (nro, codigo, descri,unidad,precio,npcantidad,npmonto,"
@@ -347,7 +357,7 @@ public class reportecuadrocierre extends javax.swing.JDialog {
                  if(cuentaoad>0)
                  {
                      String titulos = "INSERT INTO reportecuadrocierre (codigo,descri, mpres) "
-                             + "VALUES ('\n','Partidas Obras Adicionales','"+pres+"')";
+                             + "VALUES ('','PARTIDAS OBRAS ADICIONALES','"+pres+"')";
                      Statement sts = (Statement) conex.createStatement();
                      sts.execute(titulos);
                      String agrega = "INSERT INTO reportecuadrocierre (nro, codigo, descri,unidad,precio,npcantidad,npmonto,"
@@ -398,7 +408,7 @@ public class reportecuadrocierre extends javax.swing.JDialog {
                  if(cuentaoco>0)
                  {
                      String titulos = "INSERT INTO reportecuadrocierre (codigo,descri, mpres) "
-                             + "VALUES ('\n','Partidas Obra Complementaria','"+pres+"')";
+                             + "VALUES ('','PARTIDAS OBRAS COMPLEMENTARIAS','"+pres+"')";
                      Statement sts = (Statement) conex.createStatement();
                      sts.execute(titulos);
                      String agrega = "INSERT INTO reportecuadrocierre (nro, codigo, descri,unidad,precio,npcantidad,npmonto,"
@@ -448,20 +458,25 @@ public class reportecuadrocierre extends javax.swing.JDialog {
                  if(cuentavps>0)
                  {
                      String titulos = "INSERT INTO reportecuadrocierre (codigo,descri, mpres) "
-                             + "VALUES ('\n','Reconsideraciones de Precio','"+pres+"')";
+                             + "VALUES ('\n','RECONSIDERACIONES DE PRECIOS','"+pres+"')";
                      Statement sts = (Statement) conex.createStatement();
                      sts.execute(titulos);
                      String agrega = "INSERT INTO reportecuadrocierre (nro, codigo, descri,unidad,precio, vpcantidad, vpmonto,"
                              + "aumcantidad,aummonto,discantidad,dismonto,cantmodificado, montomodificado,mpres)"
                              + " (SELECT mp.numegrup, mp.id, mp.descri, mp.unidad, "
-                             + "IF(mp.precasu=0,mp.precunit,mp.precasu)-(SELECT IF(precasu=0,precunit, precasu) FROM "
+                             + "IF(IF(mp.precasu=0,mp.precunit,mp.precasu)-(SELECT IF(precasu=0,precunit, precasu) FROM "
                              + "mppres WHERE (mpre_id='"+pres+"' OR mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+pres+"'))"
-                             + " AND numero=mp.mppre_id) "
+                             + " AND numero=mp.mppre_id)<0,0,IF(mp.precasu=0,mp.precunit,mp.precasu)-(SELECT IF(precasu=0,precunit, precasu) FROM "
+                             + "mppres WHERE (mpre_id='"+pres+"' OR mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+pres+"'))"
+                             + " AND numero=mp.mppre_id)) "
                              + "as precio, "
                              + "mp.cantidad,"
-                             + "mp.cantidad*(IF(mp.precasu=0,mp.precunit,mp.precasu)-(SELECT IF(precasu=0,precunit, precasu) FROM "
+                             + "mp.cantidad*IF((IF(mp.precasu=0,mp.precunit,mp.precasu)-(SELECT IF(precasu=0,precunit, precasu) FROM "
                              + "mppres WHERE (mpre_id='"+pres+"' OR mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+pres+"'))"
-                             + " AND numero=mp.mppre_id)) as vpmonto, "
+                             + " AND numero=mp.mppre_id))<0,0,mp.cantidad*(IF(mp.precasu=0,mp.precunit,mp.precasu)-(SELECT IF(precasu=0,precunit, precasu)"
+                             + " FROM "
+                             + "mppres WHERE (mpre_id='"+pres+"' OR mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+pres+"'))"
+                             + " AND numero=mp.mppre_id))) as vpmonto, "
                              + "(SELECT aumento FROM admppres WHERE "
                              + "(mpre_id='"+pres+"' OR mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+pres+"')) AND "
                              + "numepart=mp.numero "
@@ -509,10 +524,16 @@ public class reportecuadrocierre extends javax.swing.JDialog {
             try {
                 design = JRXmlLoader.load(input);
                  JasperReport report = JasperCompileManager.compileReport(design);
-                 fecha = format.format(jDateChooser1.getDate());
+                 if(jCheckBox1.isSelected()){
+                   fecha = format.format(jDateChooser1.getDate());
+                   titulo = titulo+" "+fecha; 
+                 }else{
+                     fecha="";
+                 }
+                 
                   parameters.put("fecha", fecha);
                   parameters.put("titulo",titulo);
-                  parameters.put("modioavance","Presupuesto Modificado");
+                  parameters.put("modioavance","Modificado");
                   parameters.put("mpres",pres);
                   print = JasperFillManager.fillReport(report, parameters, conex);
                     JasperViewer.viewReport(print, false);
@@ -557,6 +578,7 @@ public class reportecuadrocierre extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cancelButton;
+    private javax.swing.JCheckBox jCheckBox1;
     private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

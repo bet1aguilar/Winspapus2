@@ -682,7 +682,7 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="jDesktopPane1" alignment="1" pref="1073" max="32767" attributes="0"/>
+          <Component id="jDesktopPane1" alignment="1" pref="1017" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
@@ -881,7 +881,7 @@
                             </DimensionLayout>
                             <DimensionLayout dim="1">
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="jLabel1" alignment="1" pref="25" max="32767" attributes="0"/>
+                                  <Component id="jLabel1" alignment="1" pref="45" max="32767" attributes="0"/>
                               </Group>
                             </DimensionLayout>
                           </Layout>
@@ -889,7 +889,7 @@
                             <Component class="javax.swing.JLabel" name="jLabel1">
                               <Properties>
                                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                                  <Color blue="64" green="64" red="64" type="rgb"/>
+                                  <Color blue="5f" green="5b" red="5b" type="rgb"/>
                                 </Property>
                                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                                   <Font name="Tahoma" size="12" style="1"/>
@@ -1075,7 +1075,7 @@
                                 <Property name="editingRow" type="int" value="0"/>
                                 <Property name="name" type="java.lang.String" value="mtabustable" noResource="true"/>
                                 <Property name="selectionBackground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                                  <Color blue="33" green="99" red="ff" type="rgb"/>
+                                  <Color blue="0" green="8d" red="d8" type="rgb"/>
                                 </Property>
                                 <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
                                   <TableHeader reorderingAllowed="false" resizingAllowed="true"/>
@@ -1128,7 +1128,7 @@
                                   <EmptySpace min="-2" max="-2" attributes="0"/>
                                   <Component id="jPanel8" min="-2" pref="32" max="-2" attributes="0"/>
                                   <EmptySpace min="-2" max="-2" attributes="0"/>
-                                  <Component id="jScrollPane2" pref="141" max="32767" attributes="0"/>
+                                  <Component id="jScrollPane2" pref="121" max="32767" attributes="0"/>
                                   <EmptySpace min="-2" pref="0" max="-2" attributes="0"/>
                                   <Component id="jPanel10" min="-2" max="-2" attributes="0"/>
                               </Group>
@@ -1166,7 +1166,7 @@
                             <Component class="javax.swing.JLabel" name="jLabel3">
                               <Properties>
                                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                                  <Color blue="64" green="64" red="64" type="rgb"/>
+                                  <Color blue="5f" green="5b" red="5b" type="rgb"/>
                                 </Property>
                                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                                   <Font name="Tahoma" size="12" style="1"/>
@@ -1352,7 +1352,7 @@
                                 <Property name="editingRow" type="int" value="0"/>
                                 <Property name="name" type="java.lang.String" value="mtabustable" noResource="true"/>
                                 <Property name="selectionBackground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                                  <Color blue="33" green="99" red="ff" type="rgb"/>
+                                  <Color blue="0" green="8d" red="d8" type="rgb"/>
                                 </Property>
                                 <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
                                   <TableHeader reorderingAllowed="false" resizingAllowed="true"/>
@@ -1786,19 +1786,25 @@
                               <Component id="jPanel11" alignment="0" max="32767" attributes="1"/>
                               <Group type="102" alignment="1" attributes="0">
                                   <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="1" attributes="0">
-                                      <Component id="jPanel13" alignment="0" max="32767" attributes="2"/>
-                                      <Component id="jPanel12" alignment="0" max="32767" attributes="2"/>
-                                      <Component id="jPanel14" alignment="0" max="32767" attributes="2"/>
-                                  </Group>
-                                  <EmptySpace min="-2" max="-2" attributes="0"/>
+                                  <Component id="jPanel14" max="32767" attributes="2"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                              </Group>
+                              <Group type="102" alignment="1" attributes="0">
+                                  <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
+                                  <Component id="jPanel12" max="32767" attributes="2"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                              </Group>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
+                                  <Component id="jPanel13" max="32767" attributes="2"/>
+                                  <EmptySpace max="-2" attributes="0"/>
                               </Group>
                           </Group>
                         </DimensionLayout>
                         <DimensionLayout dim="1">
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" alignment="0" attributes="0">
-                                  <Component id="jPanel11" min="-2" pref="27" max="-2" attributes="0"/>
+                                  <Component id="jPanel11" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="jPanel13" max="32767" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
@@ -1832,10 +1838,7 @@
                             </DimensionLayout>
                             <DimensionLayout dim="1">
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="102" alignment="1" attributes="0">
-                                      <Component id="jLabel6" min="-2" pref="26" max="-2" attributes="0"/>
-                                      <EmptySpace max="32767" attributes="0"/>
-                                  </Group>
+                                  <Component id="jLabel6" alignment="0" pref="43" max="32767" attributes="0"/>
                               </Group>
                             </DimensionLayout>
                           </Layout>
@@ -1843,7 +1846,7 @@
                             <Component class="javax.swing.JLabel" name="jLabel6">
                               <Properties>
                                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                                  <Color blue="ab" green="7e" red="61" type="rgb"/>
+                                  <Color blue="5f" green="5b" red="5b" type="rgb"/>
                                 </Property>
                                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                                   <Font name="Tahoma" size="12" style="1"/>
@@ -1853,6 +1856,7 @@
                                 </Property>
                                 <Property name="horizontalAlignment" type="int" value="0"/>
                                 <Property name="text" type="java.lang.String" value="An&#xe1;lisis de Precio Unitario"/>
+                                <Property name="opaque" type="boolean" value="true"/>
                               </Properties>
                             </Component>
                           </SubComponents>
@@ -1906,7 +1910,7 @@
                                               <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
                                               <Component id="jLabel9" min="-2" max="-2" attributes="0"/>
                                           </Group>
-                                          <Component id="jScrollPane5" pref="103" max="32767" attributes="0"/>
+                                          <Component id="jScrollPane5" pref="121" max="32767" attributes="0"/>
                                       </Group>
                                       <EmptySpace min="-2" max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="1" attributes="0">
@@ -1939,7 +1943,7 @@
                                     </Property>
                                     <Property name="toolTipText" type="java.lang.String" value="Para editar Cantidades haga doble click en la columna deseada"/>
                                     <Property name="selectionBackground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                                      <Color blue="33" green="99" red="ff" type="rgb"/>
+                                      <Color blue="0" green="8d" red="d8" type="rgb"/>
                                     </Property>
                                     <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
                                       <TableHeader reorderingAllowed="false" resizingAllowed="true"/>
@@ -2037,12 +2041,12 @@
                           <Layout>
                             <DimensionLayout dim="0">
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="102" attributes="0">
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Group type="102" attributes="0">
+                                  <Group type="102" alignment="1" attributes="0">
+                                      <Group type="103" groupAlignment="1" attributes="0">
+                                          <Group type="102" alignment="0" attributes="0">
                                               <EmptySpace max="-2" attributes="0"/>
                                               <Component id="jLabel11" min="-2" max="-2" attributes="0"/>
-                                              <EmptySpace min="-2" max="-2" attributes="0"/>
+                                              <EmptySpace max="-2" attributes="0"/>
                                               <Component id="jScrollPane6" pref="364" max="32767" attributes="0"/>
                                           </Group>
                                           <Group type="102" alignment="0" attributes="0">
@@ -2061,13 +2065,13 @@
                                   <Group type="102" alignment="0" attributes="0">
                                       <Group type="103" groupAlignment="0" attributes="0">
                                           <Group type="102" attributes="0">
-                                              <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
+                                              <EmptySpace max="-2" attributes="0"/>
                                               <Component id="jLabel11" min="-2" max="-2" attributes="0"/>
                                           </Group>
-                                          <Component id="jScrollPane6" pref="144" max="32767" attributes="0"/>
+                                          <Component id="jScrollPane6" min="-2" pref="110" max="-2" attributes="0"/>
                                       </Group>
-                                      <EmptySpace min="-2" max="-2" attributes="0"/>
-                                      <Group type="103" groupAlignment="1" attributes="0">
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" attributes="0">
                                           <Component id="jPanel15" min="-2" max="-2" attributes="0"/>
                                           <Component id="jPanel28" min="-2" max="-2" attributes="0"/>
                                       </Group>
@@ -2093,7 +2097,7 @@
                                     </Property>
                                     <Property name="toolTipText" type="java.lang.String" value="Para editar Cantidades haga doble click en la columna deseada"/>
                                     <Property name="selectionBackground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                                      <Color blue="33" green="99" red="ff" type="rgb"/>
+                                      <Color blue="0" green="8d" red="d8" type="rgb"/>
                                     </Property>
                                     <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
                                       <TableHeader reorderingAllowed="false" resizingAllowed="true"/>
@@ -2243,7 +2247,7 @@
                                   <Group type="102" alignment="0" attributes="0">
                                       <Group type="103" groupAlignment="0" attributes="0">
                                           <Component id="jLabel7" min="-2" max="-2" attributes="0"/>
-                                          <Component id="jScrollPane4" pref="124" max="32767" attributes="0"/>
+                                          <Component id="jScrollPane4" pref="122" max="32767" attributes="0"/>
                                       </Group>
                                       <EmptySpace max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="0" attributes="0">
@@ -2276,7 +2280,7 @@
                                     </Property>
                                     <Property name="toolTipText" type="java.lang.String" value="Para editar Cantidades haga doble click en la columna deseada"/>
                                     <Property name="selectionBackground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                                      <Color blue="33" green="99" red="ff" type="rgb"/>
+                                      <Color blue="0" green="8d" red="d8" type="rgb"/>
                                     </Property>
                                     <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
                                       <TableHeader reorderingAllowed="false" resizingAllowed="true"/>
