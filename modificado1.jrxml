@@ -3,6 +3,13 @@
 	<property name="ireport.zoom" value="1.2100000000000009"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
+	<style name="style1">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[new Boolean($F{numero}.equals(''))]]></conditionExpression>
+			<style forecolor="#000000" backcolor="#868695" fill="Solid" fontSize="14"
+isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
+		</conditionalStyle>
+	</style>
 	<parameter name="encabezado" class="java.lang.String"/>
 	<parameter name="fecha" class="java.lang.String"/>
 	<parameter name="titulo" class="java.lang.String"/>
@@ -25,8 +32,8 @@
 	<parameter name="porimp1" class="java.lang.Double"/>
 	<queryString>
 		<![CDATA[SELECT
-     reportemodificado.`numero` AS numero,
-     CONCAT( reportemodificado.`codigo`,"\n",reportemodificado.`descri`) AS descri,
+     IFNULL(reportemodificado.`numero`,'') AS numero,
+     IFNULL(CONCAT( reportemodificado.`codigo`,"\n",reportemodificado.`descri`),reportemodificado.`descri`) AS descri,
 
      reportemodificado.`unidad` AS unidad,
      reportemodificado.`cantidad` AS cantidad,
@@ -322,7 +329,7 @@ FROM
 	<detail>
 		<band height="20" splitType="Prevent">
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="38c0235e-858d-4635-aba5-fb74ea867620" stretchType="RelativeToTallestObject" x="0" y="0" width="42" height="20"/>
+				<reportElement uuid="38c0235e-858d-4635-aba5-fb74ea867620" style="style1" stretchType="RelativeToTallestObject" mode="Opaque" x="0" y="0" width="42" height="20"/>
 				<box topPadding="3" leftPadding="5" rightPadding="5">
 					<leftPen lineWidth="1.0"/>
 					<rightPen lineWidth="1.0"/>
@@ -333,7 +340,7 @@ FROM
 				<textFieldExpression><![CDATA[$F{numero}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement uuid="e3d4730e-f7a4-4cde-9cb3-31bedf5a4802" stretchType="RelativeToTallestObject" x="42" y="0" width="319" height="20"/>
+				<reportElement uuid="e3d4730e-f7a4-4cde-9cb3-31bedf5a4802" style="style1" stretchType="RelativeToTallestObject" mode="Opaque" x="42" y="0" width="319" height="20"/>
 				<box topPadding="3" leftPadding="5" bottomPadding="3" rightPadding="5">
 					<leftPen lineWidth="1.0"/>
 					<rightPen lineWidth="1.0"/>
@@ -344,7 +351,7 @@ FROM
 				<textFieldExpression><![CDATA[$F{descri}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="a0fff264-9933-493f-b597-3a4ef1940bee" stretchType="RelativeToTallestObject" x="361" y="0" width="35" height="20"/>
+				<reportElement uuid="a0fff264-9933-493f-b597-3a4ef1940bee" style="style1" stretchType="RelativeToTallestObject" mode="Opaque" x="361" y="0" width="35" height="20"/>
 				<box topPadding="3" leftPadding="5" rightPadding="5">
 					<leftPen lineWidth="1.0"/>
 					<rightPen lineWidth="1.0"/>
@@ -355,7 +362,7 @@ FROM
 				<textFieldExpression><![CDATA[$F{unidad}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement uuid="01a71972-cb66-4dae-8a09-a7404911203c" stretchType="RelativeToTallestObject" x="396" y="0" width="41" height="20"/>
+				<reportElement uuid="01a71972-cb66-4dae-8a09-a7404911203c" style="style1" stretchType="RelativeToTallestObject" mode="Opaque" x="396" y="0" width="41" height="20"/>
 				<box topPadding="3" leftPadding="5" rightPadding="5">
 					<leftPen lineWidth="1.0"/>
 					<rightPen lineWidth="1.0"/>
@@ -366,7 +373,7 @@ FROM
 				<textFieldExpression><![CDATA[$F{cantidad}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement uuid="56c1d871-0733-43fc-b993-86b9ee7aff04" stretchType="RelativeToTallestObject" x="437" y="0" width="47" height="20"/>
+				<reportElement uuid="56c1d871-0733-43fc-b993-86b9ee7aff04" style="style1" stretchType="RelativeToTallestObject" mode="Opaque" x="437" y="0" width="47" height="20"/>
 				<box topPadding="3" leftPadding="5" rightPadding="5">
 					<leftPen lineWidth="1.0"/>
 					<rightPen lineWidth="1.0"/>
@@ -377,7 +384,7 @@ FROM
 				<textFieldExpression><![CDATA[$F{precunit}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement uuid="291a1107-b4aa-469b-91d8-bbb779a97fda" stretchType="RelativeToTallestObject" x="484" y="0" width="87" height="20"/>
+				<reportElement uuid="291a1107-b4aa-469b-91d8-bbb779a97fda" style="style1" stretchType="RelativeToTallestObject" mode="Opaque" x="484" y="0" width="87" height="20"/>
 				<box topPadding="3" leftPadding="5" rightPadding="5">
 					<leftPen lineWidth="1.0"/>
 					<rightPen lineWidth="1.0"/>

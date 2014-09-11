@@ -479,17 +479,10 @@ public void generareportepres(){
             try {
               
                 if(cual==1){
-                    if(!jCheckBox1.isSelected()){
-                    if(jCheckBox2.isSelected()){
-                         input = new FileInputStream(new File("presupuestosubtotal.jrxml"));
-                    }else{
-                         input = new FileInputStream(new File("presupuestos.jrxml"));
-                    }
-              String cargasinredondeo = "SELECT SUM(ROUND(IF(mppres.`precasu`=0,mppres.`precunit`,precasu)*cantidad,2)) "
-                + "FROM `winspapu`.`mppres` WHERE  tipo='Org' AND mpre_id='"+pres+"'";
-               try {
+                     try {
             Statement st1 = (Statement) conex.createStatement();
-          
+           String cargasinredondeo = "SELECT SUM(ROUND(IF(mppres.`precasu`=0,mppres.`precunit`,precasu)*cantidad,2)) "
+                + "FROM `winspapu`.`mppres` WHERE  tipo='Org' AND mpre_id='"+pres+"'";
             ResultSet rst1 = st1.executeQuery(cargasinredondeo);
             
             while (rst1.next()){
@@ -512,11 +505,119 @@ public void generareportepres(){
          } catch (SQLException ex) {
             Logger.getLogger(reportepresupuesto.class.getName()).log(Level.SEVERE, null, ex);
         }
-               }
-                }else{
-                    if(jCheckBox1.isSelected()){
-                         input = new FileInputStream(new File("modificado.jrxml"));
-                         String consultacapitulos = "SELECT id,codigo, descri WHERE mpre_id='"+pres+"' "
+                    if(!jCheckBox1.isSelected()){
+                    if(jCheckBox2.isSelected()){
+                         input = new FileInputStream(new File("presupuestosubtotal.jrxml"));
+                    }else{
+                         input = new FileInputStream(new File("presupuestos.jrxml"));
+                    }
+             
+              
+               
+               
+       }else{             
+           //-------------------SELECCIONADA OPCIÓN DE CAPITULOS
+                         input = new FileInputStream(new File("modificado1.jrxml"));
+                         //-------------CONSULTA DE PARAMETROS---------------------------------------------
+                    String obra="",lugar="",partidapres="",nrocont="",cedres="";
+                    String porimp="", encabezado="";
+                    Object logo1 = null,logo2=null;
+                    String contrepleg="",cedrep="",ingres="",civres="",ingins="",cedins="", civins="";
+                   Double porimp1=0.00;
+                    String parametros = "SELECT p.nombre as obra,"
+                            + "p.ubicac as lugar, p.partidapres as partidapres,"
+                            + "p.nrocon as nrocont, mc.cedres as cedres, CONCAT(p.porimp,'%') "
+                            + "as porimp, mc.encabe as encabezado,p.porimp as porimp1,"
+                            + "IFNULL(mc.logo,'') as logo1, IFNULL(prop.logo,'') as logo2, mc.repleg as contrepleg,"
+                            + " mc.cedrep as cedrep,"
+                            + "mc.ingres as ingres, mc.civres as civres, mc.ingins as ingins,"
+                            + " mc.cedins as cedins, mc.civins as civins FROM mpres as p, mconts as mc, mprops as prop"
+                            + " WHERE p.codcon=mc.id AND p.codpro=prop.id AND p.id='"+pres+"'";
+                    try { 
+                        
+                        Statement st = (Statement) conex.createStatement();
+                        ResultSet rst = st.executeQuery(parametros);
+                        while(rst.next()){
+                            obra = rst.getString("obra");
+                            lugar = rst.getString("lugar");
+                            partidapres = rst.getString("partidapres");
+                            nrocont = rst.getString("nrocont");
+                            cedres = rst.getString("cedres");
+                            porimp = rst.getString("porimp");
+                            encabezado = rst.getString("encabezado");
+                            porimp1 = rst.getDouble("porimp1");
+                            logo1 = rst.getObject("logo1");
+                            logo2 = rst.getObject("logo2");
+                            contrepleg = rst.getString("contrepleg");
+                            cedrep = rst.getString("cedrep");
+                            ingres = rst.getString("ingres");
+                            civres = rst.getString("civres");
+                            ingins = rst.getString("ingins");
+                            cedins = rst.getString("cedins");
+                            civins = rst.getString("civins");                            
+                        }
+                      parameters.put("obra", obra);
+                      parameters.put("lugar", lugar);
+                      parameters.put("partidapres", partidapres);
+                      parameters.put("nrocont", nrocont);
+                      parameters.put("cedres", cedres);
+                      parameters.put("porimp", porimp);
+                      parameters.put("encabezado", encabezado);
+                      parameters.put("porimp1",porimp1);
+                      parameters.put("logo1", logo1);
+                      parameters.put("logo2", logo2);
+                      parameters.put("contrepleg", contrepleg);
+                      parameters.put("cedrep", cedrep);
+                      parameters.put("ingres", ingres);
+                      parameters.put("civres", civres);
+                      parameters.put("ingins", ingins);
+                      parameters.put("cedins", cedins);
+                      parameters.put("civins", civins);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(reportepresupuesto.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    
+                         //CONTAR PARTIDAS QUE NO TENGAN NINGÚN CAPITULO PARA IMPRIMIRLAS DE PRIMERO
+                         String cuentas = "SELECT count(*) FROM mppres WHERE capitulo IS NULL AND "
+                                 + "(mpre_id='"+pres+"')";
+                         int cont=0;
+                        try {
+                             String borra = "TRUNCATE TABLE reportemodificado";                  
+                        Statement truncate = (Statement) conex.createStatement();
+                        truncate.execute(borra);
+                            Statement contamelo = (Statement) conex.createStatement();
+                            ResultSet rstcontamelo = contamelo.executeQuery(cuentas);
+                            while(rstcontamelo.next()){
+                                cont = rstcontamelo.getInt(1);
+                            }
+                            if(cont>0){
+                                //---------------HAY PARTIDAS SIN CAPITULO--------------------
+                                //--------INSERTO PARTIDAS A LA TABLA-------------------------
+                                String insertar = "INSERT INTO reportemodificado "
+                                                + "(numero, codigo,descri,unidad,cantidad, precunit, total)"
+                                                + " SELECT numegrup, descri, unidad, cantidad, IF(precasu=0, "
+                                                + "precunit, precasu) as precunit, IF(precasu=0, "
+                                                + "precunit, precasu)*cantidad as total FROM mppres WHERE "
+                                                + "(mpre_id ='"+pres+"') AND capitulo IS NULL";
+                                        Statement stinsertar = (Statement) conex.createStatement();
+                                        stinsertar.execute(insertar);
+                                 String select = "SELECT SUM(IF(precasu,precunit,precasu) as precunit* cantidad) "
+                                        + "as total FROM mppres WHERE mpre_id='"+pres+"' AND capitulo IS NULL";
+                                 Statement stselect = (Statement) conex.createStatement();
+                                 ResultSet rstselect = stselect.executeQuery(select);
+                                 double totalidad = 0.0;
+                                 while(rstselect.next()){
+                                     totalidad = rstselect.getDouble(1);
+                                 }
+                                  String insertcap="INSERT INTO reportemodificado (descri, total)"
+                                                + "('Subtotal',"+totalidad+")";
+                            }
+                        } catch (SQLException ex) {
+                            Logger.getLogger(reportepresupuesto.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                         
+                         //-------------------------------------------------------------------------
+                         String consultacapitulos = "SELECT id,codigo, descri FROM cmpres WHERE mpre_id='"+pres+"' "
                                  + "AND cmpres_id IS NULL";
                         try {
                             Statement stcapitulos = (Statement) conex.createStatement();
@@ -526,7 +627,17 @@ public void generareportepres(){
                                 idcap = rstcapitulos.getString(1);
                                 codigo = rstcapitulos.getString(2);
                                 descri = rstcapitulos.getString(3);
+                                //INSERTAR CAPITULO EN LA TABLA REPORTE
+                               
+                               String insertacap = "INSERT INTO reportemodificado "
+                                       + "( descri) VALUES "
+                                       + "('"+(codigo+" "+descri).toUpperCase()+"')";
+                               Statement inserta = (Statement) conex.createStatement();
+                               inserta.execute(insertacap);
+                                
+                                //------------BUSCAR SI TIENE SUBCAPITULOS
                                 int cuenta = 0;
+                                
                                 String select = "SELECT count(*) FROM cmpres WHERE mpre_id='"+pres+"'"
                                         + " AND cmpres_id="+idcap+"";
                                 Statement sts = (Statement) conex.createStatement();
@@ -534,9 +645,65 @@ public void generareportepres(){
                                 while(rsts.next()){
                                     cuenta = rsts.getInt(1);
                                 }
-                                if(cuenta>0){
+                                if(cuenta>0)
+                                {
+                                    //TIENE SUBCAPITULOS
+                                    // IMPRIMIR PRIMERO LAS PARTIDAS LUEGO LOS SUBCAPITULOS
+                                    String cuentapartidas = "SELECT COUNT(*) FROM mppres WHERE capitulo="+idcap+" "
+                                            + "AND (mpre_id='"+pres+"')";
+                                    Statement stcuenta = (Statement) conex.createStatement();
+                                    ResultSet rstcuenta = stcuenta.executeQuery(cuentapartidas);
                                     
-                                }else{
+                                    while(rstcuenta.next()){
+                                        cuenta = rstcuenta.getInt(1);
+                                    }
+                                    if(cuenta>0){
+                                        // HAY PARTIDAS INTERNAS DEL CAPITULO SIN SUBCAPITULO
+                                        // INSERTAR PARTIDAS AL REPORTE CON EL TITULO DEL CAPITULO
+                                        String insertar = "INSERT INTO reportemodificado "
+                                                + "(numero, codigo,descri,unidad,cantidad, precunit, total)"
+                                                + " SELECT numegrup, id,descri, unidad, cantidad, IF(precasu=0, "
+                                                + "precunit, precasu) as precunit, IF(precasu=0, "
+                                                + "precunit, precasu)*cantidad as total FROM mppres WHERE "
+                                                + "(mpre_id ='"+pres+"') AND capitulo="+idcap+"";
+                                        Statement stinsertar = (Statement) conex.createStatement();
+                                        stinsertar.execute(insertar);
+                                        
+                                    }
+                                    //-----------------PARA INSERTAR LOS SUBCAPITULOS---------------------------------
+                                    String subcap = "SELECT id, descri, codigo FROM cmpres WHERE mpre_id='"+pres+"'"
+                                            + "AND cmpres_id="+idcap+"";
+                                    Statement stsubcap = (Statement) conex.createStatement();
+                                    ResultSet rstsubcap = stsubcap.executeQuery(subcap);
+                                    String idsub, descrisub, codigosub;
+                                    while(rstsubcap.next()){
+                                        idsub = rstsubcap.getString(1);
+                                        descrisub = rstsubcap.getString(2);
+                                        codigosub = rstsubcap.getString(3);
+                                        //-----------------------------INSERTAR SUBCAPITULO--------------------------
+                                        String insertasub = "INSERT INTO reportemodificado (descri) "
+                                                + "VALUES ('    SUBCAPITULO DE "+(codigo+" "+descri).toUpperCase()+": "+(codigosub+" "+descrisub).toUpperCase()+"')";
+                                        Statement stinsert = (Statement) conex.createStatement();
+                                        stinsert.execute(insertasub);
+                                        //---------------------------INSERTA PARTIDAS---------------------------------
+                                        String partidas = "INSERT INTO reportemodificado "
+                                                + "SELECT numegrup, id, descri, unidad, cantidad, "
+                                                + "IF(precasu=0,precunit,precasu) as precunit, "
+                                                + "IF(precasu=0,precunit,precasu)*cantidad as total FROM "
+                                                + "mppres WHERE mpre_id='"+pres+"' AND capitulo="+idsub+"";
+                                        Statement stpart = (Statement) conex.createStatement();
+                                        stpart.execute(partidas);
+                                    }
+                                }else
+                                {
+                                    //NO TIENE SUBCAPITULOS
+                                    String partidas = "INSERT INTO reportemodificado "
+                                                + "SELECT numegrup, id, descri, unidad, cantidad, "
+                                                + "IF(precasu=0,precunit,precasu) as precunit, "
+                                                + "IF(precasu=0,precunit,precasu)*cantidad as total FROM "
+                                                + "mppres WHERE mpre_id='"+pres+"' AND capitulo="+idcap+"";
+                                        Statement stpart = (Statement) conex.createStatement();
+                                        stpart.execute(partidas);
                                     
                                 }
                             }
@@ -544,8 +711,10 @@ public void generareportepres(){
                             Logger.getLogger(reportepresupuesto.class.getName()).log(Level.SEVERE, null, ex);
                         }
                                  
-                   }
-                }
+                          
+       }
+                }               
+                
                 if(cual==2){
                     float impuestos=0;
                     if(jCheckBox2.isSelected()){
@@ -685,8 +854,8 @@ public void generareportepres(){
                                 + "((SELECT SUM(aumento) FROM admppres WHERE numepart=mp.numero AND mpre_id='"+pres+"'),0)-"
                                 + "IFNULL((SELECT SUM(disminucion) "
                                 + "FROM admppres WHERE numepart=mp.numero AND mpre_id='"+pres+"'),0),0)";
-                            String insertatit = "INSERT INTO reportemodificado (codigo,descri)"
-                                    + "VALUES ('','PARTIDAS NO PREVISTAS')";
+                            String insertatit = "INSERT INTO reportemodificado (descri)"
+                                    + "VALUES ('PARTIDAS NO PREVISTAS')";
                             Statement ins = (Statement) conex.createStatement();
                             ins.execute(insertatit);
                              String insertanp = "INSERT INTO reportemodificado "
@@ -714,8 +883,8 @@ public void generareportepres(){
                             cont = rstoa.getInt(1);
                         }
                         if(cont>0){
-                            String insertatit = "INSERT INTO reportemodificado (codigo,descri)"
-                                    + "VALUES ('','PARTIDAS OBRAS ADICIONALES')";
+                            String insertatit = "INSERT INTO reportemodificado (descri)"
+                                    + "VALUES ('PARTIDAS OBRAS ADICIONALES')";
                             Statement ins = (Statement) conex.createStatement();
                             ins.execute(insertatit);
                             String insertanp = "INSERT INTO reportemodificado "
@@ -742,8 +911,8 @@ public void generareportepres(){
                             cont = rstoe.getInt(1);
                         }
                         if(cont>0){
-                            String insertatit = "INSERT INTO reportemodificado (codigo,descri)"
-                                    + "VALUES ('','PARTIDAS OBRAS EXTRAS')";
+                            String insertatit = "INSERT INTO reportemodificado (descri)"
+                                    + "VALUES ('PARTIDAS OBRAS EXTRAS')";
                             Statement ins = (Statement) conex.createStatement();
                             ins.execute(insertatit);
                             String insertanp = "INSERT INTO reportemodificado "
@@ -771,8 +940,8 @@ public void generareportepres(){
                             cont = rstoc.getInt(1);
                         }
                         if(cont>0){
-                            String insertatit = "INSERT INTO reportemodificado (codigo,descri)"
-                                    + "VALUES ('','PARTIDAS OBRAS COMPLEMENTARIAS')";
+                            String insertatit = "INSERT INTO reportemodificado (descri)"
+                                    + "VALUES ('PARTIDAS OBRAS COMPLEMENTARIAS')";
                             Statement ins = (Statement) conex.createStatement();
                             ins.execute(insertatit);
                             String insertanp = "INSERT INTO reportemodificado "
@@ -801,8 +970,8 @@ public void generareportepres(){
                         }
                         if(cont>0)
                         {
-                             String insertatit = "INSERT INTO reportemodificado (codigo,descri)"
-                                    + "VALUES ('','VARIACIONES DE PRECIO')";
+                             String insertatit = "INSERT INTO reportemodificado (descri)"
+                                    + "VALUES ('VARIACIONES DE PRECIO')";
                             Statement ins = (Statement) conex.createStatement();
                             ins.execute(insertatit);
                             String deltas="IF((m.precunit-(SELECT mp.precunit FROM "

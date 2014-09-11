@@ -3241,12 +3241,11 @@ public void agrega(){
     }//GEN-LAST:event_jTextField14MouseClicked
 
     private void jButton15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton15ActionPerformed
-        
-        
+
         valuacion val = new valuacion(prin, true, conex, id);
         int xv = (prin.getWidth()/2)-375;
-        int yv = (prin.getHeight()/2)-325;
-        val.setBounds(xv, yv, 850, 650);
+        int yv = (prin.getHeight()/2)-700/2;
+        val.setBounds(xv, yv, 850, 700);
         val.setVisible(true);
         
     }//GEN-LAST:event_jButton15ActionPerformed

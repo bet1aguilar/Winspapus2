@@ -82,8 +82,10 @@ public class capitulospartidas extends javax.swing.JDialog {
     public final void buscapartida(){
         try {
             Statement st = (Statement) conex.createStatement();
-            ResultSet rs = st.executeQuery("SELECT id, descri, numero, numegrup  "
-                    + " FROM Mppres m WHERE m.mpre_id = '"+mpres+"' AND status=1 AND m.capitulo IS NULL OR "
+            ResultSet rs = st.executeQuery("SELECT id, descri, numero, numegrup, IF(tipo='NP',tiponp,tipo) as tipo  "
+                    + " FROM Mppres m WHERE (m.mpre_id = '"+mpres+"' OR m.mpre_id IN "
+                    + "(SELECT id FROM mpres WHERE mpres_id='"+mpres+"')) "
+                    + "AND status=1 AND m.capitulo IS NULL OR "
                     + "capitulo='0' ORDER BY numegrup");
             ResultSetMetaData rsMd = (ResultSetMetaData) rs.getMetaData();
             //System.out.println("siii entra en presupuesto");
@@ -172,7 +174,9 @@ public class capitulospartidas extends javax.swing.JDialog {
         try {
             Statement s = (Statement) conex.createStatement();
             ResultSet rs = s.executeQuery("SELECT id, descri, numero, numegrup "
-                    + "FROM mppres m WHERE m.mpre_id = '"+mpres+"' AND status=1 AND m.capitulo "
+                    + "FROM mppres m WHERE (m.mpre_id = '"+mpres+"' OR m.mpre_id IN "
+                    + "(SELECT id FROM mpres WHERE mpres_id='"+mpres+"')) "
+                    + "AND status=1 AND m.capitulo "
                     + "IS NULL OR m.capitulo='0'  AND (id LIKE'%"+busqueda+"%' || descri LIKE '%"+busqueda+"%')"
                     + " ORDER BY numegrup");
             ResultSetMetaData rsMd = (ResultSetMetaData) rs.getMetaData();
@@ -507,7 +511,7 @@ public class capitulospartidas extends javax.swing.JDialog {
             
             for(int i=0; i<contsel;i++){
                 String actualiza = "UPDATE mppres SET capitulo="+capitulo+" WHERE id='"+partidas[i]+"' "
-                        + "AND mpre_id='"+mpres+"'";
+                        + "AND (mpre_id='"+mpres+"' OR mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+mpres+"')";
             try {
                 Statement sts = (Statement) conex.createStatement();
                 sts.execute(actualiza);
