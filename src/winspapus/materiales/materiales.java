@@ -13,6 +13,7 @@ package winspapus.materiales;
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.ResultSetMetaData;
 import com.mysql.jdbc.Statement;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
@@ -56,6 +57,12 @@ String [] materiales, auxmat;
     public materiales(java.awt.Frame parent, boolean modal, String mtabu, String num, String codicove, Principal obj) {
         super(parent, modal);
         initComponents();
+        jTable1.setOpaque(true);
+    jTable1.setShowHorizontalLines(true);
+    jTable1.setShowVerticalLines(false);
+    jTable1.getTableHeader().setSize(new Dimension(25,40));
+    jTable1.getTableHeader().setPreferredSize(new Dimension(25,30));
+    jTable1.setRowHeight(20);
         tabu = mtabu;
         this.obje = obj;
         numepart = num;

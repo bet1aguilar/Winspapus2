@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="cierre" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isSummaryWithPageHeaderAndFooter="true" isFloatColumnFooter="true" uuid="50c5a276-112d-47ea-b3d6-f16f59a37d76">
 	<property name="ireport.zoom" value="1.9487171000000019"/>
-	<property name="ireport.x" value="796"/>
-	<property name="ireport.y" value="13"/>
+	<property name="ireport.x" value="832"/>
+	<property name="ireport.y" value="253"/>
 	<parameter name="titulo" class="java.lang.String"/>
 	<parameter name="fecha" class="java.lang.String"/>
 	<parameter name="modioavance" class="java.lang.String"/>
@@ -618,6 +618,20 @@ WHERE mpres.id = $P{mpres}]]>
 				<text><![CDATA[Monto Bs.]]></text>
 			</staticText>
 			<staticText>
+				<reportElement uuid="5e6132da-639d-442c-97af-6d44c86837e7" x="660" y="0" width="92" height="14"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Modificado]]></text>
+			</staticText>
+			<staticText>
 				<reportElement uuid="abc672f7-77f9-4a21-aebb-1b83140107ab" x="693" y="14" width="38" height="16"/>
 				<box rightPadding="3">
 					<pen lineWidth="1.0"/>
@@ -659,20 +673,6 @@ WHERE mpres.id = $P{mpres}]]>
 				</textElement>
 				<text><![CDATA[%]]></text>
 			</staticText>
-			<textField>
-				<reportElement uuid="4347a3ac-c2eb-496a-b265-a6929239ab29" x="660" y="0" width="92" height="14"/>
-				<box>
-					<pen lineWidth="1.0"/>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="7" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[Modificado]]></textFieldExpression>
-			</textField>
 		</band>
 	</columnHeader>
 	<detail>
