@@ -86,8 +86,7 @@ public class hilorecuperar extends Thread{
             Statement escribir5 = (Statement) conexion.createStatement();
             sql = "Select * from manoobrapartida";
             ResultSet rst5 = carga5.executeQuery(sql); 
-             while(rst5.next()){
-
+            while(rst5.next()){ 
                  sql= "INSERT INTO dmoptabs VALUES ('"+mtabu+"',"                                              
                                               + "'"+rst5.getString("IDManoObra")+"',"
                                               + rst5.getInt("numero")+","
@@ -98,8 +97,8 @@ public class hilorecuperar extends Thread{
                                               + "'1',"
                                               + "'"+rst5.getString("IDPartidas")+"')";                   
                    escribir5.execute(sql); 
-
-            }   
+            }
+               
           
                 
              JOptionPane.showMessageDialog(recup, "Recuperación de datos del Tabulador Completado..");

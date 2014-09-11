@@ -6,6 +6,7 @@ package reportes;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.*;
 import com.mysql.jdbc.Connection;
+import com.toedter.calendar.JDateChooser;
 import java.io.FileNotFoundException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -48,10 +49,11 @@ public class memoriad extends PdfPageEventHelper{
     String fecha ;
      SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
     
-    public memoriad(String mpres, Connection conex){
+    public memoriad(String mpres, Connection conex,String fecha){
         try {
             this.mpres=mpres;
             this.conex=conex;
+            this.fecha = fecha;
             fuenteAzul25.setColor(BaseColor.BLUE);
             generarpdf();
             
@@ -78,7 +80,7 @@ public class memoriad extends PdfPageEventHelper{
             JasperReport report = JasperCompileManager.compileReport(design);
             Map parameters = new HashMap();
             
-         
+       
             parameters.put("fecha", fecha);
              parameters.put("mpres", mpres);
             JasperPrint print = JasperFillManager.fillReport(report, parameters, conex);

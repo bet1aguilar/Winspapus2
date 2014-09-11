@@ -282,8 +282,8 @@ public class tabpresupuesto extends javax.swing.JDialog {
 
         jPanel2.setBackground(new java.awt.Color(97, 126, 171));
 
-        jLabel1.setBackground(new java.awt.Color(100, 100, 100));
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 12));
+        jLabel1.setBackground(new java.awt.Color(91, 91, 95));
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Seleccione el Listado de Precios Referenciales y la Obra a Trabajar");
@@ -297,13 +297,13 @@ public class tabpresupuesto extends javax.swing.JDialog {
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 34, Short.MAX_VALUE)
+            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         jTable1.setAutoCreateRowSorter(true);
         jTable1.setFont(new java.awt.Font("Tahoma", 0, 10));
         jTable1.setToolTipText("Seleccione Un Tabulador");
-        jTable1.setSelectionBackground(new java.awt.Color(255, 153, 51));
+        jTable1.setSelectionBackground(new java.awt.Color(216, 141, 0));
         jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jTable1MouseClicked(evt);
@@ -311,9 +311,9 @@ public class tabpresupuesto extends javax.swing.JDialog {
         });
         jScrollPane1.setViewportView(jTable1);
 
-        jTable2.setFont(new java.awt.Font("Tahoma", 0, 10));
+        jTable2.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         jTable2.setToolTipText("Seleccione Un proyecto de Obra");
-        jTable2.setSelectionBackground(new java.awt.Color(255, 153, 51));
+        jTable2.setSelectionBackground(new java.awt.Color(216, 141, 0));
         jTable2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jTable2MouseClicked(evt);
@@ -392,7 +392,7 @@ public class tabpresupuesto extends javax.swing.JDialog {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 463, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 482, Short.MAX_VALUE)
         );
 
         pack();

@@ -177,31 +177,29 @@ Date fecha = new Date();
 
         jPanel4.setBackground(new java.awt.Color(100, 100, 100));
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11));
+        jLabel1.setBackground(new java.awt.Color(91, 91, 95));
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Memoria Descriptiva");
+        jLabel1.setOpaque(true);
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(260, 260, 260)
-                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(262, 262, 262))
+            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 639, Short.MAX_VALUE)
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 45, Short.MAX_VALUE)
         );
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 11));
         jLabel2.setText("Titulo:");
 
         jTextField1.setText("MEMORIA DESCRIPTIVA");
+        jTextField1.setSelectionColor(new java.awt.Color(216, 141, 0));
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField1ActionPerformed(evt);
@@ -220,6 +218,7 @@ Date fecha = new Date();
 
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
+        jTextArea1.setSelectionColor(new java.awt.Color(216, 141, 0));
         jTextArea1.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 jTextArea1KeyTyped(evt);
@@ -322,7 +321,10 @@ Date fecha = new Date();
 
 private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
     guarda();
-    memoriad memo= new memoriad(pres, conex);
+     SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+    String fechas = formato.format(jDateChooser1.getDate());
+    
+    memoriad memo= new memoriad(pres, conex,fechas);
     
     
     

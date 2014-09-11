@@ -477,10 +477,12 @@ public final void buscagrupo() throws SQLException{
 
         jPanel2.setBackground(new java.awt.Color(100, 100, 100));
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11));
+        jLabel1.setBackground(new java.awt.Color(91, 91, 95));
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Partidas del Presupuesto");
+        jLabel1.setOpaque(true);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -490,10 +492,7 @@ public final void buscagrupo() throws SQLException{
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         jLabel3.setText("Número *:");
@@ -926,7 +925,7 @@ public final void buscagrupo() throws SQLException{
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel18)
                             .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1349,7 +1348,7 @@ private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:ev
                   if(si==0){
                 int op =JOptionPane.showConfirmDialog(null, "¿Desea Agregar esta partida en Tabulador de Prueba?", "Tabulador", JOptionPane.YES_NO_OPTION);
                 if(op==JOptionPane.YES_OPTION){
-                    String selectcount = "SELECT count(*) FROM mtabus WHERE id='ESTUDIO'";
+                    String selectcount = "SELECT count(*) FROM mtabus WHERE id='PRUEBA'";
                     Statement stcount = (Statement) conex.createStatement();
                     ResultSet rst = stcount.executeQuery(selectcount);
                     int cuenta =0;
@@ -1358,7 +1357,7 @@ private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:ev
                     }
                     if(cuenta==0){
                         String inserta = "INSERT INTO mtabus (id, descri, vigencia, status) VALUES "
-                                + "('ESTUDIO', 'PARTIDAS A SER INSERTADAS EN SIGUIENTES TABULADORES', NOW(), 1)";
+                                + "('PRUEBA', 'PARTIDAS A SER INSERTADAS EN SIGUIENTES TABULADORES', NOW(), 1)";
                         Statement stinsert = (Statement) conex.createStatement();
                         stinsert.execute(inserta);
                         JOptionPane.showMessageDialog(rootPane, "Tabulador de prueba agregado, modifique los valores necesarios");
@@ -1366,7 +1365,7 @@ private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:ev
                   String insertapart = "INSERT INTO mptabs (codicove,numero,numegrup,descri, mbdat_id,porcgad, porcpre, porcutil, "
                           + "precasu, precunit, rendimi, unidad, redondeo, status, mtabus_id, cantidad,capitulo)"
                           + " SELECT id, numero, numegrup, descri,idband, porcgad, porcpre, porcutil, precasu, precunit, rendimi, "
-                          + "unidad, redondeo, 1, 'ESTUDIO', cantidad, capitulo FROM mppres WHERE numero="+numero+" AND"
+                          + "unidad, redondeo, 1, 'PRUEBA', cantidad, capitulo FROM mppres WHERE numero="+numero+" AND"
                           + " (mpre_id='"+mpre_id+"' OR mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+mpre_id+"'))";
                   Statement stinserta = (Statement) conex.createStatement();
                   stinserta.execute(insertapart);

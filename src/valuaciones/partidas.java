@@ -230,10 +230,12 @@ public final void cargapresupuesto() throws SQLException{
 
         jPanel4.setBackground(new java.awt.Color(100, 100, 100));
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11));
+        jLabel1.setBackground(new java.awt.Color(91, 91, 95));
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Partidas del Presupuesto");
+        jLabel1.setOpaque(true);
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -243,14 +245,11 @@ public final void cargapresupuesto() throws SQLException{
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
-        jTable1.setFont(new java.awt.Font("Tahoma", 0, 10));
-        jTable1.setSelectionBackground(new java.awt.Color(255, 153, 51));
+        jTable1.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        jTable1.setSelectionBackground(new java.awt.Color(216, 141, 0));
         jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jTable1MouseClicked(evt);
@@ -377,7 +376,7 @@ public final void cargapresupuesto() throws SQLException{
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 427, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 436, Short.MAX_VALUE)
         );
 
         pack();

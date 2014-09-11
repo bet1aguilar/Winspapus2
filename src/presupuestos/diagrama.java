@@ -1762,25 +1762,20 @@ public void mouseClicked(java.awt.event.MouseEvent e)
 
         jPanel4.setBackground(new java.awt.Color(100, 100, 100));
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11));
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Cronograma de Actividades");
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addGap(494, 494, 494)
-                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 184, Short.MAX_VALUE)
-                .addGap(497, 497, 497))
+            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 1175, Short.MAX_VALUE)
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addContainerGap())
+            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 45, Short.MAX_VALUE)
         );
 
         cancelButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/winspapus/imagenes/eliminar.png"))); // NOI18N
@@ -2104,7 +2099,7 @@ public void mouseClicked(java.awt.event.MouseEvent e)
             }
         });
 
-        jTable1.setFont(new java.awt.Font("Tahoma", 0, 10));
+        jTable1.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
@@ -2139,7 +2134,7 @@ public void mouseClicked(java.awt.event.MouseEvent e)
             }
         });
         jTable1.setAutoscrolls(false);
-        jTable1.setSelectionBackground(new java.awt.Color(255, 153, 51));
+        jTable1.setSelectionBackground(new java.awt.Color(216, 141, 0));
         jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jTable1MouseClicked(evt);

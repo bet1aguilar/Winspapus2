@@ -93,7 +93,7 @@ WHERE mppres.mpre_id=$P{mpres} GROUP BY mppres.mpre_id]]>
      mppres.`unidad` AS mppres_unidad,
      mppres.`cantidad` AS mppres_cantidad,
 
-     mprops.`logo` AS mprops_logo,
+     IFNULL(mprops.`logo`,'') AS mprops_logo,
      mconts.`ingres` AS mconts_ingres,
      mconts.`cedres` AS mconts_cedres,
      mconts.`civres` AS mconts_civres,
@@ -102,7 +102,7 @@ WHERE mppres.mpre_id=$P{mpres} GROUP BY mppres.mpre_id]]>
      mconts.`civins` AS mconts_civins,
      mconts.`repleg` AS mconts_repleg,
      mconts.`cedrep` AS mconts_cedrep,
-     mconts.`logo` AS mconts_logo,
+     IFNULL(mconts.`logo`,'') AS mconts_logo,
      mconts.`encabe` AS mconts_encabe
 FROM
      `mppres` mppres INNER JOIN `mpres` mpres ON mppres.`mpre_id` = mpres.`id`

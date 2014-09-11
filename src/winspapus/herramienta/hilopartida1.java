@@ -49,6 +49,7 @@ public class hilopartida1 extends Thread{
             ResultSet rst0 = car0.executeQuery(sql); 
              while(rst0.next()){
                  grupo=rst0.getString("NroPartida");
+             
                  descri=rst0.getString("Descripcion");
                  descri=descri.replace("'", "º");
                  sql= "INSERT INTO mptabs VALUES ('"+rst0.getString("CodCovenin")+"',"

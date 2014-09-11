@@ -64,7 +64,7 @@ public class copiapres extends javax.swing.JDialog {
             String partidas = "INSERT INTO mppres "
                     + "SELECT '"+nombre+"',id,numero,numegrup,descri,idband,porcgad,porcpre,porcutil,precasu,precunit,rendimi,"
                     + "unidad, redondeo, status, cantidad, tipo, nropresupuesto, nrocuadro, mppre_id, tiporec, refere, "
-                    + "fechaini, fechafin, cron, rango, lapso, ctabs_id FROM mppres WHERE mpre_id= '"+pres+"' OR "
+                    + "fechaini, fechafin, cron, rango, lapso, capitulo,tiponp FROM mppres WHERE mpre_id= '"+pres+"' OR "
                     + "mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+pres+"')";
             stpart.execute(partidas);
             String mepres = "INSERT INTO mepres "
@@ -104,7 +104,9 @@ public class copiapres extends javax.swing.JDialog {
                     + " FROM admppres WHERE mpre_id = '"+pres+"'";
             Statement sadmppres = (Statement) conex.createStatement();
             sadmppres.execute(admppres);
-            String cmpres = "INSERT INTO cmpres SELECT id, descri, cmpres_id, codigo,  '"+nombre+"' "
+            String cmpres = "INSERT INTO cmpres "
+                    + "(id,descri, cmpres_id, codigo, mpre_id) "
+                    + "SELECT id, descri, cmpres_id, codigo,  '"+nombre+"' "
                     + "FROM cmpres WHERE mpre_id='"+pres+"'";
             Statement scmpres = (Statement) conex.createStatement();
             scmpres.execute(cmpres);
@@ -127,8 +129,9 @@ public class copiapres extends javax.swing.JDialog {
         String nombre = jTextField1.getText();
         try {
             Statement ste = (Statement) conex.createStatement();
-            String sql = "INSERT INTO mpres (id,nomabr,nombre,ubicac,fecini,fecfin,feccon,fecimp,porcgam,porcfin,porimp"
-                    + ", poripa,porpre,poruti,codpro,codcon,parpre,nrocon,nroctr,fecapr,nrolic,status,mpres_id,memo,fecmemo,seleccionado,"
+            String sql = "INSERT INTO mpres (id,nomabr,nombre,ubicac,fecini,fecfin,feccon,fecimp,porgam,porcfi,porimp"
+                    + ", poripa,porpre,poruti,codpro,codcon,parpre,nrocon,nroctr,fecapr,nrolic,status,mpres_id,memo,"
+                    + "timemo,fecmemo,seleccionado,"
                     + "fecharegistro)"
                     + "SELECT '"+nombre+"', nomabr, nombre, ubicac, fecini, fecfin,"
                     + "feccon, fecimp, "
@@ -177,23 +180,22 @@ public class copiapres extends javax.swing.JDialog {
 
         jPanel3.setBackground(new java.awt.Color(100, 100, 100));
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11));
+        jLabel1.setBackground(new java.awt.Color(91, 91, 95));
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Copiar Presupuesto");
+        jLabel1.setOpaque(true);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 426, Short.MAX_VALUE)
+            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 426, Short.MAX_VALUE)
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1)
-                .addContainerGap(5, Short.MAX_VALUE))
+            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 45, Short.MAX_VALUE)
         );
 
         cancelButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/winspapus/imagenes/eliminar.png"))); // NOI18N
@@ -268,8 +270,8 @@ public class copiapres extends javax.swing.JDialog {
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))

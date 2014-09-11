@@ -1,64 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="valuacion" language="groovy" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isSummaryWithPageHeaderAndFooter="true" isFloatColumnFooter="true" uuid="30b8a7ed-2b30-4555-b613-33b6e15790f5">
-	<property name="ireport.zoom" value="1.210000000000001"/>
+	<property name="ireport.zoom" value="1.2100000000000015"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
-	<parameter name="mvalu" class="java.lang.String">
-		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
-	</parameter>
 	<parameter name="mpres" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<parameter name="fecha" class="java.lang.String"/>
 	<parameter name="titulo" class="java.lang.String"/>
-	<parameter name="enletra" class="java.lang.String"/>
-	<parameter name="tmvalu" class="java.lang.String"/>
-	<parameter name="fechaletra" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT
-    DATE_FORMAT(mvalus.desde,'%d/%m/%Y') AS desde,
-     DATE_FORMAT(mvalus.hasta,'%d/%m/%Y') AS hasta,
+     mconts.`ingres` AS ingres,
+     mconts.`cedres` AS cedres,
+     mconts.`civres` AS civres,
+     mconts.`ingins` AS ingins,
+     mconts.`cedins` AS cedins,
+     mconts.`civins` AS civins,
+     mconts.`repleg` AS mconts_repleg,
+     mconts.`cedrep` AS mconts_cedrep,
+     IFNULL(mconts.`logo`,'') AS clogo,
+     mconts.`encabe` AS encabe,
+     IFNULL(mprops.`logo`,'') AS plogo,
      mpres.`nombre` AS nombre,
-     DATE_FORMAT(mpres.feccon,'%d/%m/%Y') AS feccon,
-     mpres.`porimp` AS porimp,
-     CONCAT(mpres.porimp,'%') as conporc,
-     mconts_A.`ingres` AS ingres,
-     mconts_A.`cedres` AS cedres,
-     mconts_A.`civres` AS civres,
-     mconts_A.`ingins` AS ingins,
-     mconts_A.`cedins` AS cedins,
-     mconts_A.`civins` AS civins,
-     mconts_A.`logo` AS clogo,
-     mconts_A.`encabe` AS encabe,
-     mprops_A.`logo` AS plogo,
-     mpres.`nrocon` AS nrocon,
-     reporteinspeccion.`numero` AS numegrup,
-     CONCAT(reporteinspeccion.`codigo`,'\n',reporteinspeccion.`descri`) AS codigo,
-     reporteinspeccion.`unidad` AS unidad,
-     reporteinspeccion.`cantidad` AS cantidad
+     mpres.`ubicac` AS mpres_ubicac,
+     mpres.`nrocon` AS mpres_nrocon,
+     mpres.`partidapres` AS mpres_partidapres,
+     CONCAT(mppres.`id`,'\n', mppres.`descri`) AS codigo,
+     mppres.`numegrup` AS numegrup,
+     mppres.`descri` AS mppres_descri,
+     mppres.`cantidad` AS cantidad,
+     mppres.`unidad` AS unidad
 FROM
-     `mpres` mpres, mvalus, mconts as mconts_A, mprops as mprops_A,
-     `reporteinspeccion` reporteinspeccion
-WHERE mpres.codcon=mconts_A.id AND mpres.codpro=mprops_A.id AND mpres.id = mvalus.mpre_id
-AND reporteinspeccion.valu=mvalus.id AND reporteinspeccion.mpre=mvalus.mpre_id AND mpres.id=$P{mpres}
-AND mvalus.id=$P{mvalu}]]>
+     `mprops` mprops INNER JOIN `mpres` mpres ON mprops.`id` = mpres.`codpro`
+     INNER JOIN `mconts` mconts ON mpres.`codcon` = mconts.`id`,mppres
+WHERE (mppres.mpre_id=mpres.id OR mppres.mpre_id IN (SELECT id FROM mpres WHERE mpres_id=mpres.id))
+AND mpres.id=$P{mpres}
+GROUP BY mppres.numero]]>
 	</queryString>
-	<field name="desde" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="hasta" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="nombre" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="feccon" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="porimp" class="java.math.BigDecimal">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="conporc" class="java.lang.String"/>
 	<field name="ingres" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
@@ -77,26 +55,34 @@ AND mvalus.id=$P{mvalu}]]>
 	<field name="civins" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
+	<field name="mconts_repleg" class="java.lang.String"/>
+	<field name="mconts_cedrep" class="java.lang.String"/>
 	<field name="clogo" class="java.lang.Object"/>
 	<field name="encabe" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="plogo" class="java.lang.Object"/>
-	<field name="nrocon" class="java.lang.String">
+	<field name="nombre" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="numegrup" class="java.lang.Integer"/>
+	<field name="mpres_ubicac" class="java.lang.String"/>
+	<field name="mpres_nrocon" class="java.lang.String"/>
+	<field name="mpres_partidapres" class="java.lang.String"/>
 	<field name="codigo" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="numegrup" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="mppres_descri" class="java.lang.String"/>
+	<field name="cantidad" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="unidad" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="cantidad" class="java.math.BigDecimal">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
 	<pageHeader>
-		<band height="144" splitType="Stretch">
+		<band height="145" splitType="Stretch">
 			<textField>
 				<reportElement uuid="0d788d79-e28d-495a-8fd6-e82a706aad9b" x="551" y="0" width="21" height="13"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
@@ -112,7 +98,7 @@ AND mvalus.id=$P{mvalu}]]>
 				<textFieldExpression><![CDATA[$P{fecha}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="0271796b-cd26-4386-977f-c67be104067f" x="143" y="-1" width="302" height="47"/>
+				<reportElement uuid="0271796b-cd26-4386-977f-c67be104067f" x="143" y="0" width="302" height="47"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
@@ -148,7 +134,7 @@ AND mvalus.id=$P{mvalu}]]>
 				<text><![CDATA[Obra:]]></text>
 			</staticText>
 			<textField isStretchWithOverflow="true">
-				<reportElement uuid="be26a7cc-1134-4bd8-818b-10c37c590aae" x="0" y="106" width="288" height="38"/>
+				<reportElement uuid="be26a7cc-1134-4bd8-818b-10c37c590aae" x="0" y="106" width="288" height="39"/>
 				<box topPadding="5" leftPadding="5" bottomPadding="5" rightPadding="5">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -161,13 +147,89 @@ AND mvalus.id=$P{mvalu}]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement uuid="fe28537d-a291-4dd2-b2d3-c879a73b3853" x="1" y="75" width="571" height="16"/>
-				<box leftPadding="5"/>
-				<textElement verticalAlignment="Middle">
-					<font size="8" isBold="true"/>
+			<staticText>
+				<reportElement uuid="acb72762-0665-4308-a863-471aefce7b86" x="288" y="91" width="283" height="15"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{fechaletra}]]></textFieldExpression>
+				<text><![CDATA[Lugar:]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="b02fa498-b716-48ec-8b4e-ecc744947147" stretchType="RelativeToTallestObject" x="288" y="106" width="283" height="22"/>
+				<box leftPadding="5">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{mpres_ubicac}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="43753419-2722-4e99-86a5-d2d275e7545e" positionType="Float" x="425" y="128" width="54" height="17"/>
+				<box leftPadding="5">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Contrato:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="54cf81bf-b9f3-4bb1-acf2-7e9f4f1fd24a" positionType="Float" x="288" y="128" width="47" height="17"/>
+				<box leftPadding="5">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Partida:]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="5145e6de-c740-4db6-80ef-816821a1aab5" positionType="Float" x="478" y="128" width="93" height="17"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{mpres_nrocon}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="17645b55-74f4-4950-a6f1-91b11f8f1430" positionType="Float" x="335" y="128" width="90" height="17"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{mpres_partidapres}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageHeader>

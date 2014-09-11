@@ -82,8 +82,10 @@ public class capitulospartidas extends javax.swing.JDialog {
     public final void buscapartida(){
         try {
             Statement st = (Statement) conex.createStatement();
-            ResultSet rs = st.executeQuery("SELECT id, descri, numero, numegrup  "
-                    + " FROM Mppres m WHERE m.mpre_id = '"+mpres+"' AND status=1 AND m.capitulo IS NULL OR "
+            ResultSet rs = st.executeQuery("SELECT id, descri, numero, numegrup, IF(tipo='NP',tiponp,tipo) as tipo  "
+                    + " FROM Mppres m WHERE (m.mpre_id = '"+mpres+"' OR m.mpre_id IN "
+                    + "(SELECT id FROM mpres WHERE mpres_id='"+mpres+"')) "
+                    + "AND status=1 AND m.capitulo IS NULL OR "
                     + "capitulo='0' ORDER BY numegrup");
             ResultSetMetaData rsMd = (ResultSetMetaData) rs.getMetaData();
             //System.out.println("siii entra en presupuesto");
@@ -172,7 +174,9 @@ public class capitulospartidas extends javax.swing.JDialog {
         try {
             Statement s = (Statement) conex.createStatement();
             ResultSet rs = s.executeQuery("SELECT id, descri, numero, numegrup "
-                    + "FROM mppres m WHERE m.mpre_id = '"+mpres+"' AND status=1 AND m.capitulo "
+                    + "FROM mppres m WHERE (m.mpre_id = '"+mpres+"' OR m.mpre_id IN "
+                    + "(SELECT id FROM mpres WHERE mpres_id='"+mpres+"')) "
+                    + "AND status=1 AND m.capitulo "
                     + "IS NULL OR m.capitulo='0'  AND (id LIKE'%"+busqueda+"%' || descri LIKE '%"+busqueda+"%')"
                     + " ORDER BY numegrup");
             ResultSetMetaData rsMd = (ResultSetMetaData) rs.getMetaData();
@@ -292,28 +296,25 @@ public class capitulospartidas extends javax.swing.JDialog {
 
         jPanel4.setBackground(new java.awt.Color(100, 100, 100));
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11));
+        jLabel1.setBackground(new java.awt.Color(91, 91, 95));
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Agregar Partidas");
+        jLabel1.setOpaque(true);
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 605, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 615, Short.MAX_VALUE)
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 14, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
-        jTable1.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        jTable1.setFont(new java.awt.Font("Tahoma", 0, 10));
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -323,7 +324,7 @@ public class capitulospartidas extends javax.swing.JDialog {
             }
         ));
         jTable1.setToolTipText("Mantenga Presionado Shift para Seleccionar Varias al mismo tiempo");
-        jTable1.setSelectionBackground(new java.awt.Color(255, 153, 51));
+        jTable1.setSelectionBackground(new java.awt.Color(216, 141, 0));
         jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jTable1MouseClicked(evt);
@@ -431,7 +432,7 @@ public class capitulospartidas extends javax.swing.JDialog {
                 .addGap(18, 18, 18)
                 .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 313, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 304, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -510,7 +511,7 @@ public class capitulospartidas extends javax.swing.JDialog {
             
             for(int i=0; i<contsel;i++){
                 String actualiza = "UPDATE mppres SET capitulo="+capitulo+" WHERE id='"+partidas[i]+"' "
-                        + "AND mpre_id='"+mpres+"'";
+                        + "AND (mpre_id='"+mpres+"' OR mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+mpres+"')";
             try {
                 Statement sts = (Statement) conex.createStatement();
                 sts.execute(actualiza);

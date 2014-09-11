@@ -88,10 +88,12 @@ public class nuevomaterial extends javax.swing.JDialog {
 
         jPanel4.setBackground(new java.awt.Color(100, 100, 100));
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11));
+        jLabel1.setBackground(new java.awt.Color(91, 91, 95));
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Agregar Materiales");
+        jLabel1.setOpaque(true);
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -101,14 +103,12 @@ public class nuevomaterial extends javax.swing.JDialog {
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addContainerGap())
+            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 45, Short.MAX_VALUE)
         );
 
         jLabel2.setText("Código:");
 
+        jTextField1.setSelectionColor(new java.awt.Color(216, 141, 0));
         jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 jTextField1KeyTyped(evt);
@@ -117,6 +117,7 @@ public class nuevomaterial extends javax.swing.JDialog {
 
         jLabel3.setText("Descripción:");
 
+        jTextField2.setSelectionColor(new java.awt.Color(216, 141, 0));
         jTextField2.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 jTextField2KeyTyped(evt);
@@ -125,17 +126,22 @@ public class nuevomaterial extends javax.swing.JDialog {
 
         jLabel4.setText("Unidad:");
 
+        jTextField3.setSelectionColor(new java.awt.Color(216, 141, 0));
+
         jLabel5.setText("Precio:");
 
         jFormattedTextField1.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,##0.##"))));
+        jFormattedTextField1.setSelectionColor(new java.awt.Color(216, 141, 0));
 
         jLabel6.setText("Cantidad:");
 
         jFormattedTextField2.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,##0.##"))));
+        jFormattedTextField2.setSelectionColor(new java.awt.Color(216, 141, 0));
 
         jLabel7.setText("Despedicio:");
 
         jFormattedTextField3.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,##0.####"))));
+        jFormattedTextField3.setSelectionColor(new java.awt.Color(216, 141, 0));
 
         okButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/winspapus/imagenes/guardar.png"))); // NOI18N
         okButton.setToolTipText("Guardar");

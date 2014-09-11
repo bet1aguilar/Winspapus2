@@ -28,8 +28,8 @@ public class RenderCelda extends DefaultTableCellRenderer {
             {
              if(amount.intValue()==1){
                  
-              cell.setBackground(new Color(100, 149, 237));
-                    cell.setForeground(new Color(100, 149, 237));
+              cell.setBackground(new Color(184,184,190));
+                    cell.setForeground(new Color(184,184,190));
              }
              else{
               cell.setBackground(new Color(238, 233, 233));
