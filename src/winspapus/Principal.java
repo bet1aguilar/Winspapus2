@@ -704,7 +704,7 @@ public class Principal extends javax.swing.JFrame {
         );
 
         jTable1.setAutoCreateRowSorter(true);
-        jTable1.setFont(new java.awt.Font("Tahoma", 0, 9)); // NOI18N
+        jTable1.setFont(new java.awt.Font("Tahoma", 0, 9));
         jTable1.setEditingColumn(0);
         jTable1.setEditingRow(0);
         jTable1.setName("mtabustable"); // NOI18N
@@ -1134,7 +1134,7 @@ public class Principal extends javax.swing.JFrame {
         jPanel11.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(100, 100, 100)));
 
         jLabel6.setBackground(new java.awt.Color(91, 91, 95));
-        jLabel6.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel6.setFont(new java.awt.Font("Tahoma", 1, 12));
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel6.setText("Análisis de Precio Unitario");
@@ -1248,7 +1248,7 @@ public class Principal extends javax.swing.JFrame {
                     .addGroup(jPanel13Layout.createSequentialGroup()
                         .addGap(31, 31, 31)
                         .addComponent(jLabel9))
-                    .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 123, Short.MAX_VALUE))
+                    .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 114, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -1549,7 +1549,7 @@ public class Principal extends javax.swing.JFrame {
         jToolBar1.add(jButton7);
 
         jButton25.setBackground(new java.awt.Color(245, 244, 244));
-        jButton25.setIcon(new javax.swing.ImageIcon(getClass().getResource("/winspapus/imagenes/equipobarra.png"))); // NOI18N
+        jButton25.setIcon(new javax.swing.ImageIcon(getClass().getResource("/winspapus/imagenes/equiposv1.fw.png"))); // NOI18N
         jButton25.setToolTipText("Equipos");
         jButton25.setFocusable(false);
         jButton25.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
