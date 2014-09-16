@@ -515,7 +515,7 @@ public final void cargapresupuesto() throws SQLException{
                         } catch (SQLException ex) {
                             Logger.getLogger(partidas.class.getName()).log(Level.SEVERE, null, ex);
                         }
-                        if(jTable1.getValueAt(i, 7).toString()!=null)
+                        if(jTable1.getValueAt(i, 7)!=null)
                         {
                             cantidades[contsel]=Float
                                     
