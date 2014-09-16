@@ -14,6 +14,7 @@ import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.ResultSetMetaData;
 import com.mysql.jdbc.Statement;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.sql.ResultSet;
@@ -35,7 +36,7 @@ import javax.swing.table.TableColumnModel;
  *
  * @author Betmart
  */
-public class equipos extends javax.swing.JDialog {
+public final class equipos extends javax.swing.JDialog {
 
     /** A return status code - returned if Cancel button has been pressed */
     public static final int RET_CANCEL = 0;
@@ -50,6 +51,12 @@ public class equipos extends javax.swing.JDialog {
     public equipos(java.awt.Frame parent, boolean modal, String mtabu, String num, String codicove, Connection conex) {
         super(parent, modal);
         initComponents();
+        jTable1.setOpaque(true);
+    jTable1.setShowHorizontalLines(true);
+    jTable1.setShowVerticalLines(false);
+    jTable1.getTableHeader().setSize(new Dimension(25,40));
+    jTable1.getTableHeader().setPreferredSize(new Dimension(25,30));
+    jTable1.setRowHeight(20);
         this.conex = conex;
         this.mtabu=mtabu;
         this.numero = num;

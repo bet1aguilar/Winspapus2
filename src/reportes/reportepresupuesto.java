@@ -594,14 +594,14 @@ public void generareportepres(){
                                 //---------------HAY PARTIDAS SIN CAPITULO--------------------
                                 //--------INSERTO PARTIDAS A LA TABLA-------------------------
                                 String insertar = "INSERT INTO reportemodificado "
-                                                + "(numero, codigo,descri,unidad,cantidad, precunit, total)"
-                                                + " SELECT numegrup, descri, unidad, cantidad, IF(precasu=0, "
+                                                + "(numero, codigo, descri,unidad,cantidad, precunit, total)"
+                                                + " SELECT numegrup,id, descri, unidad, cantidad, IF(precasu=0, "
                                                 + "precunit, precasu) as precunit, IF(precasu=0, "
                                                 + "precunit, precasu)*cantidad as total FROM mppres WHERE "
-                                                + "(mpre_id ='"+pres+"') AND capitulo IS NULL";
+                                                + "mpre_id ='"+pres+"' AND capitulo IS NULL";
                                         Statement stinsertar = (Statement) conex.createStatement();
                                         stinsertar.execute(insertar);
-                                 String select = "SELECT SUM(IF(precasu,precunit,precasu) as precunit* cantidad) "
+                                 String select = "SELECT SUM(IF(precasu,precunit,precasu)* cantidad) "
                                         + "as total FROM mppres WHERE mpre_id='"+pres+"' AND capitulo IS NULL";
                                  Statement stselect = (Statement) conex.createStatement();
                                  ResultSet rstselect = stselect.executeQuery(select);
@@ -648,7 +648,7 @@ public void generareportepres(){
                                 if(cuenta>0)
                                 {
                                     //TIENE SUBCAPITULOS
-                                    // IMPRIMIR PRIMERO LAS PARTIDAS LUEGO LOS SUBCAPITULOS
+                                    // IMPRIMIR PRIMERO LAS PARTIDAS SIN SUBCAPITULO LUEGO LOS SUBCAPITULOS
                                     String cuentapartidas = "SELECT COUNT(*) FROM mppres WHERE capitulo="+idcap+" "
                                             + "AND (mpre_id='"+pres+"')";
                                     Statement stcuenta = (Statement) conex.createStatement();
