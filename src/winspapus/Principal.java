@@ -550,6 +550,7 @@ public class Principal extends javax.swing.JFrame {
         jInternalFrame1.setMaximizable(true);
         jInternalFrame1.setTitle("Gestionar Listado de Precios Referenciales");
         jInternalFrame1.setDoubleBuffered(true);
+        jInternalFrame1.setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/winspapus/imagenes/logonuevopeq.fw.png"))); // NOI18N
         jInternalFrame1.setPreferredSize(new java.awt.Dimension(1040, 600));
         try {
             jInternalFrame1.setSelected(true);
@@ -3464,9 +3465,9 @@ private void jTable4PropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FI
 
     private void jMenuItem17ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem17ActionPerformed
         propietario prop = new propietario(this, true, conexion);
-        int xi = (this.getWidth()/2)-680/2;
+        int xi = (this.getWidth()/2)-800/2;
           int yi = (this.getHeight()/2)-400/2;
-          prop.setBounds(xi, yi, 680, 400);
+          prop.setBounds(xi, yi, 800, 400);
           prop.setVisible(true);
         
     }//GEN-LAST:event_jMenuItem17ActionPerformed
