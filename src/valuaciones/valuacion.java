@@ -465,7 +465,7 @@ public final class valuacion extends javax.swing.JDialog {
 
         jTextField3.setEditable(false);
 
-        jTable1.setFont(new java.awt.Font("Tahoma", 0, 10));
+        jTable1.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         jTable1.setSelectionBackground(new java.awt.Color(216, 141, 0));
         jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -484,6 +484,8 @@ public final class valuacion extends javax.swing.JDialog {
             }
         });
         jScrollPane2.setViewportView(jTable1);
+
+        jDateChooser3.setDateFormatString("dd-MM-yyyy");
 
         jLabel12.setText("Fecha:");
 

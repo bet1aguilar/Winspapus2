@@ -38,6 +38,7 @@ public class liquidacion extends javax.swing.JDialog {
         initComponents();
         this.mpres=mpres;
         this.mvalus=mvalus;
+        this.conex = conex;
         // Close the dialog when Esc is pressed
         String cancelName = "cancel";
         InputMap inputMap = getRootPane().getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
@@ -191,7 +192,7 @@ public class liquidacion extends javax.swing.JDialog {
             ivt iv=new ivt(null, false, conex,mpres,mvalus);
             int x=  this.getX() + (this.getWidth() - 800) / 2;
         int y = this.getY() + (this.getHeight() -500) / 2;
-        iv.setBounds(x, y, 800, 500);
+        iv.setBounds(x, y, 800, 600);
         iv.setVisible(true);
         }
           doClose(RET_OK);   

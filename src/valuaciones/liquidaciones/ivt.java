@@ -19,6 +19,9 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -28,7 +31,14 @@ import javax.swing.ActionMap;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.KeyStroke;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.design.JasperDesign;
+import net.sf.jasperreports.engine.xml.JRXmlLoader;
+import net.sf.jasperreports.view.JasperViewer;
 
 /**
  *
@@ -36,19 +46,28 @@ import net.sf.jasperreports.engine.JasperPrint;
  */
 public class ivt extends javax.swing.JDialog {
 
+    SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
     /** A return status code - returned if Cancel button has been pressed */
     public static final int RET_CANCEL = 0;
     /** A return status code - returned if OK button has been pressed */
     public static final int RET_OK = 1;
-    String mpres , mvalus;
+    String mpres, mvalus;
     Connection conex;
+    double impuesto = 0;
+    double totalvalu = 0, totalrecon = 0, totalextras = 0, totaldismi = 0;
+    double totalaum = 0, totalpres = 0, acumliqui = 0, impuacum = 0;
+    double liquianterior = 0, presenteliq = 0, acumuladas = 0;
+    double antiotorgado = 0, antiacum = 0;
+
     /** Creates new form estandar */
     public ivt(java.awt.Frame parent, boolean modal, Connection conex, String mpres, String mvalu) {
         super(parent, modal);
         initComponents();
-this.conex=conex;
-this.mpres = mpres;
-this.mvalus = mvalu;
+        this.conex = conex;
+        this.mpres = mpres;
+        this.mvalus = mvalu;
+        
+        cargardatos();
         // Close the dialog when Esc is pressed
         String cancelName = "cancel";
         InputMap inputMap = getRootPane().getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
@@ -56,10 +75,122 @@ this.mvalus = mvalu;
         ActionMap actionMap = getRootPane().getActionMap();
         actionMap.put(cancelName, new AbstractAction() {
 
+            @Override
             public void actionPerformed(ActionEvent e) {
                 doClose(RET_CANCEL);
             }
         });
+    }
+
+    public final void cargardatos() {
+        impuesto = impuesto();
+        jTextField6.setText(String.valueOf(impuesto));
+        totalvalu = totalvalu();
+        totalrecon = totalrecon();
+        totalextras = totalextras();
+        totaldismi = disminucion();
+        totalaum = aumento();
+        totalpres = totalpres();
+        acumliqui = totalvaluacum();
+        impuacum = totalvaluimpu();
+        jDateChooser1.setDate(new Date());
+        jTextField12.setText(String.valueOf(totalpres));
+        jTextField13.setText(String.valueOf(totalaum));
+        jTextField14.setText(String.valueOf(totaldismi));
+        jTextField15.setText(String.valueOf(totalextras));
+        jTextField16.setText(String.valueOf(totalrecon));
+        double subtotal = totalpres + totalaum - totaldismi + totalextras + totalrecon;
+        jTextField17.setText(String.valueOf(subtotal));
+        double impuest = subtotal * (impuesto / 100);
+        jTextField18.setText(String.valueOf(impuest));
+        double total = subtotal + impuest;
+        jTextField19.setText(String.valueOf(total));
+    }
+
+    public double totalvaluimpu() {
+        double acum = 0;
+        String deltas = "IF((mp.precunit-(SELECT m.precunit FROM "
+                + "mppres as m WHERE (m.mpre_id='" + mpres + "' OR m.mpre_id IN "
+                + " (SELECT id FROM mpres WHERE mpres_id='" + mpres + "')) AND m.numero=mp.mppre_id))<0,0,"
+                + "mp.precunit-(SELECT m.precunit FROM "
+                + "mppres as m WHERE (m.mpre_id='" + mpres + "' OR m.mpre_id IN "
+                + " (SELECT id FROM mpres WHERE mpres_id='" + mpres + "')) AND m.numero=mp.mppre_id))";
+        String sql = "SELECT dv.cantidad * IF(tipo!='VP',IF(mp.precasu=0,mp.precunit,mp.precasu)," + deltas + ") "
+                + "FROM dvalus as dv, mppres as mp WHERE"
+                + " mp.numero=dv.numepart AND (dv.mpre_id='" + mpres + "' "
+                + "OR dv.mpre_id IN (SELECT id FROM mpres WHERE mpres_id='" + mpres + "'))"
+                + " AND (mp.mpre_id='" + mpres + "' "
+                + "OR mp.mpre_id IN (SELECT id FROM mpres WHERE mpres_id='" + mpres + "'))"
+                + " AND dv.mvalu_id<='" + mvalus + "'";
+        try {
+            Statement stmt = (Statement) conex.createStatement();
+            ResultSet rste = stmt.executeQuery(sql);
+
+            while (rste.next()) {
+                if (rste.getObject(1) != null) {
+                    acum += Float.valueOf(rste.getObject(1).toString());
+                }
+            }
+            acum = acum * (impuesto / 100);
+            //--------------SIN IMPUESTO
+
+
+        } catch (SQLException ex) {
+            Logger.getLogger(ivt.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return acum;
+    }
+
+    public double totalvaluacum() {
+        double acum = 0;
+        String deltas = "IF((mp.precunit-(SELECT m.precunit FROM "
+                + "mppres as m WHERE (m.mpre_id='" + mpres + "' OR m.mpre_id IN "
+                + " (SELECT id FROM mpres WHERE mpres_id='" + mpres + "')) AND m.numero=mp.mppre_id))<0,0,"
+                + "mp.precunit-(SELECT m.precunit FROM "
+                + "mppres as m WHERE (m.mpre_id='" + mpres + "' OR m.mpre_id IN "
+                + " (SELECT id FROM mpres WHERE mpres_id='" + mpres + "')) AND m.numero=mp.mppre_id))";
+        String sql = "SELECT dv.cantidad * IF(tipo!='VP',IF(mp.precasu=0,mp.precunit,mp.precasu)," + deltas + ") "
+                + "FROM dvalus as dv, mppres as mp WHERE"
+                + " mp.numero=dv.numepart AND (dv.mpre_id='" + mpres + "' "
+                + "OR dv.mpre_id IN (SELECT id FROM mpres WHERE mpres_id='" + mpres + "'))"
+                + " AND (mp.mpre_id='" + mpres + "' "
+                + "OR mp.mpre_id IN (SELECT id FROM mpres WHERE mpres_id='" + mpres + "'))"
+                + " AND dv.mvalu_id<='" + mvalus + "'";
+        try {
+            Statement stmt = (Statement) conex.createStatement();
+            ResultSet rste = stmt.executeQuery(sql);
+
+            while (rste.next()) {
+                if (rste.getObject(1) != null) {
+                    acum += Float.valueOf(rste.getObject(1).toString());
+                }
+            }
+
+            //--------------SIN IMPUESTO
+
+
+        } catch (SQLException ex) {
+            Logger.getLogger(ivt.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return acum;
+    }
+
+    public double totalpres() {
+        //------------ORIGINAL SIN EXTRAS NI VARIACIONES DE PRECIO
+        double pres = 0;
+        String consultpres = "SELECT SUM(IF(precasu=0,precunit,precasu)*cantidad) "
+                + "FROM mppres WHERE mpre_id='" + mpres + "' AND tipo = 'Org'";
+        try {
+            Statement st = (Statement) conex.createStatement();
+            ResultSet rst = st.executeQuery(consultpres);
+            while (rst.next()) {
+                pres = rst.getDouble(1);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ivt.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        //------------------------------------------------------
+        return pres;
     }
 
     /** @return the return status of this dialog - one of RET_OK or RET_CANCEL */
@@ -90,12 +221,6 @@ this.mvalus = mvalu;
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jDateChooser1 = new com.toedter.calendar.JDateChooser();
-        jLabel6 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
-        jLabel7 = new javax.swing.JLabel();
-        jTextField5 = new javax.swing.JTextField();
-        jLabel8 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         jTextField6 = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
@@ -108,8 +233,6 @@ this.mvalus = mvalu;
         jLabel16 = new javax.swing.JLabel();
         jTextField9 = new javax.swing.JTextField();
         jLabel17 = new javax.swing.JLabel();
-        jLabel18 = new javax.swing.JLabel();
-        jTextField10 = new javax.swing.JTextField();
         jLabel19 = new javax.swing.JLabel();
         jTextField11 = new javax.swing.JTextField();
         jLabel20 = new javax.swing.JLabel();
@@ -147,17 +270,20 @@ this.mvalus = mvalu;
         jTextField25 = new javax.swing.JTextField();
         jTextField26 = new javax.swing.JTextField();
         jTextField27 = new javax.swing.JTextField();
-        jLabel35 = new javax.swing.JLabel();
-        jTextField21 = new javax.swing.JTextField();
-        jTextField22 = new javax.swing.JTextField();
-        jTextField23 = new javax.swing.JTextField();
-        jLabel36 = new javax.swing.JLabel();
-        jTextField28 = new javax.swing.JTextField();
+        jLabel46 = new javax.swing.JLabel();
+        jTextField42 = new javax.swing.JTextField();
+        jPanel8 = new javax.swing.JPanel();
         jTextField29 = new javax.swing.JTextField();
-        jTextField30 = new javax.swing.JTextField();
-        jLabel37 = new javax.swing.JLabel();
         jTextField31 = new javax.swing.JTextField();
+        jTextField28 = new javax.swing.JTextField();
+        jTextField21 = new javax.swing.JTextField();
+        jLabel36 = new javax.swing.JLabel();
+        jLabel37 = new javax.swing.JLabel();
         jTextField32 = new javax.swing.JTextField();
+        jTextField23 = new javax.swing.JTextField();
+        jTextField30 = new javax.swing.JTextField();
+        jTextField22 = new javax.swing.JTextField();
+        jLabel35 = new javax.swing.JLabel();
         jTextField33 = new javax.swing.JTextField();
         jPanel4 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
@@ -202,13 +328,13 @@ this.mvalus = mvalu;
         });
 
         jLabel1.setBackground(new java.awt.Color(91, 91, 95));
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11));
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Párametros Liquidación IVT");
         jLabel1.setOpaque(true);
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 11));
+        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel2.setText("Obj. del Contrato:");
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 11));
@@ -217,26 +343,12 @@ this.mvalus = mvalu;
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 11));
         jLabel4.setText("Compromiso No.");
 
-        jLabel5.setFont(new java.awt.Font("Tahoma", 1, 11));
+        jLabel5.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel5.setText("Fecha:");
 
-        jLabel6.setFont(new java.awt.Font("Tahoma", 1, 11));
-        jLabel6.setText("Anticipo:");
+        jDateChooser1.setDateFormatString("dd-MM-yyyy");
 
-        jTextField4.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        jTextField4.setText("0.00");
-
-        jLabel7.setText("%");
-
-        jTextField5.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        jTextField5.setText("0.00");
-
-        jLabel8.setText("%");
-
-        jLabel9.setFont(new java.awt.Font("Tahoma", 1, 11));
-        jLabel9.setText("Retención:");
-
-        jLabel10.setFont(new java.awt.Font("Tahoma", 1, 11));
+        jLabel10.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel10.setText("Alicuota I.V.A.");
 
         jTextField6.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
@@ -245,11 +357,16 @@ this.mvalus = mvalu;
 
         jLabel11.setText("%");
 
-        jLabel12.setFont(new java.awt.Font("Tahoma", 1, 11));
+        jLabel12.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel12.setText("Ret. Laboral:");
 
         jTextField7.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         jTextField7.setText("0.00");
+        jTextField7.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jTextField7FocusLost(evt);
+            }
+        });
 
         jLabel13.setText("%");
 
@@ -258,23 +375,26 @@ this.mvalus = mvalu;
 
         jTextField8.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         jTextField8.setText("0.00");
+        jTextField8.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jTextField8FocusLost(evt);
+            }
+        });
 
         jLabel15.setText("%");
 
-        jLabel16.setFont(new java.awt.Font("Tahoma", 1, 11));
+        jLabel16.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel16.setText("Amort. Anticipo");
 
         jTextField9.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         jTextField9.setText("0.00");
+        jTextField9.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jTextField9FocusLost(evt);
+            }
+        });
 
         jLabel17.setText("%");
-
-        jLabel18.setFont(new java.awt.Font("Tahoma", 1, 11));
-        jLabel18.setText("Otros");
-
-        jTextField10.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        jTextField10.setText("0.00");
-        jTextField10.setToolTipText("Monto");
 
         jLabel19.setFont(new java.awt.Font("Tahoma", 1, 11));
         jLabel19.setText("Valuación Extenporanea:");
@@ -282,6 +402,11 @@ this.mvalus = mvalu;
         jTextField11.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         jTextField11.setText("0.00");
         jTextField11.setToolTipText("Multa");
+        jTextField11.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jTextField11FocusLost(evt);
+            }
+        });
 
         jLabel20.setText("%");
 
@@ -296,10 +421,10 @@ this.mvalus = mvalu;
             }
         });
 
-        jLabel44.setFont(new java.awt.Font("Tahoma", 1, 11));
+        jLabel44.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel44.setText("Obra No.:");
 
-        jLabel45.setFont(new java.awt.Font("Tahoma", 1, 11));
+        jLabel45.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel45.setText("Resolución No.");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -307,27 +432,25 @@ this.mvalus = mvalu;
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(48, 48, 48)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel21)
-                    .addComponent(jLabel18)
-                    .addComponent(jLabel16)
-                    .addComponent(jLabel14)
-                    .addComponent(jLabel12)
-                    .addComponent(jLabel5)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel2))
-                .addGap(12, 12, 12)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(58, 58, 58)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField8, javax.swing.GroupLayout.DEFAULT_SIZE, 201, Short.MAX_VALUE)
-                            .addComponent(jTextField7, javax.swing.GroupLayout.DEFAULT_SIZE, 201, Short.MAX_VALUE)
-                            .addComponent(jDateChooser1, javax.swing.GroupLayout.DEFAULT_SIZE, 201, Short.MAX_VALUE)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, 201, Short.MAX_VALUE)
-                            .addComponent(jTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jDateChooser2, javax.swing.GroupLayout.DEFAULT_SIZE, 201, Short.MAX_VALUE))
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel12)
+                            .addComponent(jLabel14)
+                            .addComponent(jLabel16)
+                            .addComponent(jLabel21))
+                        .addGap(12, 12, 12)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jDateChooser2, javax.swing.GroupLayout.DEFAULT_SIZE, 207, Short.MAX_VALUE)
+                            .addComponent(jTextField9, javax.swing.GroupLayout.DEFAULT_SIZE, 207, Short.MAX_VALUE)
+                            .addComponent(jTextField8, javax.swing.GroupLayout.DEFAULT_SIZE, 207, Short.MAX_VALUE)
+                            .addComponent(jTextField7, javax.swing.GroupLayout.DEFAULT_SIZE, 207, Short.MAX_VALUE)
+                            .addComponent(jDateChooser1, javax.swing.GroupLayout.DEFAULT_SIZE, 207, Short.MAX_VALUE)
+                            .addComponent(jTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, 207, Short.MAX_VALUE))
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -339,38 +462,29 @@ this.mvalus = mvalu;
                                 .addComponent(jLabel17)))
                         .addGap(34, 34, 34)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel44)
-                                    .addComponent(jLabel19)
-                                    .addComponent(jLabel10)
-                                    .addComponent(jLabel6)
-                                    .addComponent(jLabel4)
-                                    .addComponent(jLabel9))
-                                .addGap(3, 3, 3)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jTextField41, javax.swing.GroupLayout.DEFAULT_SIZE, 151, Short.MAX_VALUE)
-                                    .addComponent(jTextField40, javax.swing.GroupLayout.DEFAULT_SIZE, 151, Short.MAX_VALUE)
-                                    .addComponent(jTextField11, javax.swing.GroupLayout.DEFAULT_SIZE, 151, Short.MAX_VALUE)
-                                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jTextField5, javax.swing.GroupLayout.DEFAULT_SIZE, 151, Short.MAX_VALUE)
-                                    .addComponent(jTextField4, javax.swing.GroupLayout.DEFAULT_SIZE, 151, Short.MAX_VALUE)
-                                    .addComponent(jTextField3, javax.swing.GroupLayout.DEFAULT_SIZE, 151, Short.MAX_VALUE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jLabel11, javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jLabel20, javax.swing.GroupLayout.Alignment.TRAILING)))
-                            .addComponent(jLabel45))
-                        .addGap(21, 21, 21))
+                            .addComponent(jLabel45)
+                            .addComponent(jLabel44)
+                            .addComponent(jLabel19)
+                            .addComponent(jLabel10)
+                            .addComponent(jLabel4))
+                        .addGap(3, 3, 3)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jTextField41, javax.swing.GroupLayout.DEFAULT_SIZE, 168, Short.MAX_VALUE)
+                            .addComponent(jTextField40, javax.swing.GroupLayout.DEFAULT_SIZE, 168, Short.MAX_VALUE)
+                            .addComponent(jTextField11, javax.swing.GroupLayout.DEFAULT_SIZE, 168, Short.MAX_VALUE)
+                            .addComponent(jTextField6, javax.swing.GroupLayout.DEFAULT_SIZE, 168, Short.MAX_VALUE)
+                            .addComponent(jTextField3, javax.swing.GroupLayout.DEFAULT_SIZE, 168, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel11, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel20, javax.swing.GroupLayout.Alignment.TRAILING)))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 569, Short.MAX_VALUE)
-                        .addContainerGap())))
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(163, 163, 163)
-                .addComponent(jCheckBox1)
-                .addContainerGap(502, Short.MAX_VALUE))
+                        .addGap(173, 173, 173)
+                        .addComponent(jCheckBox1))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(173, 173, 173)
+                        .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 581, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -386,56 +500,56 @@ this.mvalus = mvalu;
                     .addComponent(jLabel4)
                     .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(jLabel5)
-                    .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel6)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel7))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(jLabel12)
-                    .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel13)
-                    .addComponent(jLabel9)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel8))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(jLabel14)
-                    .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel15)
-                    .addComponent(jLabel10)
-                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel11))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel17)
-                    .addComponent(jLabel19)
-                    .addComponent(jTextField11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel20))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel44)
-                    .addComponent(jTextField40, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(jLabel21)
-                    .addComponent(jDateChooser2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel45)
-                    .addComponent(jTextField41, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                            .addComponent(jLabel5)
+                            .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                            .addComponent(jLabel12)
+                            .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel13))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                            .addComponent(jLabel14)
+                            .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel15))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                            .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel17))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                            .addComponent(jLabel21)
+                            .addComponent(jDateChooser2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                            .addComponent(jLabel10)
+                            .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel11))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                            .addComponent(jLabel19)
+                            .addComponent(jTextField11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel20))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                            .addComponent(jLabel44)
+                            .addComponent(jTextField40, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                            .addComponent(jLabel45)
+                            .addComponent(jTextField41, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jCheckBox1)
-                .addContainerGap())
+                .addContainerGap(74, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Datos Básicos", jPanel2);
 
-        jLabel22.setFont(new java.awt.Font("Tahoma", 1, 11));
+        jLabel22.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel22.setText("Según Contrato:");
 
         jTextField12.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
@@ -447,13 +561,13 @@ this.mvalus = mvalu;
         jTextField13.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         jTextField13.setText("0.00");
 
-        jLabel24.setFont(new java.awt.Font("Tahoma", 1, 11));
+        jLabel24.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel24.setText("Disminución");
 
         jTextField14.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         jTextField14.setText("0.00");
 
-        jLabel25.setFont(new java.awt.Font("Tahoma", 1, 11));
+        jLabel25.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel25.setText("Extras");
 
         jTextField15.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
@@ -471,13 +585,13 @@ this.mvalus = mvalu;
         jTextField17.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         jTextField17.setText("0.00");
 
-        jLabel28.setFont(new java.awt.Font("Tahoma", 1, 11));
+        jLabel28.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel28.setText("Impuesto IVA");
 
         jTextField18.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         jTextField18.setText("0.00");
 
-        jLabel29.setFont(new java.awt.Font("Tahoma", 1, 11));
+        jLabel29.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel29.setText("Total");
 
         jTextField19.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
@@ -513,119 +627,125 @@ this.mvalus = mvalu;
         jTextField27.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         jTextField27.setText("0.00");
 
-        jLabel35.setFont(new java.awt.Font("Tahoma", 1, 11));
-        jLabel35.setText("Paralización:");
+        jLabel46.setFont(new java.awt.Font("Tahoma", 1, 11));
+        jLabel46.setText("Multa:");
 
-        jLabel36.setFont(new java.awt.Font("Tahoma", 1, 11));
+        jTextField42.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        jTextField42.setText("0.00");
+
+        jPanel8.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true), "Fechas", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, null, java.awt.Color.black));
+
+        jLabel36.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel36.setText("Reinicio:");
 
-        jLabel37.setFont(new java.awt.Font("Tahoma", 1, 11));
+        jLabel37.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel37.setText("Prorroga:");
+
+        jLabel35.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel35.setText("Paralización:");
+
+        javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
+        jPanel8.setLayout(jPanel8Layout);
+        jPanel8Layout.setHorizontalGroup(
+            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel8Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel35)
+                    .addComponent(jLabel36)
+                    .addComponent(jLabel37))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jTextField31)
+                    .addComponent(jTextField28)
+                    .addComponent(jTextField21, javax.swing.GroupLayout.DEFAULT_SIZE, 69, Short.MAX_VALUE))
+                .addGap(6, 6, 6)
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jTextField22, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextField29, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextField32, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jTextField33, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextField30, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextField23, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)))
+        );
+        jPanel8Layout.setVerticalGroup(
+            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel8Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(jLabel35)
+                    .addComponent(jTextField21, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextField22, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextField23, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                        .addComponent(jLabel36)
+                        .addComponent(jTextField28, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jTextField29, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextField30, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(jLabel37)
+                    .addComponent(jTextField31, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextField32, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextField33, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
+        );
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(22, 22, 22)
+                .addGap(23, 23, 23)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel29)
+                    .addComponent(jLabel28)
+                    .addComponent(jLabel27)
+                    .addComponent(jLabel26)
+                    .addComponent(jLabel25)
+                    .addComponent(jLabel24)
+                    .addComponent(jLabel23)
+                    .addComponent(jLabel22))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jTextField19, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 195, Short.MAX_VALUE)
+                    .addComponent(jTextField18, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 195, Short.MAX_VALUE)
+                    .addComponent(jTextField17, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 195, Short.MAX_VALUE)
+                    .addComponent(jTextField16, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 195, Short.MAX_VALUE)
+                    .addComponent(jTextField15, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 195, Short.MAX_VALUE)
+                    .addComponent(jTextField14, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 195, Short.MAX_VALUE)
+                    .addComponent(jTextField13, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 195, Short.MAX_VALUE)
+                    .addComponent(jTextField12, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 195, Short.MAX_VALUE))
+                .addGap(46, 46, 46)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel29)
-                            .addComponent(jLabel28)
-                            .addComponent(jLabel27)
-                            .addComponent(jLabel25)
-                            .addComponent(jLabel24)
-                            .addComponent(jLabel23)
-                            .addComponent(jLabel22))
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(jTextField18, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jTextField17, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 195, Short.MAX_VALUE)
-                                    .addComponent(jTextField15, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 195, Short.MAX_VALUE)
-                                    .addComponent(jTextField14, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 195, Short.MAX_VALUE)
-                                    .addComponent(jTextField13, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 195, Short.MAX_VALUE)
-                                    .addComponent(jTextField12, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 195, Short.MAX_VALUE)
-                                    .addComponent(jTextField16, javax.swing.GroupLayout.Alignment.LEADING)))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextField19, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addComponent(jLabel26))
-                .addGap(36, 36, 36)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel37)
-                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel34)
                             .addComponent(jLabel33)
+                            .addComponent(jLabel34)
                             .addComponent(jLabel32)
                             .addComponent(jLabel31)
                             .addComponent(jLabel30)
-                            .addComponent(jLabel35))
-                        .addGroup(jPanel3Layout.createSequentialGroup()
-                            .addComponent(jLabel36)
-                            .addGap(38, 38, 38))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jTextField31)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField32, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField33, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jTextField28)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField29, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField30, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jTextField24, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jTextField25, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jTextField26, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jTextField27, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jTextField20, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jTextField21)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField22, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField23, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(60, 60, 60))
+                            .addComponent(jLabel46))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jTextField24, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTextField25, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTextField42, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTextField26, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTextField27, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTextField20, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(59, 59, 59))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(23, 23, 23)
+                .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel30)
-                            .addComponent(jTextField20, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel31)
-                            .addComponent(jTextField27, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel32)
-                            .addComponent(jTextField26, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel33)
-                            .addComponent(jTextField25, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel34)
-                            .addComponent(jTextField24, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel35)
-                            .addComponent(jTextField21, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField23, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField22, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel22)
@@ -641,32 +761,47 @@ this.mvalus = mvalu;
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel25)
-                            .addComponent(jTextField15, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jTextField15, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTextField42, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel46))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel26)
-                            .addComponent(jTextField16, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jTextField16, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel33)
+                            .addComponent(jTextField25, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel30)
+                            .addComponent(jTextField20, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel27)
-                            .addComponent(jTextField17, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel31)
+                            .addComponent(jTextField27, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel28)
+                            .addComponent(jLabel32)
+                            .addComponent(jTextField26, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel27)
+                        .addComponent(jTextField17, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel34)
+                        .addComponent(jTextField24, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                             .addComponent(jTextField18, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel36)
-                            .addComponent(jTextField28, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField30, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField29, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel28))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jTextField19, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel29)
-                            .addComponent(jTextField31, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField33, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField32, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel37))))
-                .addContainerGap(42, Short.MAX_VALUE))
+                            .addComponent(jLabel29)))
+                    .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(49, 49, 49))
         );
 
         jTabbedPane1.addTab("Valuación Actual", jPanel3);
@@ -715,7 +850,7 @@ this.mvalus = mvalu;
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel39)
                     .addComponent(jTextField35, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(81, Short.MAX_VALUE))
+                .addContainerGap(111, Short.MAX_VALUE))
         );
 
         jPanel6.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true), "Retenciones", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 11))); // NOI18N
@@ -762,7 +897,7 @@ this.mvalus = mvalu;
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel41)
                     .addComponent(jTextField37, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(81, Short.MAX_VALUE))
+                .addContainerGap(111, Short.MAX_VALUE))
         );
 
         jPanel7.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true), "Anticipos", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 11))); // NOI18N
@@ -790,7 +925,7 @@ this.mvalus = mvalu;
                 .addComponent(jLabel42)
                 .addGap(107, 107, 107)
                 .addComponent(jTextField38, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 56, Short.MAX_VALUE)
                 .addComponent(jLabel43)
                 .addGap(107, 107, 107)
                 .addComponent(jTextField39, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -817,7 +952,7 @@ this.mvalus = mvalu;
                     .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel4Layout.createSequentialGroup()
                         .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
                         .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
@@ -839,24 +974,24 @@ this.mvalus = mvalu;
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 747, Short.MAX_VALUE)
+            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 769, Short.MAX_VALUE)
+            .addComponent(jTabbedPane1)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(633, Short.MAX_VALUE)
+                .addContainerGap(663, Short.MAX_VALUE)
                 .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18))
-            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 747, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {cancelButton, okButton});
 
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 295, Short.MAX_VALUE)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 319, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -874,16 +1009,15 @@ this.mvalus = mvalu;
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
-       
     }//GEN-LAST:event_okButtonActionPerformed
-    
+
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
         doClose(RET_CANCEL);
     }//GEN-LAST:event_cancelButtonActionPerformed
@@ -900,74 +1034,321 @@ this.mvalus = mvalu;
     private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_okButtonMouseClicked
         generarreporte();
         doClose(RET_OK);
- // TODO add your handling code here:
+        // TODO add your handling code here:
     }//GEN-LAST:event_okButtonMouseClicked
-    public void generarreporte(){
-        JasperPrint print=null;
-        double totalvalu=0;
-               FileInputStream input=null;
-                Map parameters = new HashMap();
+
+private void jTextField7FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField7FocusLost
+    if (jTextField7.getText().equals("")) {
+        jTextField7.setText("0.00");
+    } else {
+        double retlab = Double.valueOf(jTextField7.getText());
+        double valor = totalpres * (retlab / 100);
+        jTextField20.setText(String.valueOf(valor));
+        totalmodifica();
+    }
+
+    // TODO add your handling code here:
+}//GEN-LAST:event_jTextField7FocusLost
+
+    public void totalmodifica() {
+        double total = 0;
+        double retlab = 0, fielcump = 0, amorant = 0, multa=0;
+        retlab = Double.valueOf(jTextField20.getText().toString());
+        fielcump = Double.valueOf(jTextField27.getText().toString());
+        amorant = Double.valueOf(jTextField26.getText().toString());
+        multa = Double.valueOf(jTextField42.getText().toString());
+        total = retlab+fielcump+amorant+multa;
+        jTextField25.setText(String.valueOf(total));
+        double esteimp = Double.valueOf(jTextField6.getText().toString());
+        total = total*(1+(esteimp/100));
+        jTextField24.setText(String.valueOf(total));
+    }
+private void jTextField8FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField8FocusLost
+// TODO add your handling code here:
+
+    if (jTextField8.getText().equals("")) {
+        jTextField8.setText("0.00");
+    } else {
+        double retfiel = Double.valueOf(jTextField8.getText());
+        double valor = totalpres * (retfiel / 100);
+        jTextField27.setText(String.valueOf(valor));
+        totalmodifica();
+    }
+}//GEN-LAST:event_jTextField8FocusLost
+
+private void jTextField9FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField9FocusLost
+
+    if (jTextField9.getText().equals("")) {
+        jTextField9.setText("0.00");
+    } else {
+        double amorant = Double.valueOf(jTextField9.getText());
+        double valor = totalpres * (amorant / 100);
+        jTextField26.setText(String.valueOf(valor));
+        totalmodifica();
+    }
+    // TODO add your handling code here:
+}//GEN-LAST:event_jTextField9FocusLost
+
+private void jTextField11FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField11FocusLost
+    if (jTextField11.getText().equals("")) {
+        jTextField11.setText("0.00");
+    } else {
+        double multa = Double.valueOf(jTextField11.getText());
+        double valor = totalpres * (multa / 100);
+        jTextField42.setText(String.valueOf(valor));
+        totalmodifica();
+    }
+
+    // TODO add your handling code here:
+}//GEN-LAST:event_jTextField11FocusLost
+    public void generarreporte() {
+        JasperPrint print = null;
+        String objcontrato = jTextField1.getText().toUpperCase();
+        String ordenpago = jTextField2.getText().toString();
+        String compromiso = jTextField3.getText().toString();
+        String resolucion = jTextField41.getText().toString();
+        String obranro = jTextField40.getText().toString();
+        String liquidacion = " VALUACIÓN No " + mvalus;
+        String fecha = format.format(jDateChooser1.getDate());
+/*
+         impuesto = this.impuesto();
+        jTextField6.setText(String.valueOf(impuesto));
+        totalvalu = totalvalu();
+        totalrecon = totalrecon();
+        totalextras = totalextras();
+        totaldismi = disminucion();
+        totalaum = aumento();
+        totalpres = totalpres();
+        acumliqui = totalvaluacum();
+        impuacum = totalvaluimpu();
+         */
+
+        FileInputStream input = null;
+        Map parameters = new HashMap();
         try {
             input = new FileInputStream(new File("liquidacion1.jrxml"));
-            float impuesto = 0;
-            String imp = "SELECT porimp FROM mpres WHERE id='"+mpres+"'";
-        try {
-            Statement simp = null;
-                try {
-                    simp = (Statement) conex.createStatement();
-                } catch (SQLException ex) {
-                    Logger.getLogger(ivt.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            ResultSet rsimp = simp.executeQuery(imp);
-            while(rsimp.next()){
-                impuesto=rsimp.getFloat(1);
+
+
+            String hoy = format.format(new Date());
+            double retlab = Double.valueOf(jTextField7.getText().toString());
+            double fielcump = Double.valueOf(jTextField8.getText().toString());
+            double retant = Double.valueOf(jTextField9.getText().toString());
+            double multa = Double.valueOf(jTextField11.getText().toString());
+            String diapara = jTextField21.getText().toString();
+            String mespara = jTextField22.getText().toString(), anopara = jTextField23.getText().toString();
+            String diareini = jTextField28.getText().toString();
+            String mesreini = jTextField29.getText().toString(), anoreini = jTextField30.getText().toString();
+            String diaprorro = jTextField31.getText().toString();
+            String mesprorro = jTextField32.getText().toString(), anoreprorro = jTextField33.getText().toString();
+            double otorgado = Double.valueOf(jTextField38.getText().toString());
+            parameters.put("mpres", mpres);
+           parameters.put("mvalu", mvalus);
+           parameters.put("obranro", obranro);
+           parameters.put("fecha", fecha);
+           parameters.put("liquidacion", liquidacion);
+           parameters.put("objcontrato", objcontrato);
+           parameters.put("nroresolucion", resolucion);
+           parameters.put("ordenpago", ordenpago);
+           parameters.put("compromiso",compromiso);
+           parameters.put("impuesto", impuesto);
+           parameters.put("montovalu", totalvalu);
+           parameters.put("reconsideracion", totalrecon);
+           parameters.put("extras", totalextras);
+           parameters.put("disminucion", totaldismi);
+           parameters.put("aumento", totalaum);
+           parameters.put("hoy", hoy);
+           parameters.put("retlab", retlab);
+           parameters.put("fielcumpli", fielcump);
+           parameters.put("retant", retant);
+           parameters.put("multa", multa);
+           parameters.put("diapara", diapara);
+           parameters.put("mespara", mespara);
+           parameters.put("anopara",anopara);
+           parameters.put("diareinicio",diareini);
+           parameters.put("mesreinicio", mesreini);
+           parameters.put("diaprorro", diaprorro);
+           parameters.put("mesprorro", mesprorro);
+           parameters.put("anoprorro", anoreprorro);
+           parameters.put("totalpres", totalpres);
+           parameters.put("acumliquidaciones", acumliqui);
+           parameters.put("impacumvalu", impuacum);
+           parameters.put("anticipootorgado", otorgado);
+           parameters.put("anticipoacumulado",otorgado);
+           JasperDesign design; 
+            try {
+                design = JRXmlLoader.load(input);
+                JasperReport report = JasperCompileManager.compileReport(design);
+                print = JasperFillManager.fillReport(report, parameters, conex);
+                 JasperViewer.viewReport(print, false);
+            } catch (JRException ex) {
+                Logger.getLogger(ivt.class.getName()).log(Level.SEVERE, null, ex);
             }
-            //CALCULAR MONTO VALU
-            String deltas="IF((mp.precunit-(SELECT m.precunit FROM "
-                    + "mppres as m WHERE (m.mpre_id='"+mpres+"' OR m.mpre_id IN "
-                    + " (SELECT id FROM mpres WHERE mpres_id='"+mpres+"')) AND m.numero=mp.mppre_id))<0,0,"
-                    + "mp.precunit-(SELECT m.precunit FROM "
-                    + "mppres as m WHERE (m.mpre_id='"+mpres+"' OR m.mpre_id IN "
-                    + " (SELECT id FROM mpres WHERE mpres_id='"+mpres+"')) AND m.numero=mp.mppre_id))";
-            
-            
-            String sql = "SELECT SUM(IF(mp.tipo!='VP',if(mp.precasu=0,mp.precunit,mp.precasu),"+deltas+") as precio, "
-                    + "ROUND(dv.cantidad*IF(mp.tipo!='VP',if(mp.precasu=0,mp.precunit,mp.precasu),"+deltas+"),2))"
-                    + " FROM dvalus as dv, mppres as mp"
-                    + " WHERE mp.numero = dv.numepart AND "
-                    + "dv.mvalu_id='" + mvalus + "' AND (dv.mpre_id='" + mpres + "' "
-                    + "OR dv.mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+mpres+"'))"
-                    + " AND (mp.mpre_id='" + mpres + "' "
-                    + "OR mp.mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+mpres+"'))"
-                    + "GROUP BY dv.numepart ORDER BY mp.numegrup";
-            Statement sts = (Statement) conex.createStatement();
-            ResultSet rsts = sts.executeQuery(sql);
-            while(rsts.next()){
-                totalvalu=rsts.getDouble(1);
-            }
-            //---------------------TENGO TOTAL VALU
-            
-            
-        } catch (SQLException ex) {
-            Logger.getLogger(ivt.class.getName()).log(Level.SEVERE, null, ex);
-        }
             
         } catch (FileNotFoundException ex) {
             Logger.getLogger(ivt.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        
+
     }
+
+    public final double impuesto() {
+        double impuestos = 0;
+        String imp = "SELECT porimp FROM mpres WHERE id='" + mpres + "'";
+        System.out.println("imp en liqui ivt "+imp);
+        try {
+            Statement simp = null;
+            try {
+                simp = (Statement) conex.createStatement();
+            } catch (SQLException ex) {
+                Logger.getLogger(ivt.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            ResultSet rsimp = simp.executeQuery(imp);
+            while (rsimp.next()) {
+                impuestos = rsimp.getFloat(1);
+            }
+
+
+        } catch (SQLException ex) {
+            Logger.getLogger(ivt.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return impuestos;
+    }
+
+    public double totalvalu() {
+        double valus = 0;
+        try {
+
+            String deltas = "IF((mp.precunit-(SELECT m.precunit FROM "
+                    + "mppres as m WHERE (m.mpre_id='" + mpres + "' OR m.mpre_id IN "
+                    + " (SELECT id FROM mpres WHERE mpres_id='" + mpres + "')) AND m.numero=mp.mppre_id))<0,0,"
+                    + "mp.precunit-(SELECT m.precunit FROM "
+                    + "mppres as m WHERE (m.mpre_id='" + mpres + "' OR m.mpre_id IN "
+                    + " (SELECT id FROM mpres WHERE mpres_id='" + mpres + "')) AND m.numero=mp.mppre_id))";
+
+
+            String sql = "SELECT "
+                    + "ROUND(SUM(dv.cantidad*IF(mp.tipo!='VP',if(mp.precasu=0,mp.precunit,mp.precasu)," + deltas + ")),2)"
+                    + " FROM dvalus as dv, mppres as mp"
+                    + " WHERE mp.numero = dv.numepart AND "
+                    + "dv.mvalu_id='" + mvalus + "' AND (dv.mpre_id='" + mpres + "' "
+                    + "OR dv.mpre_id IN (SELECT id FROM mpres WHERE mpres_id='" + mpres + "'))"
+                    + " AND (mp.mpre_id='" + mpres + "' "
+                    + "OR mp.mpre_id IN (SELECT id FROM mpres WHERE mpres_id='" + mpres + "'))"
+                    + "GROUP BY dv.numepart ORDER BY mp.numegrup";
+            System.out.println("consulta de total valu a ver error "+sql);
+            Statement sts = (Statement) conex.createStatement();
+            ResultSet rsts = sts.executeQuery(sql);
+            while (rsts.next()) {
+                valus = rsts.getDouble(1);
+            }
+            return 0;
+        } catch (SQLException ex) {
+            Logger.getLogger(ivt.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return valus;
+    }
+
+    public double aumento() {
+        String consultadismi = "SELECT SUM(ad.aumento*IF(mp.precasu=0,mp.precunit,mp.precasu)) as total"
+                + " FROM admppres as ad, mppres as mp WHERE "
+                + "(ad.mpre_id = '" + mpres + "' OR ad.mpre_id IN (SELECT id FROM mpres WHERE mpres_id='" + mpres + "'))"
+                + "AND (mp.mpre_id = '" + mpres + "' OR mp.mpre_id IN (SELECT id FROM mpres WHERE mpres_id='" + mpres + "'))"
+                + "AND ad.numepart=mp.numero AND ad.mvalu_id='" + mvalus + "'";
+         System.out.println("aum "+consultadismi);
+        double aumento = 0;
+        try {
+            Statement st = (Statement) conex.createStatement();
+            ResultSet rst = st.executeQuery(consultadismi);
+            while (rst.next()) {
+                aumento = rst.getDouble(1);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ivt.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return aumento;
+    }
+
+    public double disminucion() {
+        String consultadismi = "SELECT SUM(ad.disminucion*IF(mp.precasu=0,mp.precunit,mp.precasu)) as total"
+                + " FROM admppres as ad, mppres as mp WHERE "
+                + "(ad.mpre_id = '" + mpres + "' OR ad.mpre_id IN (SELECT id FROM mpres WHERE mpres_id='" + mpres + "'))"
+                + "AND (mp.mpre_id = '" + mpres + "' OR mp.mpre_id IN (SELECT id FROM mpres WHERE mpres_id='" + mpres + "'))"
+                + "AND ad.numepart=mp.numero AND ad.mvalu_id='" + mvalus + "'";
+        System.out.println("dismi "+consultadismi);
+        double dismi = 0;
+        try {
+            Statement st = (Statement) conex.createStatement();
+            ResultSet rst = st.executeQuery(consultadismi);
+            while (rst.next()) {
+                dismi = rst.getDouble(1);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ivt.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return dismi;
+    }
+
+    public double totalextras() {
+        String select = "SELECT SUM(cantidad*IF(precasu=0,precunit,precasu)) FROM "
+                + "mppres WHERE (mpre_id = '" + mpres + "' OR mpre_id IN (SELECT id FROM mpres"
+                + " WHERE mpres_id='" + mpres + "')) AND tipo='NP'";
+        System.out.println("select extras "+select);
+        double extras = 0;
+        try {
+            Statement st = (Statement) conex.createStatement();
+            ResultSet rst = st.executeQuery(select);
+            while (rst.next()) {
+                extras = rst.getDouble(1);
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(ivt.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return extras;
+    }
+
+    public double totalrecon() {
+        //------------ Determinar cual presupuesto de reconsideración pertenece a la valuación mvalus
+        String consulta = "SELECT id FROM mpres WHERE mpres_id = '" + mpres + "' AND valu = " + mvalus + "";
+        String presu = "";
+        double recon = 0;
+        try {
+            Statement st = (Statement) conex.createStatement();
+            ResultSet rst = st.executeQuery(consulta);
+            while (rst.next()) {
+                presu = rst.getString(1);
+            }
+            //--------UNA VEZ CONSULTADO EL PRESUPUESTO, SE CONSULTAN LAS PARTIDAS QUE PERTENECEN A PRESU Y SE LE CALCULA
+            // EL TOTAL RECONSIDERADO DE DICHAS PARTIDAS, COMO HAY QUE CALCULAR EL DELTA ENTRE EL COSTO DE LA PARTIDA ORIGINAL
+            // Y LA NUEVA SE DEBEN HACER DOS CONSULTAS.
+            String deltas = "IF((IF(m.precasu=0,m.precunit,m.precasu)-(SELECT mp.precunit FROM "
+                    + "mppres as mp WHERE mp.mpre_id='" + presu + "' AND mp.numero=m.mppre_id))<0,0,"
+                    + "IF(m.precasu=0,m.precunit,m.precasu)-(SELECT mp.precunit FROM "
+                    + "mppres as mp WHERE mp.mpre_id='" + presu + "' AND mp.numero=m.mppre_id))";
+            String sql = "SELECT SUM(" + deltas + "*m.cantidad) as total FROM "
+                    + "mppres as m WHERE "
+                    + " m.mpre_id='" + presu + "'";
+            Statement srecon = (Statement) conex.createStatement();
+            ResultSet rsrecon = srecon.executeQuery(sql);
+            while (rsrecon.next()) {
+                recon = rsrecon.getDouble(1);
+            }
+            //--------------------------TOTAL RECONSIDERADO DE LA VALUACIÓN MVALUS
+        } catch (SQLException ex) {
+            Logger.getLogger(ivt.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        //-------------------------------------------------------------------------------------------
+        return recon;
+    }
+
     private void doClose(int retStatus) {
         returnStatus = retStatus;
         setVisible(false);
         dispose();
     }
-
     /**
      * @param args the command line arguments
      */
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cancelButton;
     private javax.swing.JCheckBox jCheckBox1;
@@ -982,7 +1363,6 @@ this.mvalus = mvalu;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
-    private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
@@ -1013,11 +1393,8 @@ this.mvalus = mvalu;
     private javax.swing.JLabel jLabel43;
     private javax.swing.JLabel jLabel44;
     private javax.swing.JLabel jLabel45;
+    private javax.swing.JLabel jLabel46;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -1025,9 +1402,9 @@ this.mvalus = mvalu;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
+    private javax.swing.JPanel jPanel8;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField10;
     private javax.swing.JTextField jTextField11;
     private javax.swing.JTextField jTextField12;
     private javax.swing.JTextField jTextField13;
@@ -1059,10 +1436,9 @@ this.mvalus = mvalu;
     private javax.swing.JTextField jTextField37;
     private javax.swing.JTextField jTextField38;
     private javax.swing.JTextField jTextField39;
-    private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField40;
     private javax.swing.JTextField jTextField41;
-    private javax.swing.JTextField jTextField5;
+    private javax.swing.JTextField jTextField42;
     private javax.swing.JTextField jTextField6;
     private javax.swing.JTextField jTextField7;
     private javax.swing.JTextField jTextField8;

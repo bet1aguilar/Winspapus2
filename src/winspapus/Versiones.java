@@ -188,6 +188,7 @@ public final class Versiones extends javax.swing.JDialog {
         String[] versioncompra=jComboBox1.getSelectedItem().toString().split("/") ;
         String idcompra=versioncompra[0];
         String sql="update version_compra set instalacion=1 where id='" + idcompra +"'";
+        //*------------INSERTAR EQUIPO EN BD DEL SERVIDOR HOSTING
         try {
             Statement vc = (Statement) conex.createStatement();
             vc.execute(sql);
