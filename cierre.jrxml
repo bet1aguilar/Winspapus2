@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="cierre" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isSummaryWithPageHeaderAndFooter="true" isFloatColumnFooter="true" uuid="50c5a276-112d-47ea-b3d6-f16f59a37d76">
-	<property name="ireport.zoom" value="1.9487171000000019"/>
-	<property name="ireport.x" value="832"/>
-	<property name="ireport.y" value="253"/>
+	<property name="ireport.zoom" value="0.9090909090909096"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="titulo" class="java.lang.String"/>
 	<parameter name="fecha" class="java.lang.String"/>
 	<parameter name="modioavance" class="java.lang.String"/>
@@ -206,12 +206,12 @@ WHERE mpres.id = $P{mpres}]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{mconts_encabe}]]></textFieldExpression>
 			</textField>
-			<image hAlign="Center" onErrorType="Blank">
-				<reportElement uuid="71d6acf9-9f26-40e9-85b9-8164a6f3b277" x="0" y="24" width="54" height="50" isRemoveLineWhenBlank="true"/>
+			<image hAlign="Left" onErrorType="Blank">
+				<reportElement uuid="71d6acf9-9f26-40e9-85b9-8164a6f3b277" x="0" y="21" width="141" height="50" isRemoveLineWhenBlank="true"/>
 				<imageExpression><![CDATA[JRImageRenderer.getInstance((byte []) $F{mconts_logo})]]></imageExpression>
 			</image>
-			<image hAlign="Center" onErrorType="Blank">
-				<reportElement uuid="86d50b09-62ba-4580-80cc-1de2359c513d" x="698" y="25" width="54" height="50"/>
+			<image hAlign="Right" onErrorType="Blank">
+				<reportElement uuid="86d50b09-62ba-4580-80cc-1de2359c513d" x="581" y="21" width="172" height="50"/>
 				<imageExpression><![CDATA[JRImageRenderer.getInstance((byte []) $F{mprops_logo})]]></imageExpression>
 			</image>
 			<textField>

@@ -620,7 +620,8 @@ public void generareportepres(){
                     try {
                         Statement truncate = (Statement) conex.createStatement();
                         truncate.execute(borra);
-                        String cantidad = "IFNULL(mp.cantidad+IFNULL((SELECT SUM(aumento) FROM admppres WHERE numepart=mp.numero AND mpre_id='"+pres+"'),0)-"
+                        String cantidad = "IFNULL(mp.cantidad+IFNULL((SELECT SUM(aumento) FROM admppres WHERE numepart="
+                                + "mp.numero AND mpre_id='"+pres+"'),0)-"
                                 + "IFNULL((SELECT SUM(disminucion) "
                                 + "FROM admppres WHERE numepart=mp.numero AND mpre_id='"+pres+"'),0),0)";
                         String originales = "INSERT INTO reportemodificado "
