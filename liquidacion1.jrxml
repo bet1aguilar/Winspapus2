@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="liquidacion1" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="dc69826d-a550-4663-bf1e-76e2ef90d00a">
 	<property name="ireport.zoom" value="2.357947691000012"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="1097"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="mpres" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
@@ -173,7 +173,7 @@ WHERE
 	<detail>
 		<band height="543">
 			<rectangle>
-				<reportElement uuid="e6302196-127a-4a2c-8d3f-0cf8d8c8b796" x="-2" y="490" width="175" height="52"/>
+				<reportElement uuid="e6302196-127a-4a2c-8d3f-0cf8d8c8b796" x="-2" y="491" width="175" height="52"/>
 			</rectangle>
 			<staticText>
 				<reportElement uuid="a674b9d1-7bcb-4966-b291-174f830af6d1" x="-2" y="131" width="572" height="13"/>
@@ -2179,17 +2179,6 @@ WHERE
 				</textElement>
 				<textFieldExpression><![CDATA[$F{mconts_ingins}]]></textFieldExpression>
 			</textField>
-			<rectangle>
-				<reportElement uuid="8d7fa63c-ce0f-46ca-afdb-1b402c55072a" x="-2" y="-93" width="175" height="52"/>
-			</rectangle>
-			<staticText>
-				<reportElement uuid="da63904b-8477-460a-8c09-21a7e9d2795c" x="-1" y="-54" width="50" height="13"/>
-				<box rightPadding="5"/>
-				<textElement textAlignment="Right">
-					<font size="8"/>
-				</textElement>
-				<text><![CDATA[C.I:]]></text>
-			</staticText>
 			<staticText>
 				<reportElement uuid="3450cafc-19a8-4373-8934-f8eb0c37f615" x="2" y="491" width="64" height="13"/>
 				<box leftPadding="5"/>
