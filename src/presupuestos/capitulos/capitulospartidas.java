@@ -511,7 +511,7 @@ public class capitulospartidas extends javax.swing.JDialog {
             
             for(int i=0; i<contsel;i++){
                 String actualiza = "UPDATE mppres SET capitulo="+capitulo+" WHERE id='"+partidas[i]+"' "
-                        + "AND (mpre_id='"+mpres+"' OR mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+mpres+"')";
+                        + "AND (mpre_id='"+mpres+"' OR mpre_id IN (SELECT id FROM mpres WHERE mpres_id='"+mpres+"'))";
             try {
                 Statement sts = (Statement) conex.createStatement();
                 sts.execute(actualiza);

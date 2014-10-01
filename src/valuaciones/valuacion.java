@@ -284,7 +284,7 @@ public final class valuacion extends javax.swing.JDialog {
         jPanel4.setBackground(new java.awt.Color(100, 100, 100));
 
         jLabel1.setBackground(new java.awt.Color(91, 91, 95));
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11));
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Valuaciones del Presupuesto");
@@ -452,6 +452,11 @@ public final class valuacion extends javax.swing.JDialog {
         jLabel8.setText("Tipo Valuación:");
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Parcial", "Unica", "Final", "Reconsideración", "Otro" }));
+        jComboBox1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jComboBox1MouseClicked(evt);
+            }
+        });
         jComboBox1.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 jComboBox1ItemStateChanged(evt);
@@ -480,9 +485,16 @@ public final class valuacion extends javax.swing.JDialog {
         });
         jScrollPane2.setViewportView(jTable1);
 
+        jDateChooser3.setDateFormatString("dd-MM-yyyy");
+
         jLabel12.setText("Fecha:");
 
         jButton7.setText("Liquidación");
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton7ActionPerformed(evt);
+            }
+        });
 
         jButton8.setText("Valuación");
         jButton8.addActionListener(new java.awt.event.ActionListener() {
@@ -944,20 +956,6 @@ public final class valuacion extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_jSpinner1StateChanged
 
-    private void jComboBox1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox1ItemStateChanged
-
-        
-            if (jComboBox1.getSelectedItem().equals("Otro")) {
-                jTextField3.setVisible(true);
-                jTextField3.setEditable(true);
-            } else {
-                jTextField3.setVisible(false);
-                jTextField3.setEditable(false);
-            }
-        
-
-    }//GEN-LAST:event_jComboBox1ItemStateChanged
-
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
         filapart = jTable1.rowAtPoint(evt.getPoint());
         jButton3.setEnabled(true);
@@ -1320,6 +1318,33 @@ private void jTextField8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST
         
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton9ActionPerformed
+
+    private void jComboBox1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox1ItemStateChanged
+
+     
+    }//GEN-LAST:event_jComboBox1ItemStateChanged
+
+    private void jComboBox1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jComboBox1MouseClicked
+
+        if (jComboBox1.getSelectedItem().equals("Otro")) {
+                jTextField3.setVisible(true);
+                jTextField3.setEditable(true);
+            } else {
+                jTextField3.setVisible(false);
+                jTextField3.setEditable(false);
+            }        // TODO add your handling code here:
+                // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBox1MouseClicked
+
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        
+        liquidacion liqui = new liquidacion(null, false, conex, pres, mvalu);
+         int x=  this.getX() + (this.getWidth() - 400) / 2;
+        int y = this.getY() + (this.getHeight() - 300) / 2;
+        liqui.setBounds(x, y, 400, 300);
+        liqui.setVisible(true);
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton7ActionPerformed
 public void modifica(String num){
         try {
             String actualiza = "UPDATE dvalus SET cantidad="+jTextField10.getText()+" WHERE numepart="+num+" AND ("

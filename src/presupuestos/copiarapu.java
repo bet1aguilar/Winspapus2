@@ -323,7 +323,9 @@ public class copiarapu extends javax.swing.JDialog {
     }//GEN-LAST:event_closeDialog
 
     private void jtextfield1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jtextfield1FocusLost
-        String sql = "SELECT id FROM mppres WHERE numegrup="+jtextfield1.getText()+" AND (mpre_id='"+pres+"' OR mpre_id IN (SELECT id FROM mpres WHERE mpres_id = '"+pres+"'))";
+        String sql = "SELECT id FROM mppres WHERE "
+                + "numegrup="+jtextfield1.getText().toString()+" AND "
+                + "(mpre_id='"+pres+"' OR mpre_id IN (SELECT id FROM mpres WHERE mpres_id = '"+pres+"'))";
         try {
             System.out.println("sql "+sql);
             Statement st = (Statement) conex.createStatement();

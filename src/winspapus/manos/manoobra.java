@@ -13,6 +13,7 @@ package winspapus.manos;
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.ResultSetMetaData;
 import com.mysql.jdbc.Statement;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.sql.ResultSet;
@@ -54,6 +55,12 @@ public class manoobra extends javax.swing.JDialog {
         this.numero = num;
         this.codicove = codicove;
         cargarmano();
+        jTable1.setOpaque(true);
+    jTable1.setShowHorizontalLines(true);
+    jTable1.setShowVerticalLines(false);
+    jTable1.getTableHeader().setSize(new Dimension(25,40));
+    jTable1.getTableHeader().setPreferredSize(new Dimension(25,30));
+    jTable1.setRowHeight(20);
         // Close the dialog when Esc is pressed
         String cancelName = "cancel";
         InputMap inputMap = getRootPane().getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);

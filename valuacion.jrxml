@@ -179,12 +179,12 @@ AND mvalus.id=$P{mvalu}]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{titulo}]]></textFieldExpression>
 			</textField>
-			<image hAlign="Center" onErrorType="Blank">
-				<reportElement uuid="a1176f04-987d-484f-b6d3-e6cd84012612" x="0" y="25" width="54" height="50"/>
+			<image hAlign="Left" onErrorType="Blank">
+				<reportElement uuid="a1176f04-987d-484f-b6d3-e6cd84012612" x="0" y="25" width="143" height="66"/>
 				<imageExpression><![CDATA[JRImageRenderer.getInstance((byte []) $F{clogo})]]></imageExpression>
 			</image>
-			<image hAlign="Center" onErrorType="Blank">
-				<reportElement uuid="a3afcfd4-eac3-48fd-83a5-2402eac63af4" x="517" y="25" width="54" height="50"/>
+			<image hAlign="Right" onErrorType="Blank">
+				<reportElement uuid="a3afcfd4-eac3-48fd-83a5-2402eac63af4" x="445" y="25" width="126" height="66"/>
 				<imageExpression><![CDATA[JRImageRenderer.getInstance((byte []) $F{plogo})]]></imageExpression>
 			</image>
 			<staticText>
