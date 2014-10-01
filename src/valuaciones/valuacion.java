@@ -488,6 +488,11 @@ public final class valuacion extends javax.swing.JDialog {
         jLabel12.setText("Fecha:");
 
         jButton7.setText("Liquidación");
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton7ActionPerformed(evt);
+            }
+        });
 
         jButton8.setText("Valuación");
         jButton8.addActionListener(new java.awt.event.ActionListener() {
@@ -1328,6 +1333,16 @@ private void jTextField8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST
             }        // TODO add your handling code here:
                 // TODO add your handling code here:
     }//GEN-LAST:event_jComboBox1MouseClicked
+
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        
+        liquidacion liqui = new liquidacion(null, false, conex, pres, mvalu);
+         int x=  this.getX() + (this.getWidth() - 400) / 2;
+        int y = this.getY() + (this.getHeight() - 300) / 2;
+        liqui.setBounds(x, y, 400, 300);
+        liqui.setVisible(true);
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton7ActionPerformed
 public void modifica(String num){
         try {
             String actualiza = "UPDATE dvalus SET cantidad="+jTextField10.getText()+" WHERE numepart="+num+" AND ("

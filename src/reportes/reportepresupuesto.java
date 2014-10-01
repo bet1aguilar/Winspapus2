@@ -467,6 +467,7 @@ public void generareportepres(){
             while(rsimp.next()){
                 impuesto=rsimp.getFloat(1);
             }
+            
         } catch (SQLException ex) {
             Logger.getLogger(reportepresupuesto.class.getName()).log(Level.SEVERE, null, ex);
         }
