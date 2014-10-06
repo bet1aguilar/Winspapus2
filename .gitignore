@@ -5,6 +5,7 @@
 *.pydevproject
 .project
 *.xml
+*.properties
 .metadata
 bin/
 lib/
