@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="cierre" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isSummaryWithPageHeaderAndFooter="true" isFloatColumnFooter="true" uuid="50c5a276-112d-47ea-b3d6-f16f59a37d76">
-	<property name="ireport.zoom" value="0.9090909090909096"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.zoom" value="1.6105100000000014"/>
+	<property name="ireport.x" value="557"/>
+	<property name="ireport.y" value="46"/>
 	<parameter name="titulo" class="java.lang.String"/>
 	<parameter name="fecha" class="java.lang.String"/>
 	<parameter name="modioavance" class="java.lang.String"/>
@@ -185,6 +185,13 @@ WHERE mpres.id = $P{mpres}]]>
 	</variable>
 	<variable name="modiimp" class="java.lang.Double">
 		<variableExpression><![CDATA[$V{impmodi}+$V{acummodi}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="promedioporc" class="java.lang.Double" resetType="Page" calculation="Average">
+		<variableExpression><![CDATA[$F{reportecuadrocierre_porcmodificado}]]></variableExpression>
+	</variable>
+	<variable name="acumporc" class="java.lang.Double" incrementType="Page" calculation="Average">
+		<variableExpression><![CDATA[$V{promedioporc}]]></variableExpression>
 		<initialValueExpression><![CDATA[0]]></initialValueExpression>
 	</variable>
 	<background>
@@ -534,7 +541,7 @@ WHERE mpres.id = $P{mpres}]]>
 				<text><![CDATA[Cant.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="29f647f5-722a-4d47-ab7d-4adf99caf50c" x="485" y="14" width="45" height="16"/>
+				<reportElement uuid="29f647f5-722a-4d47-ab7d-4adf99caf50c" x="485" y="14" width="37" height="16"/>
 				<box rightPadding="3">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -548,7 +555,7 @@ WHERE mpres.id = $P{mpres}]]>
 				<text><![CDATA[Cant.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="f4402ea5-7705-4839-8e8f-57f926334b66" x="530" y="14" width="49" height="16"/>
+				<reportElement uuid="f4402ea5-7705-4839-8e8f-57f926334b66" x="522" y="14" width="40" height="16"/>
 				<box rightPadding="3">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -562,7 +569,7 @@ WHERE mpres.id = $P{mpres}]]>
 				<text><![CDATA[Monto Bs.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="d07ae62b-76f9-4d67-8d84-56743aa935a5" x="485" y="0" width="94" height="14"/>
+				<reportElement uuid="d07ae62b-76f9-4d67-8d84-56743aa935a5" x="485" y="0" width="77" height="14"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -576,7 +583,7 @@ WHERE mpres.id = $P{mpres}]]>
 				<text><![CDATA[Aumentos]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="6c51cf35-c1ac-46b1-abe7-4b89119af0cb" x="579" y="14" width="32" height="16"/>
+				<reportElement uuid="6c51cf35-c1ac-46b1-abe7-4b89119af0cb" x="562" y="14" width="32" height="16"/>
 				<box rightPadding="3">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -590,7 +597,7 @@ WHERE mpres.id = $P{mpres}]]>
 				<text><![CDATA[Cant.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="1e3b6cf9-2005-4b8d-8432-2f53805eca5e" x="579" y="0" width="81" height="14"/>
+				<reportElement uuid="1e3b6cf9-2005-4b8d-8432-2f53805eca5e" x="562" y="0" width="81" height="14"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -604,7 +611,7 @@ WHERE mpres.id = $P{mpres}]]>
 				<text><![CDATA[Disminución]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="cd5b4f1e-4df5-487d-8af0-2dd6ecfd7a6f" x="611" y="14" width="49" height="16"/>
+				<reportElement uuid="cd5b4f1e-4df5-487d-8af0-2dd6ecfd7a6f" x="594" y="14" width="48" height="16"/>
 				<box rightPadding="3">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -618,7 +625,7 @@ WHERE mpres.id = $P{mpres}]]>
 				<text><![CDATA[Monto Bs.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="5e6132da-639d-442c-97af-6d44c86837e7" x="660" y="0" width="92" height="14"/>
+				<reportElement uuid="5e6132da-639d-442c-97af-6d44c86837e7" x="643" y="0" width="109" height="14"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -632,7 +639,7 @@ WHERE mpres.id = $P{mpres}]]>
 				<text><![CDATA[Modificado]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="abc672f7-77f9-4a21-aebb-1b83140107ab" x="693" y="14" width="38" height="16"/>
+				<reportElement uuid="abc672f7-77f9-4a21-aebb-1b83140107ab" x="675" y="14" width="38" height="16"/>
 				<box rightPadding="3">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -646,7 +653,7 @@ WHERE mpres.id = $P{mpres}]]>
 				<text><![CDATA[Monto Bs.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="d9c5cc8a-cd1f-42f7-8495-2b2a84ef91c4" x="660" y="14" width="33" height="16"/>
+				<reportElement uuid="d9c5cc8a-cd1f-42f7-8495-2b2a84ef91c4" x="642" y="14" width="33" height="16"/>
 				<box rightPadding="3">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -660,7 +667,7 @@ WHERE mpres.id = $P{mpres}]]>
 				<text><![CDATA[Cant.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="4fe3a44c-1028-426b-8d6d-13565cbef0ec" x="731" y="14" width="21" height="16"/>
+				<reportElement uuid="4fe3a44c-1028-426b-8d6d-13565cbef0ec" x="713" y="14" width="39" height="16"/>
 				<box rightPadding="3">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -788,7 +795,7 @@ WHERE mpres.id = $P{mpres}]]>
 				<textFieldExpression><![CDATA[$F{reportecuadrocierre_npmonto}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement uuid="7add71f4-9376-4cc4-9131-8a170b5307f8" stretchType="RelativeToTallestObject" x="485" y="0" width="45" height="20"/>
+				<reportElement uuid="7add71f4-9376-4cc4-9131-8a170b5307f8" stretchType="RelativeToTallestObject" x="485" y="0" width="37" height="20"/>
 				<box topPadding="3" rightPadding="3">
 					<leftPen lineWidth="1.0"/>
 					<rightPen lineWidth="1.0"/>
@@ -799,7 +806,7 @@ WHERE mpres.id = $P{mpres}]]>
 				<textFieldExpression><![CDATA[$F{reportecuadrocierre_aumcantidad}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement uuid="1ab14153-7006-46d1-a3a5-fa38b946f453" stretchType="RelativeToTallestObject" x="530" y="0" width="49" height="20"/>
+				<reportElement uuid="1ab14153-7006-46d1-a3a5-fa38b946f453" stretchType="RelativeToTallestObject" x="522" y="0" width="40" height="20"/>
 				<box topPadding="3" rightPadding="3">
 					<leftPen lineWidth="1.0"/>
 					<rightPen lineWidth="1.0"/>
@@ -810,7 +817,7 @@ WHERE mpres.id = $P{mpres}]]>
 				<textFieldExpression><![CDATA[$F{reportecuadrocierre_aummonto}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement uuid="ef254194-c405-4dad-8ec0-51009f00a568" stretchType="RelativeToTallestObject" x="579" y="0" width="32" height="20"/>
+				<reportElement uuid="ef254194-c405-4dad-8ec0-51009f00a568" stretchType="RelativeToTallestObject" x="562" y="0" width="32" height="20"/>
 				<box topPadding="3" rightPadding="3">
 					<leftPen lineWidth="1.0"/>
 					<rightPen lineWidth="1.0"/>
@@ -821,7 +828,7 @@ WHERE mpres.id = $P{mpres}]]>
 				<textFieldExpression><![CDATA[$F{reportecuadrocierre_discantidad}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement uuid="ef5784b5-5c84-4785-94fd-2beb7f0c5a90" stretchType="RelativeToTallestObject" x="611" y="0" width="49" height="20"/>
+				<reportElement uuid="ef5784b5-5c84-4785-94fd-2beb7f0c5a90" stretchType="RelativeToTallestObject" x="594" y="0" width="48" height="20"/>
 				<box topPadding="3" rightPadding="3">
 					<leftPen lineWidth="1.0"/>
 					<rightPen lineWidth="1.0"/>
@@ -832,7 +839,7 @@ WHERE mpres.id = $P{mpres}]]>
 				<textFieldExpression><![CDATA[$F{reportecuadrocierre_dismonto}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement uuid="a4edc78d-810d-4a00-87c9-a7b2ffe323ee" stretchType="RelativeToTallestObject" x="660" y="0" width="33" height="20"/>
+				<reportElement uuid="a4edc78d-810d-4a00-87c9-a7b2ffe323ee" stretchType="RelativeToTallestObject" x="642" y="0" width="33" height="20"/>
 				<box topPadding="3" rightPadding="3">
 					<leftPen lineWidth="1.0"/>
 					<rightPen lineWidth="1.0"/>
@@ -843,7 +850,7 @@ WHERE mpres.id = $P{mpres}]]>
 				<textFieldExpression><![CDATA[$F{reportecuadrocierre_cantmodificado}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement uuid="42e6815b-f97d-4bfd-855f-5996ea572418" stretchType="RelativeToTallestObject" x="693" y="0" width="38" height="20"/>
+				<reportElement uuid="42e6815b-f97d-4bfd-855f-5996ea572418" stretchType="RelativeToTallestObject" x="675" y="0" width="38" height="20"/>
 				<box topPadding="3" rightPadding="3">
 					<leftPen lineWidth="1.0"/>
 					<rightPen lineWidth="1.0"/>
@@ -854,7 +861,7 @@ WHERE mpres.id = $P{mpres}]]>
 				<textFieldExpression><![CDATA[$F{reportecuadrocierre_montomodificado}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement uuid="17c327a2-893c-4ac0-9294-65ca232876ee" stretchType="RelativeToTallestObject" x="731" y="0" width="21" height="20"/>
+				<reportElement uuid="17c327a2-893c-4ac0-9294-65ca232876ee" stretchType="RelativeToTallestObject" x="713" y="0" width="39" height="20"/>
 				<box topPadding="3" rightPadding="3">
 					<leftPen lineWidth="1.0"/>
 					<rightPen lineWidth="1.0"/>
@@ -912,7 +919,7 @@ WHERE mpres.id = $P{mpres}]]>
 				<textFieldExpression><![CDATA[$V{totalvp}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement uuid="d3d119bb-8207-4884-9be5-97b9e8eb71e4" x="522" y="1" width="56" height="15"/>
+				<reportElement uuid="d3d119bb-8207-4884-9be5-97b9e8eb71e4" x="506" y="0" width="56" height="15"/>
 				<box topPadding="3" rightPadding="3"/>
 				<textElement textAlignment="Right">
 					<font size="7"/>
@@ -920,7 +927,7 @@ WHERE mpres.id = $P{mpres}]]>
 				<textFieldExpression><![CDATA[$V{totalaum}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement uuid="3c5cdf97-61f8-46c3-9ff4-e10358044a62" x="604" y="1" width="56" height="15"/>
+				<reportElement uuid="3c5cdf97-61f8-46c3-9ff4-e10358044a62" x="587" y="0" width="56" height="15"/>
 				<box topPadding="3" rightPadding="3"/>
 				<textElement textAlignment="Right">
 					<font size="7"/>
@@ -952,7 +959,7 @@ WHERE mpres.id = $P{mpres}]]>
 				<textFieldExpression><![CDATA[$V{acumvp}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement uuid="7ef0f61a-6cad-48b7-8597-62540a0699f2" x="524" y="15" width="53" height="15"/>
+				<reportElement uuid="7ef0f61a-6cad-48b7-8597-62540a0699f2" x="508" y="14" width="53" height="15"/>
 				<box topPadding="3" rightPadding="3"/>
 				<textElement textAlignment="Right">
 					<font size="7"/>
@@ -960,7 +967,7 @@ WHERE mpres.id = $P{mpres}]]>
 				<textFieldExpression><![CDATA[$V{acumaum}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement uuid="31f0c1db-af96-4420-b2bb-d0a1750396e0" x="606" y="15" width="53" height="15"/>
+				<reportElement uuid="31f0c1db-af96-4420-b2bb-d0a1750396e0" x="589" y="14" width="53" height="15"/>
 				<box topPadding="3" rightPadding="3"/>
 				<textElement textAlignment="Right">
 					<font size="7"/>
@@ -968,7 +975,7 @@ WHERE mpres.id = $P{mpres}]]>
 				<textFieldExpression><![CDATA[$V{acumdismi}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement uuid="c58c8ae6-ea3e-4bbc-9b60-956c112e8b80" x="675" y="0" width="56" height="15"/>
+				<reportElement uuid="c58c8ae6-ea3e-4bbc-9b60-956c112e8b80" x="658" y="0" width="56" height="15"/>
 				<box topPadding="3" rightPadding="3"/>
 				<textElement textAlignment="Right">
 					<font size="7"/>
@@ -976,12 +983,28 @@ WHERE mpres.id = $P{mpres}]]>
 				<textFieldExpression><![CDATA[$V{totalmodi}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement uuid="d4bc1e62-8c76-4466-83f6-c5dd3539639f" x="677" y="14" width="53" height="15"/>
+				<reportElement uuid="d4bc1e62-8c76-4466-83f6-c5dd3539639f" x="660" y="14" width="53" height="15"/>
 				<box topPadding="3" rightPadding="3"/>
 				<textElement textAlignment="Right">
 					<font size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{acummodi}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="03c613ba-3a2f-416d-8a54-26d7e167601c" x="714" y="0" width="38" height="15"/>
+				<box rightPadding="2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{promedioporc}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="9f2a39ea-6097-43f8-948a-3ccef626e296" x="714" y="16" width="38" height="13"/>
+				<box rightPadding="2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{acumporc}]]></textFieldExpression>
 			</textField>
 		</band>
 	</columnFooter>

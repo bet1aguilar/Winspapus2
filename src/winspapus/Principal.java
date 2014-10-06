@@ -149,6 +149,7 @@ public class Principal extends javax.swing.JFrame {
     
     public final void verificarpres()
     {
+        
         int contador=0;
         String select = "SELECT COUNT(*) FROM mpres WHERE mpres_id IS NULL";
         try {
@@ -167,6 +168,10 @@ public class Principal extends javax.swing.JFrame {
         }
     }
     private void conectar(){
+          String sSistemaOperativo = System.getProperty("os.name");
+                System.out.println(sSistemaOperativo);
+                 String sSistemaOperativoversion = System.getProperty("os.version");
+                System.out.println(sSistemaOperativoversion);
          try {
             DriverManager.registerDriver(new com.mysql.jdbc.Driver());
         } catch (SQLException ex) {
@@ -197,7 +202,7 @@ public class Principal extends javax.swing.JFrame {
                 } 
                
                   //establecer seguridad remota
-                String sSistemaOperativo = System.getProperty("os.name");
+                sSistemaOperativo = System.getProperty("os.name");
                 System.out.println(sSistemaOperativo);
                 opc=JOptionPane.showConfirmDialog(null, "Atención Asegúrese de estar conectado a Internet","INICIAR DE SISTEMA",JOptionPane.YES_NO_OPTION);
                 if ((opc==1)||(opc==2)){

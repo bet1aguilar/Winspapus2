@@ -235,10 +235,13 @@ public class reportecuadrocierre extends javax.swing.JDialog {
                          + ", (mp.cantidad+IFNULL((SELECT aumento FROM admppres WHERE numepart=mp.numero AND mpre_id='"+pres+"'),0)-"
                          + "IFNULL((SELECT disminucion FROM admppres WHERE numepart=mp.numero AND mpre_id='"+pres+"'),0))"
                          + "*IF(mp.precasu=0,mp.precunit, mp.precasu)"
-                         + " as montomodificado, '"+pres+"'"
+                         + " as montomodificado, '"+pres+"',(((mp.cantidad+IFNULL((SELECT aumento FROM admppres WHERE numepart=mp.numero AND mpre_id='"+pres+"'),0)-"
+                         + "IFNULL((SELECT disminucion FROM admppres WHERE numepart=mp.numero AND mpre_id='"+pres+"'),0))"
+                         + "*IF(mp.precasu=0,mp.precunit, mp.precasu))"
+                         + " /(IF(mp.precasu=0,mp.precunit, mp.precasu)*mp.cantidad))*100 as porcmodificado "
                          + "FROM mppres AS mp WHERE mpre_id='"+pres+"' AND tipo ='Org')";
                  String original= "INSERT INTO reportecuadrocierre (nro, codigo, descri, unidad, precio, origcant, origmonto,"
-                         + "aumcantidad, aummonto,discantidad,dismonto,cantmodificado,montomodificado,mpres)"
+                         + "aumcantidad, aummonto,discantidad,dismonto,cantmodificado,montomodificado,mpres, porcmodificado)"
                          + completa;
                  Statement insertori = (Statement) conex.createStatement();
                  insertori.execute(original);
