@@ -42,7 +42,7 @@ public final class Versiones extends javax.swing.JDialog {
             Serialdd  obj2=new Serialdd();
             String dd=obj2.getSerialNumber("C");
              Date hoy = new Date();
-                String fecha1;                                  
+                                               
                 SimpleDateFormat formatofecha=new SimpleDateFormat("yyyy-MM-dd");
                 
 
@@ -187,24 +187,14 @@ public final class Versiones extends javax.swing.JDialog {
 
         String[] versioncompra=jComboBox1.getSelectedItem().toString().split("/") ;
         String idcompra=versioncompra[0];
-        String sql="update version_compra set instalacion=1 where id='" + idcompra +"'";
+        
         //*------------INSERTAR EQUIPO EN BD DEL SERVIDOR HOSTING
-        try {
-            Statement vc = (Statement) conex.createStatement();
-            vc.execute(sql);
-           
-            fecha1=formatofecha.format(hoy);    
-                sql="insert into mpresadm"
-                        + " values ('"+fecha1+"','"+dd+"','"+tm+"','"+licencia+"','1')";
-                System.out.println(sql);
-                 Statement esc = (Statement) conexion.createStatement();
-                esc.execute(sql); 
-                 JOptionPane.showMessageDialog(rootPane, "Instalación registrada Satisfactoriamente");
-                 prin.sinst=1; 
-              doClose(RET_OK);
-        } catch (SQLException ex) {
-            Logger.getLogger(Versiones.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        maquina maqui = new maquina(prin, true, conex, idcompra,dd,tm,licencia, prin, conexion);
+        int x = (prin.getWidth()/2)-400/2;
+        int y = (prin.getHeight()/2)-300/2;
+        maqui.setBounds(x, y, 400, 300);
+        maqui.setVisible(true);
+          doClose(RET_OK);
         
       
     }//GEN-LAST:event_okButtonActionPerformed
