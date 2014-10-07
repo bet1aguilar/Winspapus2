@@ -19,6 +19,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
+import java.util.Date;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -187,16 +188,31 @@ public class Principal extends javax.swing.JFrame {
             String sql;            
 
  
-            sql="select * from mpresadm where status='1'";
+            sql="select * from mpresadm";
             Serialdd  obj2=new Serialdd();
               String dd=obj2.getSerialNumber("C");
+              int status=0;
             ResultSet rst = seg.executeQuery(sql);             
             rst.last();
-            int regis = rst.getRow();                
+            int regis = rst.getRow();    
+            if (regis!=0){
+            Date fec1=rst.getDate("fecha");
             
+            Date hoy = new Date();
+            double difer=hoy.getTime()-fec1.getTime(),dias=difer/(1000*60*24*60);
+            if (dias>=30)
+            {
+              sql="update mpresadm set status='0'";  
+              Statement demo1 = (Statement) conexion.createStatement();
+              demo1.execute(sql); 
+              JOptionPane.showMessageDialog(presupuesto, "Tiempo Agotado de la Versión DEMO, comunicarse con SISTEMAS RH");              
+              System.exit(0);
+            } 
+            status = rst.getInt("status");
+            }
             if (regis==0){
                 int opc;
-                opc=JOptionPane.showConfirmDialog(null, "Atención el Sistema se va a Ejecutar por primero vez, Desea Continuar?","INICIAR DE SISTEMA",JOptionPane.YES_NO_OPTION);
+                opc=JOptionPane.showConfirmDialog(null, "Atención el Sistema se va a Ejecutar por primera vez, Desea Continuar?","INICIAR DE SISTEMA",JOptionPane.YES_NO_OPTION);
                 if ((opc==1)||(opc==2)){
                    System.exit(0);
                 } 
@@ -211,7 +227,7 @@ public class Principal extends javax.swing.JFrame {
                 }     
                 conespapu = (Connection) DriverManager.getConnection("jdbc:mysql://spapu2.db.11811826.hostedresource.com/spapu2", "spapu2", "Rahp81261!");
 
-                instalador instalar=new instalador(this, true,conespapu, this, conexion);
+                instalador instalar=new instalador(this, true,conespapu, this, conexion,dd);
                 int xi=(this.getWidth()/2)-350/2;
                 int yi=(this.getHeight()/2)-100/2;
                 instalar.setBounds(xi, yi, 350, 200);
@@ -228,7 +244,7 @@ public class Principal extends javax.swing.JFrame {
                 
             }
             else{
-                if(!rst.getString("codigo").equals(dd)) {
+                if(!rst.getString("codigo").equals(dd)&&status==1)  {
                    JOptionPane.showMessageDialog(null, "LICENCIA NO AUTORIZADA, LLAMAR A SISTEMAS RH");
                    System.exit(0);
                 }                                    

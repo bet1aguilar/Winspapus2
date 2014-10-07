@@ -41,7 +41,7 @@ Connection conex, conexion;
 String idcompra, dd, tm, licencia;
 Principal prin;
 SimpleDateFormat formatofecha=new SimpleDateFormat("yyyy-MM-dd");
-String fecha1;   
+String fecha1,fecha2;   
    Date hoy = new Date();
     /** Creates new form maquina */
     public maquina(java.awt.Frame parent, boolean modal, Connection conex, String idcompra, String dd, String tm, String licencia, Principal prin, Connection conexion) {
@@ -225,8 +225,9 @@ String fecha1;
             vc.execute(sql);
            
             fecha1=formatofecha.format(hoy);    
+            fecha2=formatofecha.format(hoy);    
                 sql="insert into mpresadm"
-                        + " values ('"+fecha1+"','"+dd+"','"+tm+"','"+licencia+"','1')";
+                        + " values ('"+fecha1+"','"+dd+"','"+tm+"','"+licencia+"','1',0,'"+fecha2+"')";
                 System.out.println(sql);
                  Statement esc = (Statement) conexion.createStatement();
                 esc.execute(sql); 

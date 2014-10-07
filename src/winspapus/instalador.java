@@ -16,6 +16,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.AbstractAction;
@@ -36,12 +38,14 @@ public class instalador extends javax.swing.JDialog {
     /** A return status code - returned if OK button has been pressed */
     public static final int RET_OK = 1;
     Principal prin;
+    String dd;
     Connection conespapu, conex;
     /** Creates new form instalador */
-    public instalador(java.awt.Frame parent, boolean modal, Connection conespapu, Principal prin, Connection conex) {
+    public instalador(java.awt.Frame parent, boolean modal, Connection conespapu, Principal prin, Connection conex, String dd) {
         super(parent, modal);
         initComponents();
         this.prin=prin; 
+        this.dd=dd;
         this.conespapu=conespapu;
         this.conex=conex;
         // Close the dialog when Esc is pressed
@@ -171,8 +175,29 @@ public class instalador extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
-       
-        String sql; 
+    
+    String sql,fecha1,fecha2; 
+    Date hoy = new Date();
+    SimpleDateFormat formatofecha=new SimpleDateFormat("yyyy-MM-dd");    
+    if ("DEMO".equals(jTextField1.getText()))
+    {                 
+            try {
+                fecha1=formatofecha.format(hoy);    
+                fecha2=formatofecha.format(hoy);    
+                sql="insert into mpresadm"
+                        + " values ('"+fecha1+"','"+dd+"','demo','demo','1',1,'"+ fecha2 +"')";
+                System.out.println(sql);
+                Statement demo = (Statement) conex.createStatement();
+                demo.execute(sql);
+                prin.sinst=1;
+            } catch (SQLException ex) {
+                Logger.getLogger(instalador.class.getName()).log(Level.SEVERE, null, ex);
+            }
+     
+    }   
+    else
+    {    
+        
         sql="select * from compra where serial='" + jTextField1.getText()  + "'";
         
         Statement ser1 = null;
@@ -229,6 +254,7 @@ public class instalador extends javax.swing.JDialog {
             Logger.getLogger(instalador.class.getName()).log(Level.SEVERE, null, ex);
         }
         //       
+    }  
         doClose(RET_OK);
     }//GEN-LAST:event_okButtonActionPerformed
     
