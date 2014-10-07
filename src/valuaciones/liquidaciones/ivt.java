@@ -1234,7 +1234,7 @@ private void jTextField11FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:e
                     + "OR dv.mpre_id IN (SELECT id FROM mpres WHERE mpres_id='" + mpres + "'))"
                     + " AND (mp.mpre_id='" + mpres + "' "
                     + "OR mp.mpre_id IN (SELECT id FROM mpres WHERE mpres_id='" + mpres + "'))"
-                    + "GROUP BY dv.numepart ORDER BY mp.numegrup";
+                    + " ORDER BY mp.numegrup";
             System.out.println("consulta de total valu a ver error "+sql);
             Statement sts = (Statement) conex.createStatement();
             ResultSet rsts = sts.executeQuery(sql);

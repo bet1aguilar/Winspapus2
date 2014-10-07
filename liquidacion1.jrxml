@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="liquidacion1" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="dc69826d-a550-4663-bf1e-76e2ef90d00a">
 	<property name="ireport.zoom" value="1.2100000000000062"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="242"/>
+	<property name="ireport.y" value="5"/>
 	<parameter name="mpres" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
@@ -18,17 +18,37 @@
 	<parameter name="ordenpago" class="java.lang.String"/>
 	<parameter name="compromiso" class="java.lang.String"/>
 	<parameter name="parameter1" class="java.lang.String"/>
-	<parameter name="impuesto" class="java.lang.Double"/>
-	<parameter name="montovalu" class="java.lang.Double"/>
-	<parameter name="reconsideracion" class="java.lang.Double"/>
-	<parameter name="extras" class="java.lang.Double"/>
-	<parameter name="disminucion" class="java.lang.Double"/>
-	<parameter name="aumento" class="java.lang.Double"/>
+	<parameter name="impuesto" class="java.lang.Double">
+		<defaultValueExpression><![CDATA[0]]></defaultValueExpression>
+	</parameter>
+	<parameter name="montovalu" class="java.lang.Double">
+		<defaultValueExpression><![CDATA[0]]></defaultValueExpression>
+	</parameter>
+	<parameter name="reconsideracion" class="java.lang.Double">
+		<defaultValueExpression><![CDATA[0]]></defaultValueExpression>
+	</parameter>
+	<parameter name="extras" class="java.lang.Double">
+		<defaultValueExpression><![CDATA[0]]></defaultValueExpression>
+	</parameter>
+	<parameter name="disminucion" class="java.lang.Double">
+		<defaultValueExpression><![CDATA[0]]></defaultValueExpression>
+	</parameter>
+	<parameter name="aumento" class="java.lang.Double">
+		<defaultValueExpression><![CDATA[0]]></defaultValueExpression>
+	</parameter>
 	<parameter name="hoy" class="java.lang.String"/>
-	<parameter name="retlab" class="java.lang.Double"/>
-	<parameter name="fielcumpli" class="java.lang.Double"/>
-	<parameter name="retant" class="java.lang.Double"/>
-	<parameter name="multa" class="java.lang.Double"/>
+	<parameter name="retlab" class="java.lang.Double">
+		<defaultValueExpression><![CDATA[0]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fielcumpli" class="java.lang.Double">
+		<defaultValueExpression><![CDATA[0]]></defaultValueExpression>
+	</parameter>
+	<parameter name="retant" class="java.lang.Double">
+		<defaultValueExpression><![CDATA[0]]></defaultValueExpression>
+	</parameter>
+	<parameter name="multa" class="java.lang.Double">
+		<defaultValueExpression><![CDATA[0]]></defaultValueExpression>
+	</parameter>
 	<parameter name="diapara" class="java.lang.String"/>
 	<parameter name="mespara" class="java.lang.String"/>
 	<parameter name="anopara" class="java.lang.String"/>
@@ -38,15 +58,33 @@
 	<parameter name="diaprorro" class="java.lang.String"/>
 	<parameter name="mesprorro" class="java.lang.String"/>
 	<parameter name="anoprorro" class="java.lang.String"/>
-	<parameter name="totalpres" class="java.lang.Double"/>
-	<parameter name="acumliquidaciones" class="java.lang.Double"/>
-	<parameter name="impacumvalu" class="java.lang.Double"/>
-	<parameter name="liquidacionanterior" class="java.lang.Double"/>
-	<parameter name="presenteliq" class="java.lang.Double"/>
-	<parameter name="acumuladas" class="java.lang.Double"/>
-	<parameter name="anticipootorgado" class="java.lang.Double"/>
-	<parameter name="anticipoacumulado" class="java.lang.Double"/>
-	<parameter name="saldoanticipo" class="java.lang.String"/>
+	<parameter name="totalpres" class="java.lang.Double">
+		<defaultValueExpression><![CDATA[0]]></defaultValueExpression>
+	</parameter>
+	<parameter name="acumliquidaciones" class="java.lang.Double">
+		<defaultValueExpression><![CDATA[0]]></defaultValueExpression>
+	</parameter>
+	<parameter name="impacumvalu" class="java.lang.Double">
+		<defaultValueExpression><![CDATA[0]]></defaultValueExpression>
+	</parameter>
+	<parameter name="liquidacionanterior" class="java.lang.Double">
+		<defaultValueExpression><![CDATA[0]]></defaultValueExpression>
+	</parameter>
+	<parameter name="presenteliq" class="java.lang.Double">
+		<defaultValueExpression><![CDATA[0]]></defaultValueExpression>
+	</parameter>
+	<parameter name="acumuladas" class="java.lang.Double">
+		<defaultValueExpression><![CDATA[0]]></defaultValueExpression>
+	</parameter>
+	<parameter name="anticipootorgado" class="java.lang.Double">
+		<defaultValueExpression><![CDATA[0]]></defaultValueExpression>
+	</parameter>
+	<parameter name="anticipoacumulado" class="java.lang.Double">
+		<defaultValueExpression><![CDATA[0]]></defaultValueExpression>
+	</parameter>
+	<parameter name="saldoanticipo" class="java.lang.Double">
+		<defaultValueExpression><![CDATA[0]]></defaultValueExpression>
+	</parameter>
 	<queryString>
 		<![CDATA[SELECT
      mpres.`nombre` AS mpres_nombre,
@@ -106,10 +144,10 @@ WHERE
 		<variableExpression><![CDATA[$V{sinimpu}-$P{reconsideracion}-$P{extras}-$P{aumento}]]></variableExpression>
 		<initialValueExpression><![CDATA[0]]></initialValueExpression>
 	</variable>
-	<variable name="retlab" class="java.lang.String">
+	<variable name="retlab" class="java.lang.Double">
 		<variableExpression><![CDATA[$V{sinimpu}*($P{retlab}/100)]]></variableExpression>
 	</variable>
-	<variable name="fielcump" class="java.math.BigDecimal">
+	<variable name="fielcump" class="java.lang.Double">
 		<variableExpression><![CDATA[$V{sinimpu}*($P{fielcumpli}/100)]]></variableExpression>
 	</variable>
 	<variable name="amortant" class="java.lang.Double">
@@ -1813,7 +1851,7 @@ WHERE
 				<textElement textAlignment="Justified" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{mconts_nombre}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{mpres_nombre}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement uuid="a73ee104-eed4-436a-9d6b-94e1002f8338" x="304" y="30" width="72" height="15"/>
