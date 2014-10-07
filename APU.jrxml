@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report2" language="groovy" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="cc1b8ae2-f7ca-41db-a004-b9de7407b6b8">
-	<property name="ireport.zoom" value="1.2396694214876032"/>
-	<property name="ireport.x" value="33"/>
-	<property name="ireport.y" value="161"/>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report2" language="groovy" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="42" uuid="cc1b8ae2-f7ca-41db-a004-b9de7407b6b8">
+	<property name="ireport.zoom" value="1.5000000000000013"/>
+	<property name="ireport.x" value="169"/>
+	<property name="ireport.y" value="301"/>
 	<style name="table">
 		<box>
 			<topPen lineWidth="1.0" lineColor="#000000"/>
@@ -898,12 +898,12 @@ WHERE
 				</jr:table>
 			</componentElement>
 		</band>
-		<band height="12">
+		<band height="11">
 			<rectangle>
 				<reportElement uuid="d50bde9e-ad23-4ed7-a51e-092cccb85651" stretchType="RelativeToBandHeight" x="0" y="0" width="571" height="11"/>
 			</rectangle>
 			<staticText>
-				<reportElement uuid="240f21e7-0f85-4ba3-8251-a1ceb7992a4c" x="397" y="1" width="85" height="11"/>
+				<reportElement uuid="240f21e7-0f85-4ba3-8251-a1ceb7992a4c" x="397" y="1" width="85" height="10"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="7" isBold="true" isItalic="false"/>
 				</textElement>
@@ -1599,19 +1599,19 @@ WHERE
 		</band>
 	</detail>
 	<pageFooter>
-		<band height="25" splitType="Stretch">
+		<band height="22" splitType="Stretch">
 			<line>
 				<reportElement uuid="f3d15656-68bb-4dd1-8446-661b82f5ea80" x="4" y="0" width="569" height="1"/>
 			</line>
 			<textField>
-				<reportElement uuid="08d09500-d53b-4df2-9cc7-b3ab7b7292fc" x="0" y="13" width="570" height="11"/>
+				<reportElement uuid="08d09500-d53b-4df2-9cc7-b3ab7b7292fc" x="0" y="11" width="570" height="11"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 					<font size="6" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA["0276-3567564 / 0276-3553158 / 0276-3560071 / 0276-3579562 www.spapu.com.ve / Facebook: Rhspapu / Twitter: @Spapu"]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement uuid="4f40dadd-0a70-48e6-a250-b784ac1dc1db" x="1" y="3" width="570" height="11"/>
+				<reportElement uuid="4f40dadd-0a70-48e6-a250-b784ac1dc1db" x="2" y="0" width="570" height="11"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="6" isBold="true"/>
 				</textElement>

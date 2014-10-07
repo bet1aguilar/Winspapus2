@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="materiales" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="0dfcd48b-9214-4942-b44e-cd03546ad366">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="materiales" language="groovy" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="42" uuid="0dfcd48b-9214-4942-b44e-cd03546ad366">
 	<property name="ireport.zoom" value="1.2396694214876032"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
@@ -201,7 +201,9 @@ WHERE id=$P{mtabus}]]>
 		<band height="175" splitType="Stretch">
 			<textField pattern="dd/MM/yyyy">
 				<reportElement uuid="04471394-16c3-4e89-8cae-9b7f6a1603c7" x="455" y="0" width="100" height="20"/>
-				<textElement/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
 			<staticText>
@@ -367,6 +369,20 @@ WHERE id=$P{mtabus}]]>
 				</textElement>
 				<text><![CDATA[Impuestos]]></text>
 			</staticText>
+			<textField>
+				<reportElement uuid="57472145-04f7-4749-be2f-c5c1d03244d8" x="461" y="20" width="80" height="15"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Pág. "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" evaluationTime="Report">
+				<reportElement uuid="5ce12b86-e0d4-496e-8f11-9ce172f11db6" x="541" y="20" width="14" height="15"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageHeader>
 	<detail>
@@ -490,26 +506,18 @@ WHERE id=$P{mtabus}]]>
 		</band>
 	</detail>
 	<pageFooter>
-		<band height="40" splitType="Stretch">
-			<textField>
-				<reportElement uuid="74375e73-af43-4b1b-9029-0e786ee6b040" x="518" y="25" width="37" height="15"/>
-				<box leftPadding="5"/>
-				<textElement verticalAlignment="Middle">
-					<font size="9"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
-			</textField>
+		<band height="34" splitType="Stretch">
 			<staticText>
-				<reportElement uuid="aff01453-48af-483b-b5db-ead5cf76a88b" x="0" y="11" width="555" height="15"/>
+				<reportElement uuid="aff01453-48af-483b-b5db-ead5cf76a88b" x="3" y="4" width="555" height="15"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8" isBold="true"/>
+					<font size="7" isBold="true"/>
 				</textElement>
 				<text><![CDATA[SPAPU (Sistemas R.H. C.A.)  San Cristóbal Edo. Táchira, Barrio Obrero Carrera 18 Entre calles 8 y 9 Edf. Marcol's No. 8-23 ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="592a075a-c9af-4064-9f52-c179dfb0a2bc" x="0" y="25" width="518" height="15"/>
+				<reportElement uuid="592a075a-c9af-4064-9f52-c179dfb0a2bc" x="3" y="18" width="555" height="15"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8" isBold="true"/>
+					<font size="7" isBold="true"/>
 				</textElement>
 				<text><![CDATA[0276-3567564 / 0276-3553158 / 0276-3560071 / 0276-3579562]]></text>
 			</staticText>

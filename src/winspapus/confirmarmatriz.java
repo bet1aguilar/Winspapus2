@@ -235,7 +235,7 @@ public class confirmarmatriz extends javax.swing.JDialog {
     }//GEN-LAST:event_jPasswordField1FocusLost
 
     private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_okButtonMouseClicked
-       
+ if(okButton.isEnabled()){       
         if(jRadioButton1.isSelected()){
             reportemateriales rep = new reportemateriales(prin, false, conex, tabu);
               int xi = (prin.getWidth()/2)-275/2;
@@ -258,7 +258,7 @@ public class confirmarmatriz extends javax.swing.JDialog {
           rep.setVisible(true);
         }
         doClose(RET_CANCEL);
-     
+ }
              // TODO add your handling code here:
     }//GEN-LAST:event_okButtonMouseClicked
     
