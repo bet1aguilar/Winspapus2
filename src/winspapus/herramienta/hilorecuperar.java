@@ -39,14 +39,19 @@ public class hilorecuperar extends Thread{
             Statement carga= (Statement) conn.createStatement();
             Statement escribir = (Statement) conexion.createStatement();
             String sql = "Select * from Config";
+                        System.out.println(conn.getMetaData().getURL());
             ResultSet rst = carga.executeQuery(sql);
+
             String mtabu;
             rst.next();
             mtabu = rst.getString("IDConfig");
            
             //            
             //RECUPERAR TABULADORES
-            sql= "INSERT INTO mtabus VALUES ('"+mtabu+"',"
+            sql= "INSERT INTO mtabus "
+                    + "(id, descri, vigencia, padyga, pcosfin, pimpue,pprest,putild,status,seleccionado) "
+                    + "VALUES "
+                    + "('"+mtabu+"',"
                                                          + "'"+rst.getString("Descripcion")+"',"
                                                          + "'"+rst.getDate("Vigencia")+"',"
                                                          + ""+rst.getFloat("PAdminYGastos")+","
@@ -107,6 +112,8 @@ public class hilorecuperar extends Thread{
      recup.doClose(RET_OK);
             
         } catch (SQLException ex) {
+            JOptionPane.showConfirmDialog(recup, "Ocurrió un error al cargar el tabulador "+ex.getMessage());
+            recup.doClose(RET_OK);
             Logger.getLogger(RecuperarTab.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

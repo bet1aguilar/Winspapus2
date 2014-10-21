@@ -19,7 +19,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -138,7 +137,7 @@ public class ivt extends javax.swing.JDialog {
         } catch (SQLException ex) {
             Logger.getLogger(ivt.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return acum;
+        return Math.rint(acum*100)/100;
     }
 
     public double totalvaluacum() {
@@ -172,7 +171,7 @@ public class ivt extends javax.swing.JDialog {
         } catch (SQLException ex) {
             Logger.getLogger(ivt.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return acum;
+        return Math.rint(acum*100)/100;
     }
 
     public double totalpres() {
@@ -190,7 +189,7 @@ public class ivt extends javax.swing.JDialog {
             Logger.getLogger(ivt.class.getName()).log(Level.SEVERE, null, ex);
         }
         //------------------------------------------------------
-        return pres;
+        return Math.rint(pres*100)/100;
     }
 
     /** @return the return status of this dialog - one of RET_OK or RET_CANCEL */
@@ -1032,6 +1031,7 @@ public class ivt extends javax.swing.JDialog {
     }//GEN-LAST:event_jCheckBox1ActionPerformed
 
     private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_okButtonMouseClicked
+        
         generarreporte();
         doClose(RET_OK);
         // TODO add your handling code here:
@@ -1042,7 +1042,7 @@ private void jTextField7FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:ev
         jTextField7.setText("0.00");
     } else {
         double retlab = Double.valueOf(jTextField7.getText());
-        double valor = totalpres * (retlab / 100);
+        double valor = Math.rint(totalpres * (retlab / 100)*100)/100;
         jTextField20.setText(String.valueOf(valor));
         totalmodifica();
     }
@@ -1053,15 +1053,15 @@ private void jTextField7FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:ev
     public void totalmodifica() {
         double total = 0;
         double retlab = 0, fielcump = 0, amorant = 0, multa=0;
-        retlab = Double.valueOf(jTextField20.getText().toString());
-        fielcump = Double.valueOf(jTextField27.getText().toString());
-        amorant = Double.valueOf(jTextField26.getText().toString());
-        multa = Double.valueOf(jTextField42.getText().toString());
-        total = retlab+fielcump+amorant+multa;
+        retlab = Math.rint(Double.valueOf(jTextField20.getText().toString())*100)/100;
+        fielcump = Math.rint(Double.valueOf(jTextField27.getText().toString())*100)/100;
+        amorant = Math.rint(Double.valueOf(jTextField26.getText().toString())*100)/100;
+        multa = Math.rint(Double.valueOf(jTextField42.getText().toString())*100)/100;
+        total = Math.rint(retlab+fielcump+amorant+multa*100)/100;
         jTextField25.setText(String.valueOf(total));
-        double esteimp = Double.valueOf(jTextField6.getText().toString());
+        double esteimp = Math.rint(Double.valueOf(jTextField6.getText().toString())*100)/100;
         total = total*(1+(esteimp/100));
-        jTextField24.setText(String.valueOf(total));
+        jTextField24.setText(String.valueOf(Math.rint(total*100)/100));
     }
 private void jTextField8FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField8FocusLost
 // TODO add your handling code here:
@@ -1069,8 +1069,8 @@ private void jTextField8FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:ev
     if (jTextField8.getText().equals("")) {
         jTextField8.setText("0.00");
     } else {
-        double retfiel = Double.valueOf(jTextField8.getText());
-        double valor = totalpres * (retfiel / 100);
+        double retfiel = Math.rint(Double.valueOf(jTextField8.getText())*100)/100;
+        double valor = Math.rint(totalpres * (retfiel / 100)*100)/100;
         jTextField27.setText(String.valueOf(valor));
         totalmodifica();
     }
@@ -1082,7 +1082,7 @@ private void jTextField9FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:ev
         jTextField9.setText("0.00");
     } else {
         double amorant = Double.valueOf(jTextField9.getText());
-        double valor = totalpres * (amorant / 100);
+        double valor =Math.rint(totalpres * (amorant / 100)*100)/100;
         jTextField26.setText(String.valueOf(valor));
         totalmodifica();
     }
@@ -1094,7 +1094,7 @@ private void jTextField11FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:e
         jTextField11.setText("0.00");
     } else {
         double multa = Double.valueOf(jTextField11.getText());
-        double valor = totalpres * (multa / 100);
+        double valor = Math.rint(totalpres * (multa / 100)*100)/100;
         jTextField42.setText(String.valueOf(valor));
         totalmodifica();
     }
@@ -1141,6 +1141,7 @@ private void jTextField11FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:e
             String diaprorro = jTextField31.getText().toString();
             String mesprorro = jTextField32.getText().toString(), anoreprorro = jTextField33.getText().toString();
             double otorgado = Double.valueOf(jTextField38.getText().toString());
+            
             parameters.put("mpres", mpres);
            parameters.put("mvalu", mvalus);
            parameters.put("obranro", obranro);
@@ -1211,7 +1212,7 @@ private void jTextField11FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:e
         } catch (SQLException ex) {
             Logger.getLogger(ivt.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return impuestos;
+        return Math.rint(impuestos*100)/100;
     }
 
     public double totalvalu() {
@@ -1245,7 +1246,7 @@ private void jTextField11FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:e
         } catch (SQLException ex) {
             Logger.getLogger(ivt.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return valus;
+        return Math.rint(valus*100)/100;
     }
 
     public double aumento() {
@@ -1265,7 +1266,7 @@ private void jTextField11FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:e
         } catch (SQLException ex) {
             Logger.getLogger(ivt.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return aumento;
+        return Math.rint(aumento*100)/100;
     }
 
     public double disminucion() {
@@ -1285,7 +1286,7 @@ private void jTextField11FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:e
         } catch (SQLException ex) {
             Logger.getLogger(ivt.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return dismi;
+        return Math.rint(dismi*100)/100;
     }
 
     public double totalextras() {
@@ -1304,7 +1305,7 @@ private void jTextField11FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:e
         } catch (SQLException ex) {
             Logger.getLogger(ivt.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return extras;
+        return Math.rint(extras*100)/100;
     }
 
     public double totalrecon() {
@@ -1338,7 +1339,7 @@ private void jTextField11FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:e
             Logger.getLogger(ivt.class.getName()).log(Level.SEVERE, null, ex);
         }
         //-------------------------------------------------------------------------------------------
-        return recon;
+        return Math.rint(recon*100)/100;
     }
 
     private void doClose(int retStatus) {

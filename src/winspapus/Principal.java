@@ -467,21 +467,14 @@ public class Principal extends javax.swing.JFrame {
         jMenu14 = new javax.swing.JMenu();
         jMenuItem30 = new javax.swing.JMenuItem();
         jMenuItem31 = new javax.swing.JMenuItem();
-        jMenu6 = new javax.swing.JMenu();
-        jMenuItem11 = new javax.swing.JMenuItem();
-        jMenuItem12 = new javax.swing.JMenuItem();
-        jMenuItem13 = new javax.swing.JMenuItem();
         jMenu11 = new javax.swing.JMenu();
         jMenuItem17 = new javax.swing.JMenuItem();
         jMenuItem18 = new javax.swing.JMenuItem();
         jMenu16 = new javax.swing.JMenu();
         jMenu17 = new javax.swing.JMenu();
         jMenuItem39 = new javax.swing.JMenuItem();
-        jMenuItem40 = new javax.swing.JMenuItem();
-        jMenuItem41 = new javax.swing.JMenuItem();
         jMenu18 = new javax.swing.JMenu();
         jMenuItem42 = new javax.swing.JMenuItem();
-        jMenuItem43 = new javax.swing.JMenuItem();
         jMenuItem44 = new javax.swing.JMenuItem();
 
         jMenu4.setText("File");
@@ -1992,32 +1985,6 @@ public class Principal extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu2);
 
-        jMenu6.setText("Reportes");
-
-        jMenuItem11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/winspapus/imagenes/nuevo.png"))); // NOI18N
-        jMenuItem11.setText("General de Presupuestos");
-        jMenuItem11.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem11ActionPerformed(evt);
-            }
-        });
-        jMenu6.add(jMenuItem11);
-
-        jMenuItem12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/winspapus/imagenes/partida.png"))); // NOI18N
-        jMenuItem12.setText("General de Partidas");
-        jMenu6.add(jMenuItem12);
-
-        jMenuItem13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/winspapus/imagenes/equipobarra.png"))); // NOI18N
-        jMenuItem13.setText("General de Análisis de Precio Unitario");
-        jMenuItem13.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem13ActionPerformed(evt);
-            }
-        });
-        jMenu6.add(jMenuItem13);
-
-        jMenuBar1.add(jMenu6);
-
         jMenu11.setText("Parametros");
 
         jMenuItem17.setIcon(new javax.swing.ImageIcon(getClass().getResource("/winspapus/imagenes/llave.fw.png"))); // NOI18N
@@ -2053,12 +2020,6 @@ public class Principal extends javax.swing.JFrame {
         });
         jMenu17.add(jMenuItem39);
 
-        jMenuItem40.setText("Respaldar");
-        jMenu17.add(jMenuItem40);
-
-        jMenuItem41.setText("lmportar desde Excel");
-        jMenu17.add(jMenuItem41);
-
         jMenu16.add(jMenu17);
 
         jMenu18.setIcon(new javax.swing.ImageIcon(getClass().getResource("/winspapus/imagenes/obra.png"))); // NOI18N
@@ -2066,14 +2027,6 @@ public class Principal extends javax.swing.JFrame {
 
         jMenuItem42.setText("Respaldar");
         jMenu18.add(jMenuItem42);
-
-        jMenuItem43.setText("Recuperar");
-        jMenuItem43.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem43ActionPerformed(evt);
-            }
-        });
-        jMenu18.add(jMenuItem43);
 
         jMenu16.add(jMenu18);
 
@@ -3465,10 +3418,6 @@ private void jTable4PropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FI
              pres.setVisible(true);
     }//GEN-LAST:event_jMenuItem10ActionPerformed
 
-    private void jMenuItem13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem13ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem13ActionPerformed
-
     private void jMenuItem15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem15ActionPerformed
          memoria mem = new memoria(this, true, conexion, presup);
          int xi = (this.getWidth()/2)-700/2;
@@ -3476,13 +3425,6 @@ private void jTable4PropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FI
           mem.setBounds(xi, yi, 700, 500);
           mem.setVisible(true);
     }//GEN-LAST:event_jMenuItem15ActionPerformed
-
-    private void jMenuItem11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem11ActionPerformed
-       
-        
-        presupuestogeneral presu = new presupuestogeneral();
-        
-    }//GEN-LAST:event_jMenuItem11ActionPerformed
 
     private void jMenuItem17ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem17ActionPerformed
         propietario prop = new propietario(this, true, conexion);
@@ -3535,17 +3477,6 @@ private void jMenuItem39ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
     recu.setBounds(xi, yi, 600, 250);
     recu.setVisible(true);        
 }//GEN-LAST:event_jMenuItem39ActionPerformed
-
-private void jMenuItem43ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem43ActionPerformed
-
-    
-    RecuperarPre recup=new RecuperarPre(this, true,conexion, this);
-    int xi=(this.getWidth()/2)-600/2;
-    int yi=(this.getHeight()/2)-250/2;
-    
-    recup.setBounds(xi, yi, 600, 250);
-    recup.setVisible(true);// TODO add your handling code here:
-}//GEN-LAST:event_jMenuItem43ActionPerformed
 
     private void jTextField2FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField2FocusGained
 jTextField2.setText("");    
@@ -3700,7 +3631,7 @@ private void jMenuItem35ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
 
-        int op = JOptionPane.showConfirmDialog(presupuesto, "Desea Cerrar?", "Cerrar", JOptionPane.YES_NO_OPTION);
+        int op = JOptionPane.showConfirmDialog(presupuesto, "¿Desea Cerrar?", "Cerrar", JOptionPane.YES_NO_OPTION);
         if(op==JOptionPane.YES_OPTION){
             System.exit(0);
         }
@@ -3903,7 +3834,6 @@ private void jMenuItem35ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenu jMenu5;
-    private javax.swing.JMenu jMenu6;
     private javax.swing.JMenu jMenu7;
     private javax.swing.JMenu jMenu8;
     private javax.swing.JMenu jMenu9;
@@ -3912,9 +3842,6 @@ private void jMenuItem35ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
     private javax.swing.JMenuBar jMenuBar3;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem10;
-    private javax.swing.JMenuItem jMenuItem11;
-    private javax.swing.JMenuItem jMenuItem12;
-    private javax.swing.JMenuItem jMenuItem13;
     private javax.swing.JMenuItem jMenuItem14;
     private javax.swing.JMenuItem jMenuItem15;
     private javax.swing.JMenuItem jMenuItem16;
@@ -3943,10 +3870,7 @@ private void jMenuItem35ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
     private javax.swing.JMenuItem jMenuItem38;
     private javax.swing.JMenuItem jMenuItem39;
     private javax.swing.JMenuItem jMenuItem4;
-    private javax.swing.JMenuItem jMenuItem40;
-    private javax.swing.JMenuItem jMenuItem41;
     private javax.swing.JMenuItem jMenuItem42;
-    private javax.swing.JMenuItem jMenuItem43;
     private javax.swing.JMenuItem jMenuItem44;
     private javax.swing.JMenuItem jMenuItem45;
     private javax.swing.JMenuItem jMenuItem46;

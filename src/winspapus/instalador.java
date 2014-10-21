@@ -241,8 +241,8 @@ public class instalador extends javax.swing.JDialog {
             {
               Versiones version=new Versiones(prin, true, conespapu, jTextField1.getText(), idcompra, idusuario,conex,prin);
               int x=(prin.getWidth()/2)-600/2;
-              int y=(prin.getHeight()/2)-300/2;
-              version.setBounds(x, y, 600, 300);
+              int y=(prin.getHeight()/2)-200/2;
+              version.setBounds(x, y, 600, 200);
               version.setVisible(true);
             }    
             else

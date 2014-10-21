@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="liquidacion1" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="dc69826d-a550-4663-bf1e-76e2ef90d00a">
 	<property name="ireport.zoom" value="1.2100000000000062"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="5"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="mpres" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
@@ -1846,10 +1846,10 @@ WHERE
 				<text><![CDATA[Nombre de la Obra:]]></text>
 			</staticText>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="63b2d412-e276-4faa-aa19-7e969352f4be" x="103" y="30" width="201" height="15"/>
-				<box leftPadding="5"/>
+				<reportElement uuid="63b2d412-e276-4faa-aa19-7e969352f4be" stretchType="RelativeToBandHeight" x="103" y="30" width="201" height="39"/>
+				<box topPadding="3" leftPadding="5" bottomPadding="3" rightPadding="3"/>
 				<textElement textAlignment="Justified" verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{mpres_nombre}]]></textFieldExpression>
 			</textField>
@@ -1896,9 +1896,9 @@ WHERE
 			</staticText>
 			<textField isStretchWithOverflow="true">
 				<reportElement uuid="eee73642-3051-4a16-8a15-da9d75d82969" stretchType="RelativeToTallestObject" x="103" y="69" width="200" height="24"/>
-				<box topPadding="3"/>
+				<box topPadding="3" leftPadding="3" bottomPadding="3" rightPadding="3"/>
 				<textElement textAlignment="Justified" verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{mpres_ubicac}]]></textFieldExpression>
 			</textField>

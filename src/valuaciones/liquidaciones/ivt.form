@@ -812,7 +812,6 @@
                           <Border PropertyName="innerBorder" info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
                             <LineBorder roundedCorners="true"/>
                           </Border>
-                          <Color PropertyName="color" blue="0" green="0" id="black" palette="1" red="0" type="palette"/>
                         </TitledBorder>
                       </Border>
                     </Property>
@@ -1016,7 +1015,7 @@
                                   <Component id="jLabel39" alignment="3" min="-2" max="-2" attributes="0"/>
                                   <Component id="jTextField35" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace pref="111" max="32767" attributes="0"/>
+                              <EmptySpace pref="105" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -1102,7 +1101,7 @@
                                   <Component id="jLabel41" alignment="3" min="-2" max="-2" attributes="0"/>
                                   <Component id="jTextField37" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace pref="111" max="32767" attributes="0"/>
+                              <EmptySpace pref="105" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>

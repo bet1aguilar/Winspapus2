@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="cierre" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isSummaryWithPageHeaderAndFooter="true" isFloatColumnFooter="true" uuid="50c5a276-112d-47ea-b3d6-f16f59a37d76">
-	<property name="ireport.zoom" value="1.9487171000000019"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="157"/>
+	<property name="ireport.zoom" value="1.4641000000000013"/>
+	<property name="ireport.x" value="371"/>
+	<property name="ireport.y" value="72"/>
 	<parameter name="titulo" class="java.lang.String"/>
 	<parameter name="fecha" class="java.lang.String"/>
 	<parameter name="modioavance" class="java.lang.String"/>
@@ -206,12 +206,12 @@ WHERE mpres.id = $P{mpres}]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{mconts_encabe}]]></textFieldExpression>
 			</textField>
-			<image hAlign="Center" onErrorType="Blank">
-				<reportElement uuid="71d6acf9-9f26-40e9-85b9-8164a6f3b277" x="0" y="24" width="54" height="50" isRemoveLineWhenBlank="true"/>
+			<image hAlign="Left" onErrorType="Blank">
+				<reportElement uuid="71d6acf9-9f26-40e9-85b9-8164a6f3b277" x="0" y="24" width="141" height="54" isRemoveLineWhenBlank="true"/>
 				<imageExpression><![CDATA[JRImageRenderer.getInstance((byte []) $F{mconts_logo})]]></imageExpression>
 			</image>
-			<image hAlign="Center" onErrorType="Blank">
-				<reportElement uuid="86d50b09-62ba-4580-80cc-1de2359c513d" x="698" y="25" width="54" height="50"/>
+			<image hAlign="Right" onErrorType="Blank">
+				<reportElement uuid="86d50b09-62ba-4580-80cc-1de2359c513d" x="589" y="25" width="163" height="50"/>
 				<imageExpression><![CDATA[JRImageRenderer.getInstance((byte []) $F{mprops_logo})]]></imageExpression>
 			</image>
 			<textField>
@@ -604,7 +604,7 @@ WHERE mpres.id = $P{mpres}]]>
 				<text><![CDATA[Disminución]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="cd5b4f1e-4df5-487d-8af0-2dd6ecfd7a6f" x="611" y="14" width="49" height="16"/>
+				<reportElement uuid="cd5b4f1e-4df5-487d-8af0-2dd6ecfd7a6f" x="610" y="14" width="48" height="16"/>
 				<box rightPadding="3">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -618,7 +618,7 @@ WHERE mpres.id = $P{mpres}]]>
 				<text><![CDATA[Monto Bs.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="abc672f7-77f9-4a21-aebb-1b83140107ab" x="693" y="14" width="38" height="16"/>
+				<reportElement uuid="abc672f7-77f9-4a21-aebb-1b83140107ab" x="692" y="14" width="38" height="16"/>
 				<box rightPadding="3">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -632,7 +632,7 @@ WHERE mpres.id = $P{mpres}]]>
 				<text><![CDATA[Monto Bs.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="d9c5cc8a-cd1f-42f7-8495-2b2a84ef91c4" x="660" y="14" width="33" height="16"/>
+				<reportElement uuid="d9c5cc8a-cd1f-42f7-8495-2b2a84ef91c4" x="659" y="14" width="33" height="16"/>
 				<box rightPadding="3">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -646,7 +646,7 @@ WHERE mpres.id = $P{mpres}]]>
 				<text><![CDATA[Cant.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="4fe3a44c-1028-426b-8d6d-13565cbef0ec" x="731" y="14" width="21" height="16"/>
+				<reportElement uuid="4fe3a44c-1028-426b-8d6d-13565cbef0ec" x="730" y="14" width="22" height="16"/>
 				<box rightPadding="3">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -659,8 +659,8 @@ WHERE mpres.id = $P{mpres}]]>
 				</textElement>
 				<text><![CDATA[%]]></text>
 			</staticText>
-			<textField>
-				<reportElement uuid="4347a3ac-c2eb-496a-b265-a6929239ab29" x="660" y="0" width="92" height="14"/>
+			<staticText>
+				<reportElement uuid="4af2b73c-0ce6-4d23-bd6b-8073abe9ec58" x="660" y="0" width="92" height="14"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -671,8 +671,8 @@ WHERE mpres.id = $P{mpres}]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="7" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[Avance]]></textFieldExpression>
-			</textField>
+				<text><![CDATA[Avance]]></text>
+			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
@@ -821,7 +821,7 @@ WHERE mpres.id = $P{mpres}]]>
 				<textFieldExpression><![CDATA[$F{reportecuadrocierre_discantidad}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement uuid="ef5784b5-5c84-4785-94fd-2beb7f0c5a90" stretchType="RelativeToTallestObject" x="611" y="0" width="49" height="20"/>
+				<reportElement uuid="ef5784b5-5c84-4785-94fd-2beb7f0c5a90" stretchType="RelativeToTallestObject" x="610" y="0" width="49" height="20"/>
 				<box topPadding="3" rightPadding="3">
 					<leftPen lineWidth="1.0"/>
 					<rightPen lineWidth="1.0"/>
@@ -832,7 +832,7 @@ WHERE mpres.id = $P{mpres}]]>
 				<textFieldExpression><![CDATA[$F{reportecuadrocierre_dismonto}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement uuid="a4edc78d-810d-4a00-87c9-a7b2ffe323ee" stretchType="RelativeToTallestObject" x="660" y="0" width="33" height="20"/>
+				<reportElement uuid="a4edc78d-810d-4a00-87c9-a7b2ffe323ee" stretchType="RelativeToTallestObject" x="659" y="0" width="33" height="20"/>
 				<box topPadding="3" rightPadding="3">
 					<leftPen lineWidth="1.0"/>
 					<rightPen lineWidth="1.0"/>
@@ -843,7 +843,7 @@ WHERE mpres.id = $P{mpres}]]>
 				<textFieldExpression><![CDATA[$F{reportecuadrocierre_cantmodificado}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement uuid="42e6815b-f97d-4bfd-855f-5996ea572418" stretchType="RelativeToTallestObject" x="693" y="0" width="38" height="20"/>
+				<reportElement uuid="42e6815b-f97d-4bfd-855f-5996ea572418" stretchType="RelativeToTallestObject" x="692" y="0" width="38" height="20"/>
 				<box topPadding="3" rightPadding="3">
 					<leftPen lineWidth="1.0"/>
 					<rightPen lineWidth="1.0"/>
@@ -854,7 +854,7 @@ WHERE mpres.id = $P{mpres}]]>
 				<textFieldExpression><![CDATA[$F{reportecuadrocierre_montomodificado}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement uuid="17c327a2-893c-4ac0-9294-65ca232876ee" stretchType="RelativeToTallestObject" x="731" y="0" width="21" height="20"/>
+				<reportElement uuid="17c327a2-893c-4ac0-9294-65ca232876ee" stretchType="RelativeToTallestObject" x="730" y="0" width="22" height="20"/>
 				<box topPadding="3" rightPadding="3">
 					<leftPen lineWidth="1.0"/>
 					<rightPen lineWidth="1.0"/>

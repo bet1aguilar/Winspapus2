@@ -200,7 +200,7 @@ String fecha1,fecha2;
         }
         //sql="insert into instalacion (usuario_id,maquina_id,version_compra";
              String usuario_id="";  
-        String consultausuario = "SELECT c.usuario_id FROM compras as c, version_compra as vc "
+        String consultausuario = "SELECT c.usuario_id FROM compra as c, version_compra as vc "
                 + "WHERE vc.compra_id=c.id AND vc.id="+idcompra+"";
         try {
             Statement st = (Statement) conex.createStatement();
@@ -226,7 +226,7 @@ String fecha1,fecha2;
            
             fecha1=formatofecha.format(hoy);    
             fecha2=formatofecha.format(hoy);    
-                sql="insert into mpresadm"
+                sql="insert into mpresadm (fecha,codigo, tm, licencia,status,activo, comprobacion)"
                         + " values ('"+fecha1+"','"+dd+"','"+tm+"','"+licencia+"','1',0,'"+fecha2+"')";
                 System.out.println(sql);
                  Statement esc = (Statement) conexion.createStatement();
