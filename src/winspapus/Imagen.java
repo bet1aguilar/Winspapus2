@@ -27,7 +27,7 @@ public class Imagen implements Border {
         try {       
             //se obtiene la imagen   
             this.panel = jpanel;
-            URL url = new URL(getClass().getResource("/winspapus/imagenes/fondodef.png").toString());
+            URL url = new URL(getClass().getResource("/winspapus/imagenes/fondospapu.jpg").toString());
             fondo = ImageIO.read(url);  
             
             
