@@ -19,6 +19,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
+import java.util.Date;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -187,16 +188,31 @@ public class Principal extends javax.swing.JFrame {
             String sql;            
 
  
-            sql="select * from mpresadm where status='1'";
+            sql="select * from mpresadm";
             Serialdd  obj2=new Serialdd();
               String dd=obj2.getSerialNumber("C");
+              int status=0;
             ResultSet rst = seg.executeQuery(sql);             
             rst.last();
-            int regis = rst.getRow();                
+            int regis = rst.getRow();    
+            if (regis!=0){
+            Date fec1=rst.getDate("fecha");
             
+            Date hoy = new Date();
+            double difer=hoy.getTime()-fec1.getTime(),dias=difer/(1000*60*24*60);
+            if (dias>=30)
+            {
+              sql="update mpresadm set status='0'";  
+              Statement demo1 = (Statement) conexion.createStatement();
+              demo1.execute(sql); 
+              JOptionPane.showMessageDialog(presupuesto, "Tiempo Agotado de la Versión DEMO, comunicarse con SISTEMAS RH");              
+              System.exit(0);
+            } 
+            status = rst.getInt("status");
+            }
             if (regis==0){
                 int opc;
-                opc=JOptionPane.showConfirmDialog(null, "Atención el Sistema se va a Ejecutar por primero vez, Desea Continuar?","INICIAR DE SISTEMA",JOptionPane.YES_NO_OPTION);
+                opc=JOptionPane.showConfirmDialog(null, "Atención el Sistema se va a Ejecutar por primera vez, Desea Continuar?","INICIAR DE SISTEMA",JOptionPane.YES_NO_OPTION);
                 if ((opc==1)||(opc==2)){
                    System.exit(0);
                 } 
@@ -211,7 +227,7 @@ public class Principal extends javax.swing.JFrame {
                 }     
                 conespapu = (Connection) DriverManager.getConnection("jdbc:mysql://spapu2.db.11811826.hostedresource.com/spapu2", "spapu2", "Rahp81261!");
 
-                instalador instalar=new instalador(this, true,conespapu, this, conexion);
+                instalador instalar=new instalador(this, true,conespapu, this, conexion,dd);
                 int xi=(this.getWidth()/2)-350/2;
                 int yi=(this.getHeight()/2)-100/2;
                 instalar.setBounds(xi, yi, 350, 200);
@@ -228,7 +244,7 @@ public class Principal extends javax.swing.JFrame {
                 
             }
             else{
-                if(!rst.getString("codigo").equals(dd)) {
+                if(!rst.getString("codigo").equals(dd)&&status==1)  {
                    JOptionPane.showMessageDialog(null, "LICENCIA NO AUTORIZADA, LLAMAR A SISTEMAS RH");
                    System.exit(0);
                 }                                    
@@ -451,21 +467,14 @@ public class Principal extends javax.swing.JFrame {
         jMenu14 = new javax.swing.JMenu();
         jMenuItem30 = new javax.swing.JMenuItem();
         jMenuItem31 = new javax.swing.JMenuItem();
-        jMenu6 = new javax.swing.JMenu();
-        jMenuItem11 = new javax.swing.JMenuItem();
-        jMenuItem12 = new javax.swing.JMenuItem();
-        jMenuItem13 = new javax.swing.JMenuItem();
         jMenu11 = new javax.swing.JMenu();
         jMenuItem17 = new javax.swing.JMenuItem();
         jMenuItem18 = new javax.swing.JMenuItem();
         jMenu16 = new javax.swing.JMenu();
         jMenu17 = new javax.swing.JMenu();
         jMenuItem39 = new javax.swing.JMenuItem();
-        jMenuItem40 = new javax.swing.JMenuItem();
-        jMenuItem41 = new javax.swing.JMenuItem();
         jMenu18 = new javax.swing.JMenu();
         jMenuItem42 = new javax.swing.JMenuItem();
-        jMenuItem43 = new javax.swing.JMenuItem();
         jMenuItem44 = new javax.swing.JMenuItem();
 
         jMenu4.setText("File");
@@ -1976,32 +1985,6 @@ public class Principal extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu2);
 
-        jMenu6.setText("Reportes");
-
-        jMenuItem11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/winspapus/imagenes/nuevo.png"))); // NOI18N
-        jMenuItem11.setText("General de Presupuestos");
-        jMenuItem11.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem11ActionPerformed(evt);
-            }
-        });
-        jMenu6.add(jMenuItem11);
-
-        jMenuItem12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/winspapus/imagenes/partida.png"))); // NOI18N
-        jMenuItem12.setText("General de Partidas");
-        jMenu6.add(jMenuItem12);
-
-        jMenuItem13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/winspapus/imagenes/equipobarra.png"))); // NOI18N
-        jMenuItem13.setText("General de Análisis de Precio Unitario");
-        jMenuItem13.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem13ActionPerformed(evt);
-            }
-        });
-        jMenu6.add(jMenuItem13);
-
-        jMenuBar1.add(jMenu6);
-
         jMenu11.setText("Parametros");
 
         jMenuItem17.setIcon(new javax.swing.ImageIcon(getClass().getResource("/winspapus/imagenes/llave.fw.png"))); // NOI18N
@@ -2037,12 +2020,6 @@ public class Principal extends javax.swing.JFrame {
         });
         jMenu17.add(jMenuItem39);
 
-        jMenuItem40.setText("Respaldar");
-        jMenu17.add(jMenuItem40);
-
-        jMenuItem41.setText("lmportar desde Excel");
-        jMenu17.add(jMenuItem41);
-
         jMenu16.add(jMenu17);
 
         jMenu18.setIcon(new javax.swing.ImageIcon(getClass().getResource("/winspapus/imagenes/obra.png"))); // NOI18N
@@ -2050,14 +2027,6 @@ public class Principal extends javax.swing.JFrame {
 
         jMenuItem42.setText("Respaldar");
         jMenu18.add(jMenuItem42);
-
-        jMenuItem43.setText("Recuperar");
-        jMenuItem43.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem43ActionPerformed(evt);
-            }
-        });
-        jMenu18.add(jMenuItem43);
 
         jMenu16.add(jMenu18);
 
@@ -3449,10 +3418,6 @@ private void jTable4PropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FI
              pres.setVisible(true);
     }//GEN-LAST:event_jMenuItem10ActionPerformed
 
-    private void jMenuItem13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem13ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem13ActionPerformed
-
     private void jMenuItem15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem15ActionPerformed
          memoria mem = new memoria(this, true, conexion, presup);
          int xi = (this.getWidth()/2)-700/2;
@@ -3460,13 +3425,6 @@ private void jTable4PropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FI
           mem.setBounds(xi, yi, 700, 500);
           mem.setVisible(true);
     }//GEN-LAST:event_jMenuItem15ActionPerformed
-
-    private void jMenuItem11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem11ActionPerformed
-       
-        
-        presupuestogeneral presu = new presupuestogeneral();
-        
-    }//GEN-LAST:event_jMenuItem11ActionPerformed
 
     private void jMenuItem17ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem17ActionPerformed
         propietario prop = new propietario(this, true, conexion);
@@ -3519,17 +3477,6 @@ private void jMenuItem39ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
     recu.setBounds(xi, yi, 600, 250);
     recu.setVisible(true);        
 }//GEN-LAST:event_jMenuItem39ActionPerformed
-
-private void jMenuItem43ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem43ActionPerformed
-
-    
-    RecuperarPre recup=new RecuperarPre(this, true,conexion, this);
-    int xi=(this.getWidth()/2)-600/2;
-    int yi=(this.getHeight()/2)-250/2;
-    
-    recup.setBounds(xi, yi, 600, 250);
-    recup.setVisible(true);// TODO add your handling code here:
-}//GEN-LAST:event_jMenuItem43ActionPerformed
 
     private void jTextField2FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField2FocusGained
 jTextField2.setText("");    
@@ -3684,7 +3631,7 @@ private void jMenuItem35ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
 
-        int op = JOptionPane.showConfirmDialog(presupuesto, "Desea Cerrar?", "Cerrar", JOptionPane.YES_NO_OPTION);
+        int op = JOptionPane.showConfirmDialog(presupuesto, "¿Desea Cerrar?", "Cerrar", JOptionPane.YES_NO_OPTION);
         if(op==JOptionPane.YES_OPTION){
             System.exit(0);
         }
@@ -3887,7 +3834,6 @@ private void jMenuItem35ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenu jMenu5;
-    private javax.swing.JMenu jMenu6;
     private javax.swing.JMenu jMenu7;
     private javax.swing.JMenu jMenu8;
     private javax.swing.JMenu jMenu9;
@@ -3896,9 +3842,6 @@ private void jMenuItem35ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
     private javax.swing.JMenuBar jMenuBar3;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem10;
-    private javax.swing.JMenuItem jMenuItem11;
-    private javax.swing.JMenuItem jMenuItem12;
-    private javax.swing.JMenuItem jMenuItem13;
     private javax.swing.JMenuItem jMenuItem14;
     private javax.swing.JMenuItem jMenuItem15;
     private javax.swing.JMenuItem jMenuItem16;
@@ -3927,10 +3870,7 @@ private void jMenuItem35ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
     private javax.swing.JMenuItem jMenuItem38;
     private javax.swing.JMenuItem jMenuItem39;
     private javax.swing.JMenuItem jMenuItem4;
-    private javax.swing.JMenuItem jMenuItem40;
-    private javax.swing.JMenuItem jMenuItem41;
     private javax.swing.JMenuItem jMenuItem42;
-    private javax.swing.JMenuItem jMenuItem43;
     private javax.swing.JMenuItem jMenuItem44;
     private javax.swing.JMenuItem jMenuItem45;
     private javax.swing.JMenuItem jMenuItem46;

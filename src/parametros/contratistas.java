@@ -398,6 +398,11 @@ public class contratistas extends javax.swing.JDialog {
         });
 
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/winspapus/imagenes/borra.png"))); // NOI18N
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -470,7 +475,7 @@ public class contratistas extends javax.swing.JDialog {
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel14, javax.swing.GroupLayout.DEFAULT_SIZE, 159, Short.MAX_VALUE)
+            .addComponent(jLabel14, javax.swing.GroupLayout.DEFAULT_SIZE, 169, Short.MAX_VALUE)
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1000,6 +1005,42 @@ private void jTextArea3KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
                     evt.setKeyChar(Character.toUpperCase(c));
                 }// TODO add your handling code here:
 }//GEN-LAST:event_jTextArea3KeyTyped
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        String id=jSpinner1.getValue().toString();
+         String consulta="SELECT COUNT(*) FROM mpres WHERE codcon='"+id+"'";
+         int cuenta=0;
+     
+        try {
+            Statement count = (Statement) conex.createStatement();
+            ResultSet rstcount = count.executeQuery(consulta);
+            while(rstcount.next()){
+                cuenta=rstcount.getInt(1);
+            }
+            if(cuenta>0){
+                JOptionPane.showMessageDialog(rootPane, "La contratista está relacionada con uno o más presupuestos, no puede ser eliminada hasta que los presupuestos relacionados sean eliminados");
+                
+            }else{
+                int op=JOptionPane.showConfirmDialog(rootPane, "¿Desea Eliminar la contratista "+id+"?", "Eliminar contratista", JOptionPane.YES_NO_OPTION);
+          if(op==JOptionPane.YES_OPTION){
+              String borra = "DELETE FROM mconts WHERE id='"+id+"'";
+              Statement stborra = (Statement) conex.createStatement();
+              stborra.execute(borra);
+              JOptionPane.showMessageDialog(rootPane, "La contratista "+id+" ha sido eliminada");
+               definemodelo();
+         
+         cargaventana();
+          }   
+                
+            }
+                    
+        } catch (SQLException ex) {
+            Logger.getLogger(contratistas.class.getName()).log(Level.SEVERE, null, ex);
+        }
+       
+        
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton2ActionPerformed
     
     private void doClose(int retStatus) {
         returnStatus = retStatus;
